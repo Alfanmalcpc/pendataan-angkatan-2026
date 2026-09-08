@@ -26,7 +26,7 @@
 - **Kelas XII-9**: `xii-9.html`
 
 Tautan online setelah GitHub Pages aktif:
-`https://nevastra.github.io/pendataan-angkatan-2026/xii-1.html` *(s/d xii-9.html)*
+`https://alfanmalcpc.github.io/pendataan-angkatan-2026/xii-1.html` *(s/d xii-9.html)*
 
 ---
 
