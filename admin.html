@@ -155,6 +155,59 @@
                 </div>
             </div>
 
+                        <!-- Google Drive Settings Box -->
+            <div class="card" style="margin-bottom: 24px; border: 1.5px solid #bfdbfe; background: #eff6ff; padding: 18px 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.6rem;">📁</span>
+                        <div>
+                            <h3 style="font-size: 1.05rem; font-weight: 800; color: #1e40af; margin: 0;">Pengaturan Penyimpanan Foto Google Drive</h3>
+                            <p style="font-size: 0.8rem; color: #3b82f6; margin-top: 2px;">Foto yang diunggah siswa otomatis disimpan ke Google Drive Anda dengan format nama persis nama siswa.</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" id="btnToggleDriveGuide" class="btn btn-sm btn-outline" style="background: white; border-color: #93c5fd; color: #1d4ed8;">
+                            📖 Cara Pasang Google Drive (1 Menit)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Input URL Script & Folder -->
+                <div style="display: grid; grid-template-columns: 2fr 1.5fr auto; gap: 10px; align-items: end;">
+                    <div>
+                        <label style="font-size: 0.78rem; font-weight: 700; color: #1e3a8a; display: block; margin-bottom: 4px;">
+                            URL Web App Google Apps Script:
+                        </label>
+                        <input type="text" id="inputDriveScriptUrl" class="form-control" style="font-size: 0.85rem; background: white;" placeholder="https://script.google.com/macros/s/.../exec">
+                    </div>
+                    <div>
+                        <label style="font-size: 0.78rem; font-weight: 700; color: #1e3a8a; display: block; margin-bottom: 4px;">
+                            Tautan Folder Google Drive Anda:
+                        </label>
+                        <input type="text" id="inputDriveFolderUrl" class="form-control" style="font-size: 0.85rem; background: white;" placeholder="https://drive.google.com/drive/folders/...">
+                    </div>
+                    <div>
+                        <button type="button" id="btnSaveDriveConfig" class="btn btn-sm btn-primary" style="padding: 10px 18px; background: #2563eb;">
+                            💾 Simpan Pengaturan
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Panduan Collapsible -->
+                <div id="driveGuideBox" style="display: none; margin-top: 14px; padding: 14px; background: white; border-radius: var(--radius-md); border: 1px solid #bfdbfe; font-size: 0.84rem; color: #1e293b;">
+                    <h4 style="font-weight: 800; color: #1e40af; margin-bottom: 8px;">🚀 Panduan 1 Menit Menghubungkan Google Drive Anda:</h4>
+                    <ol style="margin-left: 18px; line-height: 1.6;">
+                        <li>Buka <a href="https://script.google.com" target="_blank" style="color: #2563eb; font-weight: 700;">script.google.com</a> dengan akun Google Anda, lalu klik <strong>New project</strong>.</li>
+                        <li>Buka file <code>google-drive-script.gs</code> di folder web ini, salin seluruh kodenya, dan tempel di editor Google Script.</li>
+                        <li>(Opsional) Masukkan ID Folder Google Drive Anda pada <code>FOLDER_ID = "..."</code> di baris ke-21.</li>
+                        <li>Klik tombol biru <strong>Deploy</strong> (kanan atas) &gt; <strong>New deployment</strong>.</li>
+                        <li>Pilih type <strong>Web app</strong> (ikon bola dunia). Atur: <em>Execute as:</em> <strong>Me</strong>, dan <em>Who has access:</em> <strong>Anyone</strong>.</li>
+                        <li>Klik <strong>Deploy</strong>, izinkan akses akun (klik <em>Review permissions</em> &gt; <em>Advanced</em> &gt; <em>Go to (unsafe)</em> &gt; <em>Allow</em>).</li>
+                        <li>Salin <strong>Web app URL</strong> (berakhiran <code>/exec</code>) lalu tempelkan di kotak input di atas dan klik <strong>Simpan Pengaturan</strong>!</li>
+                    </ol>
+                </div>
+            </div>
+
             <!-- Action buttons -->
             <div class="admin-action-bar" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px;">
                 <button id="btnDownloadClassExcel" class="btn btn-primary btn-sm" style="background: #107c41;">
