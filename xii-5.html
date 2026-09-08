@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Formulir Biodata & Upload Foto Kelas XII-5 - NEVASTRA 2026</title>
+    <title>Formulir Biodata & Foto Profil Kelas XII-5 - NEVASTRA 2026</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
 </head>
@@ -28,9 +28,9 @@
     <main class="main-wrapper">
         <div class="hero-banner">
             <div class="hero-content">
-                <span class="hero-badge">✨ PENDATAAN & UPLOAD FOTO KELAS XII-5</span>
+                <span class="hero-badge">✨ PENDATAAN & FOTO PROFIL KELAS XII-5</span>
                 <h2 class="hero-title">Formulir Biodata & Foto Siswa</h2>
-                <p class="hero-subtitle">Silakan pilih nomor absen & nama kamu, upload foto terbaik untuk buku tahunan (otomatis disimpan ke Google Drive dengan nama kamu), lalu lengkapi biodata.</p>
+                <p class="hero-subtitle">Silakan pilih nomor absen & nama kamu, upload foto profil buku tahunan (otomatis disimpan ke Google Drive dengan namamu), lalu lengkapi biodata.</p>
             </div>
         </div>
 
@@ -54,29 +54,25 @@
                         <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/><path d="M4 4h8v1H4V4zm0 2h8v1H4V6zm0 2h8v1H4V8zm0 2h5v1H4v-1z"/></svg>
                         Isi Data Biodata
                     </h3>
-                    <span id="formModeBadge" class="yb-badge yb-badge-secondary" style="display: none;">Data Tersimpan</span>
+                    <span class="badge-status pending" id="formModeBadge" style="display:none;">Data Baru</span>
                 </div>
 
-                <!-- Alert box -->
-                <div id="formAlert" class="alert"></div>
-
-                <form id="studentBiodataForm" class="form-section">
-                    
-                    <!-- 1. Kelas (Terkunci) -->
+                <form id="studentForm" novalidate>
+                    <!-- 1. Kelas (Readonly) -->
                     <div class="form-group">
                         <label>Kelas</label>
-                        <input type="text" class="form-control" value="Kelas XII-5" readonly disabled style="font-weight: 700; background: #f1f5f9;">
+                        <input type="text" class="form-control" value="Kelas XII-5" disabled style="background:#f8fafc; font-weight:700; color:var(--dark);">
                     </div>
 
-                    <!-- 2. Pilih Absen & Nama -->
+                    <!-- 2. Absen & Nama Siswa Resmi -->
                     <div class="form-group">
                         <label for="selectAbsenNama">
-                            Pilih Nomor Absen & Nama Siswa <span class="req">*</span>
+                            Pilih Nomor Absen & Nama Kamu <span class="req">*</span>
                         </label>
                         <select id="selectAbsenNama" class="form-control" required style="font-weight: 600;">
-                            <option value="">-- Cari / Pilih Nomor Absen & Nama Kamu --</option>
+                            <option value="" disabled selected>-- Pilih Nomor Absen & Nama Siswa --</option>
                         </select>
-                        <span class="tip" style="color: var(--primary); font-weight: 500;">
+                        <span class="tip">
                             🔒 Nomor absen dan nama disinkronkan langsung dari daftar resmi siswa agar tidak tertukar.
                         </span>
                     </div>
@@ -90,17 +86,17 @@
                         <span class="tip">Kamu dapat merapikan ejaan atau huruf kapital nama kamu jika diperlukan.</span>
                     </div>
 
-                    <!-- 4. Upload Foto Siswa untuk Google Drive & Buku Tahunan -->
+                    <!-- 4. Upload Foto Profil Siswa untuk Google Drive & Buku Tahunan -->
                     <div class="form-group">
                         <label>
-                            Upload Foto Buku Tahunan (Google Drive) <span class="req">*</span>
+                            Upload Foto Profil Buku Tahunan (Google Drive) <span class="req">*</span>
                         </label>
                         <div class="file-upload-zone" id="fileDropZone">
                             <input type="file" id="inputFoto" accept="image/jpeg,image/png,image/webp,image/jpg" class="file-input-hidden">
                             <div class="file-upload-content" id="fileUploadContent">
                                 <div class="file-upload-icon">📸</div>
-                                <div class="file-upload-title">Pilih atau Seret Foto ke Sini</div>
-                                <div class="file-upload-sub">Format JPG / PNG / JPEG (Foto bebas & jernih)</div>
+                                <div class="file-upload-title">Pilih atau Seret Foto Profil ke Sini</div>
+                                <div class="file-upload-sub">Format JPG / PNG / JPEG (Tampil sebagai foto profil di samping nama)</div>
                                 <button type="button" class="btn btn-sm btn-outline" style="margin-top: 6px; pointer-events: none;">Pilih Berkas Foto</button>
                             </div>
                             <div class="file-preview-mini" id="filePreviewMini" style="display:none;">
@@ -113,7 +109,7 @@
                             </div>
                         </div>
                         <span class="tip" style="color: var(--primary); font-weight: 600;">
-                            📁 Foto akan otomatis tersimpan di Google Drive dengan format nama: <code id="tipFileName">Nama Siswa.jpg</code>
+                            📁 Foto profil otomatis tersimpan di Google Drive folder <code>XII-5</code> dengan nama: <code id="tipFileName">Nama Siswa.jpg</code>
                         </span>
                     </div>
 
@@ -171,7 +167,7 @@
                 </form>
             </div>
 
-            <!-- Pratinjau Kartu Buku Tahunan (Live Preview) -->
+            <!-- Pratinjau Kartu Buku Tahunan (Live Preview dengan Foto Profil di Samping Nama) -->
             <div class="preview-sticky">
                 <div class="card">
                     <div class="card-header">
@@ -183,29 +179,21 @@
                     </div>
                     
                     <div class="yearbook-card">
-                        <!-- Header Kartu -->
+                        <!-- Header Kartu: Foto Profil di Samping Nama Siswa -->
                         <div class="yb-header">
-                            <div class="yb-avatar" id="prevAvatar">?</div>
+                            <div class="yb-profile-frame" id="prevProfileFrame" title="Klik untuk memilih/mengganti foto profil">
+                                <img id="prevPhotoImg" class="yb-profile-img" src="" alt="Foto Profil" style="display:none;">
+                                <div id="prevAvatar" class="yb-avatar-placeholder">?</div>
+                                <div class="yb-profile-badge" title="Foto Profil">📸</div>
+                            </div>
                             <div class="yb-meta">
                                 <h4 class="yb-name" id="prevName">Nama Siswa</h4>
                                 <div class="yb-badge-row">
                                     <span class="yb-badge">KELAS XII-5</span>
                                     <span class="yb-badge yb-badge-secondary" id="prevAbsen">ABSEN -</span>
                                 </div>
+                                <div class="yb-profile-sub">NEVASTRA • SMAN 1 SUMBERREJO</div>
                             </div>
-                        </div>
-
-                        <!-- Bingkai Polaroid Foto Buku Tahunan -->
-                        <div class="yb-photo-frame">
-                            <div class="yb-photo-wrapper">
-                                <img id="prevPhotoImg" class="yb-photo-img" src="" alt="Foto Siswa" style="display:none;">
-                                <div id="prevPhotoPlaceholder" class="yb-photo-placeholder">
-                                    <div class="yb-photo-placeholder-icon">📸</div>
-                                    <span style="font-weight: 700; font-size: 0.85rem;">Foto Buku Tahunan</span>
-                                    <span style="font-size: 0.74rem; margin-top: 2px;">Pilih foto di formulir sebelah kiri</span>
-                                </div>
-                            </div>
-                            <div class="yb-photo-caption" id="prevPhotoCaption">XII-5 • NEVASTRA 2026</div>
                         </div>
 
                         <div class="yb-divider"></div>
@@ -250,7 +238,7 @@
                     </div>
 
                     <div style="margin-top: 14px; text-align: center; font-size: 0.76rem; color: var(--text-muted);">
-                        ✨ Desain kartu ini akan dicetak pada lembar buku tahunan angkatan.
+                        ✨ Foto profil di samping nama akan dicetak pada lembar buku tahunan angkatan.
                     </div>
                 </div>
             </div>
@@ -258,34 +246,29 @@
         </div>
     </main>
 
-    <!-- Modal Sukses -->
-    <div class="modal-overlay" id="successModal">
-        <div class="modal-box">
-            <div class="modal-icon">🎉</div>
-            <h3 class="modal-title">Biodata & Foto Berhasil Dikirim!</h3>
-            <p class="modal-desc" id="successModalDesc">
-                Biodata dan foto buku tahunan kamu berhasil tersimpan di sistem dan Google Drive Nevastra 2026.
-            </p>
-            <button type="button" class="btn btn-primary btn-block" id="btnModalOk">Tutup & Selesai</button>
-        </div>
-    </div>
+    <footer class="app-footer">
+        <p>Panitia Buku Tahunan NEVASTRA 2026 • SMAN 1 Sumberrejo</p>
+    </footer>
 
-    <!-- Scripts -->
-    <script src="students-data.js"></script>
+    <!-- Database and Student Data Scripts -->
     <script src="db.js"></script>
-    
     <script>
-        const currentKelas = 'XII-5';
+        const CURRENT_CLASS = "XII-5";
         const classRoster = [{"absen": 1, "nama": "Adelia Nur Wulan Ramadany"}, {"absen": 2, "nama": "Afna Umri Bishofi"}, {"absen": 3, "nama": "Alifa Annafiuz Zahra"}, {"absen": 4, "nama": "Aliyah Arrazaqi Putri Mahdia"}, {"absen": 5, "nama": "Andrea Dwi Andika"}, {"absen": 6, "nama": "Aris Nur Afandi"}, {"absen": 7, "nama": "Ashyifa Soraya Ramadhani"}, {"absen": 8, "nama": "Audira Maycha Agustin"}, {"absen": 9, "nama": "Bima Septyan Ramadhani"}, {"absen": 10, "nama": "Daffa Wahyuandri Al Hafidz"}, {"absen": 11, "nama": "Daniel Ahmad Ramadhani"}, {"absen": 12, "nama": "Devita Sofia Dwi Mutiara"}, {"absen": 13, "nama": "Evan Ahmad Umar Baihaqi"}, {"absen": 14, "nama": "Fahri Al Hammad"}, {"absen": 15, "nama": "Fairuz Alva Adinata"}, {"absen": 16, "nama": "Febrieansyah Rafif Wahyuono"}, {"absen": 17, "nama": "Firnanda Ayu Sekar Arum"}, {"absen": 18, "nama": "Girindra Nagara Putra Raharja"}, {"absen": 19, "nama": "Hazel Arkananta Fahril Ikhsan"}, {"absen": 20, "nama": "Indira Ayatus Syifa' Ad-Dakhiliyah"}, {"absen": 21, "nama": "Jelita Arum Nathanelya"}, {"absen": 22, "nama": "Julia Zheta Prasasti P."}, {"absen": 23, "nama": "Laylatul Muna"}, {"absen": 24, "nama": "M. Ilham Firmansyah"}, {"absen": 25, "nama": "Maulia Rafif Alatif"}, {"absen": 26, "nama": "Muhammad Amiruddin Khoiriyanto"}, {"absen": 27, "nama": "Neisa Nur Aizin"}, {"absen": 28, "nama": "Neiza Indra Pratama Putri"}, {"absen": 29, "nama": "Putri Zahra Aprilla"}, {"absen": 30, "nama": "Renno Boy Kurniawan"}, {"absen": 31, "nama": "Rizki Dwi Karina"}, {"absen": 32, "nama": "Rizky Aditya Rahmawan"}, {"absen": 33, "nama": "Sofia Sabrina"}, {"absen": 34, "nama": "Vera Veronica Angelia"}, {"absen": 35, "nama": "Warda Ayu Suryani"}, {"absen": 36, "nama": "Ziyadaturisyadah"}];
 
-        // State photo
+        let currentClassData = {};
         let currentPhotoBase64 = null;
-        let currentPhotoExt = 'jpg';
-        let existingDriveUrl = '';
-        let existingDriveId = '';
+        let currentPhotoExt = "jpg";
+        let existingDriveUrl = "";
+        let existingDriveId = "";
 
-        // Populate Absen Dropdown
+        // Elements
         const selectAbsenNama = document.getElementById('selectAbsenNama');
+        const formModeBadge = document.getElementById('formModeBadge');
+        const studentForm = document.getElementById('studentForm');
+        const btnSubmit = document.getElementById('btnSubmit');
+
+        // Populate Select Absen & Nama
         classRoster.forEach(student => {
             const opt = document.createElement('option');
             opt.value = student.absen;
@@ -304,8 +287,16 @@
         const btnRemoveFoto = document.getElementById('btnRemoveFoto');
         const tipFileName = document.getElementById('tipFileName');
 
+        const prevProfileFrame = document.getElementById('prevProfileFrame');
         const prevPhotoImg = document.getElementById('prevPhotoImg');
-        const prevPhotoPlaceholder = document.getElementById('prevPhotoPlaceholder');
+        const prevAvatar = document.getElementById('prevAvatar');
+
+        // Klik bingkai profil untuk memilih foto
+        if (prevProfileFrame) {
+            prevProfileFrame.addEventListener('click', () => {
+                inputFoto.click();
+            });
+        }
 
         ['dragenter', 'dragover'].forEach(eventName => {
             fileDropZone.addEventListener(eventName, (e) => {
@@ -326,7 +317,7 @@
         fileDropZone.addEventListener('drop', (e) => {
             const dt = e.dataTransfer;
             const files = dt.files;
-            if (files.length > 0) {
+            if (files && files.length > 0) {
                 handlePhotoFile(files[0]);
             }
         });
@@ -344,12 +335,14 @@
 
         function clearPhoto() {
             currentPhotoBase64 = null;
+            existingDriveUrl = '';
+            existingDriveId = '';
             inputFoto.value = '';
             filePreviewMini.style.display = 'none';
             fileUploadContent.style.display = 'flex';
             prevPhotoImg.style.display = 'none';
-            prevPhotoPlaceholder.style.display = 'flex';
             prevPhotoImg.src = '';
+            prevAvatar.style.display = 'flex';
         }
 
         function handlePhotoFile(file) {
@@ -395,10 +388,10 @@
                     fileUploadContent.style.display = 'none';
                     filePreviewMini.style.display = 'flex';
 
-                    // Update Polaroid Live Preview
+                    // Update Foto Profil di Samping Nama (Live Preview)
                     prevPhotoImg.src = compressedBase64;
                     prevPhotoImg.style.display = 'block';
-                    prevPhotoPlaceholder.style.display = 'none';
+                    prevAvatar.style.display = 'none';
 
                     updateTipFileName();
                 };
@@ -408,245 +401,221 @@
         }
 
         function updateTipFileName() {
-            const rawNama = document.getElementById('inputNama').value.trim() || 'Nama Siswa';
-            const clean = rawNama.replace(/[/\\?%*:|"<>]/g, '');
-            tipFileName.textContent = clean + '.' + currentPhotoExt;
+            const namaVal = (document.getElementById('inputNama').value || 'Nama Siswa').trim();
+            const cleanName = namaVal.replace(/[/\\?%*:|"<>]/g, '').trim() || 'Nama Siswa';
+            tipFileName.textContent = `${cleanName}.${currentPhotoExt}`;
         }
 
-        // When Absen is selected
-        selectAbsenNama.addEventListener('change', async (e) => {
-            const chosenAbsen = parseInt(e.target.value, 10);
-            if (!chosenAbsen) {
-                resetFormFields();
-                return;
-            }
-
-            const found = classRoster.find(s => s.absen === chosenAbsen);
-            if (found) {
-                document.getElementById('inputNama').value = found.nama;
-                updateTipFileName();
-                await loadExistingBiodata(chosenAbsen, found.nama);
-            }
-            updatePreview();
+        // Character counter for quotes
+        const inputQuotes = document.getElementById('inputQuotes');
+        const charCount = document.getElementById('charCount');
+        inputQuotes.addEventListener('input', () => {
+            charCount.textContent = inputQuotes.value.length;
+            updatePreviewLive();
         });
 
-        async function loadExistingBiodata(absen, defaultNama) {
-            const formModeBadge = document.getElementById('formModeBadge');
-            
-            try {
-                const classData = await window.NevastraDB.getClassBiodata(currentKelas);
-                const saved = classData[absen];
-
-                if (saved) {
-                    formModeBadge.style.display = 'inline-flex';
-                    formModeBadge.textContent = 'Data Sudah Terisi (Bisa Diperbarui)';
-
-                    document.getElementById('inputNama').value = saved.nama || defaultNama;
-                    document.getElementById('inputTempatLahir').value = saved.tempatLahir || '';
-                    document.getElementById('inputTanggalLahir').value = saved.tanggalLahir || '';
-                    document.getElementById('inputNoHp').value = saved.noHp || '';
-                    document.getElementById('inputInstagram').value = (saved.ig || '').replace(/^@/, '');
-                    document.getElementById('inputAlamat').value = saved.tinggalDi || '';
-                    document.getElementById('inputQuotes').value = saved.quotes || '';
-
-                    // Foto tersimpan
-                    if (saved.fotoDriveUrl || saved.fotoDirectUrl || saved.fotoBase64) {
-                        const fotoSrc = saved.fotoDirectUrl || saved.fotoDriveUrl || saved.fotoBase64;
-                        prevPhotoImg.src = fotoSrc;
-                        prevPhotoImg.style.display = 'block';
-                        prevPhotoPlaceholder.style.display = 'none';
-                        existingDriveUrl = saved.fotoDriveUrl || '';
-                        existingDriveId = saved.fotoDriveId || '';
-
-                        imgThumbnailMini.src = fotoSrc;
-                        fileMiniName.textContent = saved.fotoNamaFile || (saved.nama + '.jpg');
-                        fileMiniSize.textContent = saved.fotoDriveUrl ? 'Tersimpan di Google Drive' : 'Foto Tersimpan';
-                        fileUploadContent.style.display = 'none';
-                        filePreviewMini.style.display = 'flex';
-                    }
-
-                    document.getElementById('charCount').textContent = (saved.quotes || '').length;
-                    showAlert('info', `Biodata untuk absen ${absen} sudah tersimpan. Kamu dapat memperbaruinya jika ada perubahan.`);
-                } else {
-                    formModeBadge.style.display = 'none';
-                    resetFormFieldsExceptName(defaultNama);
-                }
-            } catch (err) {
-                console.warn("Load biodata error:", err);
-            }
-            updatePreview();
-            updateTipFileName();
-        }
-
-        function resetFormFields() {
-            document.getElementById('inputNama').value = '';
-            resetFormFieldsExceptName('');
-            document.getElementById('formModeBadge').style.display = 'none';
-            clearPhoto();
-            updatePreview();
-        }
-
-        function resetFormFieldsExceptName(name) {
-            document.getElementById('inputNama').value = name;
-            document.getElementById('inputTempatLahir').value = '';
-            document.getElementById('inputTanggalLahir').value = '';
-            document.getElementById('inputNoHp').value = '';
-            document.getElementById('inputInstagram').value = '';
-            document.getElementById('inputAlamat').value = '';
-            document.getElementById('inputQuotes').value = '';
-            document.getElementById('charCount').textContent = '0';
-            clearPhoto();
-        }
-
-        // Live Preview Event Listeners
-        const liveInputs = ['inputNama', 'inputTempatLahir', 'inputTanggalLahir', 'inputNoHp', 'inputInstagram', 'inputAlamat', 'inputQuotes'];
-        liveInputs.forEach(id => {
-            const el = document.getElementById(id);
-            el.addEventListener('input', () => {
-                if (id === 'inputQuotes') {
-                    document.getElementById('charCount').textContent = el.value.length;
-                }
-                if (id === 'inputNama') {
-                    updateTipFileName();
-                }
-                updatePreview();
-            });
-        });
-
-        // Quote Chips
+        // Quote chips click
         document.querySelectorAll('.quote-chip').forEach(chip => {
             chip.addEventListener('click', () => {
-                const inputQuotes = document.getElementById('inputQuotes');
                 inputQuotes.value = chip.getAttribute('data-quote');
-                document.getElementById('charCount').textContent = inputQuotes.value.length;
-                updatePreview();
+                charCount.textContent = inputQuotes.value.length;
+                updatePreviewLive();
             });
         });
 
-        // Form Submit
-        const studentForm = document.getElementById('studentBiodataForm');
-        const btnSubmit = document.getElementById('btnSubmit');
+        // Absen Change Handler
+        selectAbsenNama.addEventListener('change', () => {
+            const absen = selectAbsenNama.value;
+            if (!absen) return;
 
+            const student = classRoster.find(s => s.absen == absen);
+            const defaultNama = student ? student.nama : '';
+
+            clearPhoto();
+
+            // Cek apakah siswa ini sudah mengisi sebelumnya
+            const saved = currentClassData[absen];
+            if (saved) {
+                formModeBadge.style.display = 'inline-flex';
+                formModeBadge.textContent = 'Data Sudah Terisi (Bisa Diperbarui)';
+
+                document.getElementById('inputNama').value = saved.nama || defaultNama;
+                document.getElementById('inputTempatLahir').value = saved.tempatLahir || '';
+                document.getElementById('inputTanggalLahir').value = saved.tanggalLahir || '';
+                document.getElementById('inputNoHp').value = saved.noHp || '';
+                document.getElementById('inputInstagram').value = (saved.ig || '').replace(/^@/, '');
+                document.getElementById('inputAlamat').value = saved.tinggalDi || '';
+                document.getElementById('inputQuotes').value = saved.quotes || '';
+
+                // Foto tersimpan
+                if (saved.fotoDriveUrl || saved.fotoDirectUrl || saved.fotoBase64) {
+                    const fotoSrc = saved.fotoDirectUrl || saved.fotoDriveUrl || saved.fotoBase64;
+                    prevPhotoImg.src = fotoSrc;
+                    prevPhotoImg.style.display = 'block';
+                    prevAvatar.style.display = 'none';
+                    existingDriveUrl = saved.fotoDriveUrl || '';
+                    existingDriveId = saved.fotoDriveId || '';
+
+                    imgThumbnailMini.src = fotoSrc;
+                    fileMiniName.textContent = saved.fotoNamaFile || (saved.nama + '.jpg');
+                    fileMiniSize.textContent = saved.fotoDriveUrl ? 'Tersimpan di Google Drive' : 'Foto Tersimpan';
+                    fileUploadContent.style.display = 'none';
+                    filePreviewMini.style.display = 'flex';
+                } else {
+                    prevPhotoImg.style.display = 'none';
+                    prevAvatar.style.display = 'flex';
+                }
+
+                document.getElementById('charCount').textContent = (saved.quotes || '').length;
+                showAlert('info', `Biodata untuk absen ${absen} sudah tersimpan. Kamu dapat memperbaruinya jika ada perubahan.`);
+            } else {
+                formModeBadge.style.display = 'inline-flex';
+                formModeBadge.textContent = 'Belum Mengisi (Data Baru)';
+                document.getElementById('inputNama').value = defaultNama;
+                document.getElementById('inputTempatLahir').value = '';
+                document.getElementById('inputTanggalLahir').value = '';
+                document.getElementById('inputNoHp').value = '';
+                document.getElementById('inputInstagram').value = '';
+                document.getElementById('inputAlamat').value = '';
+                document.getElementById('inputQuotes').value = '';
+                document.getElementById('charCount').textContent = '0';
+                prevPhotoImg.style.display = 'none';
+                prevAvatar.style.display = 'flex';
+            }
+
+            updateTipFileName();
+            updatePreviewLive();
+        });
+
+        // Realtime Preview Sync
+        ['inputNama', 'inputTempatLahir', 'inputTanggalLahir', 'inputNoHp', 'inputInstagram', 'inputAlamat'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                if (id === 'inputNama') updateTipFileName();
+                updatePreviewLive();
+            });
+        });
+
+        // Form Submit Handler
         studentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const absen = selectAbsenNama.value;
             if (!absen) {
-                showAlert('danger', 'Harap pilih nomor absen & nama kamu terlebih dahulu!');
+                alert('Silakan pilih nomor absen kamu terlebih dahulu!');
                 selectAbsenNama.focus();
                 return;
             }
 
+            const student = classRoster.find(s => s.absen == absen);
+            const namaRoster = student ? student.nama : '';
             const nama = document.getElementById('inputNama').value.trim();
             const tempatLahir = document.getElementById('inputTempatLahir').value.trim();
             const tanggalLahir = document.getElementById('inputTanggalLahir').value;
             const noHp = document.getElementById('inputNoHp').value.trim();
-            let ig = document.getElementById('inputInstagram').value.trim().replace(/^@/, '');
-            const tinggalDi = document.getElementById('inputAlamat').value.trim();
+            const ig = document.getElementById('inputInstagram').value.trim().replace(/^@/, '');
+            const alamat = document.getElementById('inputAlamat').value.trim();
             const quotes = document.getElementById('inputQuotes').value.trim();
 
-            if (!nama || !tempatLahir || !tanggalLahir || !noHp || !ig || !tinggalDi || !quotes) {
-                showAlert('danger', 'Harap lengkapi semua isian biodata bertanda bintang (*)!');
+            if (!nama || !tempatLahir || !tanggalLahir || !noHp || !ig || !alamat || !quotes) {
+                alert('Harap lengkapi semua kolom biodata bertanda bintang (*)!');
                 return;
             }
 
             // Validasi foto
-            if (!currentPhotoBase64 && !existingDriveUrl) {
-                showAlert('danger', 'Harap pilih dan upload foto kamu untuk buku tahunan!');
-                document.getElementById('fileDropZone').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const hasExistingPhoto = !!(existingDriveUrl || (currentClassData[absen] && currentClassData[absen].fotoBase64));
+            if (!currentPhotoBase64 && !hasExistingPhoto) {
+                alert('Harap unggah foto profil buku tahunan kamu!');
+                inputFoto.focus();
                 return;
             }
 
-            const ttlFormatted = formatTTL(tempatLahir, tanggalLahir);
-
-            // Format nama file: PERSIS SESUAI NAMA SISWA
-            // Sesuai permintaan: "format namanya sama dengan nama orang nya"
-            const cleanNama = nama.replace(/[/\\?%*:|"<>]/g, '').trim();
-            const targetFileName = cleanNama + '.' + currentPhotoExt;
-
             btnSubmit.disabled = true;
-            btnSubmit.innerHTML = '⏳ Menyiapkan data & foto...';
-
-            let fotoDriveUrl = existingDriveUrl;
-            let fotoDriveId = existingDriveId;
-            let fotoDirectUrl = '';
+            btnSubmit.innerHTML = `
+                <span class="loading-spinner"></span>
+                Menyimpan Biodata & Foto...
+            `;
 
             try {
-                // 1. Cek Google Drive Config
-                const driveConfig = await window.NevastraDB.getDriveConfig();
-                
-                // 2. Jika ada foto baru dan Google Apps Script URL sudah diset
-                if (currentPhotoBase64 && driveConfig && driveConfig.scriptUrl) {
-                    btnSubmit.innerHTML = '☁️ Mengunggah Foto ke Google Drive...';
-                    try {
-                        const uploadRes = await window.NevastraDB.uploadFotoToDrive(driveConfig.scriptUrl, {
-                            base64: currentPhotoBase64,
-                            fileName: targetFileName,
-                            mimeType: 'image/jpeg',
-                            nama: cleanNama,
-                            kelas: currentKelas,
-                            absen: absen
-                        });
+                let driveResult = null;
+                const cleanFileName = (nama || 'Siswa').replace(/[/\\?%*:|"<>]/g, '').trim() + '.' + currentPhotoExt;
 
-                        if (uploadRes && uploadRes.status === 'success') {
-                            fotoDriveUrl = uploadRes.fileUrl || '';
-                            fotoDriveId = uploadRes.fileId || '';
-                            fotoDirectUrl = uploadRes.directViewUrl || '';
+                // 1. Upload ke Google Drive jika ada foto baru
+                if (currentPhotoBase64) {
+                    try {
+                        const driveConfig = await window.NevastraDB.getDriveConfig();
+                        if (driveConfig && driveConfig.scriptUrl) {
+                            btnSubmit.innerHTML = `
+                                <span class="loading-spinner"></span>
+                                Mengunggah Foto Profil ke Google Drive...
+                            `;
+                            driveResult = await window.NevastraDB.uploadFotoToDrive(driveConfig.scriptUrl, {
+                                base64: currentPhotoBase64,
+                                fileName: cleanFileName,
+                                mimeType: 'image/jpeg',
+                                nama: nama,
+                                kelas: CURRENT_CLASS,
+                                absen: absen
+                            });
                         }
-                    } catch(gDriveErr) {
-                        console.warn("Upload Google Drive gagal, lanjut simpan ke database:", gDriveErr);
+                    } catch (driveErr) {
+                        console.warn('Gagal upload ke Google Drive, foto tetap disimpan di database:', driveErr);
                     }
                 }
 
-                // 3. Payload Biodata
-                btnSubmit.innerHTML = '💾 Menyimpan Biodata ke Server...';
+                // 2. Siapkan data lengkap
+                const ttl = `${tempatLahir}, ${formatTanggalIndo(tanggalLahir)}`;
+                const finalFotoDriveUrl = driveResult ? driveResult.fileUrl : (existingDriveUrl || '');
+                const finalFotoDirectUrl = driveResult ? driveResult.directViewUrl : '';
+                const finalFotoDriveId = driveResult ? driveResult.fileId : (existingDriveId || '');
 
-                const studentData = {
+                const payload = {
+                    namaRoster: namaRoster,
                     nama: nama,
                     tempatLahir: tempatLahir,
                     tanggalLahir: tanggalLahir,
-                    ttl: ttlFormatted,
+                    ttl: ttl,
                     noHp: noHp,
-                    ig: '@' + ig,
-                    tinggalDi: tinggalDi,
+                    ig: ig,
+                    tinggalDi: alamat,
                     quotes: quotes,
-                    fotoNamaFile: targetFileName,
-                    fotoDriveUrl: fotoDriveUrl,
-                    fotoDriveId: fotoDriveId,
-                    fotoDirectUrl: fotoDirectUrl,
-                    // Simpan base64 sebagai cadangan jika Drive offline
-                    fotoBase64: currentPhotoBase64 || undefined
+                    fotoNamaFile: cleanFileName,
+                    fotoDriveUrl: finalFotoDriveUrl,
+                    fotoDirectUrl: finalFotoDirectUrl,
+                    fotoDriveId: finalFotoDriveId,
+                    fotoBase64: currentPhotoBase64 || (currentClassData[absen] ? currentClassData[absen].fotoBase64 : '')
                 };
 
-                if (window.NevastraDB) {
-                    await window.NevastraDB.saveBiodata(currentKelas, absen, studentData);
-                }
+                btnSubmit.innerHTML = `
+                    <span class="loading-spinner"></span>
+                    Menyimpan ke Database...
+                `;
 
-                let modalMsg = 'Biodata dan foto untuk <strong>' + nama + '</strong> (Kelas ' + currentKelas + ', Absen ' + absen + ') berhasil disimpan untuk buku tahunan Nevastra 2026.';
-                if (fotoDriveUrl) {
-                    modalMsg += '<br><br>📁 <em>Foto telah otomatis diunggah ke Google Drive dengan nama berkas: <strong>' + targetFileName + '</strong></em>';
-                }
+                // 3. Simpan ke Database
+                await window.NevastraDB.saveBiodata(CURRENT_CLASS, absen, payload);
 
-                document.getElementById('successModalDesc').innerHTML = modalMsg;
-                document.getElementById('successModal').classList.add('show');
-                showAlert('success', 'Biodata dan foto berhasil disimpan!');
-                loadClassStatus();
+                // Update data lokal kelas
+                currentClassData[absen] = payload;
+                updateProgressBar();
+
+                showAlert('success', `🎉 Sukses! Biodata dan foto profil ${nama} (Absen ${absen}) berhasil disimpan!`);
+                formModeBadge.textContent = 'Data Sudah Terisi (Bisa Diperbarui)';
+
+                // Scroll ke preview
+                document.querySelector('.preview-sticky').scrollIntoView({ behavior: 'smooth' });
 
             } catch (err) {
-                console.error("Save error:", err);
-                showAlert('danger', 'Gagal menyimpan data ke server. Silakan coba beberapa saat lagi.');
+                console.error(err);
+                alert('Terjadi kesalahan saat menyimpan: ' + err.message);
             } finally {
                 btnSubmit.disabled = false;
-                btnSubmit.innerHTML = 
-                    '<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg> Kirim & Simpan Biodata Saya';
+                btnSubmit.innerHTML = `
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
+                    Kirim & Simpan Biodata Saya
+                `;
             }
         });
 
-        document.getElementById('btnModalOk').addEventListener('click', () => {
-            document.getElementById('successModal').classList.remove('show');
-        });
-
-        function updatePreview() {
+        function updatePreviewLive() {
             const nama = document.getElementById('inputNama').value.trim() || 'Nama Siswa';
             const tempat = document.getElementById('inputTempatLahir').value.trim();
             const tgl = document.getElementById('inputTanggalLahir').value;
@@ -673,41 +642,68 @@
             if (!tanggalStr) return tempat || '-';
             try {
                 const d = new Date(tanggalStr + 'T00:00:00');
-                const opt = { day: 'numeric', month: 'long', year: 'numeric' };
-                const formatted = d.toLocaleDateString('id-ID', opt);
-                return tempat ? tempat + ', ' + formatted : formatted;
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                const fTgl = new Intl.DateTimeFormat('id-ID', options).format(d);
+                return tempat ? `${tempat}, ${fTgl}` : fTgl;
             } catch(e) {
                 return tempat ? `${tempat}, ${tanggalStr}` : tanggalStr;
             }
         }
 
-        function showAlert(type, message) {
-            const alertEl = document.getElementById('formAlert');
-            alertEl.className = `alert alert-${type}`;
-            alertEl.innerHTML = message;
-            alertEl.style.display = 'block';
-            alertEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        async function loadClassStatus() {
+        function formatTanggalIndo(tanggalStr) {
+            if (!tanggalStr) return '';
             try {
-                const classData = await window.NevastraDB.getClassBiodata(currentKelas);
-                const filledCount = Object.keys(classData).length;
-                const totalCount = classRoster.length;
-                const pct = Math.round((filledCount / totalCount) * 100);
-
-                document.getElementById('classProgressLabel').textContent = 
-                    `Progres Kelas XII-5: ${filledCount} dari ${totalCount} siswa sudah mengisi`;
-                document.getElementById('classProgressPct').textContent = `${pct}%`;
-                document.getElementById('classProgressFill').style.width = `${pct}%`;
-            } catch (err) {
-                console.warn("Load class status error:", err);
+                const d = new Date(tanggalStr + 'T00:00:00');
+                const options = { day: 'numeric', month: 'long', year: 'numeric' };
+                return new Intl.DateTimeFormat('id-ID', options).format(d);
+            } catch(e) {
+                return tanggalStr;
             }
         }
 
-        // Init
-        loadClassStatus();
-        updatePreview();
+        function showAlert(type, message) {
+            const existingAlert = document.getElementById('formAlertBox');
+            if (existingAlert) existingAlert.remove();
+
+            const alertDiv = document.createElement('div');
+            alertDiv.id = 'formAlertBox';
+            alertDiv.className = `alert-card ${type}`;
+            alertDiv.style.marginBottom = '18px';
+            alertDiv.innerHTML = `
+                <div style="font-weight: 700;">${message}</div>
+            `;
+            studentForm.parentElement.insertBefore(alertDiv, studentForm);
+        }
+
+        function updateProgressBar() {
+            const total = classRoster.length;
+            const filled = Object.keys(currentClassData).length;
+            const pct = Math.round((filled / total) * 100);
+
+            document.getElementById('classProgressFill').style.width = pct + '%';
+            document.getElementById('classProgressPct').textContent = pct + '%';
+            document.getElementById('classProgressLabel').textContent = `${filled} dari ${total} siswa telah mengisi`;
+        }
+
+        // Inisialisasi Ambil Data dari Firebase
+        async function initPage() {
+            try {
+                currentClassData = await window.NevastraDB.getClassBiodata(CURRENT_CLASS);
+                updateProgressBar();
+
+                // Cek apakah ada query param ?absen=
+                const urlParams = new URLSearchParams(window.location.search);
+                const queryAbsen = urlParams.get('absen');
+                if (queryAbsen && classRoster.some(s => s.absen == queryAbsen)) {
+                    selectAbsenNama.value = queryAbsen;
+                    selectAbsenNama.dispatchEvent(new Event('change'));
+                }
+            } catch (e) {
+                console.warn('Gagal memuat data kelas:', e);
+            }
+        }
+
+        initPage();
     </script>
 </body>
 </html>

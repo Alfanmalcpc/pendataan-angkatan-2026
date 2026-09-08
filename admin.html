@@ -244,9 +244,7 @@
                     <thead>
                         <tr>
                             <th style="width: 45px;">Absen</th>
-                            <th>Nama Resmi Siswa</th>
-                            <th>Nama di Buku</th>
-                            <th>Foto</th>
+                            <th>Profil & Nama Siswa</th>
                             <th>Status</th>
                             <th>TTL</th>
                             <th>No. HP / WA</th>
@@ -274,13 +272,18 @@
 
             <div class="yearbook-card">
                 <div class="yb-header">
-                    <div class="yb-avatar" id="mAvatar">?</div>
+                    <div class="yb-profile-frame" id="mProfileFrame" title="Foto Profil Siswa">
+                        <img id="mPhotoImg" class="yb-profile-img" src="" alt="Foto Profil" style="display:none;">
+                        <div id="mAvatar" class="yb-avatar-placeholder">?</div>
+                        <div class="yb-profile-badge">📸</div>
+                    </div>
                     <div class="yb-meta">
                         <h4 class="yb-name" id="mName">Nama Siswa</h4>
                         <div class="yb-badge-row">
                             <span class="yb-badge" id="mKelas">KELAS</span>
                             <span class="yb-badge yb-badge-secondary" id="mAbsen">ABSEN -</span>
                         </div>
+                        <div class="yb-profile-sub" id="mSchoolSub">NEVASTRA • SMAN 1 SUMBERREJO</div>
                     </div>
                 </div>
 
@@ -582,13 +585,31 @@
                     fotoCell = `<div class="table-foto-no-img" title="Belum ada foto">📷</div>`;
                 }
 
+                const escName = (item.nama || item.namaRoster || '').replace(/'/g, "\\'");
                 tr.innerHTML = `
                     <td><strong>${activeClass === 'ALL' ? item.kelas + '-' : ''}${padded}</strong></td>
-                    <td><strong>${item.namaRoster}</strong></td>
-                    <td style="color: ${item.nama !== item.namaRoster ? 'var(--primary)' : 'inherit'};">
-                        ${item.isFilled ? item.nama : '<span style="color: var(--text-muted);">-</span>'}
+                    <td style="min-width: 220px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="table-avatar-wrapper">
+                                ${fotoSrc 
+                                    ? `<img src="${fotoSrc}" class="table-foto-thumb" title="Klik untuk memperbesar foto profil" onclick="openPhotoModal('${escName}', '${item.kelas}', ${item.absen}, '${fotoSrc}', '${item.fotoDriveUrl || ''}')">` 
+                                    : `<div class="table-foto-no-img" title="Belum ada foto">${item.namaRoster ? item.namaRoster.charAt(0) : '?'}</div>`
+                                }
+                            </div>
+                            <div>
+                                <div style="font-weight: 700; color: var(--dark); font-size: 0.92rem; line-height: 1.25;">
+                                    ${item.namaRoster}
+                                </div>
+                                ${item.isFilled && item.nama && item.nama !== item.namaRoster 
+                                    ? `<div style="font-size: 0.76rem; color: var(--primary); font-weight: 600; margin-top: 2px;">di buku: ${item.nama}</div>` 
+                                    : ''}
+                                ${item.fotoDriveUrl 
+                                    ? `<a href="${item.fotoDriveUrl}" target="_blank" class="btn-drive-link" style="font-size: 0.68rem; padding: 2px 7px; margin-top: 4px;" title="Buka berkas di Google Drive">📁 Drive</a>` 
+                                    : (item.fotoBase64 ? `<span style="font-size: 0.68rem; color: #64748b; display:inline-block; margin-top:2px;">(Tersimpan Cloud)</span>` : '')
+                                }
+                            </div>
+                        </div>
                     </td>
-                    <td>${fotoCell}</td>
                     <td>
                         <span class="badge-status ${item.isFilled ? 'done' : 'pending'}">
                             ${item.isFilled ? '✓ Terisi' : '⏳ Belum'}
@@ -755,7 +776,21 @@
             document.getElementById('mAbsen').textContent = 'ABSEN ' + abs;
 
             const initials = nama.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
-            document.getElementById('mAvatar').textContent = initials;
+            const mAvatar = document.getElementById('mAvatar');
+            const mPhotoImg = document.getElementById('mPhotoImg');
+            const fotoSrc = saved ? (saved.fotoDirectUrl || saved.fotoDriveUrl || saved.fotoBase64) : null;
+            if (mPhotoImg && mAvatar) {
+                if (fotoSrc) {
+                    mPhotoImg.src = fotoSrc;
+                    mPhotoImg.style.display = 'block';
+                    mAvatar.style.display = 'none';
+                } else {
+                    mPhotoImg.src = '';
+                    mPhotoImg.style.display = 'none';
+                    mAvatar.style.display = 'flex';
+                    mAvatar.textContent = initials;
+                }
+            }
 
             document.getElementById('mTTL').textContent = saved ? (saved.ttl || '-') : '-';
             document.getElementById('mNoHp').textContent = saved ? (saved.noHp || '-') : '-';

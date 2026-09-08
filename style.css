@@ -1290,3 +1290,125 @@ footer {
   color: var(--text-muted);
   margin-top: 4px;
 }
+
+
+/* --- Profil Siswa di Samping Nama (Yearbook Profile Design) --- */
+.yb-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.yb-profile-frame {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #e0e7ff, #ede9fe);
+  border: 3px solid #ffffff;
+  box-shadow: 0 8px 20px -4px rgba(79, 70, 229, 0.25);
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.yb-profile-frame:hover {
+  transform: scale(1.04);
+  box-shadow: 0 12px 24px -4px rgba(79, 70, 229, 0.35);
+}
+
+.yb-profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.yb-avatar-placeholder {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-transform: uppercase;
+}
+
+.yb-profile-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 22px;
+  height: 22px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: white;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.yb-profile-sub {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  margin-top: 5px;
+  text-transform: uppercase;
+}
+
+.table-avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.table-foto-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 2px solid #e2e8f0;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #f1f5f9;
+  flex-shrink: 0;
+}
+
+.table-foto-thumb:hover {
+  transform: scale(1.18);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18);
+  border-color: var(--primary);
+}
+
+.table-foto-no-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #f1f5f9;
+  border: 1.5px dashed #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .yb-profile-frame {
+    width: 76px;
+    height: 76px;
+    border-radius: 16px;
+  }
+}
