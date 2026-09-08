@@ -1,53 +1,44 @@
 # Web Pendataan Biodata Buku Tahunan (Yearbook) NEVASTRA 2026
 **SMAN 1 Sumberrejo - Angkatan 2026**
 
-Website pendataan ini memiliki **Tampilan Siswa Terpisah** dan **Panel Admin Terpadu**:
+---
+
+## 🌟 Pembaruan Terbaru
+1. **Format Nama Huruf Depan Saja / Title Case**:
+   - Seluruh 322 nama siswa dari kelas XII-1 s/d XII-9 sudah diubah ke format huruf kapital di awal kata (contoh: `Mochamad Alfan`, `Achmad Al Fadli Azizul Hakim`).
+2. **Akun GitHub Resmi Angkatan**:
+   - Repositori lama di akun pribadi telah dinonaktifkan (private).
+   - Akun resmi angkatan dikonfigurasi ke: **`NEVASTRA`** (`angkatan44smaness@gmail.com`).
+3. **Penyusunan Nama & Absen**:
+   - Nomor absen dan nama langsung berpasangan resmi sesuai daftar siswa angkatan.
 
 ---
 
-## 👨‍🎓 1. Tampilan Siswa per Kelas (`xii-1.html` s/d `xii-9.html`)
+## 👨‍🎓 Tautan Halaman Siswa per Kelas
+- **Kelas XII-1**: `xii-1.html`
+- **Kelas XII-2**: `xii-2.html`
+- **Kelas XII-3**: `xii-3.html`
+- **Kelas XII-4**: `xii-4.html`
+- **Kelas XII-5**: `xii-5.html`
+- **Kelas XII-6**: `xii-6.html`
+- **Kelas XII-7**: `xii-7.html`
+- **Kelas XII-8**: `xii-8.html`
+- **Kelas XII-9**: `xii-9.html`
 
-- **Halaman Langsung per Kelas**:
-  - Kelas XII-1: `xii-1.html`
-  - Kelas XII-2: `xii-2.html`
-  - *(sampai dengan XII-9: `xii-9.html`)*
-- **Nomor Absen & Nama Terkunci dari Roster Resmi**:
-  - Siswa cukup memilih nomor absen dan namanya dari dropdown.
-  - Nama dan nomor absen disinkronkan langsung dari daftar resmi siswa angkatan sehingga tidak akan tertukar.
-- **Isian Biodata Lengkap**:
-  - TTL (Tempat & Tanggal Lahir)
-  - No. HP / WhatsApp
-  - Akun Instagram (IG)
-  - Tinggal di (Alamat domisili)
-  - Kata-kata / Quotes Yearbook
-- **Live Preview Kartu Buku Tahunan**:
-  - Siswa dapat melihat langsung pratinjau kartu polaroid mereka saat mengetik data sebelum disimpan.
+Tautan online setelah GitHub Pages aktif:
+`https://nevastra.github.io/pendataan-angkatan-2026/xii-1.html` *(s/d xii-9.html)*
 
 ---
 
-## 👨‍💼 2. Panel Admin & Rekapitulasi per Kelas (`admin.html`)
-
-- **Klik Kelas Langsung Muncul Linknya**:
-  - Tersedia tombol kelas **[XII-1] s/d [XII-9]**.
-  - Saat admin mengklik salah satu kelas (misal **XII-1**):
-    - **Kotak link kelas langsung muncul di atas**:
-      - Alamat link lengkap (`.../xii-1.html`)
-      - Tombol **Salin Link**
-      - Tombol **Salin Pesan WA** (pesan broadcast siap kirim)
-      - Tombol **Buka di WhatsApp**
-      - Tombol **Buka Halaman Siswa**
-    - **Rekap data kelas langsung tampil di bawahnya**:
-      - Tabel 36 siswa urut Absen 1 sampai 36
-      - Status pengisian: `✓ Sudah Mengisi` atau `⏳ Belum Mengisi`
-      - Tombol **Download Excel Kelas Ini (.xlsx)**
-      - Tombol **Salin Daftar Siswa yang Belum Mengisi** (untuk di-forward ke grup WA)
-      - Tombol **Download Excel Semua Kelas (.xlsx)**
-      - Tombol **Lihat Kartu Siswa (👁️)**
+## 👨‍💼 Panel Admin & Rekapitulasi (`admin.html`)
+- Klik kelas mana saja di menu tab atas (XII-1 s/d XII-9), tautan dan tombol **Salin Link** / **Salin Pesan WA** langsung muncul di kotak atas.
+- Rekapitulasi kelas langsung muncul di bawahnya lengkap dengan tombol **Download Excel Kelas Ini (.xlsx)** dan **Salin Daftar Siswa yang Belum Mengisi**.
 
 ---
 
-## 🚀 Cara Menjalankan
+## 🚀 Cara Upload ke GitHub Akun Angkatan (`angkatan44smaness@gmail.com`)
 
-1. Masuk ke folder `C:\Users\ACER\OneDrive\ANGKATAN\web pendataan`.
-2. Klik dua kali file **`Buka Web.bat`**.
-3. Browser akan membuka **Panel Admin** (`http://localhost:8080/admin.html`).
+1. Buka [https://github.com/new](https://github.com/new) dan login dengan akun **angkatan44smaness@gmail.com** (Username: `NEVASTRA`).
+2. Beri nama repository: **`pendataan-angkatan-2026`**, pilih **Public**, lalu klik **Create repository**.
+3. Di folder `C:\Users\ACER\OneDrive\ANGKATAN\web pendataan`, klik dua kali file **`Upload ke GitHub Angkatan.bat`**.
+4. Selesai! Web akan terunggah ke repositori `https://github.com/NEVASTRA/pendataan-angkatan-2026`.
