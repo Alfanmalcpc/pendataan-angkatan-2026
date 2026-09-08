@@ -6,20 +6,15 @@
  * 
  * STRUKTUR PENYIMPANAN OTOMATIS:
  * 📁 Folder Utama Google Drive
- *    ├── 📁 XII-1  --> [Nama Siswa XII-1].jpg
- *    ├── 📁 XII-2  --> [Nama Siswa XII-2].jpg
- *    ├── 📁 XII-3  --> [Nama Siswa XII-3].jpg
- *    ├── 📁 XII-4  --> [Nama Siswa XII-4].jpg
- *    ├── 📁 XII-5  --> [Nama Siswa XII-5].jpg
- *    ├── 📁 XII-6  --> [Nama Siswa XII-6].jpg
- *    ├── 📁 XII-7  --> [Nama Siswa XII-7].jpg
- *    ├── 📁 XII-8  --> [Nama Siswa XII-8].jpg
- *    └── 📁 XII-9  --> [Nama Siswa XII-9].jpg
- * 
- * FITUR:
- * 1. Otomatis membuat subfolder kelas jika belum ada di dalam Google Drive.
- * 2. Menyimpan foto langsung ke dalam subfolder kelas siswa masing-masing.
- * 3. Format nama berkas otomatis persis sesuai nama siswa (contoh: Mochamad Alfan.jpg).
+ *    ├── 📁 XII-1  --> [Nama Siswa].jpg
+ *    ├── 📁 XII-2  --> [Nama Siswa].jpg
+ *    ├── 📁 XII-3  --> [Nama Siswa].jpg
+ *    ├── 📁 XII-4  --> [Nama Siswa].jpg
+ *    ├── 📁 XII-5  --> [Nama Siswa].jpg
+ *    ├── 📁 XII-6  --> [Nama Siswa].jpg
+ *    ├── 📁 XII-7  --> [Nama Siswa].jpg
+ *    ├── 📁 XII-8  --> [Nama Siswa].jpg
+ *    └── 📁 XII-9  --> [Nama Siswa].jpg
  * =========================================================================
  */
 
@@ -33,17 +28,29 @@ function doPost(e) {
     if (!e || !e.postData || !e.postData.contents) {
       return ContentService.createTextOutput(JSON.stringify({
         status: "error",
-        message: "Tidak ada data yang diterima."
+        message: "Tidak ada data yang diterima dari formulir."
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
     var data = JSON.parse(e.postData.contents);
     
-    // 1. Tentukan folder utama (Parent Folder)
+    // 1. Tentukan folder utama (Parent Folder) - 100% Kebal ReferenceError
     var parentFolder;
-    var targetFolderId = (typeof FOLDER_ID !== 'undefined') ? FOLDER_ID : "";
-    if (targetFolderId && targetFolderId.trim() !== "") {
-      parentFolder = DriveApp.getFolderById(targetFolderId.trim());
+    var targetFolderId = "";
+    try {
+      if (typeof FOLDER_ID !== 'undefined' && FOLDER_ID) {
+        targetFolderId = FOLDER_ID.toString().trim();
+      }
+    } catch (errId) {
+      targetFolderId = "";
+    }
+
+    if (targetFolderId !== "") {
+      try {
+        parentFolder = DriveApp.getFolderById(targetFolderId);
+      } catch (errGetFolder) {
+        parentFolder = DriveApp.getRootFolder();
+      }
     } else {
       parentFolder = DriveApp.getRootFolder();
     }
@@ -55,7 +62,7 @@ function doPost(e) {
     if (folderIter.hasNext()) {
       classFolder = folderIter.next();
     } else {
-      // Buat folder kelas baru secara otomatis jika belum ada
+      // Buat folder kelas baru secara otomatis jika belum ada di Drive
       classFolder = parentFolder.createFolder(className);
     }
 
@@ -70,15 +77,33 @@ function doPost(e) {
     var finalFileName = cleanName + "." + ext;
 
     var contentType = data.mimeType || "image/jpeg";
-    var base64Data = data.base64.replace(/^data:image\/[a-z]+;base64,/, "");
+    var rawBase64 = (data.base64 || "");
+    var base64Data = rawBase64.replace(/^data:image\/[a-z]+;base64,/, "");
+    
+    if (!base64Data) {
+      return ContentService.createTextOutput(JSON.stringify({
+        status: "error",
+        message: "Data foto kosong atau tidak valid."
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+
     var bytes = Utilities.base64Decode(base64Data);
     var blob = Utilities.newBlob(bytes, contentType, finalFileName);
 
-    // 4. Buat file foto di dalam subfolder KELAS masing-masing
+    // 4. Hapus foto lama jika siswa mengunggah ulang dengan nama file yang sama di kelas tersebut
+    try {
+      var existingFiles = classFolder.getFilesByName(finalFileName);
+      while (existingFiles.hasNext()) {
+        var oldFile = existingFiles.next();
+        oldFile.setTrashed(true);
+      }
+    } catch (errCleanOld) {}
+
+    // 5. Buat file foto baru di dalam subfolder KELAS masing-masing
     var file = classFolder.createFile(blob);
-    file.setDescription("Foto Buku Tahunan Siswa: " + cleanName + " (" + className + " Absen " + (data.absen || "") + ")");
+    file.setDescription("Foto Profil Buku Tahunan: " + cleanName + " (" + className + " Absen " + (data.absen || "") + ")");
     
-    // Atur izin baca publik agar foto dapat ditampilkan di Dashboard Admin
+    // Atur izin baca publik agar thumbnail bisa langsung tampil di web admin
     try {
       file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
     } catch (errSharing) {}
@@ -120,9 +145,21 @@ function doGet(e) {
  */
 function setupAllClassFolders() {
   var parentFolder;
-  var targetFolderId = (typeof FOLDER_ID !== 'undefined') ? FOLDER_ID : "";
-  if (targetFolderId && targetFolderId.trim() !== "") {
-    parentFolder = DriveApp.getFolderById(targetFolderId.trim());
+  var targetFolderId = "";
+  try {
+    if (typeof FOLDER_ID !== 'undefined' && FOLDER_ID) {
+      targetFolderId = FOLDER_ID.toString().trim();
+    }
+  } catch(errId) {
+    targetFolderId = "";
+  }
+
+  if (targetFolderId !== "") {
+    try {
+      parentFolder = DriveApp.getFolderById(targetFolderId);
+    } catch(errGet) {
+      parentFolder = DriveApp.getRootFolder();
+    }
   } else {
     parentFolder = DriveApp.getRootFolder();
   }
