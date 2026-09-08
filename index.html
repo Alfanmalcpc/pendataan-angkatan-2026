@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Portal Biodata Buku Tahunan - NEVASTRA 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+</head>
+<body>
+
+    <!-- Minimalist Header -->
+    <header class="student-header">
+        <div class="student-header-inner">
+            <div class="student-brand">
+                <div class="brand-icon">N</div>
+                <div>
+                    <h1 class="student-title">NEVASTRA 2026</h1>
+                    <p class="student-subtitle">SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
+                </div>
+            </div>
+            <div>
+                <a href="admin.html" class="btn btn-outline btn-sm">
+                    🔐 Masuk Admin
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-wrapper">
+        <div class="hero-banner" style="text-align: center;">
+            <span class="hero-badge">🎓 PENDATAAN BIODATA SISWA ANGKATAN 2026</span>
+            <h2 class="hero-title">Pilih Kelas Kamu</h2>
+            <p class="hero-subtitle" style="margin: 0 auto; max-width: 650px;">
+                Selamat datang di sistem pendataan buku tahunan Nevastra 2026 SMAN 1 Sumberrejo. Klik kelas kamu di bawah ini untuk langsung mengisi formulir biodata pribadi.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>
+                    Daftar Kelas Angkatan 2026 (9 Kelas)
+                </h3>
+                <span class="yb-badge">9 Kelas</span>
+            </div>
+
+            <div class="class-grid" id="mainPortalGrid">
+                <!-- Class Cards XII-1 s/d XII-9 -->
+            </div>
+        </div>
+
+        <div style="margin-top: 24px; text-align: center;">
+            <a href="admin.html" class="btn btn-outline" style="font-size: 0.9rem;">
+                ⚙️ Halaman Khusus Panitia / Admin (Salin Link & Rekapitulasi) →
+            </a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>NEVASTRA 2026</strong> • Panitia Buku Tahunan SMAN 1 Sumberrejo</p>
+        <p style="margin-top: 4px; font-size: 0.72rem; color: var(--text-light);">
+            Sistem Pendataan Biodata Siswa Berbasis Web Realtime
+        </p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="students-data.js"></script>
+    <script src="db.js"></script>
+    <script>
+        const grid = document.getElementById('mainPortalGrid');
+        const defaultClasses = ["XII-1","XII-2","XII-3","XII-4","XII-5","XII-6","XII-7","XII-8","XII-9"];
+        const rosterAll = window.studentRoster || {};
+        const classes = Object.keys(rosterAll).length > 0 ? Object.keys(rosterAll) : defaultClasses;
+
+        // Render 9 Class Cards Immediately
+        classes.forEach(cls => {
+            const total = (rosterAll[cls] && rosterAll[cls].length) || (cls === 'XII-6' || cls === 'XII-8' ? 35 : 36);
+            const card = document.createElement('div');
+            card.className = 'class-card';
+            card.innerHTML = `
+                <div>
+                    <div class="class-card-header">
+                        <h4 class="class-card-title">Kelas ${cls}</h4>
+                        <span class="class-card-badge">${total} Siswa</span>
+                    </div>
+                    <div class="progress-bar-container" style="margin: 10px 0 6px;">
+                        <div class="progress-bar-fill" id="fill-${cls}" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span id="stat-${cls}">0 dari ${total} siswa terisi</span>
+                        <span id="pct-${cls}" style="font-weight: 700;">0%</span>
+                    </div>
+                </div>
+                <a href="${cls.toLowerCase()}.html" class="btn btn-primary btn-block" style="padding: 12px;">
+                    Buka Formulir Kelas ${cls} →
+                </a>
+            `;
+            grid.appendChild(card);
+        });
+
+        // Load Realtime Data
+        async function updateProgress() {
+            if (!window.NevastraDB) return;
+            const allData = await window.NevastraDB.getAllBiodata();
+
+            classes.forEach(cls => {
+                const total = (rosterAll[cls] && rosterAll[cls].length) || (cls === 'XII-6' || cls === 'XII-8' ? 35 : 36);
+                const classData = allData[cls] || {};
+                const filled = Object.keys(classData).length;
+                const pct = Math.round((filled / total) * 100);
+
+                const fillEl = document.getElementById('fill-' + cls);
+                const statEl = document.getElementById('stat-' + cls);
+                const pctEl = document.getElementById('pct-' + cls);
+
+                if (fillEl) fillEl.style.width = pct + '%';
+                if (statEl) statEl.textContent = filled + ' dari ' + total + ' siswa terisi';
+                if (pctEl) pctEl.textContent = pct + '%';
+            });
+        }
+
+        updateProgress();
+        setInterval(updateProgress, 10000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Formulir Biodata Siswa Kelas XII-6 - NEVASTRA 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+</head>
+<body>
+
+    <!-- Minimalist Student Header -->
+    <header class="student-header">
+        <div class="student-header-inner">
+            <div class="student-brand">
+                <div class="brand-icon">N</div>
+                <div>
+                    <h1 class="student-title">NEVASTRA 2026</h1>
+                    <p class="student-subtitle">SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
+                </div>
+            </div>
+            <div class="yb-badge" style="font-size: 0.85rem; padding: 6px 14px;">
+                KELAS XII-6
+            </div>
+        </div>
+    </header>
+
+    <main class="main-wrapper">
+        <div class="hero-banner">
+            <div class="hero-content">
+                <span class="hero-badge">✨ PENDATAAN BUKU TAHUNAN KELAS XII-6</span>
+                <h2 class="hero-title">Formulir Biodata Siswa</h2>
+                <p class="hero-subtitle">Silakan pilih nomor absen & nama kamu di bawah ini, lalu isi biodata lengkap untuk dicetak pada Buku Tahunan Angkatan 2026.</p>
+            </div>
+        </div>
+
+        <!-- Class Progress Bar -->
+        <div class="card" style="margin-bottom: 24px; padding: 16px 20px;">
+            <div class="progress-text">
+                <span id="classProgressLabel">Memuat status pengisian kelas XII-6...</span>
+                <span id="classProgressPct" style="font-weight: 700; color: var(--primary);">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="classProgressFill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <div class="grid-layout">
+            
+            <!-- Form Biodata Siswa -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/><path d="M4 4h8v1H4V4zm0 2h8v1H4V6zm0 2h8v1H4V8zm0 2h5v1H4v-1z"/></svg>
+                        Isi Data Biodata
+                    </h3>
+                    <span id="formModeBadge" class="yb-badge yb-badge-secondary" style="display: none;">Data Tersimpan</span>
+                </div>
+
+                <!-- Alert box -->
+                <div id="formAlert" class="alert"></div>
+
+                <form id="studentBiodataForm" class="form-section">
+                    
+                    <!-- 1. Kelas (Terkunci) -->
+                    <div class="form-group">
+                        <label>Kelas</label>
+                        <input type="text" class="form-control" value="Kelas XII-6" readonly disabled style="font-weight: 700; background: #f1f5f9;">
+                    </div>
+
+                    <!-- 2. Pilih Absen & Nama -->
+                    <div class="form-group">
+                        <label for="selectAbsenNama">
+                            Pilih Nomor Absen & Nama Siswa <span class="req">*</span>
+                        </label>
+                        <select id="selectAbsenNama" class="form-control" required style="font-weight: 600;">
+                            <option value="">-- Cari / Pilih Nomor Absen & Nama Kamu --</option>
+                        </select>
+                        <span class="tip" style="color: var(--primary); font-weight: 500;">
+                            🔒 Nomor absen dan nama disinkronkan langsung dari daftar resmi siswa agar tidak tertukar.
+                        </span>
+                    </div>
+
+                    <!-- 3. Nama Lengkap untuk Buku Tahunan -->
+                    <div class="form-group">
+                        <label for="inputNama">
+                            Nama Lengkap untuk Buku Tahunan <span class="req">*</span>
+                        </label>
+                        <input type="text" id="inputNama" class="form-control" required placeholder="Nama lengkap siswa">
+                        <span class="tip">Kamu dapat merapikan ejaan atau huruf kapital nama kamu jika diperlukan.</span>
+                    </div>
+
+                    <!-- 4. TTL (Tempat, Tanggal Lahir) -->
+                    <div class="form-group">
+                        <label>Tempat, Tanggal Lahir (TTL) <span class="req">*</span></label>
+                        <div class="form-row">
+                            <input type="text" id="inputTempatLahir" class="form-control" required placeholder="Tempat Lahir (contoh: Bojonegoro)">
+                            <input type="date" id="inputTanggalLahir" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <!-- 5. No HP / WhatsApp -->
+                    <div class="form-group">
+                        <label for="inputNoHp">No. HP / WhatsApp <span class="req">*</span></label>
+                        <div class="input-wrapper">
+                            <div class="input-icon">📱</div>
+                            <input type="tel" id="inputNoHp" class="form-control has-icon" required placeholder="Contoh: 081234567890">
+                        </div>
+                    </div>
+
+                    <!-- 6. Akun Instagram -->
+                    <div class="form-group">
+                        <label for="inputInstagram">Akun Instagram (IG) <span class="req">*</span></label>
+                        <div class="input-wrapper">
+                            <div class="input-icon">📷</div>
+                            <input type="text" id="inputInstagram" class="form-control has-icon" required placeholder="username_kamu (tanpa @)">
+                        </div>
+                    </div>
+
+                    <!-- 7. Tinggal Di / Alamat Domisili -->
+                    <div class="form-group">
+                        <label for="inputAlamat">Tinggal Di (Alamat Domisili) <span class="req">*</span></label>
+                        <textarea id="inputAlamat" class="form-control" rows="2" required placeholder="Contoh: Ds. Sumberrejo, RT 03/RW 02, Kec. Sumberrejo, Bojonegoro"></textarea>
+                    </div>
+
+                    <!-- 8. Quotes Yearbook -->
+                    <div class="form-group">
+                        <label for="inputQuotes">Kata-kata / Quotes Buku Tahunan <span class="req">*</span></label>
+                        <textarea id="inputQuotes" class="form-control" rows="3" maxlength="220" required placeholder="Tuliskan quotes terbaikmu, pesan kenangan, atau motto hidup untuk buku tahunan..."></textarea>
+                        <div class="char-counter"><span id="charCount">0</span>/220 karakter</div>
+                        
+                        <div class="quote-templates">
+                            <span class="quote-chip" data-quote="Jadikan hari ini awal dari langkah besar menggapai masa depan.">💡 Langkah Besar</span>
+                            <span class="quote-chip" data-quote="Terima kasih untuk 3 tahun kenangan yang tidak akan pernah terlupakan.">🎓 3 Tahun Kenangan</span>
+                            <span class="quote-chip" data-quote="Bukan tentang seberapa cepat, tapi tentang tidak pernah berhenti melangkah.">🏃 Jangan Berhenti</span>
+                            <span class="quote-chip" data-quote="Datang dengan harapan, lulus dengan segudang kebanggaan.">✨ Penuh Kebanggaan</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btnSubmit" class="btn btn-primary btn-block" style="margin-top: 14px; padding: 14px;">
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
+                        Kirim & Simpan Biodata Saya
+                    </button>
+                </form>
+            </div>
+
+            <!-- Pratinjau Kartu Buku Tahunan (Live Preview) -->
+            <div class="preview-sticky">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/></svg>
+                            Pratinjau Buku Tahunan
+                        </h3>
+                        <span class="yb-badge">Live Preview</span>
+                    </div>
+                    
+                    <div class="yearbook-card">
+                        <div class="yb-header">
+                            <div class="yb-avatar" id="prevAvatar">?</div>
+                            <div class="yb-meta">
+                                <h4 class="yb-name" id="prevName">Nama Siswa</h4>
+                                <div class="yb-badge-row">
+                                    <span class="yb-badge">KELAS XII-6</span>
+                                    <span class="yb-badge yb-badge-secondary" id="prevAbsen">ABSEN -</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="yb-divider"></div>
+
+                        <div class="yb-info-list">
+                            <div class="yb-info-item">
+                                <div class="yb-info-icon">🎂</div>
+                                <div class="yb-info-content">
+                                    <span class="yb-info-label">Tempat, Tanggal Lahir</span>
+                                    <span id="prevTTL">-</span>
+                                </div>
+                            </div>
+
+                            <div class="yb-info-item">
+                                <div class="yb-info-icon">📱</div>
+                                <div class="yb-info-content">
+                                    <span class="yb-info-label">WhatsApp</span>
+                                    <span id="prevNoHp">-</span>
+                                </div>
+                            </div>
+
+                            <div class="yb-info-item">
+                                <div class="yb-info-icon">📸</div>
+                                <div class="yb-info-content">
+                                    <span class="yb-info-label">Instagram</span>
+                                    <span id="prevInstagram">-</span>
+                                </div>
+                            </div>
+
+                            <div class="yb-info-item">
+                                <div class="yb-info-icon">📍</div>
+                                <div class="yb-info-content">
+                                    <span class="yb-info-label">Tinggal Di</span>
+                                    <span id="prevAlamat">-</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="yb-quote-box">
+                            <p class="yb-quote-text" id="prevQuotes">Quotes dan kata-kata terbaikmu akan tampil di sini...</p>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 14px; text-align: center; font-size: 0.76rem; color: var(--text-muted);">
+                        ✨ Desain kartu ini akan dicetak pada lembar buku tahunan angkatan.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Modal Sukses -->
+    <div id="successModal" class="modal-backdrop">
+        <div class="modal-box">
+            <div class="modal-icon">✓</div>
+            <h3 class="modal-title">Biodata Berhasil Terkirim!</h3>
+            <p class="modal-desc" id="successModalDesc">Terima kasih sudah mengisi biodata untuk Buku Tahunan Nevastra 2026. Data kamu sudah berhasil tersimpan di sistem angkatan.</p>
+            <button id="btnModalOk" class="btn btn-primary btn-block">Selesai</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>NEVASTRA 2026</strong> • Panitia Buku Tahunan SMAN 1 Sumberrejo</p>
+        <p style="margin-top: 4px; font-size: 0.72rem; color: var(--text-light);">
+            © 2026 Angkatan SMAN 1 Sumberrejo • Formulir Kelas XII-6
+        </p>
+    </footer>
+
+    <!-- Scripts: Loaded without type="module" so they work 100% in file:// and online -->
+    <script src="students-data.js"></script>
+    <script src="db.js"></script>
+    <script>
+        // Data Roster Resmi Kelas XII-6
+        const currentKelas = 'XII-6';
+        const defaultRoster = [{"absen": 1, "nama": "ADINDA SAGITA KIRANA PUTRI"}, {"absen": 2, "nama": "AHMAD FACHRI DWI ROMADHONI"}, {"absen": 3, "nama": "ALVARO BAUTISTA"}, {"absen": 4, "nama": "ANDI ASTRANSYAH"}, {"absen": 5, "nama": "ANNIDA NUR SALFI"}, {"absen": 6, "nama": "AZIFA RISMA SYAYIDATINA"}, {"absen": 7, "nama": "AZUAN SYAHRIEL AHMAD DIKA"}, {"absen": 8, "nama": "Chendikia Reva Pramana"}, {"absen": 9, "nama": "Claudia Anggun Esmeralda"}, {"absen": 10, "nama": "DANICA SHAFA AURELLIA NI'MAH"}, {"absen": 11, "nama": "Dhaffa Arief Aldhika"}, {"absen": 12, "nama": "DIAN TEGUH NOVA"}, {"absen": 13, "nama": "DINDA CAHAYA PUTRI"}, {"absen": 14, "nama": "DITA MARETA PUTRI LESTARI"}, {"absen": 15, "nama": "DIVA CARISSA FAUZIZAH"}, {"absen": 16, "nama": "FADLY PUTRA WIJAYA"}, {"absen": 17, "nama": "IHDA ARZIQA NURIL KHOIRIYAH"}, {"absen": 18, "nama": "INDAH PERMATASARI"}, {"absen": 19, "nama": "KAYLEVI RASHIEKA PUTRI HAFINUDIN"}, {"absen": 20, "nama": "KAYSA MARATUL MAFTHA"}, {"absen": 21, "nama": "LEONEL DEAREN YUANA ALIEF HIDAYATULLAH"}, {"absen": 22, "nama": "M. NAUVAL HIZBULLAH"}, {"absen": 23, "nama": "MAZAYA NAURATUSY SYAZWINA"}, {"absen": 24, "nama": "MEI ALIFVIA USMA SAPUTRI"}, {"absen": 25, "nama": "Moch. Tegarsyah Putra Ulum"}, {"absen": 26, "nama": "MOCH.NEOFALDO"}, {"absen": 27, "nama": "MOHAMMAD ALANSYAH MAHARDIKA"}, {"absen": 28, "nama": "NAZWA AURELIA HEZAR"}, {"absen": 29, "nama": "NIKITA KHOIRUN NISA'"}, {"absen": 30, "nama": "NUR LAILI"}, {"absen": 31, "nama": "RHIDO RAKA"}, {"absen": 32, "nama": "SELINA ARTHAMEVIA SUSILO NINGTYAS"}, {"absen": 33, "nama": "SYAFRINA MIFTAKHUL NUR RAMADHANI"}, {"absen": 34, "nama": "SYAHLA MAYNATANIA PUTRI"}, {"absen": 35, "nama": "ZIYANA ROBIUL AULIA"}];
+        const roster = (window.studentRoster && window.studentRoster[currentKelas]) || defaultRoster;
+
+        const selectAbsenNama = document.getElementById('selectAbsenNama');
+
+        // Render Absen & Nama Options
+        roster.forEach(s => {
+            const opt = document.createElement('option');
+            opt.value = s.absen;
+            const padded = s.absen < 10 ? '0' + s.absen : '' + s.absen;
+            opt.textContent = 'Absen ' + padded + ' - ' + s.nama;
+            opt.dataset.officialName = s.nama;
+            selectAbsenNama.appendChild(opt);
+        });
+
+        let classSavedData = {};
+
+        // Load Class Biodata from Database
+        async function loadClassStatus() {
+            if (window.NevastraDB) {
+                classSavedData = await window.NevastraDB.getClassBiodata(currentKelas);
+            }
+            const total = roster.length;
+            const filled = Object.keys(classSavedData).length;
+            const pct = Math.round((filled / total) * 100);
+
+            document.getElementById('classProgressLabel').textContent = 'Status Pengisian Kelas ' + currentKelas + ': ' + filled + ' dari ' + total + ' siswa (' + pct + '%)';
+            document.getElementById('classProgressPct').textContent = pct + '%';
+            document.getElementById('classProgressFill').style.width = pct + '%';
+
+            // Update dropdown items with status mark
+            Array.from(selectAbsenNama.options).forEach(opt => {
+                if (!opt.value) return;
+                const abs = parseInt(opt.value, 10);
+                const official = opt.dataset.officialName || '';
+                const padded = abs < 10 ? '0' + abs : '' + abs;
+                if (classSavedData[abs]) {
+                    opt.textContent = '✓ [Sudah Terisi] Absen ' + padded + ' - ' + (classSavedData[abs].nama || official);
+                } else {
+                    opt.textContent = 'Absen ' + padded + ' - ' + official;
+                }
+            });
+        }
+
+        loadClassStatus();
+        setInterval(loadClassStatus, 10000); // Polling update every 10s
+
+        // When Absen is selected
+        selectAbsenNama.addEventListener('change', () => {
+            const selectedAbsen = selectAbsenNama.value;
+            const formModeBadge = document.getElementById('formModeBadge');
+
+            if (!selectedAbsen) {
+                resetForm();
+                formModeBadge.style.display = 'none';
+                return;
+            }
+
+            document.getElementById('prevAbsen').textContent = 'ABSEN ' + selectedAbsen;
+
+            if (classSavedData[selectedAbsen]) {
+                const saved = classSavedData[selectedAbsen];
+                document.getElementById('inputNama').value = saved.nama || '';
+                document.getElementById('inputTempatLahir').value = saved.tempatLahir || '';
+                document.getElementById('inputTanggalLahir').value = saved.tanggalLahir || '';
+                document.getElementById('inputNoHp').value = saved.noHp || '';
+                document.getElementById('inputInstagram').value = (saved.ig || '').replace('@', '');
+                document.getElementById('inputAlamat').value = saved.tinggalDi || '';
+                document.getElementById('inputQuotes').value = saved.quotes || '';
+                document.getElementById('charCount').textContent = (saved.quotes || '').length;
+
+                formModeBadge.style.display = 'inline-block';
+                formModeBadge.textContent = 'Data Sudah Tersimpan';
+                showAlert('info', 'Data untuk Absen ' + selectedAbsen + ' (' + (saved.nama || '') + ') sudah tersimpan sebelumnya. Kamu bisa mengedit atau memperbarui isian jika diperlukan.');
+            } else {
+                const officialStudent = roster.find(s => s.absen == selectedAbsen);
+                document.getElementById('inputNama').value = officialStudent ? officialStudent.nama : '';
+                document.getElementById('inputTempatLahir').value = '';
+                document.getElementById('inputTanggalLahir').value = '';
+                document.getElementById('inputNoHp').value = '';
+                document.getElementById('inputInstagram').value = '';
+                document.getElementById('inputAlamat').value = '';
+                document.getElementById('inputQuotes').value = '';
+                document.getElementById('charCount').textContent = '0';
+
+                formModeBadge.style.display = 'none';
+                hideAlert();
+            }
+
+            updatePreview();
+        });
+
+        // Live Preview Listeners
+        ['inputNama', 'inputTempatLahir', 'inputTanggalLahir', 'inputNoHp', 'inputInstagram', 'inputAlamat', 'inputQuotes'].forEach(id => {
+            document.getElementById(id).addEventListener('input', updatePreview);
+        });
+
+        // Clean Instagram
+        document.getElementById('inputInstagram').addEventListener('blur', (e) => {
+            let v = e.target.value.trim();
+            v = v.replace(/^@/, '');
+            v = v.replace(/^https?:\/\/(www\.)?instagram\.com\//, '');
+            v = v.replace(/\/$/, '');
+            e.target.value = v;
+            updatePreview();
+        });
+
+        // Quotes counter
+        const inputQuotes = document.getElementById('inputQuotes');
+        inputQuotes.addEventListener('input', () => {
+            document.getElementById('charCount').textContent = inputQuotes.value.length;
+        });
+
+        // Quote chips
+        document.querySelectorAll('.quote-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                inputQuotes.value = chip.dataset.quote;
+                document.getElementById('charCount').textContent = inputQuotes.value.length;
+                updatePreview();
+            });
+        });
+
+        // Form Submit
+        const form = document.getElementById('studentBiodataForm');
+        const btnSubmit = document.getElementById('btnSubmit');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const absen = selectAbsenNama.value;
+            if (!absen) {
+                showAlert('danger', 'Silakan pilih nomor absen dan nama terlebih dahulu!');
+                selectAbsenNama.focus();
+                return;
+            }
+
+            const nama = document.getElementById('inputNama').value.trim();
+            const tempatLahir = document.getElementById('inputTempatLahir').value.trim();
+            const tanggalLahir = document.getElementById('inputTanggalLahir').value;
+            const noHp = document.getElementById('inputNoHp').value.trim();
+            let ig = document.getElementById('inputInstagram').value.trim().replace(/^@/, '');
+            const tinggalDi = document.getElementById('inputAlamat').value.trim();
+            const quotes = document.getElementById('inputQuotes').value.trim();
+
+            if (!nama || !tempatLahir || !tanggalLahir || !noHp || !ig || !tinggalDi || !quotes) {
+                showAlert('danger', 'Harap lengkapi semua isian biodata bertanda bintang (*)!');
+                return;
+            }
+
+            const ttlFormatted = formatTTL(tempatLahir, tanggalLahir);
+
+            const studentData = {
+                nama: nama,
+                tempatLahir: tempatLahir,
+                tanggalLahir: tanggalLahir,
+                ttl: ttlFormatted,
+                noHp: noHp,
+                ig: '@' + ig,
+                tinggalDi: tinggalDi,
+                quotes: quotes
+            };
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = 'Menyimpan Biodata ke Server...';
+
+            try {
+                if (window.NevastraDB) {
+                    await window.NevastraDB.saveBiodata(currentKelas, absen, studentData);
+                }
+
+                document.getElementById('successModalDesc').innerHTML = 
+                    'Biodata untuk <strong>' + nama + '</strong> (Kelas ' + currentKelas + ', Absen ' + absen + ') berhasil disimpan dengan lengkap untuk buku tahunan Nevastra 2026.';
+                document.getElementById('successModal').classList.add('show');
+                showAlert('success', 'Biodata berhasil disimpan!');
+                loadClassStatus();
+
+            } catch (err) {
+                console.error("Save error:", err);
+                showAlert('danger', 'Gagal menyimpan data ke server. Silakan coba beberapa saat lagi.');
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = 
+                    '<svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg> Kirim & Simpan Biodata Saya';
+            }
+        });
+
+        document.getElementById('btnModalOk').addEventListener('click', () => {
+            document.getElementById('successModal').classList.remove('show');
+        });
+
+        function updatePreview() {
+            const nama = document.getElementById('inputNama').value.trim() || 'Nama Siswa';
+            const tempat = document.getElementById('inputTempatLahir').value.trim();
+            const tgl = document.getElementById('inputTanggalLahir').value;
+            const noHp = document.getElementById('inputNoHp').value.trim() || '-';
+            const ig = document.getElementById('inputInstagram').value.trim();
+            const alamat = document.getElementById('inputAlamat').value.trim() || '-';
+            const quotes = document.getElementById('inputQuotes').value.trim() || 'Quotes dan kata-kata terbaikmu akan tampil di sini...';
+
+            document.getElementById('prevName').textContent = nama;
+            const initials = nama.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
+            document.getElementById('prevAvatar').textContent = initials;
+
+            document.getElementById('prevTTL').textContent = (tempat || tgl) ? formatTTL(tempat, tgl) : '-';
+            document.getElementById('prevNoHp').textContent = noHp;
+            document.getElementById('prevInstagram').textContent = ig ? '@' + ig.replace(/^@/, '') : '-';
+            document.getElementById('prevAlamat').textContent = alamat;
+            document.getElementById('prevQuotes').textContent = quotes;
+        }
+
+        function formatTTL(tempat, tanggalStr) {
+            if (!tanggalStr) return tempat || '-';
+            try {
+                const d = new Date(tanggalStr + 'T00:00:00');
+                const opt = { day: 'numeric', month: 'long', year: 'numeric' };
+                const formatted = d.toLocaleDateString('id-ID', opt);
+                return tempat ? tempat + ', ' + formatted : formatted;
+            } catch (e) {
+                return (tempat ? tempat + ', ' : '') + tanggalStr;
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('inputNama').value = '';
+            document.getElementById('inputTempatLahir').value = '';
+            document.getElementById('inputTanggalLahir').value = '';
+            document.getElementById('inputNoHp').value = '';
+            document.getElementById('inputInstagram').value = '';
+            document.getElementById('inputAlamat').value = '';
+            document.getElementById('inputQuotes').value = '';
+            document.getElementById('prevAbsen').textContent = 'ABSEN -';
+            updatePreview();
+        }
+
+        function showAlert(type, msg) {
+            const el = document.getElementById('formAlert');
+            el.className = 'alert alert-' + type + ' show';
+            el.textContent = msg;
+        }
+
+        function hideAlert() {
+            const el = document.getElementById('formAlert');
+            el.className = 'alert';
+            el.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

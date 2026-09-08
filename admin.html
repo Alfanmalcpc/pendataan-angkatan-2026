@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Panel Admin & Rekapitulasi per Kelas - NEVASTRA 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    <!-- SheetJS for Excel generation -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        @media print {
+            .app-navbar, .class-tabs-container, .admin-action-bar, .card-header button, footer, #activeLinkBox, .admin-filter-bar {
+                display: none !important;
+            }
+            .main-wrapper {
+                max-width: 100% !important;
+                padding: 0 !important;
+            }
+            .card {
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+            }
+            .data-table {
+                font-size: 8pt !important;
+            }
+            .data-table th, .data-table td {
+                padding: 4px 6px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Admin Navigation Bar -->
+    <nav class="app-navbar">
+        <div class="nav-container">
+            <a href="admin.html" class="nav-brand">
+                <div class="brand-icon">A</div>
+                <div class="brand-text">
+                    <h1>PANEL ADMIN NEVASTRA 2026</h1>
+                    <p>SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" target="_blank" class="btn btn-outline btn-sm">
+                    👁️ Lihat Portal Siswa
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-wrapper">
+        <div class="hero-banner" style="margin-bottom: 20px;">
+            <div class="hero-content">
+                <span class="hero-badge">⚡ DASHBOARD PANITIA ANGKATAN</span>
+                <h2 class="hero-title">Rekapitulasi Data Siswa per Kelas</h2>
+                <p class="hero-subtitle">Klik kelas di bawah ini untuk menampilkan link khusus halaman kelas tersebut serta melihat rekap data siswa secara lengkap per kelas.</p>
+            </div>
+        </div>
+
+        <!-- Base URL Config -->
+        <div class="card" style="margin-bottom: 16px; padding: 14px 18px;">
+            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <label style="font-size: 0.82rem; font-weight: 700; white-space: nowrap; margin-bottom: 0;">Alamat Host / Domain Website:</label>
+                <input type="text" id="adminHostUrl" class="form-control" style="flex: 1; min-width: 280px; font-size: 0.85rem; padding: 7px 12px;" placeholder="http://...">
+                <span style="font-size: 0.74rem; color: var(--text-muted);">Tautan kelas otomatis menyesuaikan domain di atas.</span>
+            </div>
+        </div>
+
+        <!-- Class Selection Tabs (PILIH KELAS) -->
+        <div class="card" style="margin-bottom: 20px;">
+            <div style="margin-bottom: 12px;">
+                <label style="font-size: 0.88rem; font-weight: 700; color: var(--text);">
+                    PILIH KELAS (Klik kelas untuk memunculkan link & rekap datanya):
+                </label>
+            </div>
+            <div class="class-tabs-container" id="classTabsBar" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
+                <!-- Dynamic tabs for XII-1 to XII-9 + Semua Kelas -->
+            </div>
+        </div>
+
+        <!-- LINK KOTAK KELAS YANG AKTIF (Muncul ketika klik kelas) -->
+        <div class="card" id="activeLinkBox" style="border: 2px solid var(--primary); background: #f8faff; margin-bottom: 20px; padding: 18px 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                <div>
+                    <span style="font-size: 0.76rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">LINK FORMULIR KHUSUS:</span>
+                    <h3 id="activeClassTitle" style="font-size: 1.15rem; font-weight: 800; color: var(--primary);">Halaman Siswa Kelas XII-1</h3>
+                </div>
+                <span id="activeClassFileBadge" class="yb-badge" style="font-size: 0.8rem;">xii-1.html</span>
+            </div>
+
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <input type="text" id="activeClassUrlInput" class="form-control" style="flex: 1; min-width: 280px; font-size: 0.88rem; font-weight: 600; background: white;" readonly>
+                <button id="btnCopyActiveLink" class="btn btn-primary btn-sm">
+                    📋 Salin Link
+                </button>
+                <button id="btnCopyActiveWa" class="btn btn-outline btn-sm" style="border-color: #25D366; color: #128C7E;">
+                    💬 Salin Pesan WA
+                </button>
+                <button id="btnOpenActiveWa" class="btn btn-sm" style="background-color: #25D366; color: white;">
+                    🚀 Buka di WA
+                </button>
+                <a id="btnVisitActiveLink" href="xii-1.html" target="_blank" class="btn btn-outline btn-sm">
+                    ↗ Buka Halaman Siswa
+                </a>
+            </div>
+            <span class="tip" style="margin-top: 8px; display: block;">
+                Klik <strong>Salin Link</strong> atau <strong>Salin Pesan WA</strong> di atas lalu kirimkan ke grup WhatsApp kelas agar siswa langsung mengisi biodata di halamannya masing-masing.
+            </span>
+        </div>
+
+        <!-- REKAPITULASI KELAS AKTIF -->
+        <div class="card" id="rekapSection">
+            <div class="card-header">
+                <div>
+                    <h3 class="card-title" id="rekapSectionTitle">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg>
+                        Rekapitulasi Data Siswa - Kelas XII-1
+                    </h3>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;" id="rekapSubtitle">
+                        Daftar resmi seluruh siswa kelas XII-1
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <span id="globalSummaryBadge" class="yb-badge" style="font-size: 0.8rem;">Total: 0 / 322 Siswa</span>
+                </div>
+            </div>
+
+            <!-- Stats Bar -->
+            <div class="class-stat-grid">
+                <div class="class-stat-box">
+                    <div class="class-stat-label">TOTAL SISWA KELAS</div>
+                    <div class="class-stat-num" id="statTotalStudents">0</div>
+                    <div style="font-size: 0.76rem; color: var(--text-muted);">Siswa Terdaftar Resmi</div>
+                </div>
+
+                <div class="class-stat-box">
+                    <div class="class-stat-label">SUDAH MENGISI</div>
+                    <div class="class-stat-num" id="statFilledCount" style="color: var(--success);">0</div>
+                    <div style="font-size: 0.76rem; color: var(--success); font-weight: 700;" id="statFilledPct">0% Selesai</div>
+                </div>
+
+                <div class="class-stat-box">
+                    <div class="class-stat-label">BELUM MENGISI</div>
+                    <div class="class-stat-num" id="statPendingCount" style="color: var(--danger);">0</div>
+                    <div style="font-size: 0.76rem; color: var(--danger);" id="statPendingText">Perlu Diingatkan</div>
+                </div>
+
+                <div class="class-stat-box">
+                    <div class="class-stat-label">QUOTES TERKUMPUL</div>
+                    <div class="class-stat-num" id="statQuotesCount" style="color: var(--secondary);">0</div>
+                    <div style="font-size: 0.76rem; color: var(--text-muted);">Siap dicetak di buku</div>
+                </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="admin-action-bar" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px;">
+                <button id="btnDownloadClassExcel" class="btn btn-primary btn-sm" style="background: #107c41;">
+                    📥 Download Excel Kelas Ini (.xlsx)
+                </button>
+                <button id="btnCopyPendingList" class="btn btn-outline btn-sm" style="border-color: #ef4444; color: #dc2626;">
+                    📋 Salin Daftar Siswa yang Belum Mengisi
+                </button>
+                <button id="btnDownloadAllExcel" class="btn btn-outline btn-sm">
+                    🌐 Download Excel Semua Kelas (.xlsx)
+                </button>
+                <button onclick="window.print()" class="btn btn-outline btn-sm">
+                    🖨️ Cetak Rekap
+                </button>
+            </div>
+
+            <!-- Filter & Search Bar -->
+            <div class="admin-filter-bar" style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 12px; margin-bottom: 16px;">
+                <div>
+                    <select id="filterStatus" class="form-control" style="font-size: 0.85rem;">
+                        <option value="ALL">Semua Siswa (Terisi & Belum)</option>
+                        <option value="FILLED">Hanya Yang Sudah Mengisi</option>
+                        <option value="PENDING">Hanya Yang Belum Mengisi</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="text" id="searchStudent" class="form-control" style="font-size: 0.85rem;" placeholder="Cari nama, nomor absen, atau kontak siswa...">
+                </div>
+            </div>
+
+            <!-- Data Table -->
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 45px;">Absen</th>
+                            <th>Nama Resmi Siswa</th>
+                            <th>Nama di Buku</th>
+                            <th>Status</th>
+                            <th>TTL</th>
+                            <th>No. HP / WA</th>
+                            <th>Instagram</th>
+                            <th>Tinggal Di</th>
+                            <th style="min-width: 170px;">Quotes</th>
+                            <th style="width: 85px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="classTableBody">
+                        <!-- Dynamic rows -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Kartu Siswa -->
+    <div id="studentDetailModal" class="modal-backdrop">
+        <div class="modal-box" style="max-width: 520px; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="font-size: 1.15rem; font-weight: 800;">Kartu Buku Tahunan Siswa</h3>
+                <button id="btnCloseModal" class="btn btn-outline btn-sm" style="padding: 4px 8px;">✕</button>
+            </div>
+
+            <div class="yearbook-card">
+                <div class="yb-header">
+                    <div class="yb-avatar" id="mAvatar">?</div>
+                    <div class="yb-meta">
+                        <h4 class="yb-name" id="mName">Nama Siswa</h4>
+                        <div class="yb-badge-row">
+                            <span class="yb-badge" id="mKelas">KELAS</span>
+                            <span class="yb-badge yb-badge-secondary" id="mAbsen">ABSEN -</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="yb-divider"></div>
+
+                <div class="yb-info-list">
+                    <div class="yb-info-item">
+                        <div class="yb-info-icon">🎂</div>
+                        <div class="yb-info-content">
+                            <span class="yb-info-label">Tempat, Tanggal Lahir</span>
+                            <span id="mTTL">-</span>
+                        </div>
+                    </div>
+
+                    <div class="yb-info-item">
+                        <div class="yb-info-icon">📱</div>
+                        <div class="yb-info-content">
+                            <span class="yb-info-label">WhatsApp</span>
+                            <span id="mNoHp">-</span>
+                        </div>
+                    </div>
+
+                    <div class="yb-info-item">
+                        <div class="yb-info-icon">📸</div>
+                        <div class="yb-info-content">
+                            <span class="yb-info-label">Instagram</span>
+                            <span id="mIG">-</span>
+                        </div>
+                    </div>
+
+                    <div class="yb-info-item">
+                        <div class="yb-info-icon">📍</div>
+                        <div class="yb-info-content">
+                            <span class="yb-info-label">Tinggal Di</span>
+                            <span id="mAlamat">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="yb-quote-box">
+                    <p class="yb-quote-text" id="mQuotes">Belum mengisi quotes.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 18px; display: flex; justify-content: flex-end; gap: 8px;">
+                <a id="btnOpenFormDirect" href="#" target="_blank" class="btn btn-outline btn-sm">Buka Halaman Siswa</a>
+                <button id="btnDeleteStudentData" class="btn btn-sm" style="background: var(--danger); color: white;">Hapus Data Ini</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-notice">Berhasil disalin!</div>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>NEVASTRA 2026</strong> • Panel Admin Buku Tahunan SMAN 1 Sumberrejo</p>
+        <p style="margin-top: 4px; font-size: 0.72rem; color: var(--text-light);">
+            Terintegrasi Realtime dengan Cloud Firebase
+        </p>
+    </footer>
+
+    <!-- Scripts: standard non-module scripts so it works offline in file:// and online -->
+    <script src="students-data.js"></script>
+    <script src="db.js"></script>
+    <script>
+        const defaultClasses = ["XII-1","XII-2","XII-3","XII-4","XII-5","XII-6","XII-7","XII-8","XII-9"];
+        const rosterAll = window.studentRoster || {};
+        const classes = Object.keys(rosterAll).length > 0 ? Object.keys(rosterAll) : defaultClasses;
+
+        let allBiodata = {};
+        let activeClass = 'XII-1';
+
+        // Auto-detect Host URL
+        const currentUrl = window.location.href;
+        let baseDir = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
+        
+        // If file://, recommend online github pages or current dir
+        const adminHostUrl = document.getElementById('adminHostUrl');
+        if (currentUrl.startsWith('file://')) {
+            // Default to online GitHub Pages URL if opened locally
+            adminHostUrl.value = 'https://alfanmalcpc.github.io/pendataan-angkatan-2026/';
+        } else {
+            adminHostUrl.value = baseDir;
+        }
+
+        // Render Tabs
+        const classTabsBar = document.getElementById('classTabsBar');
+        function renderTabs() {
+            classTabsBar.innerHTML = '';
+
+            classes.forEach(cls => {
+                const btn = document.createElement('button');
+                btn.className = 'class-tab ' + (cls === activeClass ? 'active' : '');
+                
+                const total = (rosterAll[cls] && rosterAll[cls].length) || (cls === 'XII-6' || cls === 'XII-8' ? 35 : 36);
+                const filled = Object.keys(allBiodata[cls] || {}).length;
+
+                btn.innerHTML = '<span>Kelas ' + cls + '</span><span class="class-tab-badge">' + filled + '/' + total + '</span>';
+                btn.onclick = () => {
+                    activeClass = cls;
+                    renderTabs();
+                    updateActiveClassLink();
+                    renderClassRecap();
+                };
+                classTabsBar.appendChild(btn);
+            });
+
+            // Tab for Semua Kelas
+            const allBtn = document.createElement('button');
+            allBtn.className = 'class-tab ' + (activeClass === 'ALL' ? 'active' : '');
+            let totalAll = 0;
+            let filledAll = 0;
+            classes.forEach(c => {
+                totalAll += (rosterAll[c] && rosterAll[c].length) || (c === 'XII-6' || c === 'XII-8' ? 35 : 36);
+                filledAll += Object.keys(allBiodata[c] || {}).length;
+            });
+            allBtn.innerHTML = '<span>🌐 Semua Kelas</span><span class="class-tab-badge">' + filledAll + '/' + totalAll + '</span>';
+            allBtn.onclick = () => {
+                activeClass = 'ALL';
+                renderTabs();
+                updateActiveClassLink();
+                renderClassRecap();
+            };
+            classTabsBar.appendChild(allBtn);
+
+            document.getElementById('globalSummaryBadge').textContent = 'Total Angkatan: ' + filledAll + ' / ' + totalAll + ' Siswa (' + Math.round(filledAll/totalAll*100) + '%)';
+        }
+
+        // Update Active Class Link Box
+        function updateActiveClassLink() {
+            const linkBox = document.getElementById('activeLinkBox');
+            if (activeClass === 'ALL') {
+                linkBox.style.display = 'none';
+                return;
+            }
+            linkBox.style.display = 'block';
+
+            let base = adminHostUrl.value.trim() || baseDir;
+            if (!base.endsWith('/')) base += '/';
+
+            const classFile = activeClass.toLowerCase() + '.html';
+            const fullUrl = base + classFile;
+
+            document.getElementById('activeClassTitle').textContent = 'Halaman Siswa Kelas ' + activeClass;
+            document.getElementById('activeClassFileBadge').textContent = classFile;
+            document.getElementById('activeClassUrlInput').value = fullUrl;
+            document.getElementById('btnVisitActiveLink').href = classFile;
+
+            // Copy Link
+            document.getElementById('btnCopyActiveLink').onclick = () => {
+                navigator.clipboard.writeText(fullUrl).then(() => {
+                    showToast('Link Kelas ' + activeClass + ' berhasil disalin!');
+                });
+            };
+
+            // Copy WA Message
+            const waMsg = generateWaBroadcast(activeClass, fullUrl);
+            document.getElementById('btnCopyActiveWa').onclick = () => {
+                navigator.clipboard.writeText(waMsg).then(() => {
+                    showToast('Pesan broadcast WA Kelas ' + activeClass + ' berhasil disalin!');
+                });
+            };
+
+            // Direct WA Open
+            document.getElementById('btnOpenActiveWa').onclick = () => {
+                const waLink = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(waMsg);
+                window.open(waLink, '_blank');
+            };
+        }
+
+        function generateWaBroadcast(cls, url) {
+            return '*📢 PENGUMUMAN PENDATAAN BIODATA YEARBOOK NEVASTRA 2026 - KELAS ' + cls + ' 📢*\n\nHalo teman-teman *' + cls + '*, yuk segera lengkapi biodata dan quotes untuk buku tahunan angkatan kita melalui link khusus kelas kita di bawah ini:\n\n👉 ' + url + '\n\n*Langkah Pengisian:*\n1. Klik link di atas\n2. Pilih nomor absen dan nama kamu\n3. Lengkapi TTL, nomor WhatsApp, Instagram, alamat domisili, dan quotes terbaikmu! ✨\n\nData akan langsung masuk ke database panitia secara otomatis. Terima kasih semuanya! 🙏🎓';
+        }
+
+        adminHostUrl.addEventListener('input', () => {
+            updateActiveClassLink();
+        });
+
+        // Render Table & Summary
+        const classTableBody = document.getElementById('classTableBody');
+        const filterStatus = document.getElementById('filterStatus');
+        const searchStudent = document.getElementById('searchStudent');
+
+        function getStudentList() {
+            const list = [];
+            const targetClasses = activeClass === 'ALL' ? classes : [activeClass];
+
+            targetClasses.forEach(cls => {
+                const roster = rosterAll[cls] || [];
+                const classSaved = allBiodata[cls] || {};
+
+                roster.forEach(stu => {
+                    const saved = classSaved[stu.absen];
+                    list.push({
+                        kelas: cls,
+                        absen: stu.absen,
+                        namaRoster: stu.nama,
+                        nama: saved ? saved.nama : stu.nama,
+                        isFilled: !!saved,
+                        tempatLahir: saved ? (saved.tempatLahir || '') : '',
+                        tanggalLahir: saved ? (saved.tanggalLahir || '') : '',
+                        ttl: saved ? (saved.ttl || '') : '',
+                        noHp: saved ? (saved.noHp || '') : '',
+                        ig: saved ? (saved.ig || '') : '',
+                        tinggalDi: saved ? (saved.tinggalDi || '') : '',
+                        quotes: saved ? (saved.quotes || '') : '',
+                        updatedAt: saved ? (saved.updatedAtFormatted || saved.updatedAt || '') : ''
+                    });
+                });
+            });
+
+            return list;
+        }
+
+        function filterList(list) {
+            const st = filterStatus.value;
+            const q = searchStudent.value.trim().toLowerCase();
+
+            return list.filter(item => {
+                if (st === 'FILLED' && !item.isFilled) return false;
+                if (st === 'PENDING' && item.isFilled) return false;
+
+                if (q) {
+                    const matchRoster = item.namaRoster.toLowerCase().includes(q);
+                    const matchNama = item.nama.toLowerCase().includes(q);
+                    const matchAbs = item.absen.toString().includes(q);
+                    const matchQuote = item.quotes.toLowerCase().includes(q);
+                    const matchIg = item.ig.toLowerCase().includes(q);
+                    const matchHp = item.noHp.includes(q);
+                    return matchRoster || matchNama || matchAbs || matchQuote || matchIg || matchHp;
+                }
+
+                return true;
+            });
+        }
+
+        function renderClassRecap() {
+            const fullList = getStudentList();
+            const filteredList = filterList(fullList);
+
+            const total = fullList.length;
+            const filled = fullList.filter(s => s.isFilled).length;
+            const pending = total - filled;
+            const quotes = fullList.filter(s => s.quotes).length;
+            const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+
+            document.getElementById('rekapSectionTitle').innerHTML = 
+                '<svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg> Rekapitulasi Data Siswa - ' + (activeClass === 'ALL' ? 'Semua Kelas (1 Angkatan)' : 'Kelas ' + activeClass);
+            
+            document.getElementById('rekapSubtitle').textContent = activeClass === 'ALL' 
+                ? 'Daftar seluruh siswa angkatan 2026 SMAN 1 Sumberrejo' 
+                : 'Daftar resmi siswa kelas ' + activeClass;
+
+            document.getElementById('statTotalStudents').textContent = total;
+            document.getElementById('statFilledCount').textContent = filled;
+            document.getElementById('statFilledPct').textContent = pct + '% Selesai';
+            document.getElementById('statPendingCount').textContent = pending;
+            document.getElementById('statQuotesCount').textContent = quotes;
+
+            document.getElementById('btnDownloadClassExcel').textContent = activeClass === 'ALL' 
+                ? '📥 Download Excel Semua Kelas (.xlsx)' 
+                : '📥 Download Excel Kelas ' + activeClass + ' (.xlsx)';
+
+            // Render Table
+            classTableBody.innerHTML = '';
+
+            if (filteredList.length === 0) {
+                classTableBody.innerHTML = 
+                    '<tr><td colspan="10" style="text-align: center; padding: 24px; color: var(--text-muted);">Tidak ada data siswa yang cocok dengan pencarian.</td></tr>';
+                return;
+            }
+
+            filteredList.forEach(item => {
+                const tr = document.createElement('tr');
+
+                const waClean = item.noHp.replace(/\D/g, '');
+                const waLink = waClean ? 'https://wa.me/' + (waClean.startsWith('0') ? '62' + waClean.slice(1) : waClean) : null;
+                const cleanIg = item.ig.replace('@', '');
+                const igLink = cleanIg ? 'https://instagram.com/' + cleanIg : null;
+
+                const padded = item.absen < 10 ? '0' + item.absen : '' + item.absen;
+
+                tr.innerHTML = `
+                    <td><strong>${activeClass === 'ALL' ? item.kelas + '-' : ''}${padded}</strong></td>
+                    <td><strong>${item.namaRoster}</strong></td>
+                    <td style="color: ${item.nama !== item.namaRoster ? 'var(--primary)' : 'inherit'};">
+                        ${item.isFilled ? item.nama : '<span style="color: var(--text-muted);">-</span>'}
+                    </td>
+                    <td>
+                        <span class="badge-status ${item.isFilled ? 'done' : 'pending'}">
+                            ${item.isFilled ? '✓ Terisi' : '⏳ Belum'}
+                        </span>
+                    </td>
+                    <td>${item.ttl || '-'}</td>
+                    <td>
+                        ${waLink ? '<a href="' + waLink + '" target="_blank" style="color: #10b981; font-weight:600; text-decoration:none;">' + item.noHp + '</a>' : '-'}
+                    </td>
+                    <td>
+                        ${igLink ? '<a href="' + igLink + '" target="_blank" style="color: var(--primary); font-weight:600; text-decoration:none;">@' + cleanIg + '</a>' : '-'}
+                    </td>
+                    <td>${item.tinggalDi || '-'}</td>
+                    <td style="font-style: italic; max-width: 220px;">
+                        ${item.quotes ? '“' + item.quotes + '”' : '-'}
+                    </td>
+                    <td>
+                        <button class="btn btn-outline btn-sm btn-view-modal" data-kelas="${item.kelas}" data-absen="${item.absen}" title="Lihat Kartu">
+                            👁️
+                        </button>
+                    </td>
+                `;
+                classTableBody.appendChild(tr);
+            });
+
+            // Bind click to open detail modal
+            document.querySelectorAll('.btn-view-modal').forEach(btn => {
+                btn.onclick = () => {
+                    const c = btn.getAttribute('data-kelas');
+                    const a = btn.getAttribute('data-absen');
+                    openStudentModal(c, a);
+                };
+            });
+        }
+
+        // Salin Siswa Belum Mengisi
+        document.getElementById('btnCopyPendingList').onclick = () => {
+            const fullList = getStudentList();
+            const pendingList = fullList.filter(s => !s.isFilled);
+
+            if (pendingList.length === 0) {
+                showToast('Keren! Semua siswa ' + (activeClass === 'ALL' ? 'angkatan' : 'kelas ' + activeClass) + ' sudah mengisi biodata.');
+                return;
+            }
+
+            const targetLabel = activeClass === 'ALL' ? 'SELURUH ANGKATAN' : 'KELAS ' + activeClass;
+            let text = '*📢 DAFTAR SISWA ' + targetLabel + ' YANG BELUM MENGISI BIODATA YEARBOOK:*\n\n';
+
+            pendingList.forEach((s, idx) => {
+                const padded = s.absen < 10 ? '0' + s.absen : '' + s.absen;
+                text += (idx + 1) + '. [' + s.kelas + '] Absen ' + padded + ' - ' + s.namaRoster + '\n';
+            });
+
+            let base = adminHostUrl.value.trim() || baseDir;
+            if (!base.endsWith('/')) base += '/';
+            const classLink = activeClass !== 'ALL' ? base + activeClass.toLowerCase() + '.html' : base + 'index.html';
+
+            text += '\nTotal: *' + pendingList.length + ' siswa* belum mengisi.\nYuk segera klik link berikut untuk mengisi data: 👇\n' + classLink + '\n\nTerima kasih! ✨';
+
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Daftar ' + pendingList.length + ' siswa yang belum mengisi berhasil disalin!');
+            });
+        };
+
+        // Export to Excel
+        function exportExcel(listToExport, filename) {
+            if (listToExport.length === 0) {
+                alert('Tidak ada data untuk diekspor.');
+                return;
+            }
+
+            const rows = listToExport.map((item, idx) => ({
+                'No': idx + 1,
+                'Kelas': item.kelas,
+                'Nomor Absen': item.absen,
+                'Nama Resmi Siswa': item.namaRoster,
+                'Nama untuk Buku Tahunan': item.nama,
+                'Status Pengisian': item.isFilled ? 'Sudah Mengisi' : 'Belum Mengisi',
+                'Tempat Lahir': item.tempatLahir,
+                'Tanggal Lahir': item.tanggalLahir,
+                'TTL Lengkap': item.ttl,
+                'No. HP / WhatsApp': item.noHp,
+                'Instagram': item.ig,
+                'Tinggal Di / Alamat': item.tinggalDi,
+                'Quotes Buku Tahunan': item.quotes,
+                'Waktu Pengisian': item.updatedAt
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Rekap Biodata');
+
+            worksheet['!cols'] = [
+                { wch: 6 },  // No
+                { wch: 10 }, // Kelas
+                { wch: 12 }, // Absen
+                { wch: 32 }, // Nama Resmi
+                { wch: 32 }, // Nama Buku
+                { wch: 16 }, // Status
+                { wch: 18 }, // Tempat Lahir
+                { wch: 14 }, // Tanggal Lahir
+                { wch: 28 }, // TTL
+                { wch: 18 }, // No HP
+                { wch: 18 }, // IG
+                { wch: 36 }, // Alamat
+                { wch: 45 }, // Quotes
+                { wch: 22 }  // Waktu
+            ];
+
+            XLSX.writeFile(workbook, filename);
+            showToast('File Excel berhasil diunduh!');
+        }
+
+        document.getElementById('btnDownloadClassExcel').onclick = () => {
+            const list = filterList(getStudentList());
+            const filename = activeClass === 'ALL' 
+                ? 'Rekap_Biodata_Yearbook_Semua_Kelas.xlsx' 
+                : 'Rekap_Biodata_Yearbook_Kelas_' + activeClass + '.xlsx';
+            exportExcel(list, filename);
+        };
+
+        document.getElementById('btnDownloadAllExcel').onclick = () => {
+            const allTarget = [];
+            classes.forEach(cls => {
+                const roster = rosterAll[cls] || [];
+                const classSaved = allBiodata[cls] || {};
+                roster.forEach(stu => {
+                    const saved = classSaved[stu.absen];
+                    allTarget.push({
+                        kelas: cls,
+                        absen: stu.absen,
+                        namaRoster: stu.nama,
+                        nama: saved ? saved.nama : stu.nama,
+                        isFilled: !!saved,
+                        tempatLahir: saved ? (saved.tempatLahir || '') : '',
+                        tanggalLahir: saved ? (saved.tanggalLahir || '') : '',
+                        ttl: saved ? (saved.ttl || '') : '',
+                        noHp: saved ? (saved.noHp || '') : '',
+                        ig: saved ? (saved.ig || '') : '',
+                        tinggalDi: saved ? (saved.tinggalDi || '') : '',
+                        quotes: saved ? (saved.quotes || '') : '',
+                        updatedAt: saved ? (saved.updatedAtFormatted || saved.updatedAt || '') : ''
+                    });
+                });
+            });
+            exportExcel(allTarget, 'Rekap_Biodata_Yearbook_Nevastra_2026_Seluruh_Angkatan.xlsx');
+        };
+
+        filterStatus.addEventListener('change', renderClassRecap);
+        searchStudent.addEventListener('input', renderClassRecap);
+
+        // Student Detail Modal
+        let currentModalTarget = null;
+        function openStudentModal(cls, abs) {
+            currentModalTarget = { kelas: cls, absen: abs };
+            const saved = (allBiodata[cls] && allBiodata[cls][abs]) ? allBiodata[cls][abs] : null;
+            const stuRoster = (rosterAll[cls] || []).find(s => s.absen == abs);
+            const nama = saved ? saved.nama : (stuRoster ? stuRoster.nama : 'Nama Siswa');
+
+            document.getElementById('mName').textContent = nama;
+            document.getElementById('mKelas').textContent = 'KELAS ' + cls;
+            document.getElementById('mAbsen').textContent = 'ABSEN ' + abs;
+
+            const initials = nama.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
+            document.getElementById('mAvatar').textContent = initials;
+
+            document.getElementById('mTTL').textContent = saved ? (saved.ttl || '-') : '-';
+            document.getElementById('mNoHp').textContent = saved ? (saved.noHp || '-') : '-';
+            document.getElementById('mIG').textContent = saved ? (saved.ig || '-') : '-';
+            document.getElementById('mAlamat').textContent = saved ? (saved.tinggalDi || '-') : '-';
+            document.getElementById('mQuotes').textContent = saved ? (saved.quotes || 'Belum mengisi quotes.') : 'Belum mengisi biodata.';
+
+            document.getElementById('btnOpenFormDirect').href = cls.toLowerCase() + '.html';
+            document.getElementById('btnDeleteStudentData').style.display = saved ? 'inline-block' : 'none';
+
+            document.getElementById('studentDetailModal').classList.add('show');
+        }
+
+        document.getElementById('btnCloseModal').onclick = () => {
+            document.getElementById('studentDetailModal').classList.remove('show');
+        };
+
+        document.getElementById('btnDeleteStudentData').onclick = async () => {
+            if (!currentModalTarget) return;
+            const conf = confirm('Apakah Anda yakin ingin menghapus data isian untuk Kelas ' + currentModalTarget.kelas + ' Absen ' + currentModalTarget.absen + '?');
+            if (conf) {
+                try {
+                    if (window.NevastraDB) {
+                        await window.NevastraDB.deleteBiodata(currentModalTarget.kelas, currentModalTarget.absen);
+                    }
+                    delete allBiodata[currentModalTarget.kelas][currentModalTarget.absen];
+                    document.getElementById('studentDetailModal').classList.remove('show');
+                    showToast('Data biodata berhasil dihapus.');
+                    renderTabs();
+                    renderClassRecap();
+                } catch (e) {
+                    alert('Gagal menghapus data: ' + e.message);
+                }
+            }
+        };
+
+        // Load Realtime Data
+        async function fetchAdminData() {
+            if (!window.NevastraDB) return;
+            allBiodata = await window.NevastraDB.getAllBiodata();
+            renderTabs();
+            updateActiveClassLink();
+            renderClassRecap();
+        }
+
+        // Initial render immediately from roster
+        renderTabs();
+        updateActiveClassLink();
+        renderClassRecap();
+
+        // Then fetch remote updates
+        fetchAdminData();
+        setInterval(fetchAdminData, 10000);
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
