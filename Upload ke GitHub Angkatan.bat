@@ -11,7 +11,7 @@ echo.
 echo Memulai proses upload ke GitHub...
 echo.
 
-cd /d "%~dp0"
+cd /d "C:\Users\ACER\OneDrive\ANGKATAN\web pendataan"
 git remote remove origin 2>nul
 git remote add origin https://github.com/Alfanmalcpc/pendataan-angkatan-2026.git
 git add .
