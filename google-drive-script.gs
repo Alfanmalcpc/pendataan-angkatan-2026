@@ -1,27 +1,31 @@
 /**
  * =========================================================================
  * GOOGLE APPS SCRIPT: Upload Foto Buku Tahunan Nevastra 2026 ke Google Drive
+ * SISTEM AUTO-FOLDER PER KELAS (XII-1 s/d XII-9)
  * =========================================================================
  * 
- * PANDUAN PEMASANGAN (Hanya 1 Menit):
- * 1. Buka https://script.google.com dengan akun Google Drive Anda.
- * 2. Klik "New project" (Proyek baru).
- * 3. Hapus kode bawaan, lalu tempel (paste) seluruh kode di bawah ini.
- * 4. (Opsional) Masukkan ID Folder Google Drive Anda pada FOLDER_ID di bawah.
- *    - Jika dibiarkan kosong (""), foto akan otomatis tersimpan di folder utama (Root Drive).
- * 5. Klik tombol biru "Deploy" di kanan atas -> "New deployment"
- *    - Select type: Pilih "Web app" (ikon bola dunia)
- *    - Description: Upload Foto Nevastra 2026
- *    - Execute as: "Me" (email Anda)
- *    - Who has access: "Anyone" (Siapa saja, agar siswa bisa upload foto)
- * 6. Klik "Deploy", izinkan akses akun (Review permissions -> Advanced -> Go to ... (unsafe) -> Allow).
- * 7. Salin "Web app URL" (URL yang berakhiran /exec).
- * 8. Buka Dashboard Admin web Anda (admin.html), klik "Pengaturan Google Drive", lalu tempel URL tersebut!
+ * STRUKTUR PENYIMPANAN OTOMATIS:
+ * 📁 Folder Utama Google Drive
+ *    ├── 📁 XII-1  --> [Nama Siswa XII-1].jpg
+ *    ├── 📁 XII-2  --> [Nama Siswa XII-2].jpg
+ *    ├── 📁 XII-3  --> [Nama Siswa XII-3].jpg
+ *    ├── 📁 XII-4  --> [Nama Siswa XII-4].jpg
+ *    ├── 📁 XII-5  --> [Nama Siswa XII-5].jpg
+ *    ├── 📁 XII-6  --> [Nama Siswa XII-6].jpg
+ *    ├── 📁 XII-7  --> [Nama Siswa XII-7].jpg
+ *    ├── 📁 XII-8  --> [Nama Siswa XII-8].jpg
+ *    └── 📁 XII-9  --> [Nama Siswa XII-9].jpg
+ * 
+ * FITUR:
+ * 1. Otomatis membuat subfolder kelas jika belum ada di dalam Google Drive.
+ * 2. Menyimpan foto langsung ke dalam subfolder kelas siswa masing-masing.
+ * 3. Format nama berkas otomatis persis sesuai nama siswa (contoh: Mochamad Alfan.jpg).
  * =========================================================================
  */
 
-// Ganti dengan ID Folder Google Drive Anda jika ingin disimpan di folder tertentu.
-// Contoh: var FOLDER_ID = "1aBcD_XyZ1234567890...";
+// Ganti dengan ID Folder Google Drive Utama Anda jika ingin disimpan di folder khusus.
+// Contoh: var FOLDER_ID = "1aBcDeFgHiJkLmNoPqRsTuVwXyZ123456";
+// Jika dikosongkan (""), otomatis disimpan di folder utama (Root Drive).
 var FOLDER_ID = ""; 
 
 function doPost(e) {
@@ -35,22 +39,32 @@ function doPost(e) {
 
     var data = JSON.parse(e.postData.contents);
     
-    // Tentukan folder target
-    var folder;
+    // 1. Tentukan folder utama (Parent Folder)
+    var parentFolder;
     if (FOLDER_ID && FOLDER_ID.trim() !== "") {
-      folder = DriveApp.getFolderById(FOLDER_ID.trim());
+      parentFolder = DriveApp.getFolderById(FOLDER_ID.trim());
     } else {
-      folder = DriveApp.getRootFolder();
+      parentFolder = DriveApp.getRootFolder();
     }
 
-    // Format nama file: PERSIS SESUAI NAMA SISWA
-    // Sesuai permintaan: "format namanya sama dengan nama orang nya"
+    // 2. Tentukan atau buat subfolder otomatis sesuai KELAS siswa (XII-1 s/d XII-9)
+    var className = (data.kelas || "Lainnya").trim();
+    var folderIter = parentFolder.getFoldersByName(className);
+    var classFolder;
+    if (folderIter.hasNext()) {
+      classFolder = folderIter.next();
+    } else {
+      // Buat folder kelas baru secara otomatis jika belum ada
+      classFolder = parentFolder.createFolder(className);
+    }
+
+    // 3. Format nama file: PERSIS SESUAI NAMA SISWA
     var ext = "jpg";
     if (data.fileName && data.fileName.indexOf(".") !== -1) {
       ext = data.fileName.split(".").pop().toLowerCase();
     }
     
-    // Nama file bersih dari karakter terlarang
+    // Bersihkan karakter yang dilarang pada penamaan berkas
     var cleanName = (data.nama || "Siswa").replace(/[/\\?%*:|"<>]/g, "").trim();
     var finalFileName = cleanName + "." + ext;
 
@@ -59,9 +73,9 @@ function doPost(e) {
     var bytes = Utilities.base64Decode(base64Data);
     var blob = Utilities.newBlob(bytes, contentType, finalFileName);
 
-    // Buat file di Google Drive
-    var file = folder.createFile(blob);
-    file.setDescription("Foto Buku Tahunan Siswa: " + cleanName + " (" + (data.kelas || "") + " Absen " + (data.absen || "") + ")");
+    // 4. Buat file foto di dalam subfolder KELAS masing-masing
+    var file = classFolder.createFile(blob);
+    file.setDescription("Foto Buku Tahunan Siswa: " + cleanName + " (" + className + " Absen " + (data.absen || "") + ")");
     
     // Atur izin baca publik agar foto dapat ditampilkan di Dashboard Admin
     try {
@@ -78,8 +92,9 @@ function doPost(e) {
       fileUrl: fileUrl,
       directViewUrl: directViewUrl,
       fileName: finalFileName,
+      folderName: className,
       nama: cleanName,
-      kelas: data.kelas || "",
+      kelas: className,
       absen: data.absen || ""
     })).setMimeType(ContentService.MimeType.JSON);
 
@@ -94,6 +109,31 @@ function doPost(e) {
 function doGet(e) {
   return ContentService.createTextOutput(JSON.stringify({
     status: "active",
-    message: "Layanan Upload Google Drive Nevastra 2026 Aktif!"
+    message: "Layanan Upload Google Drive Nevastra 2026 Aktif (Subfolder XII-1 s/d XII-9)!"
   })).setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * OPSIONAL: Jalankan fungsi ini sekali di editor Google Apps Script
+ * jika Anda ingin langsung membuatkan semua 9 folder kelas (XII-1 s/d XII-9) di Google Drive sekaligus!
+ */
+function setupAllClassFolders() {
+  var parentFolder;
+  if (FOLDER_ID && FOLDER_ID.trim() !== "") {
+    parentFolder = DriveApp.getFolderById(FOLDER_ID.trim());
+  } else {
+    parentFolder = DriveApp.getRootFolder();
+  }
+
+  var classes = ["XII-1", "XII-2", "XII-3", "XII-4", "XII-5", "XII-6", "XII-7", "XII-8", "XII-9"];
+  var created = [];
+
+  for (var i = 0; i < classes.length; i++) {
+    var c = classes[i];
+    if (!parentFolder.getFoldersByName(c).hasNext()) {
+      parentFolder.createFolder(c);
+      created.push(c);
+    }
+  }
+  Logger.log("Selesai! Folder yang dibuat: " + (created.length > 0 ? created.join(", ") : "Semua folder XII-1 s/d XII-9 sudah ada!"));
 }
