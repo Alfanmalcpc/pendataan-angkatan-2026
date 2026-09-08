@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rekapitulasi Biodata Yearbook - NEVASTRA 2026</title>
+    <title>Rekapitulasi Data Buku Tahunan - NEVASTRA 2026</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
     <!-- SheetJS for Excel export -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         @media print {
-            .app-navbar, .hero-banner, .filter-card, .btn-action-group, footer {
+            .app-navbar, .hero-banner, .filter-card, .btn-action-group, footer, #btnRefreshData {
                 display: none !important;
             }
             .main-wrapper {
@@ -45,16 +45,16 @@
             </a>
             <div class="nav-links">
                 <a href="index.html" class="nav-btn">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
-                    Formulir
+                    👁️ Portal Siswa
                 </a>
                 <a href="links.html" class="nav-btn">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L7.343 10.99a1 1 0 1 1-1.414-1.414l1.372-1.372a1 1 0 0 0 0-1.414L6.586 6.086a2 2 0 0 0-2.828 0L2.386 7.458a2 2 0 0 0 0 2.828l1.414 1.414a1 1 0 0 1-1.414 1.414L.972 11.7a4 4 0 0 1 0-5.656L2.344 4.672a4 4 0 0 1 5.656 0l.707.707a1 1 0 0 1-1.414 1.414l-.707-.707a2 2 0 0 0-2.828 0l1.96-1.96zm4.57 2.916 1.372-1.372a3 3 0 1 0-4.243-4.243L4.586 5.672A3 3 0 0 0 5.414 10.5l.586-.586a1.002 1.002 0 0 0 .154-.199 2 2 0 0 1-.861-3.337L6.657 5.01a1 1 0 1 1 1.414 1.414l-1.372 1.372a1 1 0 0 0 0 1.414l.707.707a2 2 0 0 0 2.828 0l1.372-1.372a2 2 0 0 0 0-2.828l-1.414-1.414a1 1 0 0 1 1.414-1.414l1.414 1.414a4 4 0 0 1 0 5.656l-1.372 1.372a4 4 0 0 1-5.656 0l-.707-.707a1 1 0 0 1 1.414-1.414l.707.707a2 2 0 0 0 2.828 0z"/></svg>
-                    Link Kelas
+                    🔗 Link Kelas
                 </a>
                 <a href="rekap.html" class="nav-btn active">
-                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z"/></svg>
-                    Rekap
+                    📊 Rekapitulasi
+                </a>
+                <a href="admin.html" class="nav-btn" style="background: var(--primary); color: white; border-radius: 8px;">
+                    ⚡ Panel Admin
                 </a>
             </div>
         </div>
@@ -64,47 +64,56 @@
     <main class="main-wrapper">
         <div class="hero-banner">
             <div class="hero-content">
-                <span class="hero-badge">📊 DASHBOARD PANITIA</span>
-                <h2 class="hero-title">Rekapitulasi Data Biodata Siswa</h2>
-                <p class="hero-subtitle">Pantau progres pengisian seluruh kelas, cari data siswa, serta unduh rekapitulasi data lengkap ke format Excel (.xlsx) untuk cetak buku tahunan.</p>
+                <span class="hero-badge">📊 DASHBOARD REKAPITULASI LIVE</span>
+                <h2 class="hero-title">Rekapitulasi Data Biodata & Foto Siswa</h2>
+                <p class="hero-subtitle">Pantau seluruh data siswa yang sudah mengisi, pratinjau foto profil siswa, dan unduh rekapitulasi data lengkap ke format Excel (.xlsx) untuk cetak buku tahunan.</p>
             </div>
         </div>
 
         <!-- Summary Stats Grid -->
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px;">
             <div class="card" style="padding: 18px;">
-                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">TOTAL SISWA TERISI</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 700;">TOTAL SISWA TERISI</div>
                 <div id="statTotalFilled" style="font-size: 1.8rem; font-weight: 800; color: var(--primary); margin: 4px 0;">0 / 322</div>
                 <div id="statPercentage" style="font-size: 0.82rem; font-weight: 700; color: var(--success);">0% Selesai</div>
             </div>
 
             <div class="card" style="padding: 18px;">
-                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">BELUM MENGISI</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 700;">BELUM MENGISI</div>
                 <div id="statTotalPending" style="font-size: 1.8rem; font-weight: 800; color: var(--danger); margin: 4px 0;">322</div>
-                <div style="font-size: 0.82rem; color: var(--text-muted);">Siswa belum input</div>
+                <div style="font-size: 0.8rem; color: var(--danger);" id="statPendingSub">Perlu Diingatkan</div>
             </div>
 
             <div class="card" style="padding: 18px;">
-                <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">STATUS TERKUMPUL</div>
+                <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 700;">FOTO PROFIL MASUK</div>
+                <div id="statPhotoCount" style="font-size: 1.8rem; font-weight: 800; color: #0284c7; margin: 4px 0;">0 Foto</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Tersimpan di Google Drive / Cloud</div>
+            </div>
+
+            <div class="card" style="padding: 18px;">
+                <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 700;">QUOTES TERKUMPUL</div>
                 <div id="statQuotesCount" style="font-size: 1.8rem; font-weight: 800; color: var(--secondary); margin: 4px 0;">0 Quotes</div>
-                <div style="font-size: 0.82rem; color: var(--text-muted);">Siap untuk layout buku</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted);">Siap dicetak di buku</div>
             </div>
         </div>
 
         <!-- Filter & Search Card -->
         <div class="card filter-card" style="margin-bottom: 24px;">
-            <div class="card-header">
+            <div class="card-header" style="flex-wrap: wrap; gap: 10px;">
                 <h3 class="card-title">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/></svg>
                     Filter & Pencarian Data
                 </h3>
                 <div class="btn-action-group" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button id="btnRefreshData" class="btn btn-outline btn-sm">
+                        🔄 Refresh Data
+                    </button>
                     <button id="btnExportExcel" class="btn btn-primary btn-sm" style="background: #107c41;">
                         📥 Download Excel (.xlsx)
                     </button>
-                    <button id="btnExportCsv" class="btn btn-outline btn-sm">
-                        📄 CSV
-                    </button>
+                    <a href="admin.html" class="btn btn-outline btn-sm" style="border-color: var(--primary); color: var(--primary);">
+                        ⚡ Buka Panel Admin
+                    </a>
                     <button onclick="window.print()" class="btn btn-outline btn-sm">
                         🖨️ Cetak
                     </button>
@@ -112,7 +121,7 @@
             </div>
 
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 0;">
                     <label for="filterKelas">Filter Kelas</label>
                     <select id="filterKelas" class="form-control">
                         <option value="ALL">Semua Kelas (XII-1 s/d XII-9)</option>
@@ -128,7 +137,7 @@
                     </select>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 0;">
                     <label for="filterStatus">Status Pengisian</label>
                     <select id="filterStatus" class="form-control">
                         <option value="ALL">Semua Status (Terisi & Belum)</option>
@@ -137,9 +146,9 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="searchQuery">Cari Nama / Absen / Info</label>
-                    <input type="text" id="searchQuery" class="form-control" placeholder="Ketik kata kunci...">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="searchQuery">Cari Siswa / Info</label>
+                    <input type="text" id="searchQuery" class="form-control" placeholder="Cari nama, absen, no hp, quotes...">
                 </div>
             </div>
         </div>
@@ -149,7 +158,7 @@
             <div class="card-header">
                 <h3 class="card-title">
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg>
-                    Tabel Rekap Biodata
+                    Tabel Rekapitulasi Data Siswa
                 </h3>
                 <span id="filteredCountBadge" class="yb-badge">Menampilkan 0 data</span>
             </div>
@@ -160,21 +169,21 @@
                         <tr>
                             <th style="width: 40px;">No</th>
                             <th>Kelas</th>
-                            <th>Absen</th>
-                            <th>Nama Lengkap</th>
+                            <th style="width: 45px;">Absen</th>
+                            <th>Profil & Nama Siswa</th>
+                            <th>Status</th>
                             <th>TTL</th>
                             <th>No. HP / WA</th>
                             <th>Instagram</th>
                             <th>Tinggal Di</th>
-                            <th style="min-width: 180px;">Quotes</th>
-                            <th>Status</th>
-                            <th style="width: 80px;">Aksi</th>
+                            <th style="min-width: 170px;">Quotes</th>
+                            <th style="width: 70px;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
                         <tr>
                             <td colspan="11" style="text-align: center; padding: 30px; color: var(--text-muted);">
-                                Memuat data biodata dari server...
+                                Memuat data biodata siswa dari server...
                             </td>
                         </tr>
                     </tbody>
@@ -192,14 +201,20 @@
             </div>
 
             <div class="yearbook-card" id="modalCard">
+                <!-- Header: Foto Profil di Samping Nama -->
                 <div class="yb-header">
-                    <div class="yb-avatar" id="mAvatar">?</div>
+                    <div class="yb-profile-frame" id="mProfileFrame" title="Foto Profil Siswa">
+                        <img id="mPhotoImg" class="yb-profile-img" src="" alt="Foto Profil" style="display:none;">
+                        <div id="mAvatar" class="yb-avatar-placeholder">?</div>
+                        <div class="yb-profile-badge">📸</div>
+                    </div>
                     <div class="yb-meta">
                         <h4 class="yb-name" id="mName">Nama Siswa</h4>
                         <div class="yb-badge-row">
                             <span class="yb-badge" id="mKelas">KELAS</span>
                             <span class="yb-badge yb-badge-secondary" id="mAbsen">ABSEN -</span>
                         </div>
+                        <div class="yb-profile-sub">NEVASTRA • SMAN 1 SUMBERREJO</div>
                     </div>
                 </div>
 
@@ -245,36 +260,60 @@
             </div>
 
             <div style="margin-top: 18px; display: flex; justify-content: flex-end; gap: 8px;">
-                <a id="btnEditDirect" href="#" target="_blank" class="btn btn-outline btn-sm">Buka di Form</a>
+                <a id="btnEditDirect" href="#" target="_blank" class="btn btn-outline btn-sm">Buka Halaman Siswa</a>
                 <button id="btnDeleteRecord" class="btn btn-sm" style="background: var(--danger); color: white;">Hapus Data</button>
             </div>
         </div>
     </div>
 
-    <!-- Toast -->
+    <!-- Photo Modal Viewer -->
+    <div id="photoViewerModal" class="photo-modal-overlay" onclick="closePhotoViewer(event)">
+        <div class="photo-modal-card" onclick="event.stopPropagation()">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 1px solid #e2e8f0;">
+                <h4 id="pvTitle" style="font-weight: 700; font-size: 0.95rem; margin: 0; color: var(--dark);">Foto Profil Siswa</h4>
+                <button onclick="closePhotoViewer()" class="btn btn-outline btn-sm" style="padding: 2px 7px;">✕</button>
+            </div>
+            <img id="pvImage" class="photo-modal-img" src="" alt="Foto Siswa">
+            <div class="photo-modal-body" style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                <div>
+                    <div class="photo-modal-name" id="pvName">Nama Siswa</div>
+                    <div class="photo-modal-meta" id="pvMeta">Kelas & Absen</div>
+                </div>
+                <div>
+                    <a id="pvDriveBtn" href="#" target="_blank" class="btn btn-sm btn-primary" style="display: none; background: #2563eb;">
+                        📁 Buka File di Google Drive
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
     <div id="toast" class="toast-notice">Data disalin!</div>
 
     <!-- Footer -->
-    <footer>
+    <footer class="app-footer">
         <p><strong>NEVASTRA 2026</strong> • Panitia Buku Tahunan SMAN 1 Sumberrejo</p>
-        <p style="margin-top: 4px; font-size: 0.75rem;">Sistem Pendataan Biodata Berbasis Web Terintegrasi Realtime</p>
+        <p style="margin-top: 4px; font-size: 0.75rem;">Sistem Pendataan Biodata Berbasis Web Terintegrasi Google Drive & Cloud Database</p>
     </footer>
 
-    <!-- Script -->
-    <script type="module">
-        import { studentRoster } from './students-data.js';
-        import { listenAllBiodata, deleteStudentBiodata } from './firebase-config.js';
-
-        let allBiodata = {};
+    <!-- Scripts: Database REST API & Student Roster -->
+    <script src="students-data.js"></script>
+    <script src="db.js"></script>
+    <script>
+        const studentRoster = window.studentRoster || {};
         const classes = Object.keys(studentRoster);
         let totalAllStudents = 0;
-        classes.forEach(c => totalAllStudents += studentRoster[c].length);
+        classes.forEach(c => totalAllStudents += (studentRoster[c] || []).length);
+
+        let allBiodata = {};
 
         const tableBody = document.getElementById('tableBody');
         const filterKelas = document.getElementById('filterKelas');
         const filterStatus = document.getElementById('filterStatus');
         const searchQuery = document.getElementById('searchQuery');
         const filteredCountBadge = document.getElementById('filteredCountBadge');
+        const btnRefreshData = document.getElementById('btnRefreshData');
 
         // Check if there is ?kelas filter from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -282,31 +321,49 @@
             filterKelas.value = urlParams.get('kelas');
         }
 
-        // Realtime Listener for all biodata
-        listenAllBiodata((data) => {
-            allBiodata = data || {};
-            renderTable();
-            updateStats();
+        // Ambil data lengkap dari Firebase Realtime Database
+        async function loadData() {
+            btnRefreshData.disabled = true;
+            btnRefreshData.textContent = '🔄 Memuat...';
+            try {
+                allBiodata = await window.NevastraDB.getAllBiodata();
+                updateStats();
+                renderTable();
+            } catch (err) {
+                console.error("Gagal memuat data rekap:", err);
+            } finally {
+                btnRefreshData.disabled = false;
+                btnRefreshData.textContent = '🔄 Refresh Data';
+            }
+        }
+
+        btnRefreshData.addEventListener('click', () => {
+            loadData();
+            showToast('Data berhasil diperbarui dari server!');
         });
 
         function updateStats() {
             let totalFilled = 0;
             let totalQuotes = 0;
+            let totalPhotos = 0;
 
             classes.forEach(c => {
                 const classData = allBiodata[c] || {};
-                const keys = Object.keys(classData);
-                totalFilled += keys.length;
-                keys.forEach(k => {
-                    if (classData[k].quotes) totalQuotes++;
+                Object.values(classData).forEach(item => {
+                    if (item) {
+                        totalFilled++;
+                        if (item.quotes && item.quotes.trim() !== '') totalQuotes++;
+                        if (item.fotoDriveUrl || item.fotoBase64 || item.fotoDirectUrl) totalPhotos++;
+                    }
                 });
             });
 
-            const pct = Math.round((totalFilled / totalAllStudents) * 100);
+            const pct = totalAllStudents > 0 ? Math.round((totalFilled / totalAllStudents) * 100) : 0;
             document.getElementById('statTotalFilled').textContent = `${totalFilled} / ${totalAllStudents}`;
             document.getElementById('statPercentage').textContent = `${pct}% Selesai`;
             document.getElementById('statTotalPending').textContent = `${totalAllStudents - totalFilled}`;
             document.getElementById('statQuotesCount').textContent = `${totalQuotes} Quotes`;
+            document.getElementById('statPhotoCount').textContent = `${totalPhotos} Foto`;
         }
 
         function getUnifiedList() {
@@ -324,7 +381,8 @@
                         kelas: cls,
                         absen: stu.absen,
                         namaRoster: stu.nama,
-                        nama: saved ? saved.nama : stu.nama,
+                        nama: saved ? (saved.nama || stu.nama) : stu.nama,
+                        isFilled: !!saved,
                         tempatLahir: saved ? (saved.tempatLahir || '') : '',
                         tanggalLahir: saved ? (saved.tanggalLahir || '') : '',
                         ttl: saved ? (saved.ttl || '') : '',
@@ -332,8 +390,10 @@
                         ig: saved ? (saved.ig || '') : '',
                         tinggalDi: saved ? (saved.tinggalDi || '') : '',
                         quotes: saved ? (saved.quotes || '') : '',
-                        updatedAt: saved ? (saved.updatedAtFormatted || saved.updatedAt || '') : '',
-                        isFilled: !!saved
+                        fotoDriveUrl: saved ? (saved.fotoDriveUrl || '') : '',
+                        fotoDirectUrl: saved ? (saved.fotoDirectUrl || '') : '',
+                        fotoBase64: saved ? (saved.fotoBase64 || '') : '',
+                        updatedAt: saved ? (saved.updatedAtFormatted || saved.updatedAt || '') : ''
                     };
                     list.push(item);
                 });
@@ -347,18 +407,17 @@
             const query = searchQuery.value.trim().toLowerCase();
 
             return list.filter(item => {
-                // Status filter
                 if (statusFilter === 'FILLED' && !item.isFilled) return false;
                 if (statusFilter === 'PENDING' && item.isFilled) return false;
 
-                // Search query
                 if (query) {
-                    const matchName = item.nama.toLowerCase().includes(query);
+                    const matchName = (item.nama || '').toLowerCase().includes(query) || (item.namaRoster || '').toLowerCase().includes(query);
                     const matchAbsen = item.absen.toString().includes(query);
-                    const matchQuotes = item.quotes.toLowerCase().includes(query);
-                    const matchIg = item.ig.toLowerCase().includes(query);
-                    const matchAlamat = item.tinggalDi.toLowerCase().includes(query);
-                    return matchName || matchAbsen || matchQuotes || matchIg || matchAlamat;
+                    const matchQuotes = (item.quotes || '').toLowerCase().includes(query);
+                    const matchIg = (item.ig || '').toLowerCase().includes(query);
+                    const matchAlamat = (item.tinggalDi || '').toLowerCase().includes(query);
+                    const matchHp = (item.noHp || '').includes(query);
+                    return matchName || matchAbsen || matchQuotes || matchIg || matchAlamat || matchHp;
                 }
 
                 return true;
@@ -374,8 +433,8 @@
             if (filtered.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="11" style="text-align: center; padding: 24px; color: var(--text-muted);">
-                            Tidak ada data siswa yang cocok dengan filter.
+                        <td colspan="11" style="text-align: center; padding: 30px; color: var(--text-muted);">
+                            Tidak ada data siswa yang cocok dengan filter atau kata kunci.
                         </td>
                     </tr>
                 `;
@@ -386,25 +445,56 @@
             filtered.forEach((item, idx) => {
                 const tr = document.createElement('tr');
                 
-                // Format links
-                const waLink = item.noHp ? `https://wa.me/${formatWaNumber(item.noHp)}` : null;
-                const cleanIg = item.ig ? item.ig.replace('@', '') : null;
-                const igLink = cleanIg ? `https://instagram.com/${cleanIg}` : null;
+                const waClean = (item.noHp || '').replace(/\D/g, '');
+                const waLink = waClean ? 'https://wa.me/' + (waClean.startsWith('0') ? '62' + waClean.slice(1) : waClean) : null;
+                const cleanIg = (item.ig || '').replace('@', '');
+                const igLink = cleanIg ? 'https://instagram.com/' + cleanIg : null;
+
+                const fotoSrc = item.fotoDirectUrl || item.fotoDriveUrl || item.fotoBase64;
+                const escName = (item.nama || item.namaRoster || '').replace(/'/g, "\\'");
+                const paddedAbsen = item.absen < 10 ? '0' + item.absen : '' + item.absen;
 
                 tr.innerHTML = `
                     <td>${idx + 1}</td>
                     <td><strong>${item.kelas}</strong></td>
-                    <td><strong>${item.absen}</strong></td>
-                    <td><strong>${item.nama}</strong></td>
-                    <td>${item.ttl || '-'}</td>
-                    <td>${waLink ? `<a href="${waLink}" target="_blank" style="color: #10b981; font-weight:600; text-decoration:none;">${item.noHp}</a>` : '-'}</td>
-                    <td>${igLink ? `<a href="${igLink}" target="_blank" style="color: var(--primary); font-weight:600; text-decoration:none;">@${cleanIg}</a>` : '-'}</td>
-                    <td>${item.tinggalDi || '-'}</td>
-                    <td style="font-style: italic; max-width: 220px;">${item.quotes ? `“${item.quotes}”` : '-'}</td>
+                    <td><strong>${paddedAbsen}</strong></td>
+                    <td style="min-width: 220px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div class="table-avatar-wrapper">
+                                ${fotoSrc 
+                                    ? `<img src="${fotoSrc}" class="table-foto-thumb" title="Klik untuk memperbesar foto profil" onclick="openPhotoViewer('${escName}', '${item.kelas}', ${item.absen}, '${fotoSrc}', '${item.fotoDriveUrl || ''}')">` 
+                                    : `<div class="table-foto-no-img" title="Belum ada foto">${item.namaRoster ? item.namaRoster.charAt(0) : '?'}</div>`
+                                }
+                            </div>
+                            <div>
+                                <div style="font-weight: 700; color: var(--dark); font-size: 0.92rem; line-height: 1.25;">
+                                    ${item.namaRoster}
+                                </div>
+                                ${item.isFilled && item.nama && item.nama !== item.namaRoster 
+                                    ? `<div style="font-size: 0.76rem; color: var(--primary); font-weight: 600; margin-top: 2px;">di buku: ${item.nama}</div>` 
+                                    : ''}
+                                ${item.fotoDriveUrl 
+                                    ? `<a href="${item.fotoDriveUrl}" target="_blank" class="btn-drive-link" style="font-size: 0.68rem; padding: 2px 7px; margin-top: 4px;" title="Buka berkas di Google Drive">📁 Drive</a>` 
+                                    : (item.fotoBase64 ? `<span style="font-size: 0.68rem; color: #64748b; display:inline-block; margin-top:2px;">(Tersimpan Cloud)</span>` : '')
+                                }
+                            </div>
+                        </div>
+                    </td>
                     <td>
                         <span class="badge-status ${item.isFilled ? 'done' : 'pending'}">
-                            ${item.isFilled ? '✓ Terisi' : 'Belum'}
+                            ${item.isFilled ? '✓ Terisi' : '⏳ Belum'}
                         </span>
+                    </td>
+                    <td>${item.ttl || '-'}</td>
+                    <td>
+                        ${waLink ? `<a href="${waLink}" target="_blank" style="color: #10b981; font-weight:600; text-decoration:none;">${item.noHp}</a>` : '-'}
+                    </td>
+                    <td>
+                        ${igLink ? `<a href="${igLink}" target="_blank" style="color: var(--primary); font-weight:600; text-decoration:none;">@${cleanIg}</a>` : '-'}
+                    </td>
+                    <td>${item.tinggalDi || '-'}</td>
+                    <td style="font-style: italic; max-width: 220px;">
+                        ${item.quotes ? `“${item.quotes}”` : '-'}
                     </td>
                     <td>
                         <button class="btn btn-outline btn-sm btn-view-card" data-kelas="${item.kelas}" data-absen="${item.absen}" title="Lihat Kartu">
@@ -415,7 +505,7 @@
                 tableBody.appendChild(tr);
             });
 
-            // Bind click for view card
+            // Bind click for detail modal
             document.querySelectorAll('.btn-view-card').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const cls = btn.getAttribute('data-kelas');
@@ -423,14 +513,6 @@
                     openStudentModal(cls, abs);
                 });
             });
-        }
-
-        function formatWaNumber(phone) {
-            let cleaned = phone.replace(/\D/g, '');
-            if (cleaned.startsWith('0')) {
-                cleaned = '62' + cleaned.substring(1);
-            }
-            return cleaned;
         }
 
         // ==========================================
@@ -441,145 +523,142 @@
             currentModalTarget = { kelas, absen };
             const saved = (allBiodata[kelas] && allBiodata[kelas][absen]) ? allBiodata[kelas][absen] : null;
             const stuRoster = (studentRoster[kelas] || []).find(s => s.absen == absen);
-            const nama = saved ? saved.nama : (stuRoster ? stuRoster.nama : 'Nama Siswa');
+            const nama = saved ? (saved.nama || stuRoster.nama) : (stuRoster ? stuRoster.nama : 'Nama Siswa');
 
             document.getElementById('mName').textContent = nama;
             document.getElementById('mKelas').textContent = `KELAS ${kelas}`;
             document.getElementById('mAbsen').textContent = `ABSEN ${absen}`;
 
             const initials = nama.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
-            document.getElementById('mAvatar').textContent = initials;
+            const mAvatar = document.getElementById('mAvatar');
+            const mPhotoImg = document.getElementById('mPhotoImg');
+            const fotoSrc = saved ? (saved.fotoDirectUrl || saved.fotoDriveUrl || saved.fotoBase64) : null;
+
+            if (mPhotoImg && mAvatar) {
+                if (fotoSrc) {
+                    mPhotoImg.src = fotoSrc;
+                    mPhotoImg.style.display = 'block';
+                    mAvatar.style.display = 'none';
+                } else {
+                    mPhotoImg.src = '';
+                    mPhotoImg.style.display = 'none';
+                    mAvatar.style.display = 'flex';
+                    mAvatar.textContent = initials;
+                }
+            }
 
             document.getElementById('mTTL').textContent = saved ? (saved.ttl || '-') : '-';
             document.getElementById('mNoHp').textContent = saved ? (saved.noHp || '-') : '-';
-            document.getElementById('mIG').textContent = saved ? (saved.ig || '-') : '-';
+            document.getElementById('mIG').textContent = saved ? (saved.ig ? '@' + saved.ig.replace('@', '') : '-') : '-';
             document.getElementById('mAlamat').textContent = saved ? (saved.tinggalDi || '-') : '-';
             document.getElementById('mQuotes').textContent = saved ? (saved.quotes || 'Belum mengisi quotes.') : 'Belum mengisi biodata.';
 
-            document.getElementById('btnEditDirect').href = `index.html?kelas=${kelas}`;
+            document.getElementById('btnEditDirect').href = `${kelas.toLowerCase()}.html?absen=${absen}`;
             document.getElementById('btnDeleteRecord').style.display = saved ? 'inline-block' : 'none';
 
             document.getElementById('detailModal').classList.add('show');
+        }
+
+        // Photo Modal Viewer
+        function openPhotoViewer(name, kelas, absen, src, driveUrl) {
+            document.getElementById('pvName').textContent = name;
+            document.getElementById('pvMeta').textContent = `Kelas ${kelas} • Absen ${absen}`;
+            document.getElementById('pvImage').src = src;
+
+            const driveBtn = document.getElementById('pvDriveBtn');
+            if (driveUrl) {
+                driveBtn.href = driveUrl;
+                driveBtn.style.display = 'inline-flex';
+            } else {
+                driveBtn.style.display = 'none';
+            }
+
+            document.getElementById('photoViewerModal').classList.add('show');
+        }
+
+        function closePhotoViewer(e) {
+            if (e && e.target && e.target.id !== 'photoViewerModal' && !e.target.closest('button')) return;
+            document.getElementById('photoViewerModal').classList.remove('show');
         }
 
         document.getElementById('btnCloseModal').addEventListener('click', () => {
             document.getElementById('detailModal').classList.remove('show');
         });
 
+        document.getElementById('detailModal').addEventListener('click', (e) => {
+            if (e.target.id === 'detailModal') {
+                document.getElementById('detailModal').classList.remove('show');
+            }
+        });
+
+        // Hapus Data Siswa
         document.getElementById('btnDeleteRecord').addEventListener('click', async () => {
             if (!currentModalTarget) return;
-            const confirmDelete = confirm(`Apakah Anda yakin ingin menghapus data Kelas ${currentModalTarget.kelas} Absen ${currentModalTarget.absen}?`);
-            if (confirmDelete) {
+            const { kelas, absen } = currentModalTarget;
+            
+            if (confirm(`Apakah Anda yakin ingin menghapus data biodata Kelas ${kelas} Absen ${absen}? Data yang dihapus tidak bisa dikembalikan.`)) {
                 try {
-                    await deleteStudentBiodata(currentModalTarget.kelas, currentModalTarget.absen);
+                    await window.NevastraDB.deleteBiodata(kelas, absen);
+                    if (allBiodata[kelas] && allBiodata[kelas][absen]) {
+                        delete allBiodata[kelas][absen];
+                    }
                     document.getElementById('detailModal').classList.remove('show');
-                    showToast('Data berhasil dihapus dari server.');
-                } catch (e) {
+                    updateStats();
+                    renderTable();
+                    showToast(`Data Kelas ${kelas} Absen ${absen} berhasil dihapus.`);
+                } catch(e) {
                     alert('Gagal menghapus data: ' + e.message);
                 }
             }
         });
 
-        // Filter events
-        filterKelas.addEventListener('change', renderTable);
-        filterStatus.addEventListener('change', renderTable);
-        searchQuery.addEventListener('input', renderTable);
-
         // ==========================================
-        // EXPORT TO EXCEL
+        // EXPORT EXCEL (.xlsx)
         // ==========================================
         document.getElementById('btnExportExcel').addEventListener('click', () => {
-            const list = filterList(getUnifiedList());
-            if (list.length === 0) {
-                alert('Tidak ada data untuk diekspor.');
-                return;
-            }
-
-            const excelRows = list.map((item, idx) => ({
+            const unified = getUnifiedList();
+            const exportRows = unified.map((item, idx) => ({
                 'No': idx + 1,
                 'Kelas': item.kelas,
-                'Absen': item.absen,
-                'Nama Lengkap': item.nama,
+                'No. Absen': item.absen,
+                'Nama Resmi Siswa': item.namaRoster,
+                'Nama untuk Buku': item.nama,
+                'Status': item.isFilled ? 'Sudah Mengisi' : 'Belum Mengisi',
+                'Tautan Foto Google Drive': item.fotoDriveUrl || (item.fotoBase64 ? 'Tersimpan di Cloud Database' : '-'),
+                'TTL': item.ttl,
                 'Tempat Lahir': item.tempatLahir,
                 'Tanggal Lahir': item.tanggalLahir,
-                'TTL Lengkap': item.ttl,
-                'No HP / WhatsApp': item.noHp,
-                'Instagram': item.ig,
-                'Tinggal Di / Alamat': item.tinggalDi,
-                'Quotes Yearbook': item.quotes,
-                'Status': item.isFilled ? 'Sudah Mengisi' : 'Belum Mengisi',
-                'Waktu Pengisian': item.updatedAt
+                'No. WhatsApp': item.noHp,
+                'Instagram': item.ig ? '@' + item.ig.replace('@', '') : '',
+                'Tinggal Di (Alamat)': item.tinggalDi,
+                'Quotes': item.quotes,
+                'Terakhir Diperbarui': item.updatedAt
             }));
 
-            const worksheet = XLSX.utils.json_to_sheet(excelRows);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'Rekap Biodata');
-
-            // Auto column width
-            const colWidths = [
-                { wch: 6 },  // No
-                { wch: 10 }, // Kelas
-                { wch: 8 },  // Absen
-                { wch: 32 }, // Nama
-                { wch: 18 }, // Tempat Lahir
-                { wch: 14 }, // Tanggal Lahir
-                { wch: 28 }, // TTL
-                { wch: 18 }, // No HP
-                { wch: 18 }, // IG
-                { wch: 35 }, // Alamat
-                { wch: 45 }, // Quotes
-                { wch: 16 }, // Status
-                { wch: 22 }  // Waktu
-            ];
-            worksheet['!cols'] = colWidths;
+            const ws = XLSX.utils.json_to_sheet(exportRows);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Rekapitulasi");
 
             const filename = `Rekap_Biodata_Yearbook_Nevastra_2026_${filterKelas.value}.xlsx`;
-            XLSX.writeFile(workbook, filename);
+            XLSX.writeFile(wb, filename);
             showToast('File Excel berhasil diunduh!');
-        });
-
-        // Export to CSV
-        document.getElementById('btnExportCsv').addEventListener('click', () => {
-            const list = filterList(getUnifiedList());
-            if (list.length === 0) {
-                alert('Tidak ada data untuk diekspor.');
-                return;
-            }
-
-            const headers = ['No', 'Kelas', 'Absen', 'Nama Lengkap', 'TTL', 'No HP', 'Instagram', 'Tinggal Di', 'Quotes', 'Status'];
-            const rows = list.map((item, idx) => [
-                idx + 1,
-                item.kelas,
-                item.absen,
-                `"${(item.nama || '').replace(/"/g, '""')}"`,
-                `"${(item.ttl || '').replace(/"/g, '""')}"`,
-                `"${(item.noHp || '').replace(/"/g, '""')}"`,
-                `"${(item.ig || '').replace(/"/g, '""')}"`,
-                `"${(item.tinggalDi || '').replace(/"/g, '""')}"`,
-                `"${(item.quotes || '').replace(/"/g, '""')}"`,
-                item.isFilled ? 'Sudah Mengisi' : 'Belum Mengisi'
-            ]);
-
-            const csvContent = "﻿" + [headers.join(','), ...rows.map(r => r.join(','))].join('
-');
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Rekap_Biodata_Yearbook_${filterKelas.value}.csv`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showToast('File CSV berhasil diunduh!');
         });
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
+
+        // Filter event listeners
+        filterKelas.addEventListener('change', renderTable);
+        filterStatus.addEventListener('change', renderTable);
+        searchQuery.addEventListener('input', renderTable);
+
+        // Load data on start & auto-refresh every 20 seconds
+        loadData();
+        setInterval(loadData, 20000);
     </script>
 </body>
 </html>
