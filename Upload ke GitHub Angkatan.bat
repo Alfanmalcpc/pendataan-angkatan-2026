@@ -8,9 +8,8 @@ echo.
 echo Target Repository: NEVASTRA/pendataan-angkatan-2026
 echo Target Website   : https://nevastra.github.io/pendataan-angkatan-2026/
 echo.
-echo Tekan sembarang tombol untuk mulai mengunggah (push)...
+echo Memulai proses upload ke GitHub...
 echo.
-pause
 
 cd /d "%~dp0"
 git remote remove origin 2>nul
