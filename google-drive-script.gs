@@ -41,8 +41,9 @@ function doPost(e) {
     
     // 1. Tentukan folder utama (Parent Folder)
     var parentFolder;
-    if (FOLDER_ID && FOLDER_ID.trim() !== "") {
-      parentFolder = DriveApp.getFolderById(FOLDER_ID.trim());
+    var targetFolderId = (typeof FOLDER_ID !== 'undefined') ? FOLDER_ID : "";
+    if (targetFolderId && targetFolderId.trim() !== "") {
+      parentFolder = DriveApp.getFolderById(targetFolderId.trim());
     } else {
       parentFolder = DriveApp.getRootFolder();
     }
@@ -119,8 +120,9 @@ function doGet(e) {
  */
 function setupAllClassFolders() {
   var parentFolder;
-  if (FOLDER_ID && FOLDER_ID.trim() !== "") {
-    parentFolder = DriveApp.getFolderById(FOLDER_ID.trim());
+  var targetFolderId = (typeof FOLDER_ID !== 'undefined') ? FOLDER_ID : "";
+  if (targetFolderId && targetFolderId.trim() !== "") {
+    parentFolder = DriveApp.getFolderById(targetFolderId.trim());
   } else {
     parentFolder = DriveApp.getRootFolder();
   }
