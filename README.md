@@ -4,9 +4,10 @@
 ---
 
 ## 🌟 Fitur & Pembaruan Terbaru
-1. **Upload Foto ke Google Drive (Format Nama = Nama Siswa)**:
+1. **Upload Foto ke Google Drive (Subfolder Kelas XII-1 s/d XII-9 & Nama = Nama Siswa)**:
    - Siswa dapat mengunggah foto yearbook langsung di formulir kelas.
-   - Foto otomatis disimpan ke Google Drive dengan format nama persis sesuai nama siswa (contoh: `Mochamad Alfan.jpg`, `Achmad Al Fadli Azizul Hakim.jpg`).
+   - Foto otomatis disortir ke subfolder kelas masing-masing (`XII-1`, `XII-2`, ..., `XII-9`) di dalam Google Drive.
+   - Format nama berkas otomatis persis sesuai nama siswa (contoh: `XII-1/Mochamad Alfan.jpg`).
    - Pratinjau Polaroid interaktif langsung menampilkan foto saat dipilih.
 2. **Format Nama Huruf Depan Saja / Title Case**:
    - Seluruh 322 nama siswa resmi dari kelas XII-1 s/d XII-9 menggunakan format huruf kapital di awal kata.
