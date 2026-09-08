@@ -86,8 +86,8 @@
                         <label for="inputNama">
                             Nama Lengkap untuk Buku Tahunan <span class="req">*</span>
                         </label>
-                        <input type="text" id="inputNama" class="form-control" required placeholder="Nama lengkap siswa">
-                        <span class="tip">Kamu dapat merapikan ejaan atau huruf kapital nama kamu jika diperlukan.</span>
+                        <input type="text" id="inputNama" class="form-control" required placeholder="Nama lengkap siswa (contoh: Mochamad Alfan)">
+                        <span class="tip">Pastikan penulisan huruf kapital di awal setiap kata sudah benar.</span>
                     </div>
 
                     <!-- 4. TTL (Tempat, Tanggal Lahir) -->
@@ -239,9 +239,9 @@
     <script src="students-data.js"></script>
     <script src="db.js"></script>
     <script>
-        // Data Roster Resmi Kelas XII-8
+        // Data Roster Resmi Kelas XII-8 (Title Case)
         const currentKelas = 'XII-8';
-        const defaultRoster = [{"absen": 1, "nama": "ACHMAD FARISH ARIFUDDIN"}, {"absen": 2, "nama": "ALIA RAHMA SARI"}, {"absen": 3, "nama": "ALYA FIRDASARI"}, {"absen": 4, "nama": "ARIYA BIMA RAMA DHANI"}, {"absen": 5, "nama": "ATIKAH NURINNISWATIN ZUHROH"}, {"absen": 6, "nama": "AZAARA DYAS ALUNA"}, {"absen": 7, "nama": "Bilqis Almeira Pridiana"}, {"absen": 8, "nama": "DEFVI ISABELLA DEWANTARI"}, {"absen": 9, "nama": "DEWI TIKA KURNIAWATI"}, {"absen": 10, "nama": "DWI ZAHRA NANDA SAFITRI"}, {"absen": 11, "nama": "FARIZ NAUFAL RAMADHAN"}, {"absen": 12, "nama": "JUWITA NUR TRIYA"}, {"absen": 13, "nama": "KAYLA APRILIA SHAFA"}, {"absen": 14, "nama": "KEYLA MAGHFIROH AQMA"}, {"absen": 15, "nama": "KHANZA AURA INTANIA"}, {"absen": 16, "nama": "MAULIDA ILMA MA'RUFI"}, {"absen": 17, "nama": "MIRZA ANGELICA SAHASRARA"}, {"absen": 18, "nama": "MOH. ERICK SETIAWAN"}, {"absen": 19, "nama": "MUHAMMAD NAJIB ZAHIR SAPUTRA"}, {"absen": 20, "nama": "NABILA ADINDA ZAHRA"}, {"absen": 21, "nama": "Nabila Cantika"}, {"absen": 22, "nama": "NABILA PUTRI DAMAYANTI"}, {"absen": 23, "nama": "NAURA ANGGUN ARDHANESWARI"}, {"absen": 24, "nama": "OKTAVIANI SHINTA DEWI"}, {"absen": 25, "nama": "PRABU SULAIMAN"}, {"absen": 26, "nama": "RAVIVA GAIZHANI AZHRA"}, {"absen": 27, "nama": "REVITA MARSELIA KARISMA"}, {"absen": 28, "nama": "RIZQI SAHRUL ROMADHON"}, {"absen": 29, "nama": "SABRINA MAULANI SYAHADAH"}, {"absen": 30, "nama": "SITI ISTIANATUL MUTAFIKA"}, {"absen": 31, "nama": "SOFYAN MUHAMMAD FATONI"}, {"absen": 32, "nama": "TRISIA PUSPITA SARI"}, {"absen": 33, "nama": "WINDI NOVITAMARA"}, {"absen": 34, "nama": "ZAKYATUL AFIFAH FAUZIAH"}, {"absen": 35, "nama": "ZASKIA FARIS NAURA"}];
+        const defaultRoster = [{"absen": 1, "nama": "Achmad Farish Arifuddin"}, {"absen": 2, "nama": "Alia Rahma Sari"}, {"absen": 3, "nama": "Alya Firdasari"}, {"absen": 4, "nama": "Ariya Bima Rama Dhani"}, {"absen": 5, "nama": "Atikah Nurinniswatin Zuhroh"}, {"absen": 6, "nama": "Azaara Dyas Aluna"}, {"absen": 7, "nama": "Bilqis Almeira Pridiana"}, {"absen": 8, "nama": "Defvi Isabella Dewantari"}, {"absen": 9, "nama": "Dewi Tika Kurniawati"}, {"absen": 10, "nama": "Dwi Zahra Nanda Safitri"}, {"absen": 11, "nama": "Fariz Naufal Ramadhan"}, {"absen": 12, "nama": "Juwita Nur Triya"}, {"absen": 13, "nama": "Kayla Aprilia Shafa"}, {"absen": 14, "nama": "Keyla Maghfiroh Aqma"}, {"absen": 15, "nama": "Khanza Aura Intania"}, {"absen": 16, "nama": "Maulida Ilma Ma'Rufi"}, {"absen": 17, "nama": "Mirza Angelica Sahasrara"}, {"absen": 18, "nama": "Moh. Erick Setiawan"}, {"absen": 19, "nama": "Muhammad Najib Zahir Saputra"}, {"absen": 20, "nama": "Nabila Adinda Zahra"}, {"absen": 21, "nama": "Nabila Cantika"}, {"absen": 22, "nama": "Nabila Putri Damayanti"}, {"absen": 23, "nama": "Naura Anggun Ardhaneswari"}, {"absen": 24, "nama": "Oktaviani Shinta Dewi"}, {"absen": 25, "nama": "Prabu Sulaiman"}, {"absen": 26, "nama": "Raviva Gaizhani Azhra"}, {"absen": 27, "nama": "Revita Marselia Karisma"}, {"absen": 28, "nama": "Rizqi Sahrul Romadhon"}, {"absen": 29, "nama": "Sabrina Maulani Syahadah"}, {"absen": 30, "nama": "Siti Istianatul Mutafika"}, {"absen": 31, "nama": "Sofyan Muhammad Fatoni"}, {"absen": 32, "nama": "Trisia Puspita Sari"}, {"absen": 33, "nama": "Windi Novitamara"}, {"absen": 34, "nama": "Zakyatul Afifah Fauziah"}, {"absen": 35, "nama": "Zaskia Faris Naura"}];
         const roster = (window.studentRoster && window.studentRoster[currentKelas]) || defaultRoster;
 
         const selectAbsenNama = document.getElementById('selectAbsenNama');

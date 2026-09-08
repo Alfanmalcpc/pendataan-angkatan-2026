@@ -3,35 +3,35 @@ window.studentRoster = {
   "XII-1": [
     {
       "absen": 1,
-      "nama": "ACHMAD AL FADLI AZIZUL HAKIM"
+      "nama": "Achmad Al Fadli Azizul Hakim"
     },
     {
       "absen": 2,
-      "nama": "ACHMAD NABIL PURNIAWAN AL ALIF"
+      "nama": "Achmad Nabil Purniawan Al Alif"
     },
     {
       "absen": 3,
-      "nama": "ADHY DHAMAR RAHMADAN"
+      "nama": "Adhy Dhamar Rahmadan"
     },
     {
       "absen": 4,
-      "nama": "ADILA IBNU AZZAM"
+      "nama": "Adila Ibnu Azzam"
     },
     {
       "absen": 5,
-      "nama": "AGUS BAYU FAHREDZA"
+      "nama": "Agus Bayu Fahredza"
     },
     {
       "absen": 6,
-      "nama": "AISYAH ARYANTANI"
+      "nama": "Aisyah Aryantani"
     },
     {
       "absen": 7,
-      "nama": "ALANSKY DAFA WIJAYA"
+      "nama": "Alansky Dafa Wijaya"
     },
     {
       "absen": 8,
-      "nama": "ANDHIKA ARYA PRATAMA"
+      "nama": "Andhika Arya Pratama"
     },
     {
       "absen": 9,
@@ -39,27 +39,27 @@ window.studentRoster = {
     },
     {
       "absen": 10,
-      "nama": "AUFA NAURA HANA"
+      "nama": "Aufa Naura Hana"
     },
     {
       "absen": 11,
-      "nama": "AULIA SILFI NUR HALIZA"
+      "nama": "Aulia Silfi Nur Haliza"
     },
     {
       "absen": 12,
-      "nama": "AULIA SYIVA DWI ANGGRAENI"
+      "nama": "Aulia Syiva Dwi Anggraeni"
     },
     {
       "absen": 13,
-      "nama": "BAYU ARGA ARDI SAPUTRA"
+      "nama": "Bayu Arga Ardi Saputra"
     },
     {
       "absen": 14,
-      "nama": "BIRU LANGIT SATRAWI"
+      "nama": "Biru Langit Satrawi"
     },
     {
       "absen": 15,
-      "nama": "FEBY EKA YULIANA"
+      "nama": "Feby Eka Yuliana"
     },
     {
       "absen": 16,
@@ -67,79 +67,79 @@ window.studentRoster = {
     },
     {
       "absen": 17,
-      "nama": "INTAN NADYA FUZY PRATIWI"
+      "nama": "Intan Nadya Fuzy Pratiwi"
     },
     {
       "absen": 18,
-      "nama": "M. AFRIZAL AMIRUDIN"
+      "nama": "M. Afrizal Amirudin"
     },
     {
       "absen": 19,
-      "nama": "M. BILAL RIZQI SALAM"
+      "nama": "M. Bilal Rizqi Salam"
     },
     {
       "absen": 20,
-      "nama": "M. ZAMZAMI FAJAR MAULUDDIN"
+      "nama": "M. Zamzami Fajar Mauluddin"
     },
     {
       "absen": 21,
-      "nama": "MOCH. ACHSAN ARYA PRATAMA"
+      "nama": "Moch. Achsan Arya Pratama"
     },
     {
       "absen": 22,
-      "nama": "MOCHAMAD ANDHIKA RADITYANSYAH"
+      "nama": "Mochamad Andhika Radityansyah"
     },
     {
       "absen": 23,
-      "nama": "MUHAMMAD FAHREZY TAUFIQURROHMAN"
+      "nama": "Muhammad Fahrezy Taufiqurrohman"
     },
     {
       "absen": 24,
-      "nama": "MUHAMMAD MAHFUD ANGGA ARDIANSYAH"
+      "nama": "Muhammad Mahfud Angga Ardiansyah"
     },
     {
       "absen": 25,
-      "nama": "MUHAMMAD REYHAN AL IQBAL"
+      "nama": "Muhammad Reyhan Al Iqbal"
     },
     {
       "absen": 26,
-      "nama": "MUHAMMAD TAMAMUN NI'AM"
+      "nama": "Muhammad Tamamun Ni'Am"
     },
     {
       "absen": 27,
-      "nama": "NUR AZIS"
+      "nama": "Nur Azis"
     },
     {
       "absen": 28,
-      "nama": "NURURRIDHO AHMAD SETIA"
+      "nama": "Nururridho Ahmad Setia"
     },
     {
       "absen": 29,
-      "nama": "PUTRI RAHAYU"
+      "nama": "Putri Rahayu"
     },
     {
       "absen": 30,
-      "nama": "RAHMA AULIA PUTRI"
+      "nama": "Rahma Aulia Putri"
     },
     {
       "absen": 31,
-      "nama": "RISKY ADIANSYAH"
+      "nama": "Risky Adiansyah"
     },
     {
       "absen": 32,
-      "nama": "SELLA MARSELINA"
+      "nama": "Sella Marselina"
     },
     {
       "absen": 33,
-      "nama": "TALITA LUTHFI ZAYYANA"
+      "nama": "Talita Luthfi Zayyana"
     },
     {
       "absen": 34,
-      "nama": "TYSSA AURORA LAILAISYA"
+      "nama": "Tyssa Aurora Lailaisya"
     },
     {
       "absen": 35,
-      "nama": "VANO TARANGGA PUTRA PRAWOTO"
+      "nama": "Vano Tarangga Putra Prawoto"
     },
     {
       "absen": 36,
@@ -149,23 +149,23 @@ window.studentRoster = {
   "XII-2": [
     {
       "absen": 1,
-      "nama": "ACHMAD FAUZI NOFAN FIRMANSYAH"
+      "nama": "Achmad Fauzi Nofan Firmansyah"
     },
     {
       "absen": 2,
-      "nama": "AFRINDA HANNA FERINSIA"
+      "nama": "Afrinda Hanna Ferinsia"
     },
     {
       "absen": 3,
-      "nama": "ALIF ADWA' AHZA VICTOR AMAZONA"
+      "nama": "Alif Adwa' Ahza Victor Amazona"
     },
     {
       "absen": 4,
-      "nama": "ALYA RAHMA RAHAYU"
+      "nama": "Alya Rahma Rahayu"
     },
     {
       "absen": 5,
-      "nama": "AMELIA PUTRI ARYUNIA"
+      "nama": "Amelia Putri Aryunia"
     },
     {
       "absen": 6,
@@ -173,137 +173,137 @@ window.studentRoster = {
     },
     {
       "absen": 7,
-      "nama": "CERYL TSABITA AQILA NAJWA"
+      "nama": "Ceryl Tsabita Aqila Najwa"
     },
     {
       "absen": 8,
-      "nama": "DEA AYU SAFITRI"
+      "nama": "Dea Ayu Safitri"
     },
     {
       "absen": 9,
-      "nama": "DIMAS PUTRA SANTOSO"
+      "nama": "Dimas Putra Santoso"
     },
     {
       "absen": 10,
-      "nama": "DINDA ALYSHA MAHFUZAH"
+      "nama": "Dinda Alysha Mahfuzah"
     },
     {
       "absen": 11,
-      "nama": "DYLAN GALANG ANUGRAH YUNIAN PUTRA"
+      "nama": "Dylan Galang Anugrah Yunian Putra"
     },
     {
       "absen": 12,
-      "nama": "EKA PUTRI RAMADHANI"
+      "nama": "Eka Putri Ramadhani"
     },
     {
       "absen": 13,
-      "nama": "FAIRUZ HALINDRA FARIDZKY"
+      "nama": "Fairuz Halindra Faridzky"
     },
     {
       "absen": 14,
-      "nama": "FARHANANDA ALDHENAREZZA NAJIBBA"
+      "nama": "Farhananda Aldhenarezza Najibba"
     },
     {
       "absen": 15,
-      "nama": "FIRDA SHALSABILLAH KHOIRUNNISA"
+      "nama": "Firda Shalsabillah Khoirunnisa"
     },
     {
       "absen": 16,
-      "nama": "GIRLY APRILLIANA YOTAMA"
+      "nama": "Girly Aprilliana Yotama"
     },
     {
       "absen": 17,
-      "nama": "JIHAN SAIDINA RAMADHANI"
+      "nama": "Jihan Saidina Ramadhani"
     },
     {
       "absen": 18,
-      "nama": "KEYKO ABINAYA AZZAHRA"
+      "nama": "Keyko Abinaya Azzahra"
     },
     {
       "absen": 19,
-      "nama": "MOCHAMAD ALFAN CANDRAPRATAMA"
+      "nama": "Mochamad Alfan Candrapratama"
     },
     {
       "absen": 20,
-      "nama": "MOCHAMAD NAUFAL YASDANIAR ALFARIDZY"
+      "nama": "Mochamad Naufal Yasdaniar Alfaridzy"
     },
     {
       "absen": 21,
-      "nama": "MUHAMMAD DAVIN AL RIZKI"
+      "nama": "Muhammad Davin Al Rizki"
     },
     {
       "absen": 22,
-      "nama": "MUHAMMAD HAIDAR SYAFIQURRAHMAN"
+      "nama": "Muhammad Haidar Syafiqurrahman"
     },
     {
       "absen": 23,
-      "nama": "MUHAMMAD PANJI SATRIA R"
+      "nama": "Muhammad Panji Satria R"
     },
     {
       "absen": 24,
-      "nama": "MUHAMMAD WAFI FAVIAN"
+      "nama": "Muhammad Wafi Favian"
     },
     {
       "absen": 25,
-      "nama": "MUHAMMAD ZAKI PRADHANATTA"
+      "nama": "Muhammad Zaki Pradhanatta"
     },
     {
       "absen": 26,
-      "nama": "NAVY ARDIANANTA"
+      "nama": "Navy Ardiananta"
     },
     {
       "absen": 27,
-      "nama": "NAZILA ANGGUN FEBIA PUTRI"
+      "nama": "Nazila Anggun Febia Putri"
     },
     {
       "absen": 28,
-      "nama": "PRAMANDANA DWI NUGRAHA"
+      "nama": "Pramandana Dwi Nugraha"
     },
     {
       "absen": 29,
-      "nama": "RAFA ARYA WIDANA"
+      "nama": "Rafa Arya Widana"
     },
     {
       "absen": 30,
-      "nama": "RAFA DWI OKTAVIAN"
+      "nama": "Rafa Dwi Oktavian"
     },
     {
       "absen": 31,
-      "nama": "SAFINATUN NAJA"
+      "nama": "Safinatun Naja"
     },
     {
       "absen": 32,
-      "nama": "SHAFIN EKA RAMADHAN"
+      "nama": "Shafin Eka Ramadhan"
     },
     {
       "absen": 33,
-      "nama": "SYAFIRA DWITA AMANDA"
+      "nama": "Syafira Dwita Amanda"
     },
     {
       "absen": 34,
-      "nama": "SYIFA NUR ATIQOH"
+      "nama": "Syifa Nur Atiqoh"
     },
     {
       "absen": 35,
-      "nama": "VIRA VANESA AULIA"
+      "nama": "Vira Vanesa Aulia"
     },
     {
       "absen": 36,
-      "nama": "WAHYU ARI SHAPUTRA"
+      "nama": "Wahyu Ari Shaputra"
     }
   ],
   "XII-3": [
     {
       "absen": 1,
-      "nama": "ADINDA ALIFAH FAIZ RASYIDAH"
+      "nama": "Adinda Alifah Faiz Rasyidah"
     },
     {
       "absen": 2,
-      "nama": "AFREZA RIDHO FERDIAN"
+      "nama": "Afreza Ridho Ferdian"
     },
     {
       "absen": 3,
-      "nama": "AHMAD FACHRI PRIMA WILDANA"
+      "nama": "Ahmad Fachri Prima Wildana"
     },
     {
       "absen": 4,
@@ -311,7 +311,7 @@ window.studentRoster = {
     },
     {
       "absen": 5,
-      "nama": "AMELYA CHINDY OKTAVIANY"
+      "nama": "Amelya Chindy Oktaviany"
     },
     {
       "absen": 6,
@@ -319,35 +319,35 @@ window.studentRoster = {
     },
     {
       "absen": 7,
-      "nama": "ARZITA NESHA ZAHIRA"
+      "nama": "Arzita Nesha Zahira"
     },
     {
       "absen": 8,
-      "nama": "CINDY OKTAVIA AIDA SAFITRI"
+      "nama": "Cindy Oktavia Aida Safitri"
     },
     {
       "absen": 9,
-      "nama": "CLAUDYA LUCKY NUR FAIZAH"
+      "nama": "Claudya Lucky Nur Faizah"
     },
     {
       "absen": 10,
-      "nama": "DARIN TSABITA AR - RIHADATUL AISY"
+      "nama": "Darin Tsabita Ar - Rihadatul Aisy"
     },
     {
       "absen": 11,
-      "nama": "DESTYA ESTER FRANSYSCA"
+      "nama": "Destya Ester Fransysca"
     },
     {
       "absen": 12,
-      "nama": "ELLENA ALIFIA MAGRIBI"
+      "nama": "Ellena Alifia Magribi"
     },
     {
       "absen": 13,
-      "nama": "FAHMI ROSYID"
+      "nama": "Fahmi Rosyid"
     },
     {
       "absen": 14,
-      "nama": "GHAITSA ZAHRATUL FAIKHA"
+      "nama": "Ghaitsa Zahratul Faikha"
     },
     {
       "absen": 15,
@@ -355,11 +355,11 @@ window.studentRoster = {
     },
     {
       "absen": 16,
-      "nama": "INTAN AYOMI BELLA NOVELIA"
+      "nama": "Intan Ayomi Bella Novelia"
     },
     {
       "absen": 17,
-      "nama": "INTAN NURDIANA PUTRI"
+      "nama": "Intan Nurdiana Putri"
     },
     {
       "absen": 18,
@@ -367,63 +367,63 @@ window.studentRoster = {
     },
     {
       "absen": 19,
-      "nama": "KINANTI RENTI SAPUTRI"
+      "nama": "Kinanti Renti Saputri"
     },
     {
       "absen": 20,
-      "nama": "LOLA SUSMIASARI"
+      "nama": "Lola Susmiasari"
     },
     {
       "absen": 21,
-      "nama": "LUTHFI ABRAHAM MAHARDIKA"
+      "nama": "Luthfi Abraham Mahardika"
     },
     {
       "absen": 22,
-      "nama": "MABTUH SETYO WASIS SUSILO"
+      "nama": "Mabtuh Setyo Wasis Susilo"
     },
     {
       "absen": 23,
-      "nama": "MIRZA FAIKAR NAFIS"
+      "nama": "Mirza Faikar Nafis"
     },
     {
       "absen": 24,
-      "nama": "MUHAMMAD HERTANTO PUTRA"
+      "nama": "Muhammad Hertanto Putra"
     },
     {
       "absen": 25,
-      "nama": "NAISHILA NASYA MURTAFIAH"
+      "nama": "Naishila Nasya Murtafiah"
     },
     {
       "absen": 26,
-      "nama": "PATIS AUGUSTA RAMADANI"
+      "nama": "Patis Augusta Ramadani"
     },
     {
       "absen": 27,
-      "nama": "QURIN'IN SUKANDI"
+      "nama": "Qurin'In Sukandi"
     },
     {
       "absen": 28,
-      "nama": "RAHMA AQILA MUFIDA"
+      "nama": "Rahma Aqila Mufida"
     },
     {
       "absen": 29,
-      "nama": "SHERLY NUR ARISTAWATI"
+      "nama": "Sherly Nur Aristawati"
     },
     {
       "absen": 30,
-      "nama": "SHIREEN GADIS NAYLA"
+      "nama": "Shireen Gadis Nayla"
     },
     {
       "absen": 31,
-      "nama": "SITI DWI MASYRUHAH"
+      "nama": "Siti Dwi Masyruhah"
     },
     {
       "absen": 32,
-      "nama": "SOFIE NUR AJENG RISTIANA"
+      "nama": "Sofie Nur Ajeng Ristiana"
     },
     {
       "absen": 33,
-      "nama": "TALITHA ZALFA AZALIA"
+      "nama": "Talitha Zalfa Azalia"
     },
     {
       "absen": 34,
@@ -431,17 +431,17 @@ window.studentRoster = {
     },
     {
       "absen": 35,
-      "nama": "ZASKIA AULIA PUTRI MASDA"
+      "nama": "Zaskia Aulia Putri Masda"
     },
     {
       "absen": 36,
-      "nama": "ZIVANNA PRAMESTY LAULADYA"
+      "nama": "Zivanna Pramesty Lauladya"
     }
   ],
   "XII-4": [
     {
       "absen": 1,
-      "nama": "ABI AHMAD AL FARIZI"
+      "nama": "Abi Ahmad Al Farizi"
     },
     {
       "absen": 2,
@@ -453,71 +453,71 @@ window.studentRoster = {
     },
     {
       "absen": 4,
-      "nama": "ALVIANA LAILA TSALIST NUR AZIZAH"
+      "nama": "Alviana Laila Tsalist Nur Azizah"
     },
     {
       "absen": 5,
-      "nama": "AULIA DINDA NUR LISTIANA"
+      "nama": "Aulia Dinda Nur Listiana"
     },
     {
       "absen": 6,
-      "nama": "BARRACK EQTADA MUHAMMADAN"
+      "nama": "Barrack Eqtada Muhammadan"
     },
     {
       "absen": 7,
-      "nama": "BILQIS SABA PUTRI"
+      "nama": "Bilqis Saba Putri"
     },
     {
       "absen": 8,
-      "nama": "BINTANG YASTA TIANDRA"
+      "nama": "Bintang Yasta Tiandra"
     },
     {
       "absen": 9,
-      "nama": "DITA ARTIKA LARAS"
+      "nama": "Dita Artika Laras"
     },
     {
       "absen": 10,
-      "nama": "DIVA DWI APRILIA"
+      "nama": "Diva Dwi Aprilia"
     },
     {
       "absen": 11,
-      "nama": "DWI PUTRI SETYO ARDI"
+      "nama": "Dwi Putri Setyo Ardi"
     },
     {
       "absen": 12,
-      "nama": "ELOK KARTIKA SARI"
+      "nama": "Elok Kartika Sari"
     },
     {
       "absen": 13,
-      "nama": "HANI ARYANTI DWI"
+      "nama": "Hani Aryanti Dwi"
     },
     {
       "absen": 14,
-      "nama": "ICHA DWI NUR AINI"
+      "nama": "Icha Dwi Nur Aini"
     },
     {
       "absen": 15,
-      "nama": "JESIKA AMELIA PUTRI"
+      "nama": "Jesika Amelia Putri"
     },
     {
       "absen": 16,
-      "nama": "KIKI ARISKA PUTRI"
+      "nama": "Kiki Ariska Putri"
     },
     {
       "absen": 17,
-      "nama": "LUTFI MIFTAHUL FAWAIDA"
+      "nama": "Lutfi Miftahul Fawaida"
     },
     {
       "absen": 18,
-      "nama": "MOHAMMAD AZMI MA ANI"
+      "nama": "Mohammad Azmi Ma Ani"
     },
     {
       "absen": 19,
-      "nama": "NAJWA ALFIATUNNADHIFAH"
+      "nama": "Najwa Alfiatunnadhifah"
     },
     {
       "absen": 20,
-      "nama": "NASYA FAHIMA ATIFA"
+      "nama": "Nasya Fahima Atifa"
     },
     {
       "absen": 21,
@@ -525,11 +525,11 @@ window.studentRoster = {
     },
     {
       "absen": 22,
-      "nama": "NINA FIRNANDA QUMAIROH"
+      "nama": "Nina Firnanda Qumairoh"
     },
     {
       "absen": 23,
-      "nama": "NUR IMAMAH ALFIATUS SHOBAH"
+      "nama": "Nur Imamah Alfiatus Shobah"
     },
     {
       "absen": 24,
@@ -537,15 +537,15 @@ window.studentRoster = {
     },
     {
       "absen": 25,
-      "nama": "ORDIK BALA PRADHANA"
+      "nama": "Ordik Bala Pradhana"
     },
     {
       "absen": 26,
-      "nama": "PRASETYA ELOK APRILIA"
+      "nama": "Prasetya Elok Aprilia"
     },
     {
       "absen": 27,
-      "nama": "QUEENITA FATIMATUZ ZAHRA"
+      "nama": "Queenita Fatimatuz Zahra"
     },
     {
       "absen": 28,
@@ -553,11 +553,11 @@ window.studentRoster = {
     },
     {
       "absen": 29,
-      "nama": "RIZKA DWI NURANGGRIANI"
+      "nama": "Rizka Dwi Nuranggriani"
     },
     {
       "absen": 30,
-      "nama": "SELLI MARSELANI"
+      "nama": "Selli Marselani"
     },
     {
       "absen": 31,
@@ -565,29 +565,29 @@ window.studentRoster = {
     },
     {
       "absen": 32,
-      "nama": "TITIS AINUN ZILA"
+      "nama": "Titis Ainun Zila"
     },
     {
       "absen": 33,
-      "nama": "UMI MAMLUATUS SHOFIYAH"
+      "nama": "Umi Mamluatus Shofiyah"
     },
     {
       "absen": 34,
-      "nama": "VENY NUR FITRIA"
+      "nama": "Veny Nur Fitria"
     },
     {
       "absen": 35,
-      "nama": "WIKEN SHAKILA AULIA ARROKIM"
+      "nama": "Wiken Shakila Aulia Arrokim"
     },
     {
       "absen": 36,
-      "nama": "ZAFIRA ASY SYIFA"
+      "nama": "Zafira Asy Syifa"
     }
   ],
   "XII-5": [
     {
       "absen": 1,
-      "nama": "ADELIA NUR WULAN RAMADANY"
+      "nama": "Adelia Nur Wulan Ramadany"
     },
     {
       "absen": 2,
@@ -595,47 +595,47 @@ window.studentRoster = {
     },
     {
       "absen": 3,
-      "nama": "ALIFA ANNAFIUZ ZAHRA"
+      "nama": "Alifa Annafiuz Zahra"
     },
     {
       "absen": 4,
-      "nama": "ALIYAH ARRAZAQI PUTRI MAHDIA"
+      "nama": "Aliyah Arrazaqi Putri Mahdia"
     },
     {
       "absen": 5,
-      "nama": "ANDREA DWI ANDIKA"
+      "nama": "Andrea Dwi Andika"
     },
     {
       "absen": 6,
-      "nama": "ARIS NUR AFANDI"
+      "nama": "Aris Nur Afandi"
     },
     {
       "absen": 7,
-      "nama": "ASHYIFA SORAYA RAMADHANI"
+      "nama": "Ashyifa Soraya Ramadhani"
     },
     {
       "absen": 8,
-      "nama": "AUDIRA MAYCHA AGUSTIN"
+      "nama": "Audira Maycha Agustin"
     },
     {
       "absen": 9,
-      "nama": "BIMA SEPTYAN RAMADHANI"
+      "nama": "Bima Septyan Ramadhani"
     },
     {
       "absen": 10,
-      "nama": "DAFFA WAHYUANDRI AL HAFIDZ"
+      "nama": "Daffa Wahyuandri Al Hafidz"
     },
     {
       "absen": 11,
-      "nama": "DANIEL AHMAD RAMADHANI"
+      "nama": "Daniel Ahmad Ramadhani"
     },
     {
       "absen": 12,
-      "nama": "DEVITA SOFIA DWI MUTIARA"
+      "nama": "Devita Sofia Dwi Mutiara"
     },
     {
       "absen": 13,
-      "nama": "EVAN AHMAD UMAR BAIHAQI"
+      "nama": "Evan Ahmad Umar Baihaqi"
     },
     {
       "absen": 14,
@@ -643,43 +643,43 @@ window.studentRoster = {
     },
     {
       "absen": 15,
-      "nama": "FAIRUZ ALVA ADINATA"
+      "nama": "Fairuz Alva Adinata"
     },
     {
       "absen": 16,
-      "nama": "FEBRIEANSYAH RAFIF WAHYUONO"
+      "nama": "Febrieansyah Rafif Wahyuono"
     },
     {
       "absen": 17,
-      "nama": "FIRNANDA AYU SEKAR ARUM"
+      "nama": "Firnanda Ayu Sekar Arum"
     },
     {
       "absen": 18,
-      "nama": "GIRINDRA NAGARA PUTRA RAHARJA"
+      "nama": "Girindra Nagara Putra Raharja"
     },
     {
       "absen": 19,
-      "nama": "HAZEL ARKANANTA FAHRIL IKHSAN"
+      "nama": "Hazel Arkananta Fahril Ikhsan"
     },
     {
       "absen": 20,
-      "nama": "INDIRA AYATUS SYIFA' AD-DAKHILIYAH"
+      "nama": "Indira Ayatus Syifa' Ad-Dakhiliyah"
     },
     {
       "absen": 21,
-      "nama": "JELITA ARUM NATHANELYA"
+      "nama": "Jelita Arum Nathanelya"
     },
     {
       "absen": 22,
-      "nama": "JULIA ZHETA PRASASTI P."
+      "nama": "Julia Zheta Prasasti P."
     },
     {
       "absen": 23,
-      "nama": "LAYLATUL MUNA"
+      "nama": "Laylatul Muna"
     },
     {
       "absen": 24,
-      "nama": "M. ILHAM FIRMANSYAH"
+      "nama": "M. Ilham Firmansyah"
     },
     {
       "absen": 25,
@@ -687,15 +687,15 @@ window.studentRoster = {
     },
     {
       "absen": 26,
-      "nama": "MUHAMMAD AMIRUDDIN KHOIRIYANTO"
+      "nama": "Muhammad Amiruddin Khoiriyanto"
     },
     {
       "absen": 27,
-      "nama": "NEISA NUR AIZIN"
+      "nama": "Neisa Nur Aizin"
     },
     {
       "absen": 28,
-      "nama": "NEIZA INDRA PRATAMA PUTRI"
+      "nama": "Neiza Indra Pratama Putri"
     },
     {
       "absen": 29,
@@ -703,15 +703,15 @@ window.studentRoster = {
     },
     {
       "absen": 30,
-      "nama": "RENNO BOY KURNIAWAN"
+      "nama": "Renno Boy Kurniawan"
     },
     {
       "absen": 31,
-      "nama": "RIZKI DWI KARINA"
+      "nama": "Rizki Dwi Karina"
     },
     {
       "absen": 32,
-      "nama": "RIZKY ADITYA RAHMAWAN"
+      "nama": "Rizky Aditya Rahmawan"
     },
     {
       "absen": 33,
@@ -719,7 +719,7 @@ window.studentRoster = {
     },
     {
       "absen": 34,
-      "nama": "VERA VERONICA ANGELIA"
+      "nama": "Vera Veronica Angelia"
     },
     {
       "absen": 35,
@@ -733,31 +733,31 @@ window.studentRoster = {
   "XII-6": [
     {
       "absen": 1,
-      "nama": "ADINDA SAGITA KIRANA PUTRI"
+      "nama": "Adinda Sagita Kirana Putri"
     },
     {
       "absen": 2,
-      "nama": "AHMAD FACHRI DWI ROMADHONI"
+      "nama": "Ahmad Fachri Dwi Romadhoni"
     },
     {
       "absen": 3,
-      "nama": "ALVARO BAUTISTA"
+      "nama": "Alvaro Bautista"
     },
     {
       "absen": 4,
-      "nama": "ANDI ASTRANSYAH"
+      "nama": "Andi Astransyah"
     },
     {
       "absen": 5,
-      "nama": "ANNIDA NUR SALFI"
+      "nama": "Annida Nur Salfi"
     },
     {
       "absen": 6,
-      "nama": "AZIFA RISMA SYAYIDATINA"
+      "nama": "Azifa Risma Syayidatina"
     },
     {
       "absen": 7,
-      "nama": "AZUAN SYAHRIEL AHMAD DIKA"
+      "nama": "Azuan Syahriel Ahmad Dika"
     },
     {
       "absen": 8,
@@ -769,7 +769,7 @@ window.studentRoster = {
     },
     {
       "absen": 10,
-      "nama": "DANICA SHAFA AURELLIA NI'MAH"
+      "nama": "Danica Shafa Aurellia Ni'Mah"
     },
     {
       "absen": 11,
@@ -777,55 +777,55 @@ window.studentRoster = {
     },
     {
       "absen": 12,
-      "nama": "DIAN TEGUH NOVA"
+      "nama": "Dian Teguh Nova"
     },
     {
       "absen": 13,
-      "nama": "DINDA CAHAYA PUTRI"
+      "nama": "Dinda Cahaya Putri"
     },
     {
       "absen": 14,
-      "nama": "DITA MARETA PUTRI LESTARI"
+      "nama": "Dita Mareta Putri Lestari"
     },
     {
       "absen": 15,
-      "nama": "DIVA CARISSA FAUZIZAH"
+      "nama": "Diva Carissa Fauzizah"
     },
     {
       "absen": 16,
-      "nama": "FADLY PUTRA WIJAYA"
+      "nama": "Fadly Putra Wijaya"
     },
     {
       "absen": 17,
-      "nama": "IHDA ARZIQA NURIL KHOIRIYAH"
+      "nama": "Ihda Arziqa Nuril Khoiriyah"
     },
     {
       "absen": 18,
-      "nama": "INDAH PERMATASARI"
+      "nama": "Indah Permatasari"
     },
     {
       "absen": 19,
-      "nama": "KAYLEVI RASHIEKA PUTRI HAFINUDIN"
+      "nama": "Kaylevi Rashieka Putri Hafinudin"
     },
     {
       "absen": 20,
-      "nama": "KAYSA MARATUL MAFTHA"
+      "nama": "Kaysa Maratul Maftha"
     },
     {
       "absen": 21,
-      "nama": "LEONEL DEAREN YUANA ALIEF HIDAYATULLAH"
+      "nama": "Leonel Dearen Yuana Alief Hidayatullah"
     },
     {
       "absen": 22,
-      "nama": "M. NAUVAL HIZBULLAH"
+      "nama": "M. Nauval Hizbullah"
     },
     {
       "absen": 23,
-      "nama": "MAZAYA NAURATUSY SYAZWINA"
+      "nama": "Mazaya Nauratusy Syazwina"
     },
     {
       "absen": 24,
-      "nama": "MEI ALIFVIA USMA SAPUTRI"
+      "nama": "Mei Alifvia Usma Saputri"
     },
     {
       "absen": 25,
@@ -833,57 +833,57 @@ window.studentRoster = {
     },
     {
       "absen": 26,
-      "nama": "MOCH.NEOFALDO"
+      "nama": "Moch.Neofaldo"
     },
     {
       "absen": 27,
-      "nama": "MOHAMMAD ALANSYAH MAHARDIKA"
+      "nama": "Mohammad Alansyah Mahardika"
     },
     {
       "absen": 28,
-      "nama": "NAZWA AURELIA HEZAR"
+      "nama": "Nazwa Aurelia Hezar"
     },
     {
       "absen": 29,
-      "nama": "NIKITA KHOIRUN NISA'"
+      "nama": "Nikita Khoirun Nisa'"
     },
     {
       "absen": 30,
-      "nama": "NUR LAILI"
+      "nama": "Nur Laili"
     },
     {
       "absen": 31,
-      "nama": "RHIDO RAKA"
+      "nama": "Rhido Raka"
     },
     {
       "absen": 32,
-      "nama": "SELINA ARTHAMEVIA SUSILO NINGTYAS"
+      "nama": "Selina Arthamevia Susilo Ningtyas"
     },
     {
       "absen": 33,
-      "nama": "SYAFRINA MIFTAKHUL NUR RAMADHANI"
+      "nama": "Syafrina Miftakhul Nur Ramadhani"
     },
     {
       "absen": 34,
-      "nama": "SYAHLA MAYNATANIA PUTRI"
+      "nama": "Syahla Maynatania Putri"
     },
     {
       "absen": 35,
-      "nama": "ZIYANA ROBIUL AULIA"
+      "nama": "Ziyana Robiul Aulia"
     }
   ],
   "XII-7": [
     {
       "absen": 1,
-      "nama": "ACHMAD WAHYU FEBRIANTO"
+      "nama": "Achmad Wahyu Febrianto"
     },
     {
       "absen": 2,
-      "nama": "ANJELINA DWI UMAMI"
+      "nama": "Anjelina Dwi Umami"
     },
     {
       "absen": 3,
-      "nama": "ARCINTA FITRIA RAHMA"
+      "nama": "Arcinta Fitria Rahma"
     },
     {
       "absen": 4,
@@ -891,15 +891,15 @@ window.studentRoster = {
     },
     {
       "absen": 5,
-      "nama": "CAHYA DWI LESTARI"
+      "nama": "Cahya Dwi Lestari"
     },
     {
       "absen": 6,
-      "nama": "ELMIRA WARDAH NAFISYAH"
+      "nama": "Elmira Wardah Nafisyah"
     },
     {
       "absen": 7,
-      "nama": "ELSA PUTRI WULANDARI"
+      "nama": "Elsa Putri Wulandari"
     },
     {
       "absen": 8,
@@ -907,35 +907,35 @@ window.studentRoster = {
     },
     {
       "absen": 9,
-      "nama": "FADHILA RAHMA HANUM MUFIDHA"
+      "nama": "Fadhila Rahma Hanum Mufidha"
     },
     {
       "absen": 10,
-      "nama": "FATIMAH AZAHRA KHOIRUN NISA"
+      "nama": "Fatimah Azahra Khoirun Nisa"
     },
     {
       "absen": 11,
-      "nama": "GARNETA LANJAR LARASATI"
+      "nama": "Garneta Lanjar Larasati"
     },
     {
       "absen": 12,
-      "nama": "ICHA DEWI PUSPITA"
+      "nama": "Icha Dewi Puspita"
     },
     {
       "absen": 13,
-      "nama": "IKRAM NURMUKAROM"
+      "nama": "Ikram Nurmukarom"
     },
     {
       "absen": 14,
-      "nama": "IQBAL RIONATA RAMADHAN"
+      "nama": "Iqbal Rionata Ramadhan"
     },
     {
       "absen": 15,
-      "nama": "M. AHDAN ALIYAN"
+      "nama": "M. Ahdan Aliyan"
     },
     {
       "absen": 16,
-      "nama": "M. FAIRUZ AKBAR SHAFA"
+      "nama": "M. Fairuz Akbar Shafa"
     },
     {
       "absen": 17,
@@ -943,31 +943,31 @@ window.studentRoster = {
     },
     {
       "absen": 18,
-      "nama": "MOCH DIEKY FIRMANSYAH"
+      "nama": "Moch Dieky Firmansyah"
     },
     {
       "absen": 19,
-      "nama": "MOCH REZA APRILIAWAN"
+      "nama": "Moch Reza Apriliawan"
     },
     {
       "absen": 20,
-      "nama": "MOCH. RIZQI  SAFAAT"
+      "nama": "Moch. Rizqi Safaat"
     },
     {
       "absen": 21,
-      "nama": "MUCHAMMAD MARCEL SAPUTRA"
+      "nama": "Muchammad Marcel Saputra"
     },
     {
       "absen": 22,
-      "nama": "MUSTIKA SARI"
+      "nama": "Mustika Sari"
     },
     {
       "absen": 23,
-      "nama": "MUTTIA SYAHRATUL SHINTA"
+      "nama": "Muttia Syahratul Shinta"
     },
     {
       "absen": 24,
-      "nama": "NADHIF HANIYA MADANI"
+      "nama": "Nadhif Haniya Madani"
     },
     {
       "absen": 25,
@@ -975,39 +975,39 @@ window.studentRoster = {
     },
     {
       "absen": 26,
-      "nama": "NAYLA SALSABILLA NUR AULIA"
+      "nama": "Nayla Salsabilla Nur Aulia"
     },
     {
       "absen": 27,
-      "nama": "NOFIK FERDIAN DITA PRATAMA"
+      "nama": "Nofik Ferdian Dita Pratama"
     },
     {
       "absen": 28,
-      "nama": "PUAN JELITA KYARA SUNNY"
+      "nama": "Puan Jelita Kyara Sunny"
     },
     {
       "absen": 29,
-      "nama": "RESTY ARDINA AULIYA"
+      "nama": "Resty Ardina Auliya"
     },
     {
       "absen": 30,
-      "nama": "RIZALDO ICHWAN"
+      "nama": "Rizaldo Ichwan"
     },
     {
       "absen": 31,
-      "nama": "SATRIA ADIYA PRATAMA"
+      "nama": "Satria Adiya Pratama"
     },
     {
       "absen": 32,
-      "nama": "SOVI JUANITA ROSIDA"
+      "nama": "Sovi Juanita Rosida"
     },
     {
       "absen": 33,
-      "nama": "TIRTA ARDHI WIBISONO"
+      "nama": "Tirta Ardhi Wibisono"
     },
     {
       "absen": 34,
-      "nama": "TYAN AL KHADAFI"
+      "nama": "Tyan Al Khadafi"
     },
     {
       "absen": 35,
@@ -1015,33 +1015,33 @@ window.studentRoster = {
     },
     {
       "absen": 36,
-      "nama": "WIDYA AULIA PUTRI"
+      "nama": "Widya Aulia Putri"
     }
   ],
   "XII-8": [
     {
       "absen": 1,
-      "nama": "ACHMAD FARISH ARIFUDDIN"
+      "nama": "Achmad Farish Arifuddin"
     },
     {
       "absen": 2,
-      "nama": "ALIA RAHMA SARI"
+      "nama": "Alia Rahma Sari"
     },
     {
       "absen": 3,
-      "nama": "ALYA FIRDASARI"
+      "nama": "Alya Firdasari"
     },
     {
       "absen": 4,
-      "nama": "ARIYA BIMA RAMA DHANI"
+      "nama": "Ariya Bima Rama Dhani"
     },
     {
       "absen": 5,
-      "nama": "ATIKAH NURINNISWATIN ZUHROH"
+      "nama": "Atikah Nurinniswatin Zuhroh"
     },
     {
       "absen": 6,
-      "nama": "AZAARA DYAS ALUNA"
+      "nama": "Azaara Dyas Aluna"
     },
     {
       "absen": 7,
@@ -1049,55 +1049,55 @@ window.studentRoster = {
     },
     {
       "absen": 8,
-      "nama": "DEFVI ISABELLA DEWANTARI"
+      "nama": "Defvi Isabella Dewantari"
     },
     {
       "absen": 9,
-      "nama": "DEWI TIKA KURNIAWATI"
+      "nama": "Dewi Tika Kurniawati"
     },
     {
       "absen": 10,
-      "nama": "DWI ZAHRA NANDA SAFITRI"
+      "nama": "Dwi Zahra Nanda Safitri"
     },
     {
       "absen": 11,
-      "nama": "FARIZ NAUFAL RAMADHAN"
+      "nama": "Fariz Naufal Ramadhan"
     },
     {
       "absen": 12,
-      "nama": "JUWITA NUR TRIYA"
+      "nama": "Juwita Nur Triya"
     },
     {
       "absen": 13,
-      "nama": "KAYLA APRILIA SHAFA"
+      "nama": "Kayla Aprilia Shafa"
     },
     {
       "absen": 14,
-      "nama": "KEYLA MAGHFIROH AQMA"
+      "nama": "Keyla Maghfiroh Aqma"
     },
     {
       "absen": 15,
-      "nama": "KHANZA AURA INTANIA"
+      "nama": "Khanza Aura Intania"
     },
     {
       "absen": 16,
-      "nama": "MAULIDA ILMA MA'RUFI"
+      "nama": "Maulida Ilma Ma'Rufi"
     },
     {
       "absen": 17,
-      "nama": "MIRZA ANGELICA SAHASRARA"
+      "nama": "Mirza Angelica Sahasrara"
     },
     {
       "absen": 18,
-      "nama": "MOH. ERICK SETIAWAN"
+      "nama": "Moh. Erick Setiawan"
     },
     {
       "absen": 19,
-      "nama": "MUHAMMAD NAJIB ZAHIR SAPUTRA"
+      "nama": "Muhammad Najib Zahir Saputra"
     },
     {
       "absen": 20,
-      "nama": "NABILA ADINDA ZAHRA"
+      "nama": "Nabila Adinda Zahra"
     },
     {
       "absen": 21,
@@ -1105,169 +1105,169 @@ window.studentRoster = {
     },
     {
       "absen": 22,
-      "nama": "NABILA PUTRI DAMAYANTI"
+      "nama": "Nabila Putri Damayanti"
     },
     {
       "absen": 23,
-      "nama": "NAURA ANGGUN ARDHANESWARI"
+      "nama": "Naura Anggun Ardhaneswari"
     },
     {
       "absen": 24,
-      "nama": "OKTAVIANI SHINTA DEWI"
+      "nama": "Oktaviani Shinta Dewi"
     },
     {
       "absen": 25,
-      "nama": "PRABU SULAIMAN"
+      "nama": "Prabu Sulaiman"
     },
     {
       "absen": 26,
-      "nama": "RAVIVA GAIZHANI AZHRA"
+      "nama": "Raviva Gaizhani Azhra"
     },
     {
       "absen": 27,
-      "nama": "REVITA MARSELIA KARISMA"
+      "nama": "Revita Marselia Karisma"
     },
     {
       "absen": 28,
-      "nama": "RIZQI SAHRUL ROMADHON"
+      "nama": "Rizqi Sahrul Romadhon"
     },
     {
       "absen": 29,
-      "nama": "SABRINA MAULANI SYAHADAH"
+      "nama": "Sabrina Maulani Syahadah"
     },
     {
       "absen": 30,
-      "nama": "SITI ISTIANATUL MUTAFIKA"
+      "nama": "Siti Istianatul Mutafika"
     },
     {
       "absen": 31,
-      "nama": "SOFYAN MUHAMMAD FATONI"
+      "nama": "Sofyan Muhammad Fatoni"
     },
     {
       "absen": 32,
-      "nama": "TRISIA PUSPITA SARI"
+      "nama": "Trisia Puspita Sari"
     },
     {
       "absen": 33,
-      "nama": "WINDI NOVITAMARA"
+      "nama": "Windi Novitamara"
     },
     {
       "absen": 34,
-      "nama": "ZAKYATUL AFIFAH FAUZIAH"
+      "nama": "Zakyatul Afifah Fauziah"
     },
     {
       "absen": 35,
-      "nama": "ZASKIA FARIS NAURA"
+      "nama": "Zaskia Faris Naura"
     }
   ],
   "XII-9": [
     {
       "absen": 1,
-      "nama": "AHMAD ZULFIAN APRILLIANTO"
+      "nama": "Ahmad Zulfian Aprillianto"
     },
     {
       "absen": 2,
-      "nama": "AIRA NAFA AGUSTINA"
+      "nama": "Aira Nafa Agustina"
     },
     {
       "absen": 3,
-      "nama": "ALIFTA ZIADATUL MUFIDA"
+      "nama": "Alifta Ziadatul Mufida"
     },
     {
       "absen": 4,
-      "nama": "ALTHAFUNNISA EKA PUTRI"
+      "nama": "Althafunnisa Eka Putri"
     },
     {
       "absen": 5,
-      "nama": "ANGGUN DWI WIJAYANTI"
+      "nama": "Anggun Dwi Wijayanti"
     },
     {
       "absen": 6,
-      "nama": "ANINDYTA RACHMA AULIA"
+      "nama": "Anindyta Rachma Aulia"
     },
     {
       "absen": 7,
-      "nama": "ANITA NURLAILI AGUSTIN"
+      "nama": "Anita Nurlaili Agustin"
     },
     {
       "absen": 8,
-      "nama": "ASWANI WIDYA ARDININGRUM"
+      "nama": "Aswani Widya Ardiningrum"
     },
     {
       "absen": 9,
-      "nama": "AULIA NABILLA NURAINI"
+      "nama": "Aulia Nabilla Nuraini"
     },
     {
       "absen": 10,
-      "nama": "DHARMA MAHESWARA"
+      "nama": "Dharma Maheswara"
     },
     {
       "absen": 11,
-      "nama": "DITA PERMATA SARI"
+      "nama": "Dita Permata Sari"
     },
     {
       "absen": 12,
-      "nama": "FATHIR AMIRUL MUKMININ"
+      "nama": "Fathir Amirul Mukminin"
     },
     {
       "absen": 13,
-      "nama": "GALEH CANDRA ADI NUGRAHA"
+      "nama": "Galeh Candra Adi Nugraha"
     },
     {
       "absen": 14,
-      "nama": "ILHAM WAHYU JATMIKO"
+      "nama": "Ilham Wahyu Jatmiko"
     },
     {
       "absen": 15,
-      "nama": "JULIA S'TINA SARI"
+      "nama": "Julia S'Tina Sari"
     },
     {
       "absen": 16,
-      "nama": "KASIH ANITA"
+      "nama": "Kasih Anita"
     },
     {
       "absen": 17,
-      "nama": "LAILY NUR RAHMATIKA"
+      "nama": "Laily Nur Rahmatika"
     },
     {
       "absen": 18,
-      "nama": "LUTFIANA AMELIA ARDIYANI"
+      "nama": "Lutfiana Amelia Ardiyani"
     },
     {
       "absen": 19,
-      "nama": "MELLY YANA"
+      "nama": "Melly Yana"
     },
     {
       "absen": 20,
-      "nama": "MUHAMMAD NAWAL WAFA BAEHAQI"
+      "nama": "Muhammad Nawal Wafa Baehaqi"
     },
     {
       "absen": 21,
-      "nama": "MUTIARA DEWI RAMADHANI"
+      "nama": "Mutiara Dewi Ramadhani"
     },
     {
       "absen": 22,
-      "nama": "MUTIARA RAMADHANI"
+      "nama": "Mutiara Ramadhani"
     },
     {
       "absen": 23,
-      "nama": "NABILLA LENI RIZKI APRILIA"
+      "nama": "Nabilla Leni Rizki Aprilia"
     },
     {
       "absen": 24,
-      "nama": "Nadia silva saharani"
+      "nama": "Nadia Silva Saharani"
     },
     {
       "absen": 25,
-      "nama": "NADIRA ALMIRAVA CAHYONO"
+      "nama": "Nadira Almirava Cahyono"
     },
     {
       "absen": 26,
-      "nama": "NASWA BILQIS AKLILA"
+      "nama": "Naswa Bilqis Aklila"
     },
     {
       "absen": 27,
-      "nama": "NAYLA CAHYA HERFYNDA"
+      "nama": "Nayla Cahya Herfynda"
     },
     {
       "absen": 28,
@@ -1275,35 +1275,35 @@ window.studentRoster = {
     },
     {
       "absen": 29,
-      "nama": "RAERA SEGARA BANYU BENING"
+      "nama": "Raera Segara Banyu Bening"
     },
     {
       "absen": 30,
-      "nama": "RAISAVINA FLAVIA FERINAZKASYA"
+      "nama": "Raisavina Flavia Ferinazkasya"
     },
     {
       "absen": 31,
-      "nama": "REVI ANINDITA RAMADHANI"
+      "nama": "Revi Anindita Ramadhani"
     },
     {
       "absen": 32,
-      "nama": "REVI AULIA RAHMA"
+      "nama": "Revi Aulia Rahma"
     },
     {
       "absen": 33,
-      "nama": "REYVALLINO EL YANZA ARIFIA"
+      "nama": "Reyvallino El Yanza Arifia"
     },
     {
       "absen": 34,
-      "nama": "SHYRENA ICHA AZZAHRO"
+      "nama": "Shyrena Icha Azzahro"
     },
     {
       "absen": 35,
-      "nama": "SILVYA NUR LAILATUSSIYAM"
+      "nama": "Silvya Nur Lailatussiyam"
     },
     {
       "absen": 36,
-      "nama": "SOFIA PUTRI WINAYA"
+      "nama": "Sofia Putri Winaya"
     }
   ]
 };
