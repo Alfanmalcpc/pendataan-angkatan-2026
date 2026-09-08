@@ -106,7 +106,11 @@ window.NevastraDB = {
             if (local) return JSON.parse(local);
         } catch(e) {}
 
-        return { scriptUrl: '', folderId: '', folderUrl: '' };
+        return { 
+            scriptUrl: 'https://script.google.com/macros/s/AKfycbwVA2crgxUQf63XoxKxI_gpvUtiXDdGtq5_CQVF-i-DOb8EOmdndAEbIkQavGCRYuH1/exec', 
+            folderId: '', 
+            folderUrl: '' 
+        };
     },
 
     async saveDriveConfig(config) {
