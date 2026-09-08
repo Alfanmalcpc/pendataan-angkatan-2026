@@ -193,6 +193,7 @@
                             <th style="width: 45px;">Absen</th>
                             <th>Nama Resmi Siswa</th>
                             <th>Nama di Buku</th>
+                            <th>Foto</th>
                             <th>Status</th>
                             <th>TTL</th>
                             <th>No. HP / WA</th>
@@ -434,6 +435,10 @@
                         ig: saved ? (saved.ig || '') : '',
                         tinggalDi: saved ? (saved.tinggalDi || '') : '',
                         quotes: saved ? (saved.quotes || '') : '',
+                        fotoNamaFile: saved ? (saved.fotoNamaFile || '') : '',
+                        fotoDriveUrl: saved ? (saved.fotoDriveUrl || '') : '',
+                        fotoDirectUrl: saved ? (saved.fotoDirectUrl || '') : '',
+                        fotoBase64: saved ? (saved.fotoBase64 || '') : '',
                         updatedAt: saved ? (saved.updatedAtFormatted || saved.updatedAt || '') : ''
                     });
                 });
@@ -510,12 +515,27 @@
 
                 const padded = item.absen < 10 ? '0' + item.absen : '' + item.absen;
 
+                const fotoSrc = item.fotoDirectUrl || item.fotoDriveUrl || item.fotoBase64;
+                let fotoCell = '';
+                if (fotoSrc) {
+                    const escName = (item.nama || '').replace(/'/g, "\\'");
+                    fotoCell = `
+                        <div class="table-foto-cell">
+                            <img src="${fotoSrc}" class="table-foto-thumb" title="Klik untuk memperbesar foto" onclick="openPhotoModal('${escName}', '${item.kelas}', ${item.absen}, '${fotoSrc}', '${item.fotoDriveUrl || ''}')">
+                            ${item.fotoDriveUrl ? `<a href="${item.fotoDriveUrl}" target="_blank" class="btn-drive-link" title="Buka di Google Drive">📁 Drive</a>` : ''}
+                        </div>
+                    `;
+                } else {
+                    fotoCell = `<div class="table-foto-no-img" title="Belum ada foto">📷</div>`;
+                }
+
                 tr.innerHTML = `
                     <td><strong>${activeClass === 'ALL' ? item.kelas + '-' : ''}${padded}</strong></td>
                     <td><strong>${item.namaRoster}</strong></td>
                     <td style="color: ${item.nama !== item.namaRoster ? 'var(--primary)' : 'inherit'};">
                         ${item.isFilled ? item.nama : '<span style="color: var(--text-muted);">-</span>'}
                     </td>
+                    <td>${fotoCell}</td>
                     <td>
                         <span class="badge-status ${item.isFilled ? 'done' : 'pending'}">
                             ${item.isFilled ? '✓ Terisi' : '⏳ Belum'}
@@ -601,6 +621,8 @@
                 'Instagram': item.ig,
                 'Tinggal Di / Alamat': item.tinggalDi,
                 'Quotes Buku Tahunan': item.quotes,
+                'Nama File Foto': item.fotoNamaFile || (item.nama ? item.nama + '.jpg' : '-'),
+                'Tautan Foto Google Drive': item.fotoDriveUrl || (item.fotoBase64 ? 'Tersimpan di Cloud Database' : 'Belum Ada Foto'),
                 'Waktu Pengisian': item.updatedAt
             }));
 
@@ -726,6 +748,78 @@
             renderClassRecap();
         }
 
+        
+        // --- Google Drive Config & Photo Viewer Logic ---
+        const inputDriveScriptUrl = document.getElementById('inputDriveScriptUrl');
+        const inputDriveFolderUrl = document.getElementById('inputDriveFolderUrl');
+        const btnSaveDriveConfig = document.getElementById('btnSaveDriveConfig');
+        const btnToggleDriveGuide = document.getElementById('btnToggleDriveGuide');
+        const driveGuideBox = document.getElementById('driveGuideBox');
+
+        btnToggleDriveGuide.onclick = () => {
+            const isShown = driveGuideBox.style.display === 'block';
+            driveGuideBox.style.display = isShown ? 'none' : 'block';
+            btnToggleDriveGuide.textContent = isShown ? '📖 Cara Pasang Google Drive (1 Menit)' : '✕ Tutup Panduan';
+        };
+
+        async function loadDriveConfig() {
+            if (!window.NevastraDB) return;
+            const config = await window.NevastraDB.getDriveConfig();
+            if (config) {
+                if (config.scriptUrl) inputDriveScriptUrl.value = config.scriptUrl;
+                if (config.folderUrl) inputDriveFolderUrl.value = config.folderUrl;
+            }
+        }
+
+        btnSaveDriveConfig.onclick = async () => {
+            const scriptUrl = inputDriveScriptUrl.value.trim();
+            const folderUrl = inputDriveFolderUrl.value.trim();
+
+            btnSaveDriveConfig.disabled = true;
+            btnSaveDriveConfig.textContent = 'Menyimpan...';
+
+            if (window.NevastraDB) {
+                const ok = await window.NevastraDB.saveDriveConfig({ scriptUrl, folderUrl });
+                if (ok) {
+                    showToast('Pengaturan Google Drive berhasil disimpan!');
+                } else {
+                    showToast('Gagal menyimpan pengaturan ke database.');
+                }
+            }
+
+            btnSaveDriveConfig.disabled = false;
+            btnSaveDriveConfig.textContent = '💾 Simpan Pengaturan';
+        };
+
+        // Photo Modal Functions
+        function openPhotoModal(name, kelas, absen, src, driveUrl) {
+            document.getElementById('pvStudentName').textContent = name;
+            document.getElementById('pvStudentMeta').textContent = `Kelas ${kelas} • Absen ${String(absen).padStart(2, '0')}`;
+            document.getElementById('pvPhotoImg').src = src;
+
+            const driveBtn = document.getElementById('pvDriveBtn');
+            if (driveUrl) {
+                driveBtn.href = driveUrl;
+                driveBtn.style.display = 'inline-flex';
+            } else {
+                driveBtn.style.display = 'none';
+            }
+
+            document.getElementById('photoViewerModal').classList.add('show');
+        }
+
+        document.getElementById('btnClosePhotoModal').onclick = () => {
+            document.getElementById('photoViewerModal').classList.remove('show');
+        };
+
+        document.getElementById('photoViewerModal').onclick = (e) => {
+            if (e.target.id === 'photoViewerModal') {
+                document.getElementById('photoViewerModal').classList.remove('show');
+            }
+        };
+
+        loadDriveConfig();
+
         // Initial render immediately from roster
         renderTabs();
         updateActiveClassLink();
@@ -744,5 +838,27 @@
             }, 3000);
         }
     </script>
+
+    <!-- Modal Viewer Foto Siswa -->
+    <div id="photoViewerModal" class="photo-modal-overlay">
+        <div class="photo-modal-card">
+            <div style="position: absolute; top: 12px; right: 12px; z-index: 10;">
+                <button id="btnClosePhotoModal" class="btn-remove-mini" style="background: rgba(0,0,0,0.6); color: white;">✕</button>
+            </div>
+            <img id="pvPhotoImg" class="photo-modal-img" src="" alt="Foto Siswa">
+            <div class="photo-modal-body">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <h4 id="pvStudentName" class="photo-modal-name">Nama Siswa</h4>
+                        <p id="pvStudentMeta" class="photo-modal-meta">Kelas XII-1 • Absen 01</p>
+                    </div>
+                    <a id="pvDriveBtn" href="#" target="_blank" class="btn btn-sm btn-primary" style="display: none; background: #0284c7;">
+                        📁 Buka File di Google Drive
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

@@ -3,18 +3,31 @@
 
 ---
 
-## 🌟 Pembaruan Terbaru
-1. **Format Nama Huruf Depan Saja / Title Case**:
-   - Seluruh 322 nama siswa dari kelas XII-1 s/d XII-9 sudah diubah ke format huruf kapital di awal kata (contoh: `Mochamad Alfan`, `Achmad Al Fadli Azizul Hakim`).
-2. **Akun GitHub Resmi Angkatan**:
-   - Repositori lama di akun pribadi telah dinonaktifkan (private).
-   - Akun resmi angkatan dikonfigurasi ke: **`NEVASTRA`** (`angkatan44smaness@gmail.com`).
-3. **Penyusunan Nama & Absen**:
-   - Nomor absen dan nama langsung berpasangan resmi sesuai daftar siswa angkatan.
+## 🌟 Fitur & Pembaruan Terbaru
+1. **Upload Foto ke Google Drive (Format Nama = Nama Siswa)**:
+   - Siswa dapat mengunggah foto yearbook langsung di formulir kelas.
+   - Foto otomatis disimpan ke Google Drive dengan format nama persis sesuai nama siswa (contoh: `Mochamad Alfan.jpg`, `Achmad Al Fadli Azizul Hakim.jpg`).
+   - Pratinjau Polaroid interaktif langsung menampilkan foto saat dipilih.
+2. **Format Nama Huruf Depan Saja / Title Case**:
+   - Seluruh 322 nama siswa resmi dari kelas XII-1 s/d XII-9 menggunakan format huruf kapital di awal kata.
+3. **Penyusunan Nama & Absen Terkunci**:
+   - Nomor absen dan nama langsung berpasangan resmi sesuai daftar siswa sekolah agar tidak tertukar.
+4. **Dashboard Admin Terpadu (`admin.html`)**:
+   - Tab kelas XII-1 s/d XII-9 + Tab Semua Kelas.
+   - Kolom foto dengan thumbnail dan tautan langsung ke berkas Google Drive.
+   - Fitur salin pesan broadcast WhatsApp per kelas.
+   - Ekspor data lengkap ke Excel (`.xlsx`) beserta tautan foto Google Drive.
+   - Kotak pengaturan Google Drive untuk integrasi Google Apps Script.
 
 ---
 
-## 👨‍🎓 Tautan Halaman Siswa per Kelas
+## 🌐 Tautan Web Online
+- **Portal Siswa**: [https://alfanmalcpc.github.io/pendataan-angkatan-2026/](https://alfanmalcpc.github.io/pendataan-angkatan-2026/)
+- **Dashboard Admin**: [https://alfanmalcpc.github.io/pendataan-angkatan-2026/admin.html](https://alfanmalcpc.github.io/pendataan-angkatan-2026/admin.html)
+
+---
+
+## 👨‍🎓 Tautan Formulir per Kelas
 - **Kelas XII-1**: `xii-1.html`
 - **Kelas XII-2**: `xii-2.html`
 - **Kelas XII-3**: `xii-3.html`
@@ -25,20 +38,15 @@
 - **Kelas XII-8**: `xii-8.html`
 - **Kelas XII-9**: `xii-9.html`
 
-Tautan online setelah GitHub Pages aktif:
-`https://alfanmalcpc.github.io/pendataan-angkatan-2026/xii-1.html` *(s/d xii-9.html)*
-
 ---
 
-## 👨‍💼 Panel Admin & Rekapitulasi (`admin.html`)
-- Klik kelas mana saja di menu tab atas (XII-1 s/d XII-9), tautan dan tombol **Salin Link** / **Salin Pesan WA** langsung muncul di kotak atas.
-- Rekapitulasi kelas langsung muncul di bawahnya lengkap dengan tombol **Download Excel Kelas Ini (.xlsx)** dan **Salin Daftar Siswa yang Belum Mengisi**.
-
----
-
-## 🚀 Cara Upload ke GitHub Akun Angkatan (`angkatan44smaness@gmail.com`)
-
-1. Buka [https://github.com/new](https://github.com/new) dan login dengan akun **angkatan44smaness@gmail.com** (Username: `NEVASTRA`).
-2. Beri nama repository: **`pendataan-angkatan-2026`**, pilih **Public**, lalu klik **Create repository**.
-3. Di folder `C:\Users\ACER\OneDrive\ANGKATAN\web pendataan`, klik dua kali file **`Upload ke GitHub Angkatan.bat`**.
-4. Selesai! Web akan terunggah ke repositori `https://github.com/NEVASTRA/pendataan-angkatan-2026`.
+## 📁 Panduan Pemasangan Google Drive (Google Apps Script)
+1. Buka [https://script.google.com](https://script.google.com) dengan akun Google Anda.
+2. Klik **New project**.
+3. Buka berkas `google-drive-script.gs` di folder ini, salin seluruh isinya dan tempel ke editor script.
+4. (Opsional) Masukkan ID folder Google Drive pada variabel `FOLDER_ID`. Jika dibiarkan kosong, foto otomatis disimpan di root Google Drive.
+5. Klik tombol **Deploy** > **New deployment** > pilih jenis **Web app**.
+   - *Execute as*: **Me**
+   - *Who has access*: **Anyone**
+6. Klik **Deploy**, izinkan akses akun (Review permissions > Advanced > Go to ... > Allow).
+7. Salin **Web app URL** (berakhiran `/exec`), buka `admin.html`, tempel di kotak "Pengaturan Penyimpanan Foto Google Drive", lalu klik **Simpan Pengaturan**.

@@ -1,4 +1,4 @@
-// Koneksi Database Firebase REST API (Bekerja di file:// dan https:// tanpa masalah CORS)
+// Koneksi Database Firebase REST API & Google Drive Integration
 const DB_BASE_URL = "https://nevastra-default-rtdb.asia-southeast1.firebasedatabase.app";
 
 window.NevastraDB = {
@@ -84,5 +84,66 @@ window.NevastraDB = {
         } catch(e) {
             console.warn("Delete error:", e);
         }
+    },
+
+    // --- Google Drive Config & Upload ---
+    async getDriveConfig() {
+        try {
+            const url = `${DB_BASE_URL}/settings/driveConfig.json?t=${Date.now()}`;
+            const res = await fetch(url);
+            if (res.ok) {
+                const val = await res.json();
+                if (val && typeof val === 'object' && val.scriptUrl) {
+                    try { localStorage.setItem('nevastra_driveConfig', JSON.stringify(val)); } catch(e){}
+                    return val;
+                }
+            }
+        } catch(e) {}
+
+        // Local storage fallback
+        try {
+            const local = localStorage.getItem('nevastra_driveConfig');
+            if (local) return JSON.parse(local);
+        } catch(e) {}
+
+        return { scriptUrl: '', folderId: '', folderUrl: '' };
+    },
+
+    async saveDriveConfig(config) {
+        try {
+            localStorage.setItem('nevastra_driveConfig', JSON.stringify(config));
+        } catch(e) {}
+
+        try {
+            const url = `${DB_BASE_URL}/settings/driveConfig.json`;
+            await fetch(url, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(config)
+            });
+            return true;
+        } catch(e) {
+            console.warn("Error saving drive config:", e);
+            return false;
+        }
+    },
+
+    async uploadFotoToDrive(scriptUrl, payload) {
+        if (!scriptUrl) {
+            throw new Error("URL Google Apps Script belum diisi di sistem.");
+        }
+
+        // Gunakan text/plain untuk melewati batasan CORS preflight OPTIONS pada Google Apps Script
+        const res = await fetch(scriptUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+        });
+
+        const json = await res.json();
+        if (json.status !== 'success') {
+            throw new Error(json.message || "Gagal mengunggah foto ke Google Drive.");
+        }
+        return json;
     }
 };
