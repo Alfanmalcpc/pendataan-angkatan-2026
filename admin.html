@@ -45,7 +45,13 @@
             </a>
             <div class="nav-links">
                 <a href="index.html" target="_blank" class="btn btn-outline btn-sm">
-                    👁️ Lihat Portal Siswa
+                    👁️ Portal Siswa
+                </a>
+                <a href="links.html" class="btn btn-outline btn-sm">
+                    🔗 Link Kelas
+                </a>
+                <a href="rekap.html" class="btn btn-outline btn-sm">
+                    📊 Rekapitulasi
                 </a>
             </div>
         </div>
@@ -56,7 +62,7 @@
             <div class="hero-content">
                 <span class="hero-badge">⚡ DASHBOARD PANITIA ANGKATAN</span>
                 <h2 class="hero-title">Rekapitulasi Data Siswa per Kelas</h2>
-                <p class="hero-subtitle">Klik kelas di bawah ini untuk menampilkan link khusus halaman kelas tersebut serta melihat rekap data siswa secara lengkap per kelas.</p>
+                <p class="hero-subtitle">Pantau biodata seluruh siswa per kelas, bagikan link WhatsApp, dan unduh hasil rekap ke format resmi <code>BIODATA.xlsx</code>.</p>
             </div>
         </div>
 
@@ -81,7 +87,7 @@
             </div>
         </div>
 
-        <!-- LINK KOTAK KELAS YANG AKTIF (Muncul ketika klik kelas) -->
+        <!-- LINK KOTAK KELAS YANG AKTIF -->
         <div class="card" id="activeLinkBox" style="border: 2px solid var(--primary); background: #f8faff; margin-bottom: 20px; padding: 18px 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
                 <div>
@@ -155,69 +161,16 @@
                 </div>
             </div>
 
-                        <!-- Google Drive Settings Box -->
-            <div class="card" style="margin-bottom: 24px; border: 1.5px solid #bfdbfe; background: #eff6ff; padding: 18px 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.6rem;">📁</span>
-                        <div>
-                            <h3 style="font-size: 1.05rem; font-weight: 800; color: #1e40af; margin: 0;">Pengaturan Penyimpanan Foto Google Drive</h3>
-                            <p style="font-size: 0.8rem; color: #3b82f6; margin-top: 2px;">Foto yang diunggah siswa otomatis disimpan ke Google Drive Anda dengan format nama persis nama siswa.</p>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 8px;">
-                        <button type="button" id="btnToggleDriveGuide" class="btn btn-sm btn-outline" style="background: white; border-color: #93c5fd; color: #1d4ed8;">
-                            📖 Cara Pasang Google Drive (1 Menit)
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Input URL Script & Folder -->
-                <div style="display: grid; grid-template-columns: 2fr 1.5fr auto; gap: 10px; align-items: end;">
-                    <div>
-                        <label style="font-size: 0.78rem; font-weight: 700; color: #1e3a8a; display: block; margin-bottom: 4px;">
-                            URL Web App Google Apps Script:
-                        </label>
-                        <input type="text" id="inputDriveScriptUrl" class="form-control" style="font-size: 0.85rem; background: white;" placeholder="https://script.google.com/macros/s/.../exec">
-                    </div>
-                    <div>
-                        <label style="font-size: 0.78rem; font-weight: 700; color: #1e3a8a; display: block; margin-bottom: 4px;">
-                            Tautan Folder Google Drive Anda:
-                        </label>
-                        <input type="text" id="inputDriveFolderUrl" class="form-control" style="font-size: 0.85rem; background: white;" placeholder="https://drive.google.com/drive/folders/...">
-                    </div>
-                    <div>
-                        <button type="button" id="btnSaveDriveConfig" class="btn btn-sm btn-primary" style="padding: 10px 18px; background: #2563eb;">
-                            💾 Simpan Pengaturan
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Panduan Collapsible -->
-                <div id="driveGuideBox" style="display: none; margin-top: 14px; padding: 14px; background: white; border-radius: var(--radius-md); border: 1px solid #bfdbfe; font-size: 0.84rem; color: #1e293b;">
-                    <h4 style="font-weight: 800; color: #1e40af; margin-bottom: 8px;">🚀 Panduan 1 Menit Menghubungkan Google Drive Anda:</h4>
-                    <ol style="margin-left: 18px; line-height: 1.6;">
-                        <li>Buka <a href="https://script.google.com" target="_blank" style="color: #2563eb; font-weight: 700;">script.google.com</a> dengan akun Google Anda, lalu klik <strong>New project</strong>.</li>
-                        <li>Buka file <code>google-drive-script.gs</code> di folder web ini, salin seluruh kodenya, dan tempel di editor Google Script.</li>
-                        <li>(Opsional) Masukkan ID Folder Google Drive Anda pada <code>FOLDER_ID = "..."</code> di baris ke-21.</li>
-                        <li>Klik tombol biru <strong>Deploy</strong> (kanan atas) &gt; <strong>New deployment</strong>.</li>
-                        <li>Pilih type <strong>Web app</strong> (ikon bola dunia). Atur: <em>Execute as:</em> <strong>Me</strong>, dan <em>Who has access:</em> <strong>Anyone</strong>.</li>
-                        <li>Klik <strong>Deploy</strong>, izinkan akses akun (klik <em>Review permissions</em> &gt; <em>Advanced</em> &gt; <em>Go to (unsafe)</em> &gt; <em>Allow</em>).</li>
-                        <li>Salin <strong>Web app URL</strong> (berakhiran <code>/exec</code>) lalu tempelkan di kotak input di atas dan klik <strong>Simpan Pengaturan</strong>!</li>
-                    </ol>
-                </div>
-            </div>
-
             <!-- Action buttons -->
             <div class="admin-action-bar" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px;">
                 <button id="btnDownloadClassExcel" class="btn btn-primary btn-sm" style="background: #107c41;">
                     📥 Download Excel Kelas Ini (.xlsx)
                 </button>
-                <button id="btnCopyPendingList" class="btn btn-outline btn-sm" style="border-color: #ef4444; color: #dc2626;">
-                    📋 Salin Daftar Siswa yang Belum Mengisi
+                <button id="btnDownloadAllExcel" class="btn btn-outline btn-sm" style="border-color: #107c41; color: #107c41; font-weight: 700;">
+                    🌐 Download BIODATA.xlsx (Semua Kelas)
                 </button>
-                <button id="btnDownloadAllExcel" class="btn btn-outline btn-sm">
-                    🌐 Download Excel Semua Kelas (.xlsx)
+                <button id="btnCopyPendingList" class="btn btn-outline btn-sm" style="border-color: #ef4444; color: #dc2626;">
+                    📋 Salin Siswa Belum Mengisi
                 </button>
                 <button onclick="window.print()" class="btn btn-outline btn-sm">
                     🖨️ Cetak Rekap
@@ -234,7 +187,7 @@
                     </select>
                 </div>
                 <div>
-                    <input type="text" id="searchStudent" class="form-control" style="font-size: 0.85rem;" placeholder="Cari nama, nomor absen, atau kontak siswa...">
+                    <input type="text" id="searchStudent" class="form-control" style="font-size: 0.85rem;" placeholder="Cari nama, absen, no hp, IG, TikTok, atau quotes...">
                 </div>
             </div>
 
@@ -244,14 +197,16 @@
                     <thead>
                         <tr>
                             <th style="width: 45px;">Absen</th>
-                            <th>Profil & Nama Siswa</th>
+                            <th>Nama Resmi Siswa</th>
+                            <th>Nama di Buku</th>
                             <th>Status</th>
                             <th>TTL</th>
-                            <th>No. HP / WA</th>
+                            <th>Alamat</th>
+                            <th>No. HP / WA (Phone)</th>
                             <th>Instagram</th>
-                            <th>Tinggal Di</th>
-                            <th style="min-width: 170px;">Quotes</th>
-                            <th style="width: 85px;">Aksi</th>
+                            <th>TikTok</th>
+                            <th style="min-width: 150px;">Quotes (Max 5 Kata)</th>
+                            <th style="width: 65px;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="classTableBody">
@@ -272,18 +227,16 @@
 
             <div class="yearbook-card">
                 <div class="yb-header">
-                    <div class="yb-profile-frame" id="mProfileFrame" title="Foto Profil Siswa">
-                        <img id="mPhotoImg" class="yb-profile-img" src="" alt="Foto Profil" style="display:none;">
-                        <div id="mAvatar" class="yb-avatar-placeholder">?</div>
-                        <div class="yb-profile-badge">📸</div>
-                    </div>
+                    <div class="yb-avatar" id="mAvatar">?</div>
                     <div class="yb-meta">
                         <h4 class="yb-name" id="mName">Nama Siswa</h4>
                         <div class="yb-badge-row">
                             <span class="yb-badge" id="mKelas">KELAS</span>
                             <span class="yb-badge yb-badge-secondary" id="mAbsen">ABSEN -</span>
                         </div>
-                        <div class="yb-profile-sub" id="mSchoolSub">NEVASTRA • SMAN 1 SUMBERREJO</div>
+                        <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); margin-top: 5px; text-transform: uppercase;">
+                            NEVASTRA • SMAN 1 SUMBERREJO
+                        </div>
                     </div>
                 </div>
 
@@ -301,7 +254,7 @@
                     <div class="yb-info-item">
                         <div class="yb-info-icon">📱</div>
                         <div class="yb-info-content">
-                            <span class="yb-info-label">WhatsApp</span>
+                            <span class="yb-info-label">WhatsApp (Phone)</span>
                             <span id="mNoHp">-</span>
                         </div>
                     </div>
@@ -309,15 +262,23 @@
                     <div class="yb-info-item">
                         <div class="yb-info-icon">📸</div>
                         <div class="yb-info-content">
-                            <span class="yb-info-label">Instagram</span>
+                            <span class="yb-info-label">Instagram (IG)</span>
                             <span id="mIG">-</span>
+                        </div>
+                    </div>
+
+                    <div class="yb-info-item">
+                        <div class="yb-info-icon">🎵</div>
+                        <div class="yb-info-content">
+                            <span class="yb-info-label">TikTok</span>
+                            <span id="mTikTok">-</span>
                         </div>
                     </div>
 
                     <div class="yb-info-item">
                         <div class="yb-info-icon">📍</div>
                         <div class="yb-info-content">
-                            <span class="yb-info-label">Tinggal Di</span>
+                            <span class="yb-info-label">Tinggal Di (Alamat)</span>
                             <span id="mAlamat">-</span>
                         </div>
                     </div>
@@ -336,128 +297,139 @@
     </div>
 
     <!-- Toast Notification -->
-    <div id="toast" class="toast-notice">Berhasil disalin!</div>
+    <div id="toast" class="toast-notice">Tautan berhasil disalin!</div>
 
-    <!-- Footer -->
-    <footer>
-        <p><strong>NEVASTRA 2026</strong> • Panel Admin Buku Tahunan SMAN 1 Sumberrejo</p>
-        <p style="margin-top: 4px; font-size: 0.72rem; color: var(--text-light);">
-            Terintegrasi Realtime dengan Cloud Firebase
-        </p>
+    <footer class="app-footer">
+        <p><strong>NEVASTRA 2026</strong> • Panitia Buku Tahunan SMAN 1 Sumberrejo</p>
     </footer>
 
-    <!-- Scripts: standard non-module scripts so it works offline in file:// and online -->
+    <!-- Database and Student Data Scripts -->
     <script src="students-data.js"></script>
     <script src="db.js"></script>
     <script>
-        const defaultClasses = ["XII-1","XII-2","XII-3","XII-4","XII-5","XII-6","XII-7","XII-8","XII-9"];
         const rosterAll = window.studentRoster || {};
-        const classes = Object.keys(rosterAll).length > 0 ? Object.keys(rosterAll) : defaultClasses;
+        const classes = ['XII-1', 'XII-2', 'XII-3', 'XII-4', 'XII-5', 'XII-6', 'XII-7', 'XII-8', 'XII-9'];
 
-        let allBiodata = {};
         let activeClass = 'XII-1';
+        let allBiodata = {};
 
-        // Auto-detect Host URL
-        const currentUrl = window.location.href;
-        let baseDir = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
-        
-        // If file://, recommend online github pages or current dir
-        const adminHostUrl = document.getElementById('adminHostUrl');
-        if (currentUrl.startsWith('file://')) {
-            // Default to online GitHub Pages URL if opened locally
-            adminHostUrl.value = 'https://alfanmalcpc.github.io/pendataan-angkatan-2026/';
-        } else {
-            adminHostUrl.value = baseDir;
+        function cleanDisplayTTL(ttlStr) {
+            if (!ttlStr || ttlStr === '-') return '-';
+            const parts = ttlStr.split(',').map(p => p.trim()).filter(Boolean);
+            const unique = [];
+            for (let i = 0; i < parts.length; i++) {
+                if (!unique.includes(parts[i])) {
+                    unique.push(parts[i]);
+                }
+            }
+            return unique.join(', ') || ttlStr;
         }
 
-        // Render Tabs
+        // DOM Elements
         const classTabsBar = document.getElementById('classTabsBar');
+        const activeLinkBox = document.getElementById('activeLinkBox');
+        const activeClassTitle = document.getElementById('activeClassTitle');
+        const activeClassFileBadge = document.getElementById('activeClassFileBadge');
+        const activeClassUrlInput = document.getElementById('activeClassUrlInput');
+        const btnCopyActiveLink = document.getElementById('btnCopyActiveLink');
+        const btnCopyActiveWa = document.getElementById('btnCopyActiveWa');
+        const btnOpenActiveWa = document.getElementById('btnOpenActiveWa');
+        const btnVisitActiveLink = document.getElementById('btnVisitActiveLink');
+        const rekapSectionTitle = document.getElementById('rekapSectionTitle');
+        const rekapSubtitle = document.getElementById('rekapSubtitle');
+        const adminHostUrl = document.getElementById('adminHostUrl');
+
+        const currentUrl = window.location.href;
+        const baseDir = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
+        adminHostUrl.value = baseDir;
+
+        // Render Tabs
         function renderTabs() {
             classTabsBar.innerHTML = '';
 
-            classes.forEach(cls => {
+            classes.forEach(c => {
                 const btn = document.createElement('button');
-                btn.className = 'class-tab ' + (cls === activeClass ? 'active' : '');
-                
-                const total = (rosterAll[cls] && rosterAll[cls].length) || (cls === 'XII-6' || cls === 'XII-8' ? 35 : 36);
-                const filled = Object.keys(allBiodata[cls] || {}).length;
-
-                btn.innerHTML = '<span>Kelas ' + cls + '</span><span class="class-tab-badge">' + filled + '/' + total + '</span>';
-                btn.onclick = () => {
-                    activeClass = cls;
-                    renderTabs();
-                    updateActiveClassLink();
-                    renderClassRecap();
-                };
+                btn.className = `class-tab-btn ${activeClass === c ? 'active' : ''}`;
+                btn.textContent = `Kelas ${c}`;
+                btn.onclick = () => selectClass(c);
                 classTabsBar.appendChild(btn);
             });
 
-            // Tab for Semua Kelas
             const allBtn = document.createElement('button');
-            allBtn.className = 'class-tab ' + (activeClass === 'ALL' ? 'active' : '');
-            let totalAll = 0;
-            let filledAll = 0;
-            classes.forEach(c => {
-                totalAll += (rosterAll[c] && rosterAll[c].length) || (c === 'XII-6' || c === 'XII-8' ? 35 : 36);
-                filledAll += Object.keys(allBiodata[c] || {}).length;
-            });
-            allBtn.innerHTML = '<span>🌐 Semua Kelas</span><span class="class-tab-badge">' + filledAll + '/' + totalAll + '</span>';
-            allBtn.onclick = () => {
-                activeClass = 'ALL';
-                renderTabs();
-                updateActiveClassLink();
-                renderClassRecap();
-            };
+            allBtn.className = `class-tab-btn ${activeClass === 'ALL' ? 'active' : ''}`;
+            allBtn.style.fontWeight = '800';
+            allBtn.textContent = '🌐 Semua Kelas (1 s/d 9)';
+            allBtn.onclick = () => selectClass('ALL');
             classTabsBar.appendChild(allBtn);
-
-            document.getElementById('globalSummaryBadge').textContent = 'Total Angkatan: ' + filledAll + ' / ' + totalAll + ' Siswa (' + Math.round(filledAll/totalAll*100) + '%)';
         }
 
-        // Update Active Class Link Box
-        function updateActiveClassLink() {
-            const linkBox = document.getElementById('activeLinkBox');
-            if (activeClass === 'ALL') {
-                linkBox.style.display = 'none';
-                return;
-            }
-            linkBox.style.display = 'block';
+        function selectClass(c) {
+            activeClass = c;
+            renderTabs();
+            updateActiveClassLink();
+            renderClassRecap();
+        }
 
-            let base = adminHostUrl.value.trim() || baseDir;
+        function updateActiveClassLink() {
+            let base = adminHostUrl.value.trim();
+            if (!base) base = baseDir;
             if (!base.endsWith('/')) base += '/';
 
-            const classFile = activeClass.toLowerCase() + '.html';
-            const fullUrl = base + classFile;
-
-            document.getElementById('activeClassTitle').textContent = 'Halaman Siswa Kelas ' + activeClass;
-            document.getElementById('activeClassFileBadge').textContent = classFile;
-            document.getElementById('activeClassUrlInput').value = fullUrl;
-            document.getElementById('btnVisitActiveLink').href = classFile;
-
-            // Copy Link
-            document.getElementById('btnCopyActiveLink').onclick = () => {
-                navigator.clipboard.writeText(fullUrl).then(() => {
-                    showToast('Link Kelas ' + activeClass + ' berhasil disalin!');
-                });
-            };
-
-            // Copy WA Message
-            const waMsg = generateWaBroadcast(activeClass, fullUrl);
-            document.getElementById('btnCopyActiveWa').onclick = () => {
-                navigator.clipboard.writeText(waMsg).then(() => {
-                    showToast('Pesan broadcast WA Kelas ' + activeClass + ' berhasil disalin!');
-                });
-            };
-
-            // Direct WA Open
-            document.getElementById('btnOpenActiveWa').onclick = () => {
-                const waLink = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(waMsg);
-                window.open(waLink, '_blank');
-            };
+            if (activeClass === 'ALL') {
+                activeLinkBox.style.display = 'block';
+                activeClassTitle.textContent = 'Portal Utama Pilihan Kelas (Index)';
+                activeClassFileBadge.textContent = 'index.html';
+                const fullUrl = base + 'index.html';
+                activeClassUrlInput.value = fullUrl;
+                btnVisitActiveLink.href = fullUrl;
+                btnDownloadClassExcel.textContent = '📥 Download BIODATA.xlsx';
+            } else {
+                activeLinkBox.style.display = 'block';
+                activeClassTitle.textContent = `Halaman Siswa Kelas ${activeClass}`;
+                const filename = `${activeClass.toLowerCase()}.html`;
+                activeClassFileBadge.textContent = filename;
+                const fullUrl = base + filename;
+                activeClassUrlInput.value = fullUrl;
+                btnVisitActiveLink.href = fullUrl;
+                btnDownloadClassExcel.textContent = `📥 Download Excel Kelas ${activeClass} (.xlsx)`;
+            }
         }
 
-        function generateWaBroadcast(cls, url) {
-            return '*📢 PENGUMUMAN PENDATAAN BIODATA YEARBOOK NEVASTRA 2026 - KELAS ' + cls + ' 📢*\n\nHalo teman-teman *' + cls + '*, yuk segera lengkapi biodata dan quotes untuk buku tahunan angkatan kita melalui link khusus kelas kita di bawah ini:\n\n👉 ' + url + '\n\n*Langkah Pengisian:*\n1. Klik link di atas\n2. Pilih nomor absen dan nama kamu\n3. Lengkapi TTL, nomor WhatsApp, Instagram, alamat domisili, dan quotes terbaikmu! ✨\n\nData akan langsung masuk ke database panitia secara otomatis. Terima kasih semuanya! 🙏🎓';
+        function getShareText(targetClass) {
+            const base = adminHostUrl.value.trim() || baseDir;
+            const fullBase = base.endsWith('/') ? base : base + '/';
+            const url = targetClass === 'ALL' ? fullBase + 'index.html' : fullBase + targetClass.toLowerCase() + '.html';
+            const classLabel = targetClass === 'ALL' ? 'SELURUH KELAS XII' : `KELAS ${targetClass}`;
+
+            return `*📢 PENGISIAN BIODATA BUKU TAHUNAN NEVASTRA 2026 - ${classLabel}*
+
+` +
+                   `Halo teman-teman ${classLabel}! Mohon segera mengisi biodata pribadi untuk buku tahunan angkatan kita melalui link berikut:
+
+` +
+                   `👉 ${url}
+
+` +
+                   `Pastikan pilih nomor absen & namamu dengan benar yaa. Terima kasih! ✨🎓`;
         }
+
+        btnCopyActiveLink.onclick = () => {
+            navigator.clipboard.writeText(activeClassUrlInput.value).then(() => {
+                showToast('Link halaman siswa berhasil disalin!');
+            });
+        };
+
+        btnCopyActiveWa.onclick = () => {
+            const text = getShareText(activeClass);
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Pesan WhatsApp siap kirim berhasil disalin!');
+            });
+        };
+
+        btnOpenActiveWa.onclick = () => {
+            const text = getShareText(activeClass);
+            window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(text), '_blank');
+        };
 
         adminHostUrl.addEventListener('input', () => {
             updateActiveClassLink();
@@ -482,19 +454,16 @@
                         kelas: cls,
                         absen: stu.absen,
                         namaRoster: stu.nama,
-                        nama: saved ? saved.nama : stu.nama,
+                        nama: saved ? (saved.nama || stu.nama) : stu.nama,
                         isFilled: !!saved,
                         tempatLahir: saved ? (saved.tempatLahir || '') : '',
                         tanggalLahir: saved ? (saved.tanggalLahir || '') : '',
                         ttl: saved ? (saved.ttl || '') : '',
                         noHp: saved ? (saved.noHp || '') : '',
                         ig: saved ? (saved.ig || '') : '',
+                        tiktok: saved ? (saved.tiktok || '') : '',
                         tinggalDi: saved ? (saved.tinggalDi || '') : '',
                         quotes: saved ? (saved.quotes || '') : '',
-                        fotoNamaFile: saved ? (saved.fotoNamaFile || '') : '',
-                        fotoDriveUrl: saved ? (saved.fotoDriveUrl || '') : '',
-                        fotoDirectUrl: saved ? (saved.fotoDirectUrl || '') : '',
-                        fotoBase64: saved ? (saved.fotoBase64 || '') : '',
                         updatedAt: saved ? (saved.updatedAtFormatted || saved.updatedAt || '') : ''
                     });
                 });
@@ -515,112 +484,81 @@
                     const matchRoster = item.namaRoster.toLowerCase().includes(q);
                     const matchNama = item.nama.toLowerCase().includes(q);
                     const matchAbs = item.absen.toString().includes(q);
-                    const matchQuote = item.quotes.toLowerCase().includes(q);
-                    const matchIg = item.ig.toLowerCase().includes(q);
-                    const matchHp = item.noHp.includes(q);
-                    return matchRoster || matchNama || matchAbs || matchQuote || matchIg || matchHp;
+                    const matchQuote = (item.quotes || '').toLowerCase().includes(q);
+                    const matchIg = (item.ig || '').toLowerCase().includes(q);
+                    const matchTiktok = (item.tiktok || '').toLowerCase().includes(q);
+                    const matchAlamat = (item.tinggalDi || '').toLowerCase().includes(q);
+                    const matchHp = (item.noHp || '').includes(q);
+                    return matchRoster || matchNama || matchAbs || matchQuote || matchIg || matchTiktok || matchAlamat || matchHp;
                 }
 
                 return true;
             });
         }
 
-                function cleanDisplayTTL(ttlStr) {
-            if (!ttlStr || ttlStr === '-') return '-';
-            const parts = ttlStr.split(',').map(p => p.trim()).filter(Boolean);
-            const unique = [];
-            for (let i = 0; i < parts.length; i++) {
-                if (!unique.includes(parts[i])) {
-                    unique.push(parts[i]);
-                }
-            }
-            return unique.join(', ') || ttlStr;
-        }
-
         function renderClassRecap() {
             const fullList = getStudentList();
             const filteredList = filterList(fullList);
 
-            const total = fullList.length;
-            const filled = fullList.filter(s => s.isFilled).length;
-            const pending = total - filled;
-            const quotes = fullList.filter(s => s.quotes).length;
-            const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+            if (activeClass === 'ALL') {
+                rekapSectionTitle.innerHTML = '<svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg> Rekapitulasi Data Seluruh Angkatan (XII-1 s/d XII-9)';
+                rekapSubtitle.textContent = 'Menampilkan seluruh siswa dari 9 kelas angkatan 2026';
+            } else {
+                rekapSectionTitle.innerHTML = `<svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg> Rekapitulasi Data Siswa - Kelas ${activeClass}`;
+                rekapSubtitle.textContent = `Daftar resmi seluruh siswa kelas ${activeClass}`;
+            }
 
-            document.getElementById('rekapSectionTitle').innerHTML = 
-                '<svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/></svg> Rekapitulasi Data Siswa - ' + (activeClass === 'ALL' ? 'Semua Kelas (1 Angkatan)' : 'Kelas ' + activeClass);
-            
-            document.getElementById('rekapSubtitle').textContent = activeClass === 'ALL' 
-                ? 'Daftar seluruh siswa angkatan 2026 SMAN 1 Sumberrejo' 
-                : 'Daftar resmi siswa kelas ' + activeClass;
+            const totalStudents = fullList.length;
+            const filledCount = fullList.filter(s => s.isFilled).length;
+            const pendingCount = totalStudents - filledCount;
+            const pct = totalStudents > 0 ? Math.round((filledCount / totalStudents) * 100) : 0;
+            const quotesCount = fullList.filter(s => s.quotes && s.quotes.trim() !== '').length;
 
-            document.getElementById('statTotalStudents').textContent = total;
-            document.getElementById('statFilledCount').textContent = filled;
-            document.getElementById('statFilledPct').textContent = pct + '% Selesai';
-            document.getElementById('statPendingCount').textContent = pending;
-            document.getElementById('statQuotesCount').textContent = quotes;
+            document.getElementById('statTotalStudents').textContent = totalStudents;
+            document.getElementById('statFilledCount').textContent = filledCount;
+            document.getElementById('statFilledPct').textContent = `${pct}% Selesai`;
+            document.getElementById('statPendingCount').textContent = pendingCount;
+            document.getElementById('statQuotesCount').textContent = quotesCount;
 
-            document.getElementById('btnDownloadClassExcel').textContent = activeClass === 'ALL' 
-                ? '📥 Download Excel Semua Kelas (.xlsx)' 
-                : '📥 Download Excel Kelas ' + activeClass + ' (.xlsx)';
+            let globalTotal = 0;
+            let globalFilled = 0;
+            classes.forEach(c => {
+                const r = rosterAll[c] || [];
+                globalTotal += r.length;
+                const d = allBiodata[c] || {};
+                globalFilled += Object.keys(d).length;
+            });
+            document.getElementById('globalSummaryBadge').textContent = `Total Angkatan: ${globalFilled} / ${globalTotal} Siswa`;
 
-            // Render Table
             classTableBody.innerHTML = '';
-
             if (filteredList.length === 0) {
-                classTableBody.innerHTML = 
-                    '<tr><td colspan="10" style="text-align: center; padding: 24px; color: var(--text-muted);">Tidak ada data siswa yang cocok dengan pencarian.</td></tr>';
+                classTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="11" style="text-align: center; padding: 30px; color: var(--text-muted);">
+                            Tidak ada data siswa yang cocok dengan filter.
+                        </td>
+                    </tr>
+                `;
                 return;
             }
 
             filteredList.forEach(item => {
                 const tr = document.createElement('tr');
 
-                const waClean = item.noHp.replace(/\D/g, '');
+                const waClean = (item.noHp || '').replace(/\D/g, '');
                 const waLink = waClean ? 'https://wa.me/' + (waClean.startsWith('0') ? '62' + waClean.slice(1) : waClean) : null;
-                const cleanIg = item.ig.replace('@', '');
+                const cleanIg = (item.ig || '').replace(/^@+/, '').trim();
                 const igLink = cleanIg ? 'https://instagram.com/' + cleanIg : null;
+                const cleanTiktok = (item.tiktok || '').replace(/^@+/, '').trim();
+                const tiktokLink = (cleanTiktok && cleanTiktok !== '-') ? 'https://tiktok.com/@' + cleanTiktok : null;
 
                 const padded = item.absen < 10 ? '0' + item.absen : '' + item.absen;
 
-                const fotoSrc = item.fotoDirectUrl || item.fotoDriveUrl || item.fotoBase64;
-                let fotoCell = '';
-                if (fotoSrc) {
-                    const escName = (item.nama || '').replace(/'/g, "\\'");
-                    fotoCell = `
-                        <div class="table-foto-cell">
-                            <img src="${fotoSrc}" class="table-foto-thumb" title="Klik untuk memperbesar foto" onclick="openPhotoModal('${escName}', '${item.kelas}', ${item.absen}, '${fotoSrc}', '${item.fotoDriveUrl || ''}')">
-                            ${item.fotoDriveUrl ? `<a href="${item.fotoDriveUrl}" target="_blank" class="btn-drive-link" title="Buka di Google Drive">📁 Drive</a>` : ''}
-                        </div>
-                    `;
-                } else {
-                    fotoCell = `<div class="table-foto-no-img" title="Belum ada foto">📷</div>`;
-                }
-
-                const escName = (item.nama || item.namaRoster || '').replace(/'/g, "\\'");
                 tr.innerHTML = `
                     <td><strong>${activeClass === 'ALL' ? item.kelas + '-' : ''}${padded}</strong></td>
-                    <td style="min-width: 220px;">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div class="table-avatar-wrapper">
-                                ${fotoSrc 
-                                    ? `<img src="${fotoSrc}" class="table-foto-thumb" title="Klik untuk memperbesar foto profil" onclick="openPhotoModal('${escName}', '${item.kelas}', ${item.absen}, '${fotoSrc}', '${item.fotoDriveUrl || ''}')">` 
-                                    : `<div class="table-foto-no-img" title="Belum ada foto">${item.namaRoster ? item.namaRoster.charAt(0) : '?'}</div>`
-                                }
-                            </div>
-                            <div>
-                                <div style="font-weight: 700; color: var(--dark); font-size: 0.92rem; line-height: 1.25;">
-                                    ${item.namaRoster}
-                                </div>
-                                ${item.isFilled && item.nama && item.nama !== item.namaRoster 
-                                    ? `<div style="font-size: 0.76rem; color: var(--primary); font-weight: 600; margin-top: 2px;">di buku: ${item.nama}</div>` 
-                                    : ''}
-                                ${item.fotoDriveUrl 
-                                    ? `<a href="${item.fotoDriveUrl}" target="_blank" class="btn-drive-link" style="font-size: 0.68rem; padding: 2px 7px; margin-top: 4px;" title="Buka berkas di Google Drive">📁 Drive</a>` 
-                                    : (item.fotoBase64 ? `<span style="font-size: 0.68rem; color: #64748b; display:inline-block; margin-top:2px;">(Tersimpan Cloud)</span>` : '')
-                                }
-                            </div>
-                        </div>
+                    <td><strong>${item.namaRoster}</strong></td>
+                    <td style="color: ${item.nama !== item.namaRoster ? 'var(--primary)' : 'inherit'}; font-weight: ${item.nama !== item.namaRoster ? '600' : 'normal'};">
+                        ${item.isFilled ? item.nama : '<span style="color: var(--text-muted);">-</span>'}
                     </td>
                     <td>
                         <span class="badge-status ${item.isFilled ? 'done' : 'pending'}">
@@ -628,13 +566,16 @@
                         </span>
                     </td>
                     <td>${cleanDisplayTTL(item.ttl)}</td>
+                    <td style="max-width: 200px;">${item.tinggalDi || '-'}</td>
                     <td>
                         ${waLink ? '<a href="' + waLink + '" target="_blank" style="color: #10b981; font-weight:600; text-decoration:none;">' + item.noHp + '</a>' : '-'}
                     </td>
                     <td>
-                        ${igLink ? '<a href="' + igLink + '" target="_blank" style="color: var(--primary); font-weight:600; text-decoration:none;">@' + cleanIg + '</a>' : '-'}
+                        ${igLink ? '<a href="' + igLink + '" target="_blank" style="color: var(--primary); font-weight:600; text-decoration:none;">' + cleanIg + '</a>' : (cleanIg || '-')}
                     </td>
-                    <td>${item.tinggalDi || '-'}</td>
+                    <td>
+                        ${tiktokLink ? '<a href="' + tiktokLink + '" target="_blank" style="color: #000; font-weight:600; text-decoration:none;">' + cleanTiktok + '</a>' : (cleanTiktok || '-')}
+                    </td>
                     <td style="font-style: italic; max-width: 220px;">
                         ${item.quotes ? '“' + item.quotes + '”' : '-'}
                     </td>
@@ -647,7 +588,6 @@
                 classTableBody.appendChild(tr);
             });
 
-            // Bind click to open detail modal
             document.querySelectorAll('.btn-view-modal').forEach(btn => {
                 btn.onclick = () => {
                     const c = btn.getAttribute('data-kelas');
@@ -668,108 +608,91 @@
             }
 
             const targetLabel = activeClass === 'ALL' ? 'SELURUH ANGKATAN' : 'KELAS ' + activeClass;
-            let text = '*📢 DAFTAR SISWA ' + targetLabel + ' YANG BELUM MENGISI BIODATA YEARBOOK:*\n\n';
+            let text = '*📢 DAFTAR SISWA ' + targetLabel + ' YANG BELUM MENGISI BIODATA YEARBOOK:*
+
+';
 
             pendingList.forEach((s, idx) => {
                 const padded = s.absen < 10 ? '0' + s.absen : '' + s.absen;
-                text += (idx + 1) + '. [' + s.kelas + '] Absen ' + padded + ' - ' + s.namaRoster + '\n';
+                text += (idx + 1) + '. [' + s.kelas + '] Absen ' + padded + ' - ' + s.namaRoster + '
+';
             });
 
             let base = adminHostUrl.value.trim() || baseDir;
             if (!base.endsWith('/')) base += '/';
             const classLink = activeClass !== 'ALL' ? base + activeClass.toLowerCase() + '.html' : base + 'index.html';
 
-            text += '\nTotal: *' + pendingList.length + ' siswa* belum mengisi.\nYuk segera klik link berikut untuk mengisi data: 👇\n' + classLink + '\n\nTerima kasih! ✨';
+            text += '
+Total: *' + pendingList.length + ' siswa* belum mengisi.
+Yuk segera klik link berikut untuk mengisi data: 👇
+' + classLink + '
+
+Terima kasih! ✨';
 
             navigator.clipboard.writeText(text).then(() => {
                 showToast('Daftar ' + pendingList.length + ' siswa yang belum mengisi berhasil disalin!');
             });
         };
 
-        // Export to Excel
-        function exportExcel(listToExport, filename) {
-            if (listToExport.length === 0) {
-                alert('Tidak ada data untuk diekspor.');
-                return;
-            }
-
-            const rows = listToExport.map((item, idx) => ({
-                'No': idx + 1,
-                'Kelas': item.kelas,
-                'Nomor Absen': item.absen,
-                'Nama Resmi Siswa': item.namaRoster,
-                'Nama untuk Buku Tahunan': item.nama,
-                'Status Pengisian': item.isFilled ? 'Sudah Mengisi' : 'Belum Mengisi',
-                'Tempat Lahir': item.tempatLahir,
-                'Tanggal Lahir': item.tanggalLahir,
-                'TTL Lengkap': item.ttl,
-                'No. HP / WhatsApp': item.noHp,
-                'Instagram': item.ig,
-                'Tinggal Di / Alamat': item.tinggalDi,
-                'Quotes Buku Tahunan': item.quotes,
-                'Nama File Foto': item.fotoNamaFile || (item.nama ? item.nama + '.jpg' : '-'),
-                'Tautan Foto Google Drive': item.fotoDriveUrl || (item.fotoBase64 ? 'Tersimpan di Cloud Database' : 'Belum Ada Foto'),
-                'Waktu Pengisian': item.updatedAt
-            }));
-
-            const worksheet = XLSX.utils.json_to_sheet(rows);
+        // ==========================================
+        // EXCEL EXPORT: EXACT BIODATA.xlsx FORMAT
+        // ==========================================
+        function exportBiodataExcel(targetClass = 'ALL') {
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'Rekap Biodata');
+            const classesToExport = targetClass === 'ALL' 
+                ? classes 
+                : [targetClass];
 
-            worksheet['!cols'] = [
-                { wch: 6 },  // No
-                { wch: 10 }, // Kelas
-                { wch: 12 }, // Absen
-                { wch: 32 }, // Nama Resmi
-                { wch: 32 }, // Nama Buku
-                { wch: 16 }, // Status
-                { wch: 18 }, // Tempat Lahir
-                { wch: 14 }, // Tanggal Lahir
-                { wch: 28 }, // TTL
-                { wch: 18 }, // No HP
-                { wch: 18 }, // IG
-                { wch: 36 }, // Alamat
-                { wch: 45 }, // Quotes
-                { wch: 22 }  // Waktu
-            ];
+            classesToExport.forEach(cls => {
+                const sheetName = cls.replace('-', ' '); // "XII 1", "XII 2", etc.
+                const roster = rosterAll[cls] || [];
+                const classSaved = allBiodata[cls] || {};
 
+                const aoa = [
+                    ["NO", "NAMA", "TTL", "ALAMAT", "PHONE", "IG", "TIKTOK", "QUOTES (MAX 5 KATA)"],
+                    ["EX:", "Rafathar Malik Ahmad", "Jakarta, 15 Agustus 2015", "(TULIS ALAMAT SESINGKAT MUNGKIN YAA..)", "08123456789", "Rafathar2015", "Rafathar_", "Setiap pertemuan pasti ada perpisahan"]
+                ];
+
+                roster.forEach(stu => {
+                    const saved = classSaved[stu.absen];
+                    const no = stu.absen;
+                    const nama = saved ? (saved.nama || stu.nama) : stu.nama;
+                    const ttl = saved ? cleanDisplayTTL(saved.ttl) : "";
+                    const alamat = saved ? (saved.tinggalDi || "") : "";
+                    const phone = saved ? (saved.noHp || "") : "";
+                    const ig = saved ? (saved.ig || "").replace(/^@+/, "").trim() : "";
+                    const tiktok = saved ? (saved.tiktok || "").replace(/^@+/, "").trim() : "";
+                    const quotes = saved ? (saved.quotes || "").trim() : "";
+
+                    aoa.push([no, nama, ttl, alamat, phone, ig, tiktok, quotes]);
+                });
+
+                const ws = XLSX.utils.aoa_to_sheet(aoa);
+                ws['!cols'] = [
+                    { wch: 6 },   // NO
+                    { wch: 30 },  // NAMA
+                    { wch: 25 },  // TTL
+                    { wch: 42 },  // ALAMAT
+                    { wch: 18 },  // PHONE
+                    { wch: 20 },  // IG
+                    { wch: 20 },  // TIKTOK
+                    { wch: 52 }   // QUOTES (MAX 5 KATA)
+                ];
+
+                XLSX.utils.book_append_sheet(workbook, ws, sheetName);
+            });
+
+            const filename = targetClass === 'ALL' ? 'BIODATA.xlsx' : `BIODATA_${targetClass}.xlsx`;
             XLSX.writeFile(workbook, filename);
-            showToast('File Excel berhasil diunduh!');
+            showToast(`File ${filename} berhasil diunduh!`);
         }
 
         document.getElementById('btnDownloadClassExcel').onclick = () => {
-            const list = filterList(getStudentList());
-            const filename = activeClass === 'ALL' 
-                ? 'Rekap_Biodata_Yearbook_Semua_Kelas.xlsx' 
-                : 'Rekap_Biodata_Yearbook_Kelas_' + activeClass + '.xlsx';
-            exportExcel(list, filename);
+            exportBiodataExcel(activeClass);
         };
 
         document.getElementById('btnDownloadAllExcel').onclick = () => {
-            const allTarget = [];
-            classes.forEach(cls => {
-                const roster = rosterAll[cls] || [];
-                const classSaved = allBiodata[cls] || {};
-                roster.forEach(stu => {
-                    const saved = classSaved[stu.absen];
-                    allTarget.push({
-                        kelas: cls,
-                        absen: stu.absen,
-                        namaRoster: stu.nama,
-                        nama: saved ? saved.nama : stu.nama,
-                        isFilled: !!saved,
-                        tempatLahir: saved ? (saved.tempatLahir || '') : '',
-                        tanggalLahir: saved ? (saved.tanggalLahir || '') : '',
-                        ttl: saved ? (saved.ttl || '') : '',
-                        noHp: saved ? (saved.noHp || '') : '',
-                        ig: saved ? (saved.ig || '') : '',
-                        tinggalDi: saved ? (saved.tinggalDi || '') : '',
-                        quotes: saved ? (saved.quotes || '') : '',
-                        updatedAt: saved ? (saved.updatedAtFormatted || saved.updatedAt || '') : ''
-                    });
-                });
-            });
-            exportExcel(allTarget, 'Rekap_Biodata_Yearbook_Nevastra_2026_Seluruh_Angkatan.xlsx');
+            exportBiodataExcel('ALL');
         };
 
         filterStatus.addEventListener('change', renderClassRecap);
@@ -781,36 +704,24 @@
             currentModalTarget = { kelas: cls, absen: abs };
             const saved = (allBiodata[cls] && allBiodata[cls][abs]) ? allBiodata[cls][abs] : null;
             const stuRoster = (rosterAll[cls] || []).find(s => s.absen == abs);
-            const nama = saved ? saved.nama : (stuRoster ? stuRoster.nama : 'Nama Siswa');
+            const nama = saved ? (saved.nama || stuRoster.nama) : (stuRoster ? stuRoster.nama : 'Nama Siswa');
 
             document.getElementById('mName').textContent = nama;
             document.getElementById('mKelas').textContent = 'KELAS ' + cls;
             document.getElementById('mAbsen').textContent = 'ABSEN ' + abs;
 
             const initials = nama.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
-            const mAvatar = document.getElementById('mAvatar');
-            const mPhotoImg = document.getElementById('mPhotoImg');
-            const fotoSrc = saved ? (saved.fotoDirectUrl || saved.fotoDriveUrl || saved.fotoBase64) : null;
-            if (mPhotoImg && mAvatar) {
-                if (fotoSrc) {
-                    mPhotoImg.src = fotoSrc;
-                    mPhotoImg.style.display = 'block';
-                    mAvatar.style.display = 'none';
-                } else {
-                    mPhotoImg.src = '';
-                    mPhotoImg.style.display = 'none';
-                    mAvatar.style.display = 'flex';
-                    mAvatar.textContent = initials;
-                }
-            }
+            document.getElementById('mAvatar').textContent = initials;
 
             document.getElementById('mTTL').textContent = saved ? cleanDisplayTTL(saved.ttl) : '-';
             document.getElementById('mNoHp').textContent = saved ? (saved.noHp || '-') : '-';
-            document.getElementById('mIG').textContent = saved ? (saved.ig || '-') : '-';
+            document.getElementById('mIG').textContent = saved ? (saved.ig ? (saved.ig.replace(/^@+/, '')) : '-') : '-';
+            const elTikTok = document.getElementById('mTikTok');
+            if (elTikTok) elTikTok.textContent = saved ? (saved.tiktok ? (saved.tiktok.replace(/^@+/, '')) : '-') : '-';
             document.getElementById('mAlamat').textContent = saved ? (saved.tinggalDi || '-') : '-';
             document.getElementById('mQuotes').textContent = saved ? (saved.quotes || 'Belum mengisi quotes.') : 'Belum mengisi biodata.';
 
-            document.getElementById('btnOpenFormDirect').href = cls.toLowerCase() + '.html';
+            document.getElementById('btnOpenFormDirect').href = cls.toLowerCase() + '.html?absen=' + abs;
             document.getElementById('btnDeleteStudentData').style.display = saved ? 'inline-block' : 'none';
 
             document.getElementById('studentDetailModal').classList.add('show');
@@ -820,145 +731,49 @@
             document.getElementById('studentDetailModal').classList.remove('show');
         };
 
+        document.getElementById('studentDetailModal').onclick = (e) => {
+            if (e.target.id === 'studentDetailModal') {
+                document.getElementById('studentDetailModal').classList.remove('show');
+            }
+        };
+
+        // Hapus Data Siswa
         document.getElementById('btnDeleteStudentData').onclick = async () => {
             if (!currentModalTarget) return;
-            const conf = confirm('Apakah Anda yakin ingin menghapus data isian untuk Kelas ' + currentModalTarget.kelas + ' Absen ' + currentModalTarget.absen + '?');
-            if (conf) {
-                try {
-                    if (window.NevastraDB) {
-                        await window.NevastraDB.deleteBiodata(currentModalTarget.kelas, currentModalTarget.absen);
-                    }
-                    delete allBiodata[currentModalTarget.kelas][currentModalTarget.absen];
-                    document.getElementById('studentDetailModal').classList.remove('show');
-                    showToast('Data biodata berhasil dihapus.');
-                    renderTabs();
-                    renderClassRecap();
-                } catch (e) {
-                    alert('Gagal menghapus data: ' + e.message);
+            const { kelas, absen } = currentModalTarget;
+
+            if (confirm(`Apakah Anda yakin ingin menghapus data biodata siswa Kelas ${kelas} Absen ${absen}? Data yang dihapus tidak dapat dikembalikan.`)) {
+                await window.NevastraDB.deleteBiodata(kelas, absen);
+                if (allBiodata[kelas] && allBiodata[kelas][absen]) {
+                    delete allBiodata[kelas][absen];
                 }
+                document.getElementById('studentDetailModal').classList.remove('show');
+                renderClassRecap();
+                showToast(`Data Kelas ${kelas} Absen ${absen} berhasil dihapus.`);
             }
         };
-
-        // Load Realtime Data
-        async function fetchAdminData() {
-            if (!window.NevastraDB) return;
-            allBiodata = await window.NevastraDB.getAllBiodata();
-            renderTabs();
-            updateActiveClassLink();
-            renderClassRecap();
-        }
-
-        
-        // --- Google Drive Config & Photo Viewer Logic ---
-        const inputDriveScriptUrl = document.getElementById('inputDriveScriptUrl');
-        const inputDriveFolderUrl = document.getElementById('inputDriveFolderUrl');
-        const btnSaveDriveConfig = document.getElementById('btnSaveDriveConfig');
-        const btnToggleDriveGuide = document.getElementById('btnToggleDriveGuide');
-        const driveGuideBox = document.getElementById('driveGuideBox');
-
-        btnToggleDriveGuide.onclick = () => {
-            const isShown = driveGuideBox.style.display === 'block';
-            driveGuideBox.style.display = isShown ? 'none' : 'block';
-            btnToggleDriveGuide.textContent = isShown ? '📖 Cara Pasang Google Drive (1 Menit)' : '✕ Tutup Panduan';
-        };
-
-        async function loadDriveConfig() {
-            if (!window.NevastraDB) return;
-            const config = await window.NevastraDB.getDriveConfig();
-            if (config) {
-                if (config.scriptUrl) inputDriveScriptUrl.value = config.scriptUrl;
-                if (config.folderUrl) inputDriveFolderUrl.value = config.folderUrl;
-            }
-        }
-
-        btnSaveDriveConfig.onclick = async () => {
-            const scriptUrl = inputDriveScriptUrl.value.trim();
-            const folderUrl = inputDriveFolderUrl.value.trim();
-
-            btnSaveDriveConfig.disabled = true;
-            btnSaveDriveConfig.textContent = 'Menyimpan...';
-
-            if (window.NevastraDB) {
-                const ok = await window.NevastraDB.saveDriveConfig({ scriptUrl, folderUrl });
-                if (ok) {
-                    showToast('Pengaturan Google Drive berhasil disimpan!');
-                } else {
-                    showToast('Gagal menyimpan pengaturan ke database.');
-                }
-            }
-
-            btnSaveDriveConfig.disabled = false;
-            btnSaveDriveConfig.textContent = '💾 Simpan Pengaturan';
-        };
-
-        // Photo Modal Functions
-        function openPhotoModal(name, kelas, absen, src, driveUrl) {
-            document.getElementById('pvStudentName').textContent = name;
-            document.getElementById('pvStudentMeta').textContent = `Kelas ${kelas} • Absen ${String(absen).padStart(2, '0')}`;
-            document.getElementById('pvPhotoImg').src = src;
-
-            const driveBtn = document.getElementById('pvDriveBtn');
-            if (driveUrl) {
-                driveBtn.href = driveUrl;
-                driveBtn.style.display = 'inline-flex';
-            } else {
-                driveBtn.style.display = 'none';
-            }
-
-            document.getElementById('photoViewerModal').classList.add('show');
-        }
-
-        document.getElementById('btnClosePhotoModal').onclick = () => {
-            document.getElementById('photoViewerModal').classList.remove('show');
-        };
-
-        document.getElementById('photoViewerModal').onclick = (e) => {
-            if (e.target.id === 'photoViewerModal') {
-                document.getElementById('photoViewerModal').classList.remove('show');
-            }
-        };
-
-        loadDriveConfig();
-
-        // Initial render immediately from roster
-        renderTabs();
-        updateActiveClassLink();
-        renderClassRecap();
-
-        // Then fetch remote updates
-        fetchAdminData();
-        setInterval(fetchAdminData, 10000);
 
         function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
+
+        // Realtime Data Sync
+        async function syncData() {
+            try {
+                allBiodata = await window.NevastraDB.getAllBiodata();
+                renderClassRecap();
+            } catch(e) {
+                console.warn("Gagal memuat data:", e);
+            }
+        }
+
+        renderTabs();
+        updateActiveClassLink();
+        syncData();
+        setInterval(syncData, 15000);
     </script>
-
-    <!-- Modal Viewer Foto Siswa -->
-    <div id="photoViewerModal" class="photo-modal-overlay">
-        <div class="photo-modal-card">
-            <div style="position: absolute; top: 12px; right: 12px; z-index: 10;">
-                <button id="btnClosePhotoModal" class="btn-remove-mini" style="background: rgba(0,0,0,0.6); color: white;">✕</button>
-            </div>
-            <img id="pvPhotoImg" class="photo-modal-img" src="" alt="Foto Siswa">
-            <div class="photo-modal-body">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                    <div>
-                        <h4 id="pvStudentName" class="photo-modal-name">Nama Siswa</h4>
-                        <p id="pvStudentMeta" class="photo-modal-meta">Kelas XII-1 • Absen 01</p>
-                    </div>
-                    <a id="pvDriveBtn" href="#" target="_blank" class="btn btn-sm btn-primary" style="display: none; background: #0284c7;">
-                        📁 Buka File di Google Drive
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </body>
 </html>
