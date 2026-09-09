@@ -525,6 +525,18 @@
             });
         }
 
+                function cleanDisplayTTL(ttlStr) {
+            if (!ttlStr || ttlStr === '-') return '-';
+            const parts = ttlStr.split(',').map(p => p.trim()).filter(Boolean);
+            const unique = [];
+            for (let i = 0; i < parts.length; i++) {
+                if (!unique.includes(parts[i])) {
+                    unique.push(parts[i]);
+                }
+            }
+            return unique.join(', ') || ttlStr;
+        }
+
         function renderClassRecap() {
             const fullList = getStudentList();
             const filteredList = filterList(fullList);
@@ -615,7 +627,7 @@
                             ${item.isFilled ? '✓ Terisi' : '⏳ Belum'}
                         </span>
                     </td>
-                    <td>${item.ttl || '-'}</td>
+                    <td>${cleanDisplayTTL(item.ttl)}</td>
                     <td>
                         ${waLink ? '<a href="' + waLink + '" target="_blank" style="color: #10b981; font-weight:600; text-decoration:none;">' + item.noHp + '</a>' : '-'}
                     </td>
@@ -792,7 +804,7 @@
                 }
             }
 
-            document.getElementById('mTTL').textContent = saved ? (saved.ttl || '-') : '-';
+            document.getElementById('mTTL').textContent = saved ? cleanDisplayTTL(saved.ttl) : '-';
             document.getElementById('mNoHp').textContent = saved ? (saved.noHp || '-') : '-';
             document.getElementById('mIG').textContent = saved ? (saved.ig || '-') : '-';
             document.getElementById('mAlamat').textContent = saved ? (saved.tinggalDi || '-') : '-';

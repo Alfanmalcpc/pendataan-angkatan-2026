@@ -115,11 +115,12 @@
 
                     <!-- 5. TTL (Tempat, Tanggal Lahir) -->
                     <div class="form-group">
-                        <label>Tempat, Tanggal Lahir (TTL) <span class="req">*</span></label>
+                        <label>Tempat & Tanggal Lahir (TTL) <span class="req">*</span></label>
                         <div class="form-row">
-                            <input type="text" id="inputTempatLahir" class="form-control" required placeholder="Tempat Lahir (contoh: Bojonegoro)">
+                            <input type="text" id="inputTempatLahir" class="form-control" required placeholder="Kota Kelahiran saja (contoh: Bojonegoro)">
                             <input type="date" id="inputTanggalLahir" class="form-control" required>
                         </div>
+                        <span class="tip">Isi hanya nama kota kelahiran saja di kolom pertama (contoh: Bojonegoro), tanggal dipilih di kolom kedua agar tidak duplikat.</span>
                     </div>
 
                     <!-- 6. No HP / WhatsApp -->
@@ -146,17 +147,17 @@
                         <textarea id="inputAlamat" class="form-control" rows="2" required placeholder="Contoh: Ds. Sumberrejo, RT 03/RW 02, Kec. Sumberrejo, Bojonegoro"></textarea>
                     </div>
 
-                    <!-- 9. Quotes Yearbook -->
+                    <!-- 9. Quotes Yearbook (Maksimal 5 Kata) -->
                     <div class="form-group">
-                        <label for="inputQuotes">Kata-kata / Quotes Buku Tahunan <span class="req">*</span></label>
-                        <textarea id="inputQuotes" class="form-control" rows="3" maxlength="220" required placeholder="Tuliskan quotes terbaikmu, pesan kenangan, atau motto hidup untuk buku tahunan..."></textarea>
-                        <div class="char-counter"><span id="charCount">0</span>/220 karakter</div>
+                        <label for="inputQuotes">Kata-kata / Quotes Buku Tahunan (Maksimal 5 Kata) <span class="req">*</span></label>
+                        <textarea id="inputQuotes" class="form-control" rows="2" required placeholder="Tuliskan quotes singkat (maksimal 5 kata)..."></textarea>
+                        <div class="char-counter"><span id="wordCount">0</span>/5 kata</div>
                         
                         <div class="quote-templates">
-                            <span class="quote-chip" data-quote="Jadikan hari ini awal dari langkah besar menggapai masa depan.">💡 Langkah Besar</span>
-                            <span class="quote-chip" data-quote="Terima kasih untuk 3 tahun kenangan yang tidak akan pernah terlupakan.">🎓 3 Tahun Kenangan</span>
-                            <span class="quote-chip" data-quote="Bukan tentang seberapa cepat, tapi tentang tidak pernah berhenti melangkah.">🏃 Jangan Berhenti</span>
-                            <span class="quote-chip" data-quote="Datang dengan harapan, lulus dengan segudang kebanggaan.">✨ Penuh Kebanggaan</span>
+                            <span class="quote-chip" data-quote="Langkah awal masa depan.">💡 Langkah Awal</span>
+                            <span class="quote-chip" data-quote="Terima kasih semua kenangannya.">🎓 Kenangan Indah</span>
+                            <span class="quote-chip" data-quote="Jangan pernah berhenti melangkah.">🏃 Terus Melangkah</span>
+                            <span class="quote-chip" data-quote="Penuh bangga dan harapan.">✨ Penuh Bangga</span>
                         </div>
                     </div>
 
@@ -233,7 +234,7 @@
                         </div>
 
                         <div class="yb-quote-box">
-                            <p class="yb-quote-text" id="prevQuotes">Quotes dan kata-kata terbaikmu akan tampil di sini...</p>
+                            <p class="yb-quote-text" id="prevQuotes">Quotes terbaikmu...</p>
                         </div>
                     </div>
 
@@ -406,21 +407,55 @@
             tipFileName.textContent = `${cleanName}.${currentPhotoExt}`;
         }
 
-        // Character counter for quotes
+        // Word counter & max 5-words limiter for quotes
         const inputQuotes = document.getElementById('inputQuotes');
-        const charCount = document.getElementById('charCount');
-        inputQuotes.addEventListener('input', () => {
-            charCount.textContent = inputQuotes.value.length;
+        const wordCount = document.getElementById('wordCount');
+
+        function enforceMaxWords() {
+            let val = inputQuotes.value;
+            let words = val.trim().split(/\s+/).filter(Boolean);
+            if (words.length > 5) {
+                words = words.slice(0, 5);
+                inputQuotes.value = words.join(' ');
+            }
+            const count = words.length;
+            wordCount.textContent = count;
+            if (count >= 5) {
+                wordCount.style.color = '#ef4444';
+                wordCount.style.fontWeight = '700';
+            } else {
+                wordCount.style.color = 'var(--text-muted)';
+                wordCount.style.fontWeight = 'normal';
+            }
             updatePreviewLive();
-        });
+        }
+
+        inputQuotes.addEventListener('input', enforceMaxWords);
+        inputQuotes.addEventListener('change', enforceMaxWords);
 
         // Quote chips click
         document.querySelectorAll('.quote-chip').forEach(chip => {
             chip.addEventListener('click', () => {
                 inputQuotes.value = chip.getAttribute('data-quote');
-                charCount.textContent = inputQuotes.value.length;
-                updatePreviewLive();
+                enforceMaxWords();
             });
+        });
+
+        // Bersihkan Tempat Lahir agar TTL tidak duplikat
+        function cleanTempatLahir(text) {
+            if (!text) return '';
+            let cleaned = text.trim();
+            cleaned = cleaned.replace(/,?\s*\d{1,2}\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember|[A-Za-z]+)\s+\d{2,4}/gi, '');
+            cleaned = cleaned.replace(/,?\s*\d{1,2}[-/]\d{1,2}[-/]\d{2,4}/g, '');
+            cleaned = cleaned.replace(/,?\s*\d{4}[-/]\d{1,2}[-/]\d{1,2}/g, '');
+            cleaned = cleaned.replace(/,\s*$/, '').trim();
+            return cleaned || text.trim();
+        }
+
+        const inputTempatLahir = document.getElementById('inputTempatLahir');
+        inputTempatLahir.addEventListener('blur', () => {
+            inputTempatLahir.value = cleanTempatLahir(inputTempatLahir.value);
+            updatePreviewLive();
         });
 
         // Absen Change Handler
@@ -440,7 +475,7 @@
                 formModeBadge.textContent = 'Data Sudah Terisi (Bisa Diperbarui)';
 
                 document.getElementById('inputNama').value = saved.nama || defaultNama;
-                document.getElementById('inputTempatLahir').value = saved.tempatLahir || '';
+                document.getElementById('inputTempatLahir').value = cleanTempatLahir(saved.tempatLahir || '');
                 document.getElementById('inputTanggalLahir').value = saved.tanggalLahir || '';
                 document.getElementById('inputNoHp').value = saved.noHp || '';
                 document.getElementById('inputInstagram').value = (saved.ig || '').replace(/^@/, '');
@@ -466,7 +501,7 @@
                     prevAvatar.style.display = 'flex';
                 }
 
-                document.getElementById('charCount').textContent = (saved.quotes || '').length;
+                enforceMaxWords();
                 showAlert('info', `Biodata untuk absen ${absen} sudah tersimpan. Kamu dapat memperbaruinya jika ada perubahan.`);
             } else {
                 formModeBadge.style.display = 'inline-flex';
@@ -478,7 +513,7 @@
                 document.getElementById('inputInstagram').value = '';
                 document.getElementById('inputAlamat').value = '';
                 document.getElementById('inputQuotes').value = '';
-                document.getElementById('charCount').textContent = '0';
+                enforceMaxWords();
                 prevPhotoImg.style.display = 'none';
                 prevAvatar.style.display = 'flex';
             }
@@ -521,6 +556,15 @@
                 return;
             }
 
+            // Validasi quotes maksimal 5 kata
+            const words = quotes.trim().split(/\s+/).filter(Boolean);
+            if (words.length > 5) {
+                alert('Quotes maksimal 5 kata! Saat ini kamu memasukkan ' + words.length + ' kata.');
+                inputQuotes.focus();
+                return;
+            }
+            const finalQuotes = words.slice(0, 5).join(' ');
+
             // Validasi foto
             const hasExistingPhoto = !!(existingDriveUrl || (currentClassData[absen] && currentClassData[absen].fotoBase64));
             if (!currentPhotoBase64 && !hasExistingPhoto) {
@@ -562,8 +606,10 @@
                     }
                 }
 
-                // 2. Siapkan data lengkap
-                const ttl = `${tempatLahir}, ${formatTanggalIndo(tanggalLahir)}`;
+                // 2. Siapkan data lengkap (TTL Bersih Tanpa Duplikat)
+                const cleanTempat = cleanTempatLahir(tempatLahir);
+                const ttl = formatTTL(cleanTempat, tanggalLahir);
+
                 const finalFotoDriveUrl = driveResult ? driveResult.fileUrl : (existingDriveUrl || '');
                 const finalFotoDirectUrl = driveResult ? driveResult.directViewUrl : '';
                 const finalFotoDriveId = driveResult ? driveResult.fileId : (existingDriveId || '');
@@ -571,13 +617,13 @@
                 const payload = {
                     namaRoster: namaRoster,
                     nama: nama,
-                    tempatLahir: tempatLahir,
+                    tempatLahir: cleanTempat,
                     tanggalLahir: tanggalLahir,
                     ttl: ttl,
                     noHp: noHp,
                     ig: ig,
                     tinggalDi: alamat,
-                    quotes: quotes,
+                    quotes: finalQuotes,
                     fotoNamaFile: cleanFileName,
                     fotoDriveUrl: finalFotoDriveUrl,
                     fotoDirectUrl: finalFotoDirectUrl,
@@ -622,7 +668,7 @@
             const noHp = document.getElementById('inputNoHp').value.trim() || '-';
             const ig = document.getElementById('inputInstagram').value.trim();
             const alamat = document.getElementById('inputAlamat').value.trim() || '-';
-            const quotes = document.getElementById('inputQuotes').value.trim() || 'Quotes dan kata-kata terbaikmu akan tampil di sini...';
+            const quotes = document.getElementById('inputQuotes').value.trim() || 'Quotes terbaikmu...';
             const absen = selectAbsenNama.value;
 
             document.getElementById('prevName').textContent = nama;
@@ -639,15 +685,12 @@
         }
 
         function formatTTL(tempat, tanggalStr) {
-            if (!tanggalStr) return tempat || '-';
-            try {
-                const d = new Date(tanggalStr + 'T00:00:00');
-                const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                const fTgl = new Intl.DateTimeFormat('id-ID', options).format(d);
-                return tempat ? `${tempat}, ${fTgl}` : fTgl;
-            } catch(e) {
-                return tempat ? `${tempat}, ${tanggalStr}` : tanggalStr;
+            const cleanTempat = cleanTempatLahir(tempat);
+            const tglFormatted = formatTanggalIndo(tanggalStr);
+            if (cleanTempat && tglFormatted) {
+                return `${cleanTempat}, ${tglFormatted}`;
             }
+            return cleanTempat || tglFormatted || '-';
         }
 
         function formatTanggalIndo(tanggalStr) {
