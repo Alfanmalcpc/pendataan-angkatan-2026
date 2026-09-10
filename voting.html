@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sistem Voting Kelompok Buku Tahunan - NEVASTRA 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🗳️</text></svg>">
+</head>
+<body>
+
+    <!-- App Navigation -->
+    <nav class="app-navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <div class="brand-icon">N</div>
+                <div class="brand-text">
+                    <h1>NEVASTRA 2026</h1>
+                    <p>SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="index.html" class="nav-btn">
+                    👁️ Portal Siswa
+                </a>
+                <a href="voting.html" class="nav-btn active" style="font-weight: 700; color: var(--primary);">
+                    🗳️ Voting Kelompok
+                </a>
+                <a href="links.html" class="nav-btn">
+                    🔗 Link Kelas
+                </a>
+                <a href="rekap.html" class="nav-btn">
+                    📊 Rekapitulasi
+                </a>
+                <a href="admin.html" class="nav-btn" style="background: var(--primary); color: white; border-radius: 8px;">
+                    ⚡ Panel Admin
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="main-wrapper">
+        <div class="hero-banner">
+            <div class="hero-content">
+                <span class="hero-badge">🗳️ SISTEM VOTING RESMI ANGKATAN 2026</span>
+                <h2 class="hero-title">Penentuan Metode Kelompok Buku Tahunan</h2>
+                <p class="hero-subtitle">
+                    Satu siswa berhak atas satu suara sah. Tentukan apakah kelompok foto yearbook angkatanmu ingin <strong>Urut Absen</strong> atau <strong>Diacak oleh Sistem</strong>. Wajib masuk dengan Akun Google untuk verifikasi pemilih.
+                </p>
+            </div>
+        </div>
+
+        <!-- Notification / Alert Box -->
+        <div id="alertBox" style="display: none; margin-bottom: 20px;"></div>
+
+        <!-- STATE 1: LOADING SPINNER -->
+        <div id="authLoadingCard" class="card" style="text-align: center; padding: 48px 24px;">
+            <div class="loading-spinner" style="margin: 0 auto 16px; width: 44px; height: 44px; border: 4px solid #e2e8f0; border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+            <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">Menghubungkan ke Sistem Firebase...</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px;">Memeriksa status login akun Google Anda...</p>
+        </div>
+
+        <!-- STATE 2: NOT LOGGED IN (Wajib Login Google) -->
+        <div id="loginCard" class="card" style="display: none; text-align: center; padding: 40px 24px;">
+            <div style="width: 72px; height: 72px; background: #eff6ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; margin: 0 auto 18px; box-shadow: 0 8px 16px rgba(67, 97, 238, 0.12);">
+                🔐
+            </div>
+            <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--dark); margin-bottom: 8px;">
+                Masuk dengan Akun Google
+            </h3>
+            <p style="font-size: 0.92rem; color: var(--text-muted); max-width: 520px; margin: 0 auto 24px; line-height: 1.55;">
+                Untuk menjaga keadilan dan transparansi pemilihan, setiap siswa <strong>hanya dapat melakukan voting 1 kali</strong> dengan memverifikasi Akun Google miliknya.
+            </p>
+
+            <div style="display: flex; justify-content: center; margin-bottom: 24px;">
+                <button id="btnGoogleSignIn" class="btn-google">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+                        <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.15C3.25 21.36 7.31 24 12 24Z"/>
+                        <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.26C.46 8.16 0 9.99 0 12s.46 3.84 1.26 5.42l4.02-3.15Z"/>
+                        <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.64 1.26 6.58l4.02 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/>
+                    </svg>
+                    <span>Lanjutkan dengan Google</span>
+                </button>
+            </div>
+
+            <!-- Fitur Keamanan Voting -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; text-align: left; max-width: 680px; margin: 0 auto; border-top: 1px solid var(--border); padding-top: 24px;">
+                <div style="display: flex; gap: 10px; align-items: flex-start;">
+                    <span style="font-size: 1.2rem;">🔒</span>
+                    <div>
+                        <strong style="font-size: 0.85rem; display: block; color: var(--dark);">1 Siswa 1 Suara</strong>
+                        <span style="font-size: 0.78rem; color: var(--text-muted);">Sistem otomatis mendeteksi dan mencegah voting ganda.</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: flex-start;">
+                    <span style="font-size: 1.2rem;">📊</span>
+                    <div>
+                        <strong style="font-size: 0.85rem; display: block; color: var(--dark);">Realtime Google Sheets</strong>
+                        <span style="font-size: 0.78rem; color: var(--text-muted);">Pilihan kamu tercatat aman di Firebase & Google Sheet.</span>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: flex-start;">
+                    <span style="font-size: 1.2rem;">⚡</span>
+                    <div>
+                        <strong style="font-size: 0.85rem; display: block; color: var(--dark);">Tanpa Password Rumit</strong>
+                        <span style="font-size: 0.78rem; color: var(--text-muted);">Cukup 1 klik autentikasi aman akun Google sekolah/pribadi.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATE 3: LOGGED IN & ALREADY VOTED (BUKTI TERCATAT) -->
+        <div id="alreadyVotedCard" class="card" style="display: none; padding: 28px;">
+            <div class="vote-user-bar">
+                <div class="vote-user-info">
+                    <img id="votedUserAvatar" class="vote-user-avatar" src="" alt="Avatar">
+                    <div>
+                        <div id="votedUserName" style="font-weight: 700; color: var(--dark); font-size: 0.95rem;">-</div>
+                        <div id="votedUserEmail" style="font-size: 0.8rem; color: var(--text-muted);">-</div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="badge-status success" style="font-size: 0.78rem;">Akun Terverifikasi ✓</span>
+                    <button id="btnSignOutAlready" class="btn btn-outline btn-sm" style="font-size: 0.78rem; padding: 5px 10px;">
+                        Keluar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Receipt Box -->
+            <div class="vote-receipt-card" style="text-align: center; padding: 28px 20px;">
+                <div style="width: 64px; height: 64px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 14px; border: 2px solid #a7f3d0;">
+                    ✅
+                </div>
+                <span class="yb-badge" style="background: #10b981; color: white; margin-bottom: 8px;">SUARA RESMI TELAH DIVERIFIKASI</span>
+                <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--dark); margin: 6px 0 8px;">
+                    Kamu Sudah Melakukan Voting!
+                </h3>
+                <p style="font-size: 0.88rem; color: var(--text-muted); max-width: 500px; margin: 0 auto 20px;">
+                    Terima kasih telah berpartisipasi. Pilihan kamu telah dikunci permanen di Firebase Database dan disinkronkan ke Google Sheet angkatan.
+                </p>
+
+                <!-- Box Pilihan yang Dipilih -->
+                <div style="background: #f8fafc; border: 2px dashed #cbd5e1; border-radius: var(--radius-md); padding: 18px; max-width: 480px; margin: 0 auto 20px; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">PILIHAN VOTING KAMU:</span>
+                        <span id="receiptOptionBadge" class="vote-badge-option badge-opsi-1">OPSI -</span>
+                    </div>
+                    <div id="receiptOptionTitle" style="font-size: 1.15rem; font-weight: 800; color: var(--dark); margin-bottom: 12px;">
+                        -
+                    </div>
+                    <div style="border-top: 1px solid var(--border); padding-top: 10px; font-size: 0.82rem; color: var(--text);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <span style="color: var(--text-muted);">Nama Siswa:</span>
+                            <strong id="receiptNama">-</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <span style="color: var(--text-muted);">Kelas & No. Absen:</span>
+                            <strong id="receiptKelasAbsen">-</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <span style="color: var(--text-muted);">Waktu Memilih:</span>
+                            <span id="receiptWaktu" style="color: var(--text-muted); font-size: 0.78rem;">-</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <span style="color: var(--text-muted);">Status Data:</span>
+                            <strong style="color: var(--success);">Tersimpan di Google Sheet & RTDB</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Count Live Results Preview -->
+            <div class="card" style="margin-top: 20px; border: 1px solid var(--border);">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        📊 Hasil Sementara Suara Masuk Angkatan 2026
+                    </h4>
+                    <span id="liveTotalVotesBadge" class="yb-badge">0 Suara</span>
+                </div>
+
+                <div class="vote-dual-bar">
+                    <div id="barOpsi1" class="vote-bar-seg1" style="width: 50%;">0%</div>
+                    <div id="barOpsi2" class="vote-bar-seg2" style="width: 50%;">0%</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;">
+                    <div style="background: #eff6ff; padding: 12px; border-radius: var(--radius-sm); border-left: 4px solid #3b82f6;">
+                        <span class="vote-badge-option badge-opsi-1" style="font-size: 0.7rem;">OPSI 1</span>
+                        <div style="font-size: 0.85rem; font-weight: 700; margin-top: 4px; color: var(--dark);">Kelompok Urut Absen</div>
+                        <div style="font-size: 1.25rem; font-weight: 800; color: #1d4ed8; margin-top: 2px;">
+                            <span id="liveCountOpsi1">0</span> suara (<span id="livePctOpsi1">0%</span>)
+                        </div>
+                    </div>
+                    <div style="background: #faf5ff; padding: 12px; border-radius: var(--radius-sm); border-left: 4px solid #a855f7;">
+                        <span class="vote-badge-option badge-opsi-2" style="font-size: 0.7rem;">OPSI 2</span>
+                        <div style="font-size: 0.85rem; font-weight: 700; margin-top: 4px; color: var(--dark);">Kelompok Diacak Sistem</div>
+                        <div style="font-size: 1.25rem; font-weight: 800; color: #7e22ce; margin-top: 2px;">
+                            <span id="liveCountOpsi2">0</span> suara (<span id="livePctOpsi2">0%</span>)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATE 4: LOGGED IN & READY TO VOTE (FORMULIR VOTING) -->
+        <div id="voteFormCard" class="card" style="display: none;">
+            <!-- User Status Header -->
+            <div class="vote-user-bar">
+                <div class="vote-user-info">
+                    <img id="activeUserAvatar" class="vote-user-avatar" src="" alt="Avatar">
+                    <div>
+                        <div id="activeUserName" style="font-weight: 700; color: var(--dark); font-size: 0.95rem;">-</div>
+                        <div id="activeUserEmail" style="font-size: 0.8rem; color: var(--text-muted);">-</div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span class="badge-status success" style="font-size: 0.78rem;">Akun Google Terhubung ✓</span>
+                    <button id="btnSignOutForm" class="btn btn-outline btn-sm" style="font-size: 0.78rem; padding: 5px 10px;">
+                        Ganti Akun
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-header" style="padding-top: 0;">
+                <div>
+                    <h3 class="card-title">
+                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/><path d="M4 4h8v1H4V4zm0 2h8v1H4V6zm0 2h8v1H4V8zm0 2h5v1H4v-1z"/></svg>
+                        Formulir Voting Siswa
+                    </h3>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                        Lengkapi identitas kelas & nomor absen Anda, lalu tentukan pilihan voting.
+                    </p>
+                </div>
+                <span class="yb-badge" style="background: var(--warning); color: #78350f;">1 Kali Kesempatan</span>
+            </div>
+
+            <form id="formVotingStudent" novalidate>
+                <!-- 1. Email Terverifikasi (Readonly) -->
+                <div class="form-group">
+                    <label for="inputVotingEmail">
+                        Email Akun Google <span class="req">*</span>
+                    </label>
+                    <div style="position: relative;">
+                        <input type="email" id="inputVotingEmail" class="form-control" readonly style="background: #f8fafc; font-weight: 600; color: var(--dark); padding-left: 36px;">
+                        <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 0.95rem;">🔒</span>
+                    </div>
+                    <span class="tip">Email terkunci otomatis dari akun Google yang sedang masuk sebagai verifikasi anti duplikasi.</span>
+                </div>
+
+                <!-- 2. Pilih Kelas -->
+                <div class="form-group">
+                    <label for="selectVotingKelas">
+                        Pilih Kelas Kamu <span class="req">*</span>
+                    </label>
+                    <select id="selectVotingKelas" class="form-control" required style="font-weight: 600;">
+                        <option value="" disabled selected>-- Pilih Kelas (XII-1 s/d XII-9) --</option>
+                        <option value="XII-1">Kelas XII-1</option>
+                        <option value="XII-2">Kelas XII-2</option>
+                        <option value="XII-3">Kelas XII-3</option>
+                        <option value="XII-4">Kelas XII-4</option>
+                        <option value="XII-5">Kelas XII-5</option>
+                        <option value="XII-6">Kelas XII-6</option>
+                        <option value="XII-7">Kelas XII-7</option>
+                        <option value="XII-8">Kelas XII-8</option>
+                        <option value="XII-9">Kelas XII-9</option>
+                    </select>
+                </div>
+
+                <!-- 3. Pilih Absen & Nama Siswa Resmi -->
+                <div class="form-group" id="groupAbsenNama" style="display: none;">
+                    <label for="selectVotingAbsen">
+                        Pilih Nomor Absen & Nama Siswa <span class="req">*</span>
+                    </label>
+                    <select id="selectVotingAbsen" class="form-control" required style="font-weight: 600;">
+                        <option value="" disabled selected>-- Pilih Nomor Absen & Nama --</option>
+                    </select>
+                    <span class="tip">🔒 Daftar nama disinkronkan langsung dari daftar resmi 322 siswa Angkatan 2026.</span>
+                </div>
+
+                <!-- 4. Konfirmasi Nama Lengkap -->
+                <div class="form-group" id="groupNamaSiswa" style="display: none;">
+                    <label for="inputVotingNama">
+                        Nama Lengkap Siswa <span class="req">*</span>
+                    </label>
+                    <input type="text" id="inputVotingNama" class="form-control" required placeholder="Nama lengkap siswa">
+                </div>
+
+                <!-- Peringatan jika Siswa Ini Sudah Voting -->
+                <div id="studentAlreadyVotedAlert" class="alert-card danger" style="display: none; margin-bottom: 18px;">
+                    <strong>⚠️ Peringatan Duplikasi:</strong>
+                    Siswa dengan kelas dan nomor absen ini sudah tercatat telah melakukan voting sebelumnya.
+                </div>
+
+                <!-- 5. KARTU PILIHAN VOTING (DUA OPSI) -->
+                <div class="form-group" style="margin-top: 26px;">
+                    <label style="font-size: 0.95rem; font-weight: 800; color: var(--dark);">
+                        TENTUKAN PILIHAN VOTING KAMU <span class="req">*</span>
+                    </label>
+                    <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px;">
+                        Silakan klik salah satu kartu opsi di bawah ini (Pilihan tidak dapat diubah setelah dikirimkan):
+                    </p>
+
+                    <div class="vote-option-grid">
+                        <!-- OPSI 1: KELOMPOK URUT ABSEN -->
+                        <div class="vote-option-card" id="cardOption1" onclick="selectOption('Kelompok Urut Absen')">
+                            <div>
+                                <div class="vote-option-header">
+                                    <div class="vote-option-icon">📋</div>
+                                    <span class="vote-badge-option badge-opsi-1">OPSI 1</span>
+                                </div>
+                                <h4 class="vote-option-title">Kelompok Urut Absen</h4>
+                                <p class="vote-option-desc">
+                                    Pembagian anggota kelompok foto buku tahunan dilakukan secara <strong>berurutan sesuai nomor urut absen</strong> kelas (contoh: absen 1-6 kelompok 1, absen 7-12 kelompok 2, dan seterusnya).
+                                </p>
+                            </div>
+                            <div class="vote-radio-check">
+                                <input type="radio" name="pilihanVoting" id="radioOpsi1" value="Kelompok Urut Absen" style="accent-color: var(--primary); transform: scale(1.2);">
+                                <label for="radioOpsi1" style="cursor: pointer; font-size: 0.85rem;">Pilih Opsi 1 (Urut Absen)</label>
+                            </div>
+                        </div>
+
+                        <!-- OPSI 2: KELOMPOK DIACAK OLEH SISTEM -->
+                        <div class="vote-option-card" id="cardOption2" onclick="selectOption('Kelompok Diacak oleh Sistem')">
+                            <div>
+                                <div class="vote-option-header">
+                                    <div class="vote-option-icon">🎲</div>
+                                    <span class="vote-badge-option badge-opsi-2">OPSI 2</span>
+                                </div>
+                                <h4 class="vote-option-title">Kelompok Diacak oleh Sistem</h4>
+                                <p class="vote-option-desc">
+                                    Pembagian anggota kelompok foto buku tahunan <strong>diundi atau diacak secara adil & merata oleh sistem</strong> komputer, sehingga teman kelompok lebih bervariasi dan seru.
+                                </p>
+                            </div>
+                            <div class="vote-radio-check">
+                                <input type="radio" name="pilihanVoting" id="radioOpsi2" value="Kelompok Diacak oleh Sistem" style="accent-color: var(--secondary); transform: scale(1.2);">
+                                <label for="radioOpsi2" style="cursor: pointer; font-size: 0.85rem;">Pilih Opsi 2 (Diacak Sistem)</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Submit -->
+                <div style="margin-top: 30px; text-align: center;">
+                    <button type="submit" id="btnSubmitVote" class="btn btn-primary btn-block" style="padding: 15px; font-size: 1.05rem; font-weight: 800; box-shadow: 0 4px 14px rgba(67, 97, 238, 0.4);">
+                        🗳️ Kirim Suara Voting Saya Sekarang
+                    </button>
+                    <span class="tip" style="margin-top: 8px; display: block;">
+                        ⚠️ Perhatian: Setiap siswa hanya dapat memilih 1 kali dan suara langsung dikunci secara permanen.
+                    </span>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Modal Konfirmasi Kirim Suara -->
+    <div id="confirmVoteModal" class="modal-backdrop">
+        <div class="modal-box" style="max-width: 460px; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--dark);">
+                    Konfirmasi Pilihan Voting
+                </h3>
+                <button type="button" id="btnCancelModal" class="btn btn-outline btn-sm" style="padding: 4px 8px;">✕</button>
+            </div>
+
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px;">
+                Pastikan data diri dan pilihan Anda sudah benar sebelum mengirim suara. Pilihan <strong>tidak dapat diubah kembali</strong> setelah proses ini.
+            </p>
+
+            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px; margin-bottom: 20px; font-size: 0.86rem;">
+                <div style="margin-bottom: 6px; display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Nama Siswa:</span>
+                    <strong id="modalConfirmNama">-</strong>
+                </div>
+                <div style="margin-bottom: 6px; display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Kelas & Absen:</span>
+                    <strong id="modalConfirmKelasAbsen">-</strong>
+                </div>
+                <div style="margin-bottom: 6px; display: flex; justify-content: space-between;">
+                    <span style="color: var(--text-muted);">Email Akun Google:</span>
+                    <span id="modalConfirmEmail" style="font-size: 0.8rem; color: var(--text-muted);">-</span>
+                </div>
+                <div style="border-top: 1px solid var(--border); padding-top: 8px; margin-top: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: var(--text-muted);">Pilihan Kamu:</span>
+                    <span id="modalConfirmPilihan" class="vote-badge-option badge-opsi-1" style="font-size: 0.85rem;">-</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button type="button" id="btnCancelModal2" class="btn btn-outline" style="flex: 1;">
+                    Periksa Kembali
+                </button>
+                <button type="button" id="btnFinalConfirmVote" class="btn btn-primary" style="flex: 1.5; font-weight: 800;">
+                    ✓ Ya, Kirim Suara
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-notice">Data berhasil disimpan!</div>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>NEVASTRA 2026</strong> • Panitia Buku Tahunan SMAN 1 Sumberrejo</p>
+        <p style="margin-top: 4px; font-size: 0.75rem; color: var(--text-light);">
+            Sistem Voting Terintegrasi Firebase Realtime Database & Google Sheets
+        </p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="students-data.js"></script>
+    <script src="db.js"></script>
+
+    <!-- Firebase Auth & Voting Logic -->
+    <script type="module">
+        import { 
+            auth, 
+            googleProvider, 
+            signInWithPopup, 
+            signOut, 
+            onAuthStateChanged 
+        } from './firebase-config.js';
+
+        // Elements
+        const authLoadingCard = document.getElementById('authLoadingCard');
+        const loginCard = document.getElementById('loginCard');
+        const voteFormCard = document.getElementById('voteFormCard');
+        const alreadyVotedCard = document.getElementById('alreadyVotedCard');
+        const alertBox = document.getElementById('alertBox');
+
+        const btnGoogleSignIn = document.getElementById('btnGoogleSignIn');
+        const btnSignOutForm = document.getElementById('btnSignOutForm');
+        const btnSignOutAlready = document.getElementById('btnSignOutAlready');
+
+        const activeUserAvatar = document.getElementById('activeUserAvatar');
+        const activeUserName = document.getElementById('activeUserName');
+        const activeUserEmail = document.getElementById('activeUserEmail');
+        const inputVotingEmail = document.getElementById('inputVotingEmail');
+
+        const selectVotingKelas = document.getElementById('selectVotingKelas');
+        const groupAbsenNama = document.getElementById('groupAbsenNama');
+        const selectVotingAbsen = document.getElementById('selectVotingAbsen');
+        const groupNamaSiswa = document.getElementById('groupNamaSiswa');
+        const inputVotingNama = document.getElementById('inputVotingNama');
+        const studentAlreadyVotedAlert = document.getElementById('studentAlreadyVotedAlert');
+
+        const cardOption1 = document.getElementById('cardOption1');
+        const cardOption2 = document.getElementById('cardOption2');
+        const radioOpsi1 = document.getElementById('radioOpsi1');
+        const radioOpsi2 = document.getElementById('radioOpsi2');
+
+        const formVotingStudent = document.getElementById('formVotingStudent');
+        const btnSubmitVote = document.getElementById('btnSubmitVote');
+
+        // Modal Elements
+        const confirmVoteModal = document.getElementById('confirmVoteModal');
+        const btnCancelModal = document.getElementById('btnCancelModal');
+        const btnCancelModal2 = document.getElementById('btnCancelModal2');
+        const btnFinalConfirmVote = document.getElementById('btnFinalConfirmVote');
+        const modalConfirmNama = document.getElementById('modalConfirmNama');
+        const modalConfirmKelasAbsen = document.getElementById('modalConfirmKelasAbsen');
+        const modalConfirmEmail = document.getElementById('modalConfirmEmail');
+        const modalConfirmPilihan = document.getElementById('modalConfirmPilihan');
+
+        // State Variables
+        let currentUser = null;
+        let currentVoteRecord = null;
+        let selectedOptionValue = '';
+
+        // Expose selectOption to window for inline onclick handlers
+        window.selectOption = function(optionText) {
+            selectedOptionValue = optionText;
+            if (optionText === 'Kelompok Urut Absen') {
+                radioOpsi1.checked = true;
+                cardOption1.classList.add('selected');
+                cardOption2.classList.remove('selected');
+            } else {
+                radioOpsi2.checked = true;
+                cardOption2.classList.add('selected');
+                cardOption1.classList.remove('selected');
+            }
+        };
+
+        // Radio button listeners
+        radioOpsi1.addEventListener('change', () => window.selectOption('Kelompok Urut Absen'));
+        radioOpsi2.addEventListener('change', () => window.selectOption('Kelompok Diacak oleh Sistem'));
+
+        // Sign In With Google
+        btnGoogleSignIn.addEventListener('click', async () => {
+            btnGoogleSignIn.disabled = true;
+            btnGoogleSignIn.innerHTML = `
+                <div class="loading-spinner" style="width: 18px; height: 18px; border: 2px solid #cbd5e1; border-top-color: #4285F4; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+                <span>Membuka jendela login Google...</span>
+            `;
+
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                currentUser = result.user;
+                // onAuthStateChanged will handle the view switch
+            } catch (error) {
+                console.error("Google Sign-In Error:", error);
+                btnGoogleSignIn.disabled = false;
+                btnGoogleSignIn.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+                        <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.15C3.25 21.36 7.31 24 12 24Z"/>
+                        <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.26C.46 8.16 0 9.99 0 12s.46 3.84 1.26 5.42l4.02-3.15Z"/>
+                        <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.64 1.26 6.58l4.02 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/>
+                    </svg>
+                    <span>Lanjutkan dengan Google</span>
+                `;
+
+                if (error.code === 'auth/popup-blocked') {
+                    showBannerAlert('warning', 'Jendela popup Google diblokir browser. Mohon izinkan popup di browser Anda lalu coba kembali.');
+                } else if (error.code === 'auth/popup-closed-by-user') {
+                    // Closed intentionally, no problem
+                } else {
+                    showBannerAlert('danger', `Gagal masuk dengan Google: ${error.message || error.code}`);
+                }
+            }
+        });
+
+        // Sign Out Handlers
+        async function handleSignOut() {
+            try {
+                await signOut(auth);
+                currentUser = null;
+                currentVoteRecord = null;
+                loginCard.style.display = 'block';
+                voteFormCard.style.display = 'none';
+                alreadyVotedCard.style.display = 'none';
+                showToast('Berhasil keluar dari akun Google.');
+            } catch (err) {
+                console.error("Sign out error:", err);
+            }
+        }
+
+        btnSignOutForm.addEventListener('click', handleSignOut);
+        btnSignOutAlready.addEventListener('click', handleSignOut);
+
+        // Auth State Observer
+        onAuthStateChanged(auth, async (user) => {
+            authLoadingCard.style.display = 'none';
+
+            if (!user) {
+                currentUser = null;
+                loginCard.style.display = 'block';
+                voteFormCard.style.display = 'none';
+                alreadyVotedCard.style.display = 'none';
+                return;
+            }
+
+            currentUser = user;
+            loginCard.style.display = 'none';
+
+            // Set user profile visuals
+            const photoUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'Siswa')}&background=4361ee&color=fff`;
+            activeUserAvatar.src = photoUrl;
+            activeUserName.textContent = user.displayName || 'Siswa Angkatan 2026';
+            activeUserEmail.textContent = user.email || '-';
+            inputVotingEmail.value = user.email || '';
+
+            // Check if this UID has already voted
+            authLoadingCard.style.display = 'block';
+            try {
+                currentVoteRecord = await window.NevastraDB.getVoteByUid(user.uid);
+            } catch (e) {
+                console.warn("Gagal cek status vote:", e);
+            }
+            authLoadingCard.style.display = 'none';
+
+            if (currentVoteRecord && currentVoteRecord.pilihan) {
+                renderAlreadyVotedView(currentVoteRecord);
+            } else {
+                renderVotingFormView();
+            }
+        });
+
+        // Render View: Already Voted
+        function renderAlreadyVotedView(record) {
+            voteFormCard.style.display = 'none';
+            alreadyVotedCard.style.display = 'block';
+
+            const photoUrl = currentUser.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.displayName || record.nama || 'Siswa')}&background=10b981&color=fff`;
+            document.getElementById('votedUserAvatar').src = photoUrl;
+            document.getElementById('votedUserName').textContent = record.nama || currentUser.displayName || 'Siswa';
+            document.getElementById('votedUserEmail').textContent = record.email || currentUser.email || '-';
+
+            const isOpsi1 = (record.pilihan || '').indexOf('Urut Absen') !== -1;
+            const badgeEl = document.getElementById('receiptOptionBadge');
+            badgeEl.className = `vote-badge-option ${isOpsi1 ? 'badge-opsi-1' : 'badge-opsi-2'}`;
+            badgeEl.textContent = isOpsi1 ? 'OPSI 1' : 'OPSI 2';
+
+            document.getElementById('receiptOptionTitle').textContent = record.pilihan;
+            document.getElementById('receiptNama').textContent = record.nama || '-';
+            document.getElementById('receiptKelasAbsen').textContent = `${record.kelas || '-'} (Absen ${record.absen || '-'})`;
+            document.getElementById('receiptWaktu').textContent = record.votedAtFormatted || record.votedAt || '-';
+
+            // Fetch live quick count
+            refreshLiveQuickCount();
+        }
+
+        // Render View: Show Form
+        function renderVotingFormView() {
+            alreadyVotedCard.style.display = 'none';
+            voteFormCard.style.display = 'block';
+
+            // Pre-fill email
+            inputVotingEmail.value = currentUser ? currentUser.email : '';
+        }
+
+        // Handle Kelas Selection
+        selectVotingKelas.addEventListener('change', () => {
+            const kelas = selectVotingKelas.value;
+            const roster = (window.studentRoster && window.studentRoster[kelas]) || [];
+
+            selectVotingAbsen.innerHTML = '<option value="" disabled selected>-- Pilih Nomor Absen & Nama Siswa --</option>';
+
+            roster.forEach(stu => {
+                const opt = document.createElement('option');
+                opt.value = stu.absen;
+                opt.textContent = `Absen ${String(stu.absen).padStart(2, '0')} - ${stu.nama}`;
+                opt.setAttribute('data-nama', stu.nama);
+                selectVotingAbsen.appendChild(opt);
+            });
+
+            groupAbsenNama.style.display = 'block';
+            groupNamaSiswa.style.display = 'none';
+            studentAlreadyVotedAlert.style.display = 'none';
+            btnSubmitVote.disabled = false;
+        });
+
+        // Handle Absen Selection
+        selectVotingAbsen.addEventListener('change', async () => {
+            const selectedOpt = selectVotingAbsen.options[selectVotingAbsen.selectedIndex];
+            const nama = selectedOpt.getAttribute('data-nama') || '';
+            const absen = selectVotingAbsen.value;
+            const kelas = selectVotingKelas.value;
+
+            inputVotingNama.value = nama;
+            groupNamaSiswa.style.display = 'block';
+
+            // Check if this student identity was already submitted
+            if (kelas && absen) {
+                const existing = await window.NevastraDB.checkStudentVoted(kelas, absen);
+                if (existing) {
+                    studentAlreadyVotedAlert.style.display = 'block';
+                    studentAlreadyVotedAlert.innerHTML = `
+                        <strong>⚠️ Siswa Ini Sudah Memberikan Suara:</strong><br>
+                        Data resmi mencatat bahwa <strong>${nama}</strong> (${kelas} Absen ${absen}) sudah melakukan voting sebelumnya. Tidak dapat memilih kembali.
+                    `;
+                    btnSubmitVote.disabled = true;
+                } else {
+                    studentAlreadyVotedAlert.style.display = 'none';
+                    btnSubmitVote.disabled = false;
+                }
+            }
+        });
+
+        // Form Submit -> Trigger Confirmation Modal
+        formVotingStudent.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (!currentUser) {
+                showBannerAlert('danger', 'Anda harus masuk dengan Akun Google terlebih dahulu.');
+                return;
+            }
+
+            const kelas = selectVotingKelas.value;
+            const absen = selectVotingAbsen.value;
+            const nama = inputVotingNama.value.trim();
+
+            if (!kelas) {
+                alert('Silakan pilih kelas Anda terlebih dahulu.');
+                selectVotingKelas.focus();
+                return;
+            }
+
+            if (!absen) {
+                alert('Silakan pilih nomor absen & nama siswa Anda.');
+                selectVotingAbsen.focus();
+                return;
+            }
+
+            if (!nama) {
+                alert('Nama siswa tidak boleh kosong.');
+                inputVotingNama.focus();
+                return;
+            }
+
+            if (!selectedOptionValue) {
+                alert('Silakan pilih salah satu opsi voting: Kelompok Urut Absen atau Kelompok Diacak oleh Sistem.');
+                return;
+            }
+
+            // Fill Modal
+            modalConfirmNama.textContent = nama;
+            modalConfirmKelasAbsen.textContent = `${kelas} (Absen ${absen})`;
+            modalConfirmEmail.textContent = currentUser.email || '-';
+
+            const isOpsi1 = selectedOptionValue.indexOf('Urut Absen') !== -1;
+            modalConfirmPilihan.className = `vote-badge-option ${isOpsi1 ? 'badge-opsi-1' : 'badge-opsi-2'}`;
+            modalConfirmPilihan.textContent = selectedOptionValue;
+
+            confirmVoteModal.classList.add('show');
+        });
+
+        // Close Modal Handlers
+        btnCancelModal.onclick = () => confirmVoteModal.classList.remove('show');
+        btnCancelModal2.onclick = () => confirmVoteModal.classList.remove('show');
+
+        // FINAL CONFIRM: Save Vote to Firebase & Google Sheets
+        btnFinalConfirmVote.addEventListener('click', async () => {
+            btnFinalConfirmVote.disabled = true;
+            btnFinalConfirmVote.innerHTML = `
+                <div class="loading-spinner" style="display:inline-block; width: 14px; height: 14px; border: 2px solid #fff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; vertical-align: middle; margin-right: 6px;"></div>
+                Menyimpan...
+            `;
+
+            const kelas = selectVotingKelas.value;
+            const absen = selectVotingAbsen.value;
+            const nama = inputVotingNama.value.trim();
+            const pilihan = selectedOptionValue;
+            const pilihanKode = pilihan.indexOf('Urut Absen') !== -1 ? 'urut_absen' : 'acak_sistem';
+
+            const votePayload = {
+                uid: currentUser.uid,
+                email: currentUser.email || '',
+                nama: nama,
+                kelas: kelas,
+                absen: parseInt(absen, 10),
+                pilihan: pilihan,
+                pilihanKode: pilihanKode
+            };
+
+            try {
+                // 1. Simpan ke Firebase Realtime Database
+                const savedRecord = await window.NevastraDB.saveVote(votePayload);
+                currentVoteRecord = savedRecord;
+
+                // 2. Kirim ke Google Sheets Web App jika scriptUrl sudah dikonfigurasi
+                const sheetConfig = await window.NevastraDB.getVotingSheetConfig();
+                if (sheetConfig && sheetConfig.scriptUrl) {
+                    window.NevastraDB.submitVoteToSheet(sheetConfig.scriptUrl, {
+                        ...votePayload,
+                        waktu: savedRecord.votedAt,
+                        waktuFormatted: savedRecord.votedAtFormatted
+                    }).catch(err => console.warn("Notice: Google Sheet background dispatch:", err));
+                }
+
+                confirmVoteModal.classList.remove('show');
+                showToast('🎉 Suara voting kamu berhasil dicatat secara resmi!');
+
+                // Render State: Already Voted
+                renderAlreadyVotedView(savedRecord);
+
+            } catch (err) {
+                console.error("Gagal menyimpan suara:", err);
+                alert('Terjadi kesalahan saat menyimpan suara: ' + err.message);
+                btnFinalConfirmVote.disabled = false;
+                btnFinalConfirmVote.textContent = '✓ Ya, Kirim Suara';
+            }
+        });
+
+        // Live Quick Count
+        async function refreshLiveQuickCount() {
+            try {
+                const allVotes = await window.NevastraDB.getAllVotes();
+                const voteList = Object.values(allVotes || {});
+                const total = voteList.length;
+
+                let countOpsi1 = 0;
+                let countOpsi2 = 0;
+
+                voteList.forEach(v => {
+                    if (v && v.pilihan) {
+                        if (v.pilihan.indexOf('Urut Absen') !== -1) {
+                            countOpsi1++;
+                        } else {
+                            countOpsi2++;
+                        }
+                    }
+                });
+
+                const pct1 = total > 0 ? Math.round((countOpsi1 / total) * 100) : 50;
+                const pct2 = total > 0 ? Math.round((countOpsi2 / total) * 100) : 50;
+
+                const liveBadge = document.getElementById('liveTotalVotesBadge');
+                if (liveBadge) liveBadge.textContent = `${total} dari 322 Suara`;
+
+                const bar1 = document.getElementById('barOpsi1');
+                const bar2 = document.getElementById('barOpsi2');
+                if (bar1 && bar2) {
+                    bar1.style.width = pct1 + '%';
+                    bar1.textContent = total > 0 ? `${pct1}%` : '0%';
+                    bar2.style.width = pct2 + '%';
+                    bar2.textContent = total > 0 ? `${pct2}%` : '0%';
+                }
+
+                const c1 = document.getElementById('liveCountOpsi1');
+                const p1 = document.getElementById('livePctOpsi1');
+                const c2 = document.getElementById('liveCountOpsi2');
+                const p2 = document.getElementById('livePctOpsi2');
+
+                if (c1) c1.textContent = countOpsi1;
+                if (p1) p1.textContent = pct1 + '%';
+                if (c2) c2.textContent = countOpsi2;
+                if (p2) p2.textContent = pct2 + '%';
+
+            } catch (err) {
+                console.warn("Gagal memperbarui hasil suara:", err);
+            }
+        }
+
+        function showBannerAlert(type, message) {
+            alertBox.className = `alert-card ${type}`;
+            alertBox.innerHTML = `<strong>${message}</strong>`;
+            alertBox.style.display = 'block';
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+    </script>
+</body>
+</html>

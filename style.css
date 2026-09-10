@@ -1412,3 +1412,213 @@ footer {
     border-radius: 16px;
   }
 }
+
+/* ==========================================================================
+   SISTEM VOTING ANGKATAN 2026 STYLES
+   ========================================================================== */
+.btn-google {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: #ffffff;
+  color: #374151;
+  border: 1.5px solid #d1d5db;
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-size: 0.98rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+  width: 100%;
+  max-width: 360px;
+}
+
+.btn-google:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.btn-google:active {
+  transform: translateY(0);
+}
+
+.vote-user-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #f1f5f9;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  margin-bottom: 22px;
+}
+
+.vote-user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vote-user-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary);
+  background: #e2e8f0;
+}
+
+.vote-option-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin: 18px 0 24px;
+}
+
+.vote-option-card {
+  position: relative;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-lg);
+  padding: 22px 20px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.vote-option-card:hover {
+  border-color: #93c5fd;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(67, 97, 238, 0.1);
+}
+
+.vote-option-card.selected {
+  border-color: var(--primary);
+  background: linear-gradient(145deg, #f8faff 0%, #eff6ff 100%);
+  box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2), 0 10px 24px rgba(67, 97, 238, 0.15);
+}
+
+.vote-option-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.vote-option-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+}
+
+.vote-option-card:nth-child(2) .vote-option-icon {
+  background: #faf5ff;
+  border-color: #f3e8ff;
+}
+
+.vote-badge-option {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-opsi-1 {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.badge-opsi-2 {
+  background: #f3e8ff;
+  color: #6b21a8;
+}
+
+.vote-option-title {
+  font-size: 1.12rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.vote-option-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  margin-bottom: 14px;
+}
+
+.vote-radio-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.vote-option-card.selected .vote-radio-check {
+  color: var(--primary);
+}
+
+.vote-receipt-card {
+  background: #ffffff;
+  border: 2px solid #bbf7d0;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.1);
+  margin-bottom: 24px;
+}
+
+.vote-dual-bar {
+  display: flex;
+  height: 24px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #e2e8f0;
+  margin: 12px 0 8px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.vote-bar-seg1 {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  transition: width 0.6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 800;
+  overflow: hidden;
+}
+
+.vote-bar-seg2 {
+  background: linear-gradient(90deg, #a855f7, #c084fc);
+  transition: width 0.6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 800;
+  overflow: hidden;
+}
+

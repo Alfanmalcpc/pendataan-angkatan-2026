@@ -47,6 +47,9 @@
                 <a href="index.html" target="_blank" class="btn btn-outline btn-sm">
                     👁️ Portal Siswa
                 </a>
+                <a href="voting.html" target="_blank" class="btn btn-outline btn-sm" style="color: var(--primary); font-weight: 700; border-color: var(--primary);">
+                    🗳️ Buka Voting
+                </a>
                 <a href="links.html" class="btn btn-outline btn-sm">
                     🔗 Link Kelas
                 </a>
@@ -66,21 +69,33 @@
             </div>
         </div>
 
-        <!-- Base URL Config -->
-        <div class="card" style="margin-bottom: 16px; padding: 14px 18px;">
-            <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                <label style="font-size: 0.82rem; font-weight: 700; white-space: nowrap; margin-bottom: 0;">Alamat Host / Domain Website:</label>
-                <input type="text" id="adminHostUrl" class="form-control" style="flex: 1; min-width: 280px; font-size: 0.85rem; padding: 7px 12px;" placeholder="http://...">
-                <span style="font-size: 0.74rem; color: var(--text-muted);">Tautan kelas otomatis menyesuaikan domain di atas.</span>
-            </div>
+        <!-- Mode Switcher (Biodata vs Voting) -->
+        <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+            <button id="btnSwitchBiodata" class="btn btn-primary" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md);">
+                📋 Rekap Biodata Siswa (XII-1 s/d XII-9)
+            </button>
+            <button id="btnSwitchVoting" class="btn btn-outline" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md); border-color: var(--secondary); color: var(--secondary);">
+                🗳️ Rekap Voting Kelompok Angkatan
+            </button>
         </div>
 
-        <!-- Class Selection Tabs (PILIH KELAS) -->
-        <div class="card" style="margin-bottom: 20px;">
-            <div style="margin-bottom: 12px;">
-                <label style="font-size: 0.88rem; font-weight: 700; color: var(--text);">
-                    PILIH KELAS (Klik kelas untuk memunculkan link & rekap datanya):
-                </label>
+        <!-- WRAPPER MODE BIODATA -->
+        <div id="biodataWrapper">
+            <!-- Base URL Config -->
+            <div class="card" style="margin-bottom: 16px; padding: 14px 18px;">
+                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                    <label style="font-size: 0.82rem; font-weight: 700; white-space: nowrap; margin-bottom: 0;">Alamat Host / Domain Website:</label>
+                    <input type="text" id="adminHostUrl" class="form-control" style="flex: 1; min-width: 280px; font-size: 0.85rem; padding: 7px 12px;" placeholder="http://...">
+                    <span style="font-size: 0.74rem; color: var(--text-muted);">Tautan kelas otomatis menyesuaikan domain di atas.</span>
+                </div>
+            </div>
+
+            <!-- Class Selection Tabs (PILIH KELAS) -->
+            <div class="card" style="margin-bottom: 20px;">
+                <div style="margin-bottom: 12px;">
+                    <label style="font-size: 0.88rem; font-weight: 700; color: var(--text);">
+                        PILIH KELAS (Klik kelas untuk memunculkan link & rekap datanya):
+                    </label>
             </div>
             <div class="class-tabs-container" id="classTabsBar" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
                 <!-- Dynamic tabs for XII-1 to XII-9 + Semua Kelas -->
@@ -213,6 +228,179 @@
                         <!-- Dynamic rows -->
                     </tbody>
                 </table>
+            </div>
+        </div>
+        </div> <!-- End biodataWrapper -->
+
+        <!-- ======================================================== -->
+        <!-- REKAPITULASI & PENGATURAN VOTING KELOMPOK ANGKATAN 2026 -->
+        <!-- ======================================================== -->
+        <div id="votingSectionAdmin" style="display: none; margin-bottom: 24px;">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM4 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/><path d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/></svg>
+                            Rekapitulasi Suara Voting Penentuan Kelompok
+                        </h3>
+                        <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+                            Data pemilihan langsung dari siswa dengan autentikasi akun Google & sinkronisasi Google Sheets
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <span id="voteTotalBadge" class="yb-badge" style="font-size: 0.8rem; background: var(--secondary); color: white;">0 / 322 Suara</span>
+                    </div>
+                </div>
+
+                <!-- Stats Bar Voting -->
+                <div class="class-stat-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                    <div class="class-stat-box">
+                        <div class="class-stat-label">TOTAL SUARA MASUK</div>
+                        <div class="class-stat-num" id="adminVoteTotal" style="color: var(--primary);">0</div>
+                        <div style="font-size: 0.76rem; color: var(--text-muted);" id="adminVotePartisipasi">0% dari 322 Siswa</div>
+                    </div>
+
+                    <div class="class-stat-box">
+                        <div class="class-stat-label">OPSI 1: URUT ABSEN</div>
+                        <div class="class-stat-num" id="adminVoteOpsi1" style="color: #1e40af;">0</div>
+                        <div style="font-size: 0.76rem; color: #1e40af; font-weight: 700;" id="adminVotePct1">0% dari total</div>
+                    </div>
+
+                    <div class="class-stat-box">
+                        <div class="class-stat-label">OPSI 2: DIACAK SISTEM</div>
+                        <div class="class-stat-num" id="adminVoteOpsi2" style="color: #6b21a8;">0</div>
+                        <div style="font-size: 0.76rem; color: #6b21a8; font-weight: 700;" id="adminVotePct2">0% dari total</div>
+                    </div>
+
+                    <div class="class-stat-box">
+                        <div class="class-stat-label">HASIL SEMENTARA</div>
+                        <div class="class-stat-num" id="adminVoteStatus" style="font-size: 1.25rem; font-weight: 800; color: var(--dark); margin-top: 4px;">Seimbang</div>
+                        <div style="font-size: 0.76rem; color: var(--text-muted);" id="adminVoteLeadDesc">Menunggu suara masuk</div>
+                    </div>
+                </div>
+
+                <!-- Visual Bar Perbandingan Opsi 1 vs Opsi 2 -->
+                <div style="margin: 18px 0;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">
+                        <span style="color: #1e40af;">📋 Opsi 1: Kelompok Urut Absen (<span id="adminBarPct1">0%</span>)</span>
+                        <span style="color: #6b21a8;">🎲 Opsi 2: Kelompok Diacak Sistem (<span id="adminBarPct2">0%</span>)</span>
+                    </div>
+                    <div class="vote-dual-bar" style="height: 26px;">
+                        <div id="adminDualBar1" class="vote-bar-seg1" style="width: 50%;">0%</div>
+                        <div id="adminDualBar2" class="vote-bar-seg2" style="width: 50%;">0%</div>
+                    </div>
+                </div>
+
+                <!-- Pengaturan Google Sheets Sync -->
+                <div class="card" style="border: 1.5px solid #cbd5e1; background: #f8fafc; margin: 20px 0; padding: 18px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 1.3rem;">📊</span>
+                            <div>
+                                <strong style="font-size: 0.92rem; color: var(--dark);">Penyimpanan Langsung ke Google Sheets</strong>
+                                <div style="font-size: 0.76rem; color: var(--text-muted);">Setiap suara siswa otomatis tercatat ke Google Spreadsheet Anda secara realtime.</div>
+                            </div>
+                        </div>
+                        <button type="button" id="btnToggleGuideSheet" class="btn btn-outline btn-sm" style="font-size: 0.78rem;">
+                            📖 Panduan Pasang Script Google Sheet
+                        </button>
+                    </div>
+
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+                        <input type="text" id="adminSheetScriptUrl" class="form-control" style="flex: 1; min-width: 280px; font-size: 0.85rem;" placeholder="https://script.google.com/macros/s/.../exec">
+                        <button id="btnSaveSheetConfig" class="btn btn-primary btn-sm">
+                            💾 Simpan URL Sheet
+                        </button>
+                        <button id="btnTestSheetConnection" class="btn btn-outline btn-sm" style="border-color: #0284c7; color: #0284c7;">
+                            🧪 Tes Koneksi
+                        </button>
+                    </div>
+                    <div id="sheetStatusNotice" style="font-size: 0.78rem; color: var(--text-muted);">
+                        File script Google Apps Script siap pakai sudah tersedia di folder: <code>google-sheet-voting-script.gs</code>.
+                    </div>
+
+                    <!-- Panduan Langkah Cepat (Collapsible) -->
+                    <div id="guideSheetBox" style="display: none; background: white; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px; margin-top: 12px; font-size: 0.82rem; line-height: 1.55;">
+                        <strong>Cara Menghubungkan Google Sheet dalam 1 Menit:</strong>
+                        <ol style="margin-left: 20px; margin-top: 6px;">
+                            <li>Buka Google Sheets di browser Anda, buat spreadsheet baru beri judul <em>"Hasil Voting Nevastra 2026"</em>.</li>
+                            <li>Klik menu <strong>Ekstensi (Extensions)</strong> &gt; <strong>Apps Script</strong>.</li>
+                            <li>Buka file <code>google-sheet-voting-script.gs</code> di folder web ini, salin seluruh kodenya dan tempel ke Apps Script editor.</li>
+                            <li>Klik tombol biru <strong>Deploy (Terapkan)</strong> &gt; <strong>New deployment (Deployment baru)</strong> &gt; Pilih <strong>Web app</strong>.</li>
+                            <li>Atur <em>Execute as: <strong>Me</strong></em> dan <em>Who has access: <strong>Anyone</strong></em> (PENTING agar siswa bisa kirim suara).</li>
+                            <li>Klik <strong>Deploy</strong>, izinkan akses akun (Review permissions -> Advanced -> Go to ... -> Allow), lalu salin <strong>Web app URL</strong> (berakhiran <code>/exec</code>).</li>
+                            <li>Tempelkan URL tersebut pada kolom input di atas, lalu klik <strong>Simpan URL Sheet</strong>. Selesai!</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="admin-action-bar" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px;">
+                    <button id="btnDownloadVotingExcel" class="btn btn-primary btn-sm" style="background: #107c41;">
+                        📥 Download Hasil Voting (.xlsx)
+                    </button>
+                    <button id="btnCopyVotingPageLink" class="btn btn-outline btn-sm">
+                        📋 Salin Link Halaman Voting
+                    </button>
+                    <button id="btnCopyVotingBroadcastWa" class="btn btn-outline btn-sm" style="border-color: #25D366; color: #128C7E;">
+                        💬 Salin Pesan Broadcast WA Voting
+                    </button>
+                    <a href="voting.html" target="_blank" class="btn btn-outline btn-sm">
+                        ↗ Buka Halaman Siswa
+                    </a>
+                    <button id="btnRefreshVotingData" class="btn btn-outline btn-sm">
+                        🔄 Segarkan Data Suara
+                    </button>
+                </div>
+
+                <!-- Filter & Search Bar Voting -->
+                <div class="admin-filter-bar" style="display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 12px; margin-bottom: 16px;">
+                    <div>
+                        <select id="filterVotingKelas" class="form-control" style="font-size: 0.85rem;">
+                            <option value="ALL">Semua Kelas (XII-1 s/d XII-9)</option>
+                            <option value="XII-1">Kelas XII-1</option>
+                            <option value="XII-2">Kelas XII-2</option>
+                            <option value="XII-3">Kelas XII-3</option>
+                            <option value="XII-4">Kelas XII-4</option>
+                            <option value="XII-5">Kelas XII-5</option>
+                            <option value="XII-6">Kelas XII-6</option>
+                            <option value="XII-7">Kelas XII-7</option>
+                            <option value="XII-8">Kelas XII-8</option>
+                            <option value="XII-9">Kelas XII-9</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="filterVotingPilihan" class="form-control" style="font-size: 0.85rem;">
+                            <option value="ALL">Semua Pilihan Voting</option>
+                            <option value="Kelompok Urut Absen">Hanya Opsi 1: Urut Absen</option>
+                            <option value="Kelompok Diacak oleh Sistem">Hanya Opsi 2: Diacak Sistem</option>
+                        </select>
+                    </div>
+                    <div>
+                        <input type="text" id="searchVotingStudent" class="form-control" style="font-size: 0.85rem;" placeholder="Cari nama, kelas, absen, atau email Google...">
+                    </div>
+                </div>
+
+                <!-- Data Table Voting -->
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 45px; text-align: center;">No</th>
+                                <th style="min-width: 140px;">Waktu Voting</th>
+                                <th>Nama Siswa</th>
+                                <th style="width: 75px; text-align: center;">Kelas</th>
+                                <th style="width: 60px; text-align: center;">Absen</th>
+                                <th style="min-width: 180px;">Pilihan Voting</th>
+                                <th>Email Akun Google</th>
+                                <th style="width: 65px; text-align: center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="votingTableBody">
+                            <!-- Dynamic rows -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>
@@ -770,10 +958,347 @@ Terima kasih! ✨';
             }
         }
 
+        // ==================================================================
+        // SISTEM LOGIKA ADMIN: VOTING KELOMPOK ANGKATAN 2026
+        // ==================================================================
+        let allVotingRecords = {};
+        let currentAdminMode = 'biodata'; // 'biodata' | 'voting'
+
+        const btnSwitchBiodata = document.getElementById('btnSwitchBiodata');
+        const btnSwitchVoting = document.getElementById('btnSwitchVoting');
+        const biodataWrapper = document.getElementById('biodataWrapper');
+        const votingSectionAdmin = document.getElementById('votingSectionAdmin');
+
+        function switchAdminMode(mode) {
+            currentAdminMode = mode;
+            if (mode === 'biodata') {
+                btnSwitchBiodata.className = 'btn btn-primary';
+                btnSwitchVoting.className = 'btn btn-outline';
+                btnSwitchVoting.style.borderColor = 'var(--secondary)';
+                btnSwitchVoting.style.color = 'var(--secondary)';
+                biodataWrapper.style.display = 'block';
+                votingSectionAdmin.style.display = 'none';
+            } else {
+                btnSwitchBiodata.className = 'btn btn-outline';
+                btnSwitchVoting.className = 'btn btn-primary';
+                btnSwitchVoting.style.background = 'var(--secondary)';
+                btnSwitchVoting.style.borderColor = 'var(--secondary)';
+                btnSwitchVoting.style.color = 'white';
+                biodataWrapper.style.display = 'none';
+                votingSectionAdmin.style.display = 'block';
+                syncVotingData();
+            }
+        }
+
+        btnSwitchBiodata.onclick = () => switchAdminMode('biodata');
+        btnSwitchVoting.onclick = () => switchAdminMode('voting');
+
+        // Check query param e.g. admin.html?tab=voting
+        const urlParamsAdmin = new URLSearchParams(window.location.search);
+        if (urlParamsAdmin.get('tab') === 'voting') {
+            switchAdminMode('voting');
+        }
+
+        // Google Sheet Config Handlers
+        const adminSheetScriptUrl = document.getElementById('adminSheetScriptUrl');
+        const btnSaveSheetConfig = document.getElementById('btnSaveSheetConfig');
+        const btnTestSheetConnection = document.getElementById('btnTestSheetConnection');
+        const btnToggleGuideSheet = document.getElementById('btnToggleGuideSheet');
+        const guideSheetBox = document.getElementById('guideSheetBox');
+        const sheetStatusNotice = document.getElementById('sheetStatusNotice');
+
+        btnToggleGuideSheet.onclick = () => {
+            const isHidden = guideSheetBox.style.display === 'none';
+            guideSheetBox.style.display = isHidden ? 'block' : 'none';
+        };
+
+        async function loadSheetConfig() {
+            try {
+                const cfg = await window.NevastraDB.getVotingSheetConfig();
+                if (cfg && cfg.scriptUrl) {
+                    adminSheetScriptUrl.value = cfg.scriptUrl;
+                    sheetStatusNotice.innerHTML = `🟢 <strong>Terkoneksi:</strong> Mengirim otomatis ke Google Sheets.`;
+                    sheetStatusNotice.style.color = 'var(--success)';
+                }
+            } catch(e) {}
+        }
+
+        btnSaveSheetConfig.onclick = async () => {
+            const val = adminSheetScriptUrl.value.trim();
+            btnSaveSheetConfig.disabled = true;
+            btnSaveSheetConfig.textContent = 'Menyimpan...';
+
+            await window.NevastraDB.saveVotingSheetConfig({ scriptUrl: val });
+            btnSaveSheetConfig.disabled = false;
+            btnSaveSheetConfig.textContent = '💾 Simpan URL Sheet';
+
+            if (val) {
+                sheetStatusNotice.innerHTML = `🟢 <strong>Tersimpan:</strong> Mengirim otomatis ke Google Sheets.`;
+                sheetStatusNotice.style.color = 'var(--success)';
+            } else {
+                sheetStatusNotice.innerHTML = `Data voting tetap tersimpan aman di Firebase Realtime Database.`;
+                sheetStatusNotice.style.color = 'var(--text-muted)';
+            }
+            showToast('Pengaturan Google Sheets berhasil disimpan!');
+        };
+
+        btnTestSheetConnection.onclick = async () => {
+            const url = adminSheetScriptUrl.value.trim();
+            if (!url) {
+                alert('Silakan masukkan URL Web App Google Apps Script terlebih dahulu.');
+                adminSheetScriptUrl.focus();
+                return;
+            }
+
+            btnTestSheetConnection.disabled = true;
+            btnTestSheetConnection.textContent = 'Menguji...';
+
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                btnTestSheetConnection.disabled = false;
+                btnTestSheetConnection.textContent = '🧪 Tes Koneksi';
+
+                if (data.status === 'active') {
+                    alert(`✅ KONEKSI SUKSES!\n\nLayanan Google Sheets Voting Aktif!\nNama Sheet: ${data.sheetName || 'Hasil Voting'}\nTotal Baris Tercatat di Sheet: ${data.totalSuaraTercatat || 0}`);
+                    showToast('Koneksi Google Sheets berhasil!');
+                } else {
+                    alert('Respon dari Google Sheets: ' + JSON.stringify(data));
+                }
+            } catch (err) {
+                btnTestSheetConnection.disabled = false;
+                btnTestSheetConnection.textContent = '🧪 Tes Koneksi';
+                alert('Gagal menghubungi Google Apps Script: ' + err.message + '\n\nPastikan izin "Who has access" sudah diatur ke "Anyone" (Siapa saja).');
+            }
+        };
+
+        // Render Voting Recap Table & Stats
+        async function syncVotingData() {
+            try {
+                allVotingRecords = await window.NevastraDB.getAllVotes();
+                renderVotingRecap();
+            } catch(e) {
+                console.warn("Gagal memuat voting data:", e);
+            }
+        }
+
+        const filterVotingKelas = document.getElementById('filterVotingKelas');
+        const filterVotingPilihan = document.getElementById('filterVotingPilihan');
+        const searchVotingStudent = document.getElementById('searchVotingStudent');
+        const votingTableBody = document.getElementById('votingTableBody');
+
+        filterVotingKelas.onchange = renderVotingRecap;
+        filterVotingPilihan.onchange = renderVotingRecap;
+        searchVotingStudent.oninput = renderVotingRecap;
+
+        function renderVotingRecap() {
+            const records = Object.values(allVotingRecords || {});
+            const totalAngkatan = 322;
+            const totalVoted = records.length;
+
+            let countOpsi1 = 0;
+            let countOpsi2 = 0;
+
+            records.forEach(r => {
+                if (r && r.pilihan) {
+                    if (r.pilihan.indexOf('Urut Absen') !== -1) countOpsi1++;
+                    else countOpsi2++;
+                }
+            });
+
+            const pct1 = totalVoted > 0 ? Math.round((countOpsi1 / totalVoted) * 100) : 0;
+            const pct2 = totalVoted > 0 ? Math.round((countOpsi2 / totalVoted) * 100) : 0;
+            const pctPartisipasi = Math.round((totalVoted / totalAngkatan) * 100);
+
+            // Update Stats Cards
+            document.getElementById('voteTotalBadge').textContent = `${totalVoted} / ${totalAngkatan} Suara`;
+            document.getElementById('adminVoteTotal').textContent = totalVoted;
+            document.getElementById('adminVotePartisipasi').textContent = `${pctPartisipasi}% dari 322 Siswa`;
+
+            document.getElementById('adminVoteOpsi1').textContent = countOpsi1;
+            document.getElementById('adminVotePct1').textContent = `${pct1}% dari total suara`;
+
+            document.getElementById('adminVoteOpsi2').textContent = countOpsi2;
+            document.getElementById('adminVotePct2').textContent = `${pct2}% dari total suara`;
+
+            // Status Card
+            const statusEl = document.getElementById('adminVoteStatus');
+            const descEl = document.getElementById('adminVoteLeadDesc');
+            if (countOpsi1 > countOpsi2) {
+                statusEl.textContent = 'Opsi 1 Unggul';
+                statusEl.style.color = '#1e40af';
+                descEl.textContent = `Selisih +${countOpsi1 - countOpsi2} suara`;
+            } else if (countOpsi2 > countOpsi1) {
+                statusEl.textContent = 'Opsi 2 Unggul';
+                statusEl.style.color = '#6b21a8';
+                descEl.textContent = `Selisih +${countOpsi2 - countOpsi1} suara`;
+            } else {
+                statusEl.textContent = 'Seimbang';
+                statusEl.style.color = 'var(--dark)';
+                descEl.textContent = totalVoted === 0 ? 'Menunggu suara masuk' : 'Jumlah suara sama kuat';
+            }
+
+            // Dual Bar
+            const bar1 = document.getElementById('adminDualBar1');
+            const bar2 = document.getElementById('adminDualBar2');
+            document.getElementById('adminBarPct1').textContent = pct1 + '%';
+            document.getElementById('adminBarPct2').textContent = pct2 + '%';
+            if (bar1 && bar2) {
+                bar1.style.width = (totalVoted > 0 ? pct1 : 50) + '%';
+                bar1.textContent = totalVoted > 0 ? `${pct1}%` : '0%';
+                bar2.style.width = (totalVoted > 0 ? pct2 : 50) + '%';
+                bar2.textContent = totalVoted > 0 ? `${pct2}%` : '0%';
+            }
+
+            // Filter & Search Table Rows
+            const fKelas = filterVotingKelas.value;
+            const fPilihan = filterVotingPilihan.value;
+            const fSearch = searchVotingStudent.value.toLowerCase().trim();
+
+            let filtered = records.filter(r => {
+                if (fKelas !== 'ALL' && r.kelas !== fKelas) return false;
+                if (fPilihan !== 'ALL' && r.pilihan !== fPilihan) return false;
+                if (fSearch) {
+                    const matchNama = (r.nama || '').toLowerCase().includes(fSearch);
+                    const matchEmail = (r.email || '').toLowerCase().includes(fSearch);
+                    const matchKelas = (r.kelas || '').toLowerCase().includes(fSearch);
+                    const matchAbsen = String(r.absen || '').includes(fSearch);
+                    if (!matchNama && !matchEmail && !matchKelas && !matchAbsen) return false;
+                }
+                return true;
+            });
+
+            // Urutkan berdasarkan waktu voting terbaru (descending)
+            filtered.sort((a, b) => new Date(b.votedAt || 0) - new Date(a.votedAt || 0));
+
+            votingTableBody.innerHTML = '';
+            if (filtered.length === 0) {
+                votingTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 24px; color: var(--text-muted);">
+                            Tidak ada data suara voting yang cocok dengan filter pencarian.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filtered.forEach((r, idx) => {
+                const tr = document.createElement('tr');
+                const isOpsi1 = (r.pilihan || '').indexOf('Urut Absen') !== -1;
+                const badgeClass = isOpsi1 ? 'badge-opsi-1' : 'badge-opsi-2';
+                const badgeLabel = isOpsi1 ? 'OPSI 1: Urut Absen' : 'OPSI 2: Diacak Sistem';
+
+                tr.innerHTML = `
+                    <td style="text-align: center; font-weight: 700; color: var(--text-muted);">${idx + 1}</td>
+                    <td style="font-size: 0.8rem; color: var(--text-muted);">${r.votedAtFormatted || r.votedAt || '-'}</td>
+                    <td><strong>${r.nama || '-'}</strong></td>
+                    <td style="text-align: center;"><span class="yb-badge">${r.kelas || '-'}</span></td>
+                    <td style="text-align: center; font-weight: 700;">${r.absen ? String(r.absen).padStart(2, '0') : '-'}</td>
+                    <td><span class="vote-badge-option ${badgeClass}">${badgeLabel}</span></td>
+                    <td style="font-size: 0.82rem; color: var(--text-muted);">${r.email || '-'}</td>
+                    <td style="text-align: center;">
+                        <button class="btn btn-outline btn-sm btn-del-vote" data-uid="${r.uid}" data-kelas="${r.kelas}" data-absen="${r.absen}" data-nama="${r.nama}" style="padding: 3px 8px; border-color: #ef4444; color: #ef4444;" title="Hapus Suara Siswa">
+                            🗑️
+                        </button>
+                    </td>
+                `;
+                votingTableBody.appendChild(tr);
+            });
+
+            // Bind delete button
+            document.querySelectorAll('.btn-del-vote').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    const uid = btn.getAttribute('data-uid');
+                    const kelas = btn.getAttribute('data-kelas');
+                    const absen = btn.getAttribute('data-absen');
+                    const nama = btn.getAttribute('data-nama');
+
+                    if (confirm(`Hapus data suara voting milik siswa ${nama} (${kelas} Absen ${absen})? Siswa tersebut akan dapat melakukan voting ulang.`)) {
+                        await window.NevastraDB.deleteVote(uid, kelas, absen);
+                        if (allVotingRecords[uid]) delete allVotingRecords[uid];
+                        renderVotingRecap();
+                        showToast(`Data voting ${nama} berhasil dihapus.`);
+                    }
+                });
+            });
+        }
+
+        // Export Hasil Voting to Excel (.xlsx)
+        document.getElementById('btnDownloadVotingExcel').onclick = () => {
+            const records = Object.values(allVotingRecords || {});
+            if (records.length === 0) {
+                alert('Belum ada data suara voting yang masuk untuk diekspor.');
+                return;
+            }
+
+            records.sort((a, b) => {
+                if (a.kelas === b.kelas) return (a.absen || 0) - (b.absen || 0);
+                return (a.kelas || '').localeCompare(b.kelas || '');
+            });
+
+            const rows = records.map((r, i) => ({
+                "No": i + 1,
+                "Waktu Voting": r.votedAtFormatted || r.votedAt || "",
+                "Nama Siswa": r.nama || "",
+                "Kelas": r.kelas || "",
+                "No Absen": r.absen || "",
+                "Pilihan Voting": r.pilihan || "",
+                "Email Akun Google": r.email || "",
+                "UID Firebase": r.uid || ""
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(rows);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Hasil Voting");
+
+            // Auto-width column
+            ws['!cols'] = [
+                { wch: 5 },  // No
+                { wch: 30 }, // Waktu
+                { wch: 32 }, // Nama
+                { wch: 10 }, // Kelas
+                { wch: 10 }, // Absen
+                { wch: 32 }, // Pilihan
+                { wch: 32 }, // Email
+                { wch: 30 }  // UID
+            ];
+
+            XLSX.writeFile(wb, "HASIL_VOTING_KELOMPOK_NEVASTRA_2026.xlsx");
+            showToast('File Excel Hasil Voting berhasil diunduh!');
+        };
+
+        // Copy Voting Page Link
+        document.getElementById('btnCopyVotingPageLink').onclick = () => {
+            const host = adminHostUrl.value.trim() || defaultBase;
+            const votingUrl = host.substring(0, host.lastIndexOf('/')) + '/voting.html';
+            navigator.clipboard.writeText(votingUrl).then(() => {
+                showToast('Link Halaman Voting berhasil disalin!');
+            });
+        };
+
+        // Copy Broadcast WA Voting
+        document.getElementById('btnCopyVotingBroadcastWa').onclick = () => {
+            const host = adminHostUrl.value.trim() || defaultBase;
+            const votingUrl = host.substring(0, host.lastIndexOf('/')) + '/voting.html';
+            const msg = `*📢 VOTING RESMI PEMBAGIAN KELOMPOK BUKU TAHUNAN NEVASTRA 2026 📢*\n\nHalo teman-teman Angkatan 2026! ✨\n\nUntuk menentukan metode pembagian kelompok foto yearbook angkatan kita, silakan berikan suara kamu pada voting online resmi di tautan berikut:\n👉 ${votingUrl}\n\n*Pilihan Voting:*\n1️⃣ *Opsi 1*: Kelompok Urut Absen\n2️⃣ *Opsi 2*: Kelompok Diacak oleh Sistem\n\n*Ketentuan Pemilihan:*\n✅ Wajib masuk menggunakan Akun Google masing-masing.\n✅ Sistem 1 Siswa = 1 Suara Sah (anti duplikasi).\n✅ Hasil otomatis tersimpan di database & Google Sheet.\n\nSuara kamu menentukan kebersamaan kenangan angkatan kita! Segera berikan pilihan terbaikmu ya! 🙏🎓`;
+            navigator.clipboard.writeText(msg).then(() => {
+                showToast('Pesan broadcast WhatsApp Voting berhasil disalin!');
+            });
+        };
+
+        document.getElementById('btnRefreshVotingData').onclick = () => {
+            syncVotingData();
+            showToast('Data voting berhasil disegarkan.');
+        };
+
         renderTabs();
         updateActiveClassLink();
+        loadSheetConfig();
         syncData();
+        syncVotingData();
         setInterval(syncData, 15000);
+        setInterval(syncVotingData, 15000);
     </script>
 </body>
 </html>

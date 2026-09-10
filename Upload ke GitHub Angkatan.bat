@@ -15,7 +15,7 @@ cd /d "C:\Users\ACER\OneDrive\ANGKATAN\web pendataan"
 git remote remove origin 2>nul
 git remote add origin https://github.com/Alfanmalcpc/pendataan-angkatan-2026.git
 git add .
-git commit -m "Web Pendataan Biodata Yearbook Nevastra 2026 (Title Case)"
+git commit -m "Update Web Pendataan: Sistem Voting Kelompok, Firebase Google Auth, dan Sinkronisasi Google Sheets"
 git branch -M main
 
 echo.

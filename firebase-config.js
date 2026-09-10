@@ -7,6 +7,13 @@ import {
   onValue, 
   remove 
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC97LwnbOMTAoN9bAPg78XedYlkBXH2_rA",
@@ -22,6 +29,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
 // Save or update student biodata
 export async function saveBiodata(kelas, absen, studentData) {
@@ -76,4 +85,14 @@ export async function deleteStudentBiodata(kelas, absen) {
   await remove(targetRef);
 }
 
-export { app, db, ref };
+export { 
+  app, 
+  db, 
+  ref, 
+  auth, 
+  googleProvider, 
+  signInWithPopup, 
+  signOut, 
+  onAuthStateChanged, 
+  firebaseConfig 
+};

@@ -23,6 +23,9 @@
                 <a href="index.html" class="nav-btn">
                     👁️ Portal Siswa
                 </a>
+                <a href="voting.html" class="nav-btn" style="color: var(--primary); font-weight: 700;">
+                    🗳️ Voting Kelompok
+                </a>
                 <a href="links.html" class="nav-btn active">
                     🔗 Link Kelas
                 </a>
@@ -40,9 +43,47 @@
     <main class="main-wrapper">
         <div class="hero-banner">
             <div class="hero-content">
-                <span class="hero-badge">🔗 DISTRIBUSI LINK KELAS</span>
-                <h2 class="hero-title">Tautan Khusus Setiap Kelas</h2>
+                <span class="hero-badge">🔗 DISTRIBUSI LINK KELAS & VOTING</span>
+                <h2 class="hero-title">Tautan Khusus Setiap Kelas & Voting</h2>
                 <p class="hero-subtitle">Setiap kelas memiliki link unik tersendiri. Salin link atau kirim langsung template pesan ke grup WhatsApp masing-masing kelas.</p>
+            </div>
+        </div>
+
+        <!-- Card Khusus Link Voting Angkatan -->
+        <div class="card" style="border: 2px solid var(--secondary); background: #faf5ff; margin-bottom: 24px; padding: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.6rem;">🗳️</span>
+                    <div>
+                        <span class="vote-badge-option badge-opsi-2">LINK RESMI VOTING ANGKATAN</span>
+                        <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--dark); margin: 2px 0;">
+                            Halaman Voting Metode Kelompok Buku Tahunan
+                        </h3>
+                    </div>
+                </div>
+                <span class="yb-badge" style="background: var(--secondary); color: white;">voting.html</span>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 14px;">
+                <label>Tautan Resmi Voting (Wajib Login Akun Google - 1 Siswa 1 Suara):</label>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <input type="text" id="votingLinkInput" class="form-control" style="flex: 1; min-width: 260px; font-weight: 600; background: white;" readonly>
+                    <button id="btnCopyVotingUrl" class="btn btn-primary btn-sm">
+                        📋 Salin Link
+                    </button>
+                    <a id="btnOpenVotingDirect" href="voting.html" target="_blank" class="btn btn-outline btn-sm">
+                        ↗ Buka
+                    </a>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button id="btnCopyVotingWaMsg" class="btn btn-outline btn-sm" style="border-color: #25D366; color: #128C7E; font-weight: 700;">
+                    💬 Salin Pesan Broadcast WhatsApp Voting
+                </button>
+                <button id="btnShareVotingWaDirect" class="btn btn-sm" style="background-color: #25D366; color: white; font-weight: 700;">
+                    🚀 Kirim Langsung ke WhatsApp
+                </button>
             </div>
         </div>
 
@@ -93,6 +134,13 @@
         function renderCards() {
             classLinksGrid.innerHTML = '';
             const base = baseUrlInput.value.trim() || defaultBase;
+            const votingUrl = base.substring(0, base.lastIndexOf('/')) + '/voting.html';
+
+            // Update Voting Card Elements
+            const votingLinkInput = document.getElementById('votingLinkInput');
+            const btnOpenVotingDirect = document.getElementById('btnOpenVotingDirect');
+            if (votingLinkInput) votingLinkInput.value = votingUrl;
+            if (btnOpenVotingDirect) btnOpenVotingDirect.href = votingUrl;
 
             classes.forEach(kelas => {
                 const total = studentRoster[kelas].length;
@@ -168,6 +216,42 @@
 
         function generateWaMessage(kelas, url) {
             return `*📢 PENDATAAN BIODATA YEARBOOK NEVASTRA 2026 - KELAS ${kelas} 📢*\n\nHalo teman-teman *${kelas}*, mohon bantuannya untuk segera mengisi data pribadi dan kata-kata / quotes untuk dicetak pada Buku Tahunan (Yearbook) angkatan kita ya! ✨\n\nSilakan klik tautan khusus kelas kita di bawah ini:\n👉 ${url}\n\n*Panduan Pengisian:*\n1. Pilih nomor absen kamu\n2. Pastikan ejaan nama lengkap sudah benar\n3. Isi Tempat & Tanggal Lahir (TTL)\n4. Masukkan nomor WhatsApp & username Instagram\n5. Tulis alamat domisili saat ini\n6. Masukkan kata-kata / quotes terbaikmu untuk kenangan angkatan!\n\nTerima kasih atas kerjasamanya! 🙏🎓`;
+        }
+
+        function generateVotingWaMessage(url) {
+            return `*📢 VOTING RESMI METODE PEMBAGIAN KELOMPOK BUKU TAHUNAN NEVASTRA 2026 📢*\n\nHalo teman-teman Angkatan 2026 SMAN 1 Sumberrejo! ✨\n\nYuk tentukan bersama metode pembagian kelompok foto buku tahunan kita melalui voting resmi online:\n👉 ${url}\n\n*Pilihan Voting:*\n1️⃣ *Opsi 1*: Kelompok Urut Absen\n2️⃣ *Opsi 2*: Kelompok Diacak oleh Sistem\n\n*Ketentuan Pemilihan:*\n✅ Wajib login dengan Akun Google masing-masing.\n✅ 1 Siswa hanya dapat memberikan 1 Suara Sah.\n✅ Data langsung tersimpan di Firebase & Google Sheets.\n\nPilihan kamu sangat berarti untuk kekompakan angkatan kita! Segera klik tautan di atas dan berikan suaramu ya! 🙏🎓`;
+        }
+
+        // Bind Voting Card Actions
+        const btnCopyVotingUrl = document.getElementById('btnCopyVotingUrl');
+        const btnCopyVotingWaMsg = document.getElementById('btnCopyVotingWaMsg');
+        const btnShareVotingWaDirect = document.getElementById('btnShareVotingWaDirect');
+
+        if (btnCopyVotingUrl) {
+            btnCopyVotingUrl.onclick = () => {
+                const base = baseUrlInput.value.trim() || defaultBase;
+                const vUrl = base.substring(0, base.lastIndexOf('/')) + '/voting.html';
+                navigator.clipboard.writeText(vUrl).then(() => showToast('Link Voting berhasil disalin!'));
+            };
+        }
+
+        if (btnCopyVotingWaMsg) {
+            btnCopyVotingWaMsg.onclick = () => {
+                const base = baseUrlInput.value.trim() || defaultBase;
+                const vUrl = base.substring(0, base.lastIndexOf('/')) + '/voting.html';
+                const msg = generateVotingWaMessage(vUrl);
+                navigator.clipboard.writeText(msg).then(() => showToast('Pesan WhatsApp Voting berhasil disalin!'));
+            };
+        }
+
+        if (btnShareVotingWaDirect) {
+            btnShareVotingWaDirect.onclick = () => {
+                const base = baseUrlInput.value.trim() || defaultBase;
+                const vUrl = base.substring(0, base.lastIndexOf('/')) + '/voting.html';
+                const msg = generateVotingWaMessage(vUrl);
+                const waLink = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+                window.open(waLink, '_blank');
+            };
         }
 
         baseUrlInput.addEventListener('input', renderCards);
