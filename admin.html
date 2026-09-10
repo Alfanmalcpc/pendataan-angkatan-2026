@@ -69,10 +69,13 @@
             </div>
         </div>
 
-        <!-- Mode Switcher (Biodata vs Voting) -->
+        <!-- Mode Switcher (Biodata vs Kelompok vs Voting) -->
         <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
             <button id="btnSwitchBiodata" class="btn btn-primary" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md);">
                 📋 Rekap Biodata Siswa (XII-1 s/d XII-9)
+            </button>
+            <button id="btnSwitchKelompok" class="btn btn-outline" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md); border-color: #0d9488; color: #0d9488;">
+                👥 Data 6 Kelompok Tim (Per Kelas)
             </button>
             <button id="btnSwitchVoting" class="btn btn-outline" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md); border-color: var(--secondary); color: var(--secondary);">
                 🗳️ Rekap Voting Kelompok Angkatan
@@ -231,6 +234,141 @@
             </div>
         </div>
         </div> <!-- End biodataWrapper -->
+
+        <!-- ======================================================== -->
+        <!-- REKAPITULASI DATA 6 KELOMPOK TIM PER KELAS (ADMIN)       -->
+        <!-- ======================================================== -->
+        <div id="kelompokSectionAdmin" style="display: none; margin-bottom: 24px;">
+            <div class="card" style="margin-bottom: 20px; border-left: 5px solid #0d9488;">
+                <div class="card-header" style="flex-wrap: wrap; gap: 12px; align-items: flex-start;">
+                    <div>
+                        <span class="hero-badge" style="background: #ccfbf1; color: #0f766e;">👥 6 TIM / KELAS (MAKS 6 SISWA)</span>
+                        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--dark); margin: 6px 0 4px 0;">
+                            Data 6 Kelompok Tim per Kelas (Terkunci & Gender Seimbang)
+                        </h2>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">
+                            Setiap kelas otomatis terbagi menjadi 6 tim (maks 6 siswa). Aturan gender seimbang ketat: tidak ada 1 laki-laki / 1 perempuan sendirian. Tim siswa terkunci permanen.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button id="btnDownloadKelompokExcel" class="btn btn-primary btn-sm" style="background: #107c41; font-weight: 700;">
+                            📥 Download Excel Data Kelompok (.xlsx)
+                        </button>
+                        <button id="btnSyncOldBiodata" class="btn btn-outline btn-sm" style="border-color: #0d9488; color: #0f766e; font-weight: 700;">
+                            🔄 Sinkronkan Siswa Lama ke Tim
+                        </button>
+                        <button id="btnResetKelompokClass" class="btn btn-outline btn-sm" style="border-color: #ef4444; color: #dc2626; font-weight: 700;">
+                            🗑️ Reset Tim Kelas Ini
+                        </button>
+                        <a id="btnBukaKelompokSiswa" href="kelompok.html" target="_blank" class="btn btn-outline btn-sm" style="font-weight: 700;">
+                            ↗ Buka Halaman Siswa
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selector Kelas untuk Kelompok -->
+            <div class="card" style="margin-bottom: 20px;">
+                <div style="margin-bottom: 12px;">
+                    <label style="font-size: 0.88rem; font-weight: 700; color: var(--text);">
+                        PILIH KELAS KELOMPOK (Klik untuk melihat tabel 6 tim):
+                    </label>
+                </div>
+                <div class="class-tabs-container" id="kelompokClassTabsBar" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
+                    <!-- Dynamic tabs for XII-1 to XII-9 + Semua Kelas -->
+                </div>
+            </div>
+
+            <!-- Stats Bar Kelompok -->
+            <div class="class-stat-grid" style="margin-bottom: 20px;">
+                <div class="class-stat-box">
+                    <div class="class-stat-label">TOTAL SISWA DALAM TIM</div>
+                    <div class="class-stat-num" id="statKelompokTotal" style="color: var(--primary);">0</div>
+                    <div style="font-size: 0.76rem; color: var(--text-muted);" id="statKelompokTotalSub">Siswa terbagi</div>
+                </div>
+                <div class="class-stat-box">
+                    <div class="class-stat-label">LAKI-LAKI (L)</div>
+                    <div class="class-stat-num" id="statKelompokL" style="color: #0284c7;">0</div>
+                    <div style="font-size: 0.76rem; color: var(--text-muted);">Terdistribusi aman</div>
+                </div>
+                <div class="class-stat-box">
+                    <div class="class-stat-label">PEREMPUAN (P)</div>
+                    <div class="class-stat-num" id="statKelompokP" style="color: #db2777;">0</div>
+                    <div style="font-size: 0.76rem; color: var(--text-muted);">Terdistribusi aman</div>
+                </div>
+                <div class="class-stat-box">
+                    <div class="class-stat-label">TIM LENGKAP (6/6)</div>
+                    <div class="class-stat-num" id="statKelompokFull" style="color: var(--success);">0</div>
+                    <div style="font-size: 0.76rem; color: var(--success); font-weight: 700;" id="statKelompokFullSub">0 dari 6 Tim</div>
+                </div>
+            </div>
+
+            <!-- Filter & Search Bar Kelompok -->
+            <div class="card" style="margin-bottom: 20px; padding: 14px 18px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                    <div>
+                        <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: block;">Filter Tim:</label>
+                        <select id="filterKelompokTim" class="form-control" style="font-size: 0.85rem;">
+                            <option value="ALL">Semua Tim (Tim 1 s/d Tim 6)</option>
+                            <option value="Tim 1">Tim 1</option>
+                            <option value="Tim 2">Tim 2</option>
+                            <option value="Tim 3">Tim 3</option>
+                            <option value="Tim 4">Tim 4</option>
+                            <option value="Tim 5">Tim 5</option>
+                            <option value="Tim 6">Tim 6</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: block;">Filter Gender:</label>
+                        <select id="filterKelompokGender" class="form-control" style="font-size: 0.85rem;">
+                            <option value="ALL">Semua Gender (L & P)</option>
+                            <option value="L">👦 Hanya Laki-laki (L)</option>
+                            <option value="P">👧 Hanya Perempuan (P)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: block;">Pencarian Anggota:</label>
+                        <input type="text" id="searchKelompok" class="form-control" style="font-size: 0.85rem;" placeholder="Cari nama, absen, domisili tinggal, no hp...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabel Data Kelompok -->
+            <div class="card">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <h3 class="card-title" id="kelompokTableTitle">
+                            Tabel Anggota 6 Tim - Kelas XII-1
+                        </h3>
+                        <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+                            Menampilkan anggota tim beserta domisili ("teman ada di mana") & nomor kontak
+                        </div>
+                    </div>
+                    <span id="kelompokFilteredCountBadge" class="yb-badge" style="font-size: 0.8rem; background: #0d9488; color: white;">0 Anggota</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">No</th>
+                                <th style="width: 80px;">Kelas</th>
+                                <th style="width: 85px;">Tim</th>
+                                <th style="width: 65px;">Absen</th>
+                                <th>Nama Lengkap Siswa</th>
+                                <th style="width: 95px;">Gender</th>
+                                <th>Tinggal Di (Alamat Domisili)</th>
+                                <th>WhatsApp</th>
+                                <th>Quotes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kelompokTableBody">
+                            <!-- Diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
 
         <!-- ======================================================== -->
         <!-- REKAPITULASI & PENGATURAN VOTING KELOMPOK ANGKATAN 2026 -->
@@ -796,26 +934,18 @@
             }
 
             const targetLabel = activeClass === 'ALL' ? 'SELURUH ANGKATAN' : 'KELAS ' + activeClass;
-            let text = '*📢 DAFTAR SISWA ' + targetLabel + ' YANG BELUM MENGISI BIODATA YEARBOOK:*
-
-';
+            let text = `*📢 DAFTAR SISWA ${targetLabel} YANG BELUM MENGISI BIODATA YEARBOOK:*\n\n`;
 
             pendingList.forEach((s, idx) => {
                 const padded = s.absen < 10 ? '0' + s.absen : '' + s.absen;
-                text += (idx + 1) + '. [' + s.kelas + '] Absen ' + padded + ' - ' + s.namaRoster + '
-';
+                text += `${idx + 1}. [${s.kelas}] Absen ${padded} - ${s.namaRoster}\n`;
             });
 
             let base = adminHostUrl.value.trim() || baseDir;
             if (!base.endsWith('/')) base += '/';
             const classLink = activeClass !== 'ALL' ? base + activeClass.toLowerCase() + '.html' : base + 'index.html';
 
-            text += '
-Total: *' + pendingList.length + ' siswa* belum mengisi.
-Yuk segera klik link berikut untuk mengisi data: 👇
-' + classLink + '
-
-Terima kasih! ✨';
+            text += `\nTotal: *${pendingList.length} siswa* belum mengisi.\nYuk segera klik link berikut untuk mengisi data: 👇\n${classLink}\n\nTerima kasih! ✨`;
 
             navigator.clipboard.writeText(text).then(() => {
                 showToast('Daftar ' + pendingList.length + ' siswa yang belum mengisi berhasil disalin!');
@@ -962,40 +1092,68 @@ Terima kasih! ✨';
         // SISTEM LOGIKA ADMIN: VOTING KELOMPOK ANGKATAN 2026
         // ==================================================================
         let allVotingRecords = {};
-        let currentAdminMode = 'biodata'; // 'biodata' | 'voting'
+        let allTeamsData = {};
+        let currentAdminMode = 'biodata'; // 'biodata' | 'kelompok' | 'voting'
+        let activeKelompokClass = 'XII-1';
 
         const btnSwitchBiodata = document.getElementById('btnSwitchBiodata');
         const btnSwitchVoting = document.getElementById('btnSwitchVoting');
+        const btnSwitchKelompok = document.getElementById('btnSwitchKelompok');
         const biodataWrapper = document.getElementById('biodataWrapper');
         const votingSectionAdmin = document.getElementById('votingSectionAdmin');
+        const kelompokSectionAdmin = document.getElementById('kelompokSectionAdmin');
 
         function switchAdminMode(mode) {
             currentAdminMode = mode;
+            btnSwitchBiodata.className = 'btn btn-outline';
+            btnSwitchBiodata.style.color = '';
+            btnSwitchBiodata.style.background = '';
+            btnSwitchBiodata.style.borderColor = '';
+
+            btnSwitchVoting.className = 'btn btn-outline';
+            btnSwitchVoting.style.borderColor = 'var(--secondary)';
+            btnSwitchVoting.style.color = 'var(--secondary)';
+            btnSwitchVoting.style.background = '';
+
+            btnSwitchKelompok.className = 'btn btn-outline';
+            btnSwitchKelompok.style.borderColor = '#0d9488';
+            btnSwitchKelompok.style.color = '#0d9488';
+            btnSwitchKelompok.style.background = '';
+
+            biodataWrapper.style.display = 'none';
+            votingSectionAdmin.style.display = 'none';
+            kelompokSectionAdmin.style.display = 'none';
+
             if (mode === 'biodata') {
                 btnSwitchBiodata.className = 'btn btn-primary';
-                btnSwitchVoting.className = 'btn btn-outline';
-                btnSwitchVoting.style.borderColor = 'var(--secondary)';
-                btnSwitchVoting.style.color = 'var(--secondary)';
                 biodataWrapper.style.display = 'block';
-                votingSectionAdmin.style.display = 'none';
-            } else {
-                btnSwitchBiodata.className = 'btn btn-outline';
+            } else if (mode === 'voting') {
                 btnSwitchVoting.className = 'btn btn-primary';
                 btnSwitchVoting.style.background = 'var(--secondary)';
                 btnSwitchVoting.style.borderColor = 'var(--secondary)';
                 btnSwitchVoting.style.color = 'white';
-                biodataWrapper.style.display = 'none';
                 votingSectionAdmin.style.display = 'block';
                 syncVotingData();
+            } else if (mode === 'kelompok') {
+                btnSwitchKelompok.className = 'btn btn-primary';
+                btnSwitchKelompok.style.background = '#0d9488';
+                btnSwitchKelompok.style.borderColor = '#0d9488';
+                btnSwitchKelompok.style.color = 'white';
+                kelompokSectionAdmin.style.display = 'block';
+                renderKelompokTabs();
+                syncKelompokData();
             }
         }
 
         btnSwitchBiodata.onclick = () => switchAdminMode('biodata');
         btnSwitchVoting.onclick = () => switchAdminMode('voting');
+        btnSwitchKelompok.onclick = () => switchAdminMode('kelompok');
 
-        // Check query param e.g. admin.html?tab=voting
+        // Check query param e.g. admin.html?tab=kelompok or admin.html?tab=voting
         const urlParamsAdmin = new URLSearchParams(window.location.search);
-        if (urlParamsAdmin.get('tab') === 'voting') {
+        if (urlParamsAdmin.get('tab') === 'kelompok') {
+            switchAdminMode('kelompok');
+        } else if (urlParamsAdmin.get('tab') === 'voting') {
             switchAdminMode('voting');
         }
 
@@ -1292,13 +1450,308 @@ Terima kasih! ✨';
             showToast('Data voting berhasil disegarkan.');
         };
 
+
+        // ==================================================================
+        // SISTEM LOGIKA ADMIN: 6 KELOMPOK TIM PER KELAS
+        // ==================================================================
+        const kelompokClassTabsBar = document.getElementById('kelompokClassTabsBar');
+        const kelompokTableBody = document.getElementById('kelompokTableBody');
+        const kelompokTableTitle = document.getElementById('kelompokTableTitle');
+        const kelompokFilteredCountBadge = document.getElementById('kelompokFilteredCountBadge');
+        const filterKelompokTim = document.getElementById('filterKelompokTim');
+        const filterKelompokGender = document.getElementById('filterKelompokGender');
+        const searchKelompok = document.getElementById('searchKelompok');
+        const btnBukaKelompokSiswa = document.getElementById('btnBukaKelompokSiswa');
+        const btnDownloadKelompokExcel = document.getElementById('btnDownloadKelompokExcel');
+        const btnSyncOldBiodata = document.getElementById('btnSyncOldBiodata');
+        const btnResetKelompokClass = document.getElementById('btnResetKelompokClass');
+
+        function renderKelompokTabs() {
+            if (!kelompokClassTabsBar) return;
+            kelompokClassTabsBar.innerHTML = '';
+
+            classes.forEach(c => {
+                const btn = document.createElement('button');
+                btn.className = `class-tab-btn ${activeKelompokClass === c ? 'active' : ''}`;
+                btn.textContent = `Kelas ${c}`;
+                btn.onclick = () => {
+                    activeKelompokClass = c;
+                    renderKelompokTabs();
+                    renderKelompokRecap();
+                };
+                kelompokClassTabsBar.appendChild(btn);
+            });
+
+            const allBtn = document.createElement('button');
+            allBtn.className = `class-tab-btn ${activeKelompokClass === 'ALL' ? 'active' : ''}`;
+            allBtn.style.fontWeight = '800';
+            allBtn.textContent = '🌐 Semua Kelas (1 s/d 9)';
+            allBtn.onclick = () => {
+                activeKelompokClass = 'ALL';
+                renderKelompokTabs();
+                renderKelompokRecap();
+            };
+            kelompokClassTabsBar.appendChild(allBtn);
+
+            if (btnBukaKelompokSiswa) {
+                btnBukaKelompokSiswa.href = activeKelompokClass === 'ALL' ? 'kelompok.html' : `kelompok.html?kelas=${activeKelompokClass}`;
+            }
+        }
+
+        async function syncKelompokData() {
+            try {
+                allTeamsData = await window.NevastraDB.getAllTeams();
+                renderKelompokRecap();
+            } catch(e) {
+                console.warn("Gagal memuat data kelompok tim:", e);
+            }
+        }
+
+        function getFlattenedKelompokList() {
+            const list = [];
+            const classesToView = activeKelompokClass === 'ALL' ? classes : [activeKelompokClass];
+
+            classesToView.forEach(cls => {
+                const classTeams = allTeamsData[cls] || {};
+                for (let i = 1; i <= 6; i++) {
+                    const tName = `Tim ${i}`;
+                    const teamObj = classTeams[tName] || {};
+                    const members = Object.values(teamObj.members || {});
+                    members.forEach(m => {
+                        list.push({
+                            kelas: cls,
+                            tim: tName,
+                            absen: parseInt(m.absen, 10),
+                            nama: m.nama || '-',
+                            jk: ((m.jk || m.jenisKelamin || 'L') + '').toUpperCase(),
+                            tinggalDi: m.tinggalDi || m.alamat || '-',
+                            noHp: m.noHp || '-',
+                            quotes: m.quotes || '-'
+                        });
+                    });
+                }
+            });
+
+            list.sort((a, b) => {
+                if (a.kelas !== b.kelas) return a.kelas.localeCompare(b.kelas);
+                if (a.tim !== b.tim) return a.tim.localeCompare(b.tim);
+                return a.absen - b.absen;
+            });
+
+            return list;
+        }
+
+        function renderKelompokRecap() {
+            if (!kelompokTableBody) return;
+
+            const fullList = getFlattenedKelompokList();
+            const q = (searchKelompok ? searchKelompok.value : '').trim().toLowerCase();
+            const filterTim = filterKelompokTim ? filterKelompokTim.value : 'ALL';
+            const filterGen = filterKelompokGender ? filterKelompokGender.value : 'ALL';
+
+            // Filter
+            const filtered = fullList.filter(item => {
+                if (filterTim !== 'ALL' && item.tim !== filterTim) return false;
+                if (filterGen !== 'ALL' && item.jk !== filterGen) return false;
+                if (q) {
+                    const matchNama = item.nama.toLowerCase().includes(q);
+                    const matchAbs = item.absen.toString().includes(q);
+                    const matchAlamat = item.tinggalDi.toLowerCase().includes(q);
+                    const matchHp = item.noHp.includes(q);
+                    const matchTim = item.tim.toLowerCase().includes(q);
+                    return matchNama || matchAbs || matchAlamat || matchHp || matchTim;
+                }
+                return true;
+            });
+
+            // Stats calculation for active class (or all)
+            const countL = fullList.filter(s => s.jk === 'L').length;
+            const countP = fullList.filter(s => s.jk === 'P').length;
+
+            let fullTeamsCount = 0;
+            const checkClasses = activeKelompokClass === 'ALL' ? classes : [activeKelompokClass];
+            checkClasses.forEach(cls => {
+                const teams = allTeamsData[cls] || {};
+                for (let i = 1; i <= 6; i++) {
+                    const mCount = Object.keys((teams[`Tim ${i}`] || {}).members || {}).length;
+                    if (mCount >= 6) fullTeamsCount++;
+                }
+            });
+
+            const maxTeams = checkClasses.length * 6;
+
+            document.getElementById('statKelompokTotal').textContent = fullList.length;
+            document.getElementById('statKelompokTotalSub').textContent = activeKelompokClass === 'ALL' ? 'Total Siswa 9 Kelas' : `Siswa Kelas ${activeKelompokClass}`;
+            document.getElementById('statKelompokL').textContent = countL;
+            document.getElementById('statKelompokP').textContent = countP;
+            document.getElementById('statKelompokFull').textContent = fullTeamsCount;
+            document.getElementById('statKelompokFullSub').textContent = `${fullTeamsCount} dari ${maxTeams} Tim (6 Siswa)`;
+
+            kelompokTableTitle.textContent = activeKelompokClass === 'ALL' 
+                ? 'Tabel Anggota 6 Tim - Seluruh Angkatan (XII-1 s/d XII-9)' 
+                : `Tabel Anggota 6 Tim - Kelas ${activeKelompokClass}`;
+            kelompokFilteredCountBadge.textContent = `${filtered.length} Anggota`;
+
+            kelompokTableBody.innerHTML = '';
+            if (filtered.length === 0) {
+                kelompokTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 30px; color: var(--text-muted);">
+                            Belum ada anggota tim yang sesuai dengan filter atau kata kunci.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filtered.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                const cleanHp = (item.noHp || '').replace(/\D/g, '');
+                const waLink = cleanHp ? `https://wa.me/${cleanHp.startsWith('0') ? '62' + cleanHp.slice(1) : cleanHp}` : null;
+
+                const isMale = item.jk === 'L';
+                const genderBadge = isMale
+                    ? `<span style="background:#e0f2fe; color:#0369a1; padding:3px 8px; border-radius:5px; font-size:0.75rem; font-weight:700;">👦 Laki-laki</span>`
+                    : `<span style="background:#fce7f3; color:#be185d; padding:3px 8px; border-radius:5px; font-size:0.75rem; font-weight:700;">👧 Perempuan</span>`;
+
+                tr.innerHTML = `
+                    <td><strong>${idx + 1}</strong></td>
+                    <td><strong>${item.kelas}</strong></td>
+                    <td><span style="font-weight:700; color:var(--primary); background:#eef2ff; padding:2px 8px; border-radius:4px;">${item.tim}</span></td>
+                    <td><strong>${String(item.absen).padStart(2, '0')}</strong></td>
+                    <td><strong>${item.nama}</strong></td>
+                    <td>${genderBadge}</td>
+                    <td><span style="color:#334155;">📍 ${item.tinggalDi}</span></td>
+                    <td>
+                        ${waLink ? `<a href="${waLink}" target="_blank" rel="noopener noreferrer" style="color:#059669; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; background:#ecfdf5; padding:2px 8px; border-radius:5px;">💬 ${item.noHp}</a>` : item.noHp}
+                    </td>
+                    <td style="font-style:italic; font-size:0.8rem; color:var(--text-muted);">${item.quotes}</td>
+                `;
+                kelompokTableBody.appendChild(tr);
+            });
+        }
+
+        // Export Data Kelompok ke Excel (.xlsx) via SheetJS
+        function exportKelompokExcel() {
+            const wb = XLSX.utils.book_new();
+            const targetClasses = activeKelompokClass === 'ALL' ? classes : [activeKelompokClass];
+
+            // 1. Sheet Ringkasan per Kelas
+            targetClasses.forEach(cls => {
+                const sheetName = cls.replace('-', ' ');
+                const classTeams = allTeamsData[cls] || {};
+                const aoa = [
+                    ["NO", "KELAS", "TIM", "ABSEN", "NAMA SISWA", "JENIS KELAMIN", "ALAMAT DOMISILI (TEMPAT TINGGAL)", "NO HP / WHATSAPP", "QUOTES"],
+                    ["EX:", cls, "Tim 1", 1, "Nama Lengkap Siswa", "Laki-laki", "Bojonegoro", "081234567890", "Quotes singkat"]
+                ];
+
+                let no = 1;
+                for (let i = 1; i <= 6; i++) {
+                    const tName = `Tim ${i}`;
+                    const teamObj = classTeams[tName] || {};
+                    const members = Object.values(teamObj.members || {});
+                    members.sort((a, b) => a.absen - b.absen).forEach(m => {
+                        aoa.push([
+                            no++,
+                            cls,
+                            tName,
+                            m.absen,
+                            m.nama || "-",
+                            (m.jk === 'P' || m.jenisKelamin === 'P') ? "Perempuan" : "Laki-laki",
+                            m.tinggalDi || m.alamat || "-",
+                            m.noHp || "-",
+                            m.quotes || "-"
+                        ]);
+                    });
+                }
+
+                const ws = XLSX.utils.aoa_to_sheet(aoa);
+                ws['!cols'] = [
+                    { wch: 6 },
+                    { wch: 10 },
+                    { wch: 10 },
+                    { wch: 8 },
+                    { wch: 32 },
+                    { wch: 15 },
+                    { wch: 35 },
+                    { wch: 18 },
+                    { wch: 30 }
+                ];
+                XLSX.utils.book_append_sheet(wb, ws, sheetName);
+            });
+
+            const fileName = activeKelompokClass === 'ALL' 
+                ? 'DATA_6_TIM_KELOMPOK_SEMUA_KELAS_NEVASTRA_2026.xlsx'
+                : `DATA_6_TIM_KELOMPOK_${activeKelompokClass}_NEVASTRA_2026.xlsx`;
+
+            XLSX.writeFile(wb, fileName);
+            showToast(`File Excel ${fileName} berhasil diunduh!`);
+        }
+
+        btnDownloadKelompokExcel.onclick = exportKelompokExcel;
+
+        // Reset Data Kelompok Kelas
+        btnResetKelompokClass.onclick = async () => {
+            if (activeKelompokClass === 'ALL') {
+                alert('Silakan pilih salah satu kelas (XII-1 s/d XII-9) terlebih dahulu untuk mereset kelompok kelas tersebut.');
+                return;
+            }
+
+            const promptVal = confirm(`⚠️ PERINGATAN RESMI:\n\nApakah Anda yakin ingin MENGHAPUS / MERESET data pembagian 6 tim untuk KELAS ${activeKelompokClass}?\n\n- Seluruh alokasi tim kelas ${activeKelompokClass} akan dikosongkan.\n- Siswa yang sudah mengisi akan dialokasikan ulang otomatis saat memperbarui biodata.`);
+            if (!promptVal) return;
+
+            btnResetKelompokClass.disabled = true;
+            btnResetKelompokClass.textContent = 'Mereset...';
+
+            const success = await window.NevastraDB.resetClassTeams(activeKelompokClass);
+            btnResetKelompokClass.disabled = false;
+            btnResetKelompokClass.textContent = '🗑️ Reset Tim Kelas Ini';
+
+            if (success) {
+                showToast(`Data 6 tim kelas ${activeKelompokClass} berhasil direset!`);
+                await syncKelompokData();
+            } else {
+                alert('Gagal mereset data tim. Silakan periksa koneksi internet.');
+            }
+        };
+
+        // Sinkronisasi Biodata Siswa Lama ke 6 Tim
+        btnSyncOldBiodata.onclick = async () => {
+            const targetCls = activeKelompokClass === 'ALL' ? classes[0] : activeKelompokClass;
+            btnSyncOldBiodata.disabled = true;
+            btnSyncOldBiodata.textContent = 'Menyinkronkan...';
+
+            let totalSynced = 0;
+            if (activeKelompokClass === 'ALL') {
+                for (const c of classes) {
+                    const cSynced = await window.NevastraDB.syncExistingBiodataToTeams(c);
+                    totalSynced += cSynced;
+                }
+            } else {
+                totalSynced = await window.NevastraDB.syncExistingBiodataToTeams(activeKelompokClass);
+            }
+
+            btnSyncOldBiodata.disabled = false;
+            btnSyncOldBiodata.textContent = '🔄 Sinkronkan Siswa Lama ke Tim';
+
+            await syncKelompokData();
+            showToast(`Berhasil menyinkronkan ${totalSynced} siswa ke dalam 6 tim!`);
+        };
+
+        if (filterKelompokTim) filterKelompokTim.onchange = renderKelompokRecap;
+        if (filterKelompokGender) filterKelompokGender.onchange = renderKelompokRecap;
+        if (searchKelompok) searchKelompok.oninput = renderKelompokRecap;
+
         renderTabs();
+        renderKelompokTabs();
         updateActiveClassLink();
         loadSheetConfig();
         syncData();
         syncVotingData();
+        syncKelompokData();
         setInterval(syncData, 15000);
         setInterval(syncVotingData, 15000);
+        setInterval(syncKelompokData, 15000);
     </script>
 </body>
 </html>

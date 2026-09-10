@@ -3,46 +3,51 @@
 
 ---
 
-## 🌟 Fitur & Pembaruan Terbaru
-1. **Upload Foto ke Google Drive (Subfolder Kelas XII-1 s/d XII-9 & Nama = Nama Siswa)**:
-   - Siswa dapat mengunggah foto yearbook langsung di formulir kelas.
-   - Foto otomatis disortir ke subfolder kelas masing-masing (`XII-1`, `XII-2`, ..., `XII-9`) di dalam Google Drive.
-   - Format nama berkas otomatis persis sesuai nama siswa (contoh: `XII-1/Mochamad Alfan.jpg`).
-   - Pratinjau Polaroid interaktif langsung menampilkan foto saat dipilih.
-2. **Sistem Voting Metode Pembagian Kelompok Yearbook (`voting.html`)**:
-   - Setiap siswa diwajibkan **Login dengan Akun Google** (Firebase Authentication).
-   - **Anti Voting Ganda (1 Siswa = 1 Suara Sah)**: Sistem memverifikasi UID akun Google serta data unik Siswa (Kelas + Absen) agar tidak bisa memilih lebih dari 1 kali.
-   - Pilihan voting:
-     - **Opsi 1**: Kelompok Urut Absen.
-     - **Opsi 2**: Kelompok Diacak oleh Sistem.
-   - Setiap suara yang masuk otomatis tersimpan permanen di Firebase Realtime Database dan diteruskan langsung ke Google Spreadsheet.
-   - Siswa yang sudah voting otomatis menerima bukti tanda terima sah dan grafik perolehan suara sementara.
-3. **Sinkronisasi Otomatis ke Google Sheets (`google-sheet-voting-script.gs`)**:
-   - Script siap pakai yang dapat langsung dipasang di Google Sheets (Menu *Ekstensi* > *Apps Script*).
-   - Menghasilkan baris data otomatis: `Waktu Voting`, `Nama Siswa`, `Kelas`, `No Absen`, `Pilihan Voting`, `Email Akun Google`, dan `UID Firebase`.
-4. **Dashboard Rekapitulasi Voting di Panel Admin (`admin.html`)**:
-   - Tab khusus *Rekap Voting Kelompok Angkatan*.
-   - Metrik total suara masuk, persentase Opsi 1 vs Opsi 2, dan visual perbandingan dual-color realtime.
-   - Kolom pengaturan URL Google Sheets Web App dengan tombol tes koneksi langsung.
-   - Fitur ekspor seluruh hasil suara ke format resmi Excel (`.xlsx`).
-   - Fitur hapus data voting tertentu jika siswa perlu melakukan pemilihan ulang.
-5. **Upload Foto ke Google Drive (Subfolder Kelas XII-1 s/d XII-9 & Nama = Nama Siswa)**:
-   - Foto otomatis disortir ke subfolder kelas masing-masing di dalam Google Drive.
-   - Format nama berkas otomatis persis sesuai nama siswa (contoh: `XII-1/Mochamad Alfan.jpg`).
-6. **Format Nama Huruf Depan Saja / Title Case & Absen Terkunci**:
-   - Seluruh 322 nama siswa resmi dari kelas XII-1 s/d XII-9 disinkronkan langsung dari daftar sekolah.
+## 🌟 Fitur Utama & Pembaruan Sistem
+
+### 1. Pembagian 6 Tim Kelompok per Kelas (Otomatis & Gender-Safe)
+- **6 Tim per Kelas (@ 6 Siswa)**: Sesuai kapasitas kelas (~36 siswa), setiap siswa yang mengisi atau menyimpan biodata di kelasnya (`xii-1.html` s/d `xii-9.html`) otomatis dialokasikan ke salah satu dari **6 tim** (Tim 1 s/d Tim 6).
+- **Aturan Ketat Gender Seimbang (Anti 1 Laki-laki / 1 Perempuan Sendirian)**:
+  - DILARANG terjadi 1 laki-laki sendirian di antara perempuan (1L + 5P).
+  - DILARANG terjadi 1 perempuan sendirian di antara laki-laki (5L + 1P).
+  - Kelompok sesama jenis (6L 0P atau 0L 6P) DIPERBOLEHKAN.
+  - Komposisi campuran yang seimbang (2L 4P, 3L 3P, 4L 2P) diprioritaskan oleh algoritma penyeimbang otomatis.
+- **Tim Terkunci Permanen**: Sekali siswa ditetapkan masuk ke suatu tim, tim tersebut **TIDAK BISA DIUBAH** jika siswa mengedit data biodatanya di kemudian hari. Hanya Admin yang memiliki wewenang untuk mereset alokasi tim.
+- **Transparansi Teman 1 Tim & Lokasi Tempat Tinggal**:
+  - Siswa dapat langsung melihat siapa teman 1 kelompok mereka di formulir kelas (`studentTeamCard`).
+  - Menampilkan lokasi tempat tinggal teman sekelompok (*"teman ada di mana"* / Alamat Domisili).
+  - Dilengkapi tombol chat langsung ke WhatsApp masing-masing anggota.
+- **Jenis Kelamin Khusus untuk Kelompok**: Kolom *Jenis Kelamin* ditanyakan pada formulir siswa hanya untuk alokasi kelompok yang aman, dan **tidak dicetak** pada rekap tabel buku tahunan resmi.
+
+### 2. Akses Siswa vs Akses Admin untuk Data Kelompok
+- **Halaman Siswa (`kelompok.html`)**:
+  - Siswa dapat melihat daftar 6 tim per kelas secara langsung di web.
+  - **DIBATASI**: Siswa **TIDAK BISA mendownload data** demi keamanan privasi.
+  - Jalur rahasia/private: Tidak ada tautan menuju panel admin atau rekap dari halaman publik.
+- **Panel Admin (`admin.html` > Tab *Data 6 Kelompok Tim*)**:
+  - Admin dapat memantau komposisi seluruh tim per kelas maupun seluruh angkatan.
+  - **Fitur Download Excel (`.xlsx`)**: Admin dapat mengunduh seluruh data kelompok beserta alamat domisili dan nomor WhatsApp ke format file Excel dengan satu klik.
+  - **Fitur Sinkronisasi & Reset**: Admin dapat menyinkronkan siswa yang sudah mendaftar sebelumnya atau mereset pembagian kelompok jika diperlukan.
+
+### 3. Sistem Voting Metode Pembagian Kelompok (`voting.html`)
+- **Login Wajib Akun Google (Firebase Authentication)**.
+- **1 Siswa = 1 Suara Sah**: Verifikasi UID akun Google serta data Siswa (Kelas + Absen).
+- **Pilihan Voting**:
+  - *Opsi 1*: Kelompok Urut Absen.
+  - *Opsi 2*: Kelompok Diacak oleh Sistem.
+- **Sinkronisasi Otomatis Google Sheets (`google-sheet-voting-script.gs`)** secara realtime.
 
 ---
 
-## 🌐 Tautan Web Online
+## 🌐 Tautan Web & Halaman Resmi
+
 - **Portal Siswa**: [https://alfanmalcpc.github.io/pendataan-angkatan-2026/](https://alfanmalcpc.github.io/pendataan-angkatan-2026/)
-- **Halaman Voting Kelompok**: [https://alfanmalcpc.github.io/pendataan-angkatan-2026/voting.html](https://alfanmalcpc.github.io/pendataan-angkatan-2026/voting.html)
-- **Dashboard Admin**: [https://alfanmalcpc.github.io/pendataan-angkatan-2026/admin.html](https://alfanmalcpc.github.io/pendataan-angkatan-2026/admin.html)
-- **Distribusi Link Kelas & Broadcast**: [https://alfanmalcpc.github.io/pendataan-angkatan-2026/links.html](https://alfanmalcpc.github.io/pendataan-angkatan-2026/links.html)
+- **Halaman Kelompok Siswa (View-Only)**: `kelompok.html`
+- **Halaman Voting Kelompok (Private)**: `voting.html`
+- **Dashboard Admin (Private)**: `admin.html`
+- **Rekap Biodata Angkatan (Private)**: `rekap.html`
 
----
-
-## 👨‍🎓 Tautan Formulir per Kelas
+### Formulir Pengisian per Kelas
 - **Kelas XII-1**: `xii-1.html`
 - **Kelas XII-2**: `xii-2.html`
 - **Kelas XII-3**: `xii-3.html`
@@ -55,25 +60,30 @@
 
 ---
 
-## 📊 Panduan 1 Menit Pasang Google Sheets Voting (Siap Pakai)
-1. Buat Spreadsheet Baru di Google Drive ([https://drive.google.com](https://drive.google.com)) dengan judul: `HASIL VOTING KELOMPOK NEVASTRA 2026`.
-2. Klik menu **Ekstensi (Extensions)** > **Apps Script**.
-3. Buka berkas `google-sheet-voting-script.gs` di folder web ini, salin seluruh isinya dan tempel ke editor Apps Script.
-4. Klik tombol biru **Deploy (Terapkan)** di pojok kanan atas > pilih **New deployment (Deployment baru)**.
-5. Pada ikon gerigi (Select type), pilih **Web app**.
-   - *Description*: Hasil Voting Nevastra 2026
-   - *Execute as*: **Me** (Akun Google Anda)
-   - *Who has access*: **Anyone** (Siapa saja)  *(Wajib agar voting dari siswa langsung masuk)*
-6. Klik **Deploy**, klik **Review permissions**, pilih akun Google Anda, klik **Advanced (Lanjutan)** > **Go to ... (unsafe)** > **Allow (Izinkan)**.
-7. Salin **Web app URL** (berakhiran `/exec`), buka `admin.html` > pilih Tab **Rekap Voting Kelompok Angkatan**, tempel di kolom "Penyimpanan Langsung ke Google Sheets", lalu klik **Simpan URL Sheet**.
-8. Klik tombol **Tes Koneksi** untuk memastikan spreadsheet sudah terhubung. Selesai!
+## ☁️ Panduan Menghubungkan Repository ke Cloudflare Pages
+
+1. Masuk ke Dashboard **Cloudflare** di [https://dash.cloudflare.com](https://dash.cloudflare.com).
+2. Pada menu navigasi sebelah kiri, pilih **Workers & Pages** > klik **Create application**.
+3. Pilih tab **Pages** > klik **Connect to Git**.
+4. Hubungkan akun GitHub Anda (`Alfanmalcpc`) dan pilih repository: **`pendataan-angkatan-2026`**.
+5. Konfigurasi Deployment:
+   - **Project name**: `pendataan-angkatan-2026` (atau sesuai keinginan)
+   - **Production branch**: `main`
+   - **Framework preset**: `None`
+   - **Build command**: *(Kosongkan)*
+   - **Build output directory**: `.` *(titik / root folder)*
+6. Klik **Save and Deploy**.
+7. Cloudflare Pages akan otomatis membaca konfigurasi berkas `_headers`, `_redirects`, dan `wrangler.toml` yang sudah tersedia di repository.
+8. Website Anda akan langsung aktif dengan domain berkecepatan tinggi global Cloudflare (contoh: `https://pendataan-angkatan-2026.pages.dev`). Setiap kali Anda push ke GitHub branch `main`, Cloudflare Pages akan otomatis memperbarui situs!
 
 ---
 
-## 📁 Panduan Pemasangan Google Drive Foto (Google Apps Script)
-1. Buka [https://script.google.com](https://script.google.com) dengan akun Google Anda.
-2. Klik **New project**.
-3. Buka berkas `google-drive-script.gs` di folder ini, salin seluruh isinya dan tempel ke editor script.
-4. Klik tombol **Deploy** > **New deployment** > pilih jenis **Web app** (*Execute as: Me*, *Who has access: Anyone*).
-5. Klik **Deploy**, izinkan akses akun, salin **Web app URL**, lalu simpan di pengaturan sistem.
-
+## 📊 Panduan Pasang Google Sheets Voting
+1. Buat Spreadsheet Baru di Google Drive ([https://drive.google.com](https://drive.google.com)) dengan judul: `HASIL VOTING KELOMPOK NEVASTRA 2026`.
+2. Klik menu **Ekstensi (Extensions)** > **Apps Script**.
+3. Salin seluruh isi file `google-sheet-voting-script.gs` ke editor Apps Script.
+4. Klik tombol **Deploy** > **New deployment** > pilih jenis **Web app**.
+   - *Execute as*: **Me**
+   - *Who has access*: **Anyone**
+5. Klik **Deploy**, beri izin akun Google Anda, lalu salin **Web app URL**.
+6. Buka `admin.html` > pilih Tab **Rekap Voting Kelompok Angkatan**, tempel URL tersebut, lalu klik **Simpan URL Sheet**. Selesai!

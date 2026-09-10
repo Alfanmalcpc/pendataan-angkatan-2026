@@ -86,6 +86,20 @@
                         <span class="tip">Kamu dapat merapikan ejaan atau huruf kapital nama kamu jika diperlukan.</span>
                     </div>
 
+                    <!-- Jenis Kelamin (Untuk Pembagian 6 Tim Kelompok) -->
+                    <div class="form-group">
+                        <label for="selectJenisKelamin">
+                            Jenis Kelamin <span class="req">*</span>
+                        </label>
+                        <select id="selectJenisKelamin" class="form-control" required style="font-weight: 600;">
+                            <option value="" disabled selected>-- Pilih Jenis Kelamin --</option>
+                            <option value="L">Laki-laki (L)</option>
+                            <option value="P">Perempuan (P)</option>
+                        </select>
+                        <span class="tip">🔒 Digunakan sistem untuk pembagian 6 tim per kelas secara adil & aman (anti 1 anak sendirian). Tidak dicetak di rekap buku tahunan.</span>
+                    </div>
+
+
                     <!-- 4. TTL (Tempat, Tanggal Lahir) -->
                     <div class="form-group">
                         <label>Tempat & Tanggal Lahir (TTL) <span class="req">*</span></label>
@@ -231,6 +245,36 @@
                         ✨ Biodata ini akan diekspor langsung ke format resmi buku tahunan angkatan.
                     </div>
                 </div>
+
+                <!-- Kartu Tim Kelompok Kamu (Otomatis Masuk ke 1 dari 6 Tim) -->
+                <div class="card" id="studentTeamCard" style="margin-top: 20px; display: none; border-top: 4px solid var(--primary); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);">
+                    <div class="card-header" style="flex-wrap: wrap; gap: 8px; align-items: center;">
+                        <h3 class="card-title" style="color: var(--primary); font-size: 1.05rem; display: flex; align-items: center; gap: 6px;">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg>
+                            <span id="teamCardTitle">Tim Kelompok Kamu</span>
+                        </h3>
+                        <span class="badge" style="background:#e0e7ff; color:#4338ca; font-size: 0.72rem; padding: 4px 8px; border-radius: 6px; font-weight: 700;">🔒 Tim Terkunci</span>
+                    </div>
+                    
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5;">
+                        Setiap kelas dibagi menjadi <strong>6 tim</strong> (maks 6 orang). Tim kamu sudah dikunci oleh sistem dan tidak dapat diubah. Berikut teman satu kelompokmu beserta domisili tinggal mereka:
+                    </p>
+
+                    <!-- Daftar Anggota 1 Tim -->
+                    <div id="teamMembersList" style="display: flex; flex-direction: column; gap: 10px;">
+                        <!-- Diisi oleh JS -->
+                    </div>
+
+                    <div style="margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <span style="font-size: 0.76rem; color: var(--text-muted);">
+                            Ingin cek pembagian tim teman sekelas?
+                        </span>
+                        <a id="linkLihatSemuaKelompok" href="kelompok.html" class="btn btn-secondary" style="font-size: 0.78rem; padding: 6px 12px; text-decoration: none; border-radius: 6px;">
+                            👥 Lihat Semua Kelompok Kelas
+                        </a>
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -250,6 +294,7 @@
 
         // Elements
         const selectAbsenNama = document.getElementById('selectAbsenNama');
+        const selectJenisKelamin = document.getElementById('selectJenisKelamin');
         const formModeBadge = document.getElementById('formModeBadge');
         const studentForm = document.getElementById('studentForm');
         const btnSubmit = document.getElementById('btnSubmit');
@@ -314,7 +359,7 @@
         });
 
         // Absen Change Handler
-        selectAbsenNama.addEventListener('change', () => {
+        selectAbsenNama.addEventListener('change', async () => {
             const absen = selectAbsenNama.value;
             if (!absen) return;
 
@@ -328,6 +373,7 @@
                 formModeBadge.textContent = 'Data Sudah Terisi (Bisa Diperbarui)';
 
                 document.getElementById('inputNama').value = saved.nama || defaultNama;
+                selectJenisKelamin.value = saved.jenisKelamin || saved.jk || '';
                 document.getElementById('inputTempatLahir').value = cleanTempatLahir(saved.tempatLahir || '');
                 document.getElementById('inputTanggalLahir').value = saved.tanggalLahir || '';
                 document.getElementById('inputNoHp').value = saved.noHp || '';
@@ -338,10 +384,12 @@
 
                 enforceMaxWords();
                 showAlert('info', `Biodata untuk absen ${absen} sudah tersimpan. Kamu dapat memperbaruinya jika ada perubahan.`);
+                await renderStudentTeamCard(CURRENT_CLASS, absen);
             } else {
                 formModeBadge.style.display = 'inline-flex';
                 formModeBadge.textContent = 'Belum Mengisi (Data Baru)';
                 document.getElementById('inputNama').value = defaultNama;
+                selectJenisKelamin.value = '';
                 document.getElementById('inputTempatLahir').value = '';
                 document.getElementById('inputTanggalLahir').value = '';
                 document.getElementById('inputNoHp').value = '';
@@ -350,6 +398,8 @@
                 document.getElementById('inputAlamat').value = '';
                 document.getElementById('inputQuotes').value = '';
                 enforceMaxWords();
+                const teamCard = document.getElementById('studentTeamCard');
+                if (teamCard) teamCard.style.display = 'none';
             }
 
             updatePreviewLive();
@@ -376,6 +426,7 @@
             const student = classRoster.find(s => s.absen == absen);
             const namaRoster = student ? student.nama : '';
             const nama = document.getElementById('inputNama').value.trim();
+            const jenisKelamin = selectJenisKelamin.value;
             const tempatLahir = document.getElementById('inputTempatLahir').value.trim();
             const tanggalLahir = document.getElementById('inputTanggalLahir').value;
             const noHp = document.getElementById('inputNoHp').value.trim();
@@ -384,8 +435,9 @@
             const alamat = document.getElementById('inputAlamat').value.trim();
             const quotes = document.getElementById('inputQuotes').value.trim();
 
-            if (!nama || !tempatLahir || !tanggalLahir || !noHp || !ig || !alamat || !quotes) {
-                alert('Harap lengkapi semua kolom biodata bertanda bintang (*)!');
+            if (!nama || !jenisKelamin || !tempatLahir || !tanggalLahir || !noHp || !ig || !alamat || !quotes) {
+                alert('Harap lengkapi semua kolom biodata bertanda bintang (*), termasuk Jenis Kelamin!');
+                if (!jenisKelamin) selectJenisKelamin.focus();
                 return;
             }
 
@@ -412,6 +464,8 @@
                 const payload = {
                     namaRoster: namaRoster,
                     nama: nama,
+                    jenisKelamin: jenisKelamin,
+                    jk: jenisKelamin,
                     tempatLahir: cleanTempat,
                     tanggalLahir: tanggalLahir,
                     ttl: ttl,
@@ -422,18 +476,30 @@
                     quotes: finalQuotes
                 };
 
-                // Simpan ke Database
-                await window.NevastraDB.saveBiodata(CURRENT_CLASS, absen, payload);
+                // Simpan ke Database (Sekaligus Menetapkan Siswa ke 1 dari 6 Tim)
+                const saveResult = await window.NevastraDB.saveBiodata(CURRENT_CLASS, absen, payload);
 
                 // Update data lokal kelas
                 currentClassData[absen] = payload;
                 updateProgressBar();
 
-                showAlert('success', `🎉 Sukses! Biodata ${nama} (Absen ${absen}) berhasil disimpan!`);
+                // Tampilkan Kartu Tim Kelompok Kamu
+                if (saveResult && saveResult.timNama) {
+                    displayTeamMembers(saveResult.timNama, saveResult.teamMembers || []);
+                } else {
+                    await renderStudentTeamCard(CURRENT_CLASS, absen);
+                }
+
+                showAlert('success', `🎉 Sukses! Biodata ${nama} (Absen ${absen}) berhasil disimpan! Tim kamu: <strong>${saveResult.timNama || 'Tim Terpilih'}</strong>`);
                 formModeBadge.textContent = 'Data Sudah Terisi (Bisa Diperbarui)';
 
-                // Scroll ke preview
-                document.querySelector('.preview-sticky').scrollIntoView({ behavior: 'smooth' });
+                // Scroll ke kartu kelompok agar siswa langsung melihat timnya
+                const teamCard = document.getElementById('studentTeamCard');
+                if (teamCard) {
+                    teamCard.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    document.querySelector('.preview-sticky').scrollIntoView({ behavior: 'smooth' });
+                }
 
             } catch (err) {
                 console.error(err);
@@ -514,6 +580,83 @@
             document.getElementById('classProgressFill').style.width = pct + '%';
             document.getElementById('classProgressPct').textContent = pct + '%';
             document.getElementById('classProgressLabel').textContent = `${filled} dari ${total} siswa telah mengisi`;
+        }
+
+        
+        // Fungsi Menampilkan Kartu Tim Kelompok & Teman Satu Tim
+        async function renderStudentTeamCard(kelas, absen) {
+            const teamCard = document.getElementById('studentTeamCard');
+            if (!absen) {
+                if (teamCard) teamCard.style.display = 'none';
+                return;
+            }
+            try {
+                const teamInfo = await window.NevastraDB.getStudentTeam(kelas, absen);
+                if (teamInfo && teamInfo.timNama) {
+                    displayTeamMembers(teamInfo.timNama, teamInfo.teamMembers || []);
+                } else {
+                    if (teamCard) teamCard.style.display = 'none';
+                }
+            } catch(e) {
+                if (teamCard) teamCard.style.display = 'none';
+            }
+        }
+
+        function displayTeamMembers(timNama, members) {
+            const teamCard = document.getElementById('studentTeamCard');
+            const titleEl = document.getElementById('teamCardTitle');
+            const listEl = document.getElementById('teamMembersList');
+            const linkEl = document.getElementById('linkLihatSemuaKelompok');
+
+            if (linkEl) linkEl.href = `kelompok.html?kelas=${CURRENT_CLASS}`;
+            if (titleEl) titleEl.textContent = `${CURRENT_CLASS} • ${timNama} (${members.length}/6 Siswa)`;
+            if (!listEl) return;
+
+            listEl.innerHTML = '';
+
+            if (members.length === 0) {
+                listEl.innerHTML = '<div style="font-size:0.82rem; color:var(--text-muted); padding:10px; text-align:center;">Belum ada anggota yang terdaftar di tim ini.</div>';
+            } else {
+                members.sort((a, b) => a.absen - b.absen).forEach(m => {
+                    const isSelf = selectAbsenNama.value == m.absen;
+                    const genderBadge = (m.jk === 'L' || m.jenisKelamin === 'L')
+                        ? '<span style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:6px; font-size:0.72rem; font-weight:700;">👦 Laki-laki</span>'
+                        : '<span style="background:#fce7f3; color:#be185d; padding:2px 8px; border-radius:6px; font-size:0.72rem; font-weight:700;">👧 Perempuan</span>';
+
+                    const item = document.createElement('div');
+                    item.style.padding = '12px 14px';
+                    item.style.borderRadius = '10px';
+                    item.style.background = isSelf ? 'rgba(79, 70, 229, 0.08)' : '#f8fafc';
+                    item.style.border = isSelf ? '2px solid var(--primary)' : '1px solid var(--border)';
+                    item.style.transition = 'all 0.2s ease';
+
+                    const cleanHp = (m.noHp || '').replace(/\D/g, '');
+                    const waLink = cleanHp ? `https://wa.me/${cleanHp.startsWith('0') ? '62' + cleanHp.slice(1) : cleanHp}` : null;
+
+                    item.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; gap:8px;">
+                            <div style="font-weight:700; font-size:0.9rem; color:var(--dark);">
+                                Absen ${String(m.absen).padStart(2, '0')} - ${m.nama} ${isSelf ? '<span style="color:var(--primary); font-size:0.76rem; background:#e0e7ff; padding:2px 6px; border-radius:4px; margin-left:4px;">Kamu</span>' : ''}
+                            </div>
+                            ${genderBadge}
+                        </div>
+                        <div style="font-size:0.82rem; color:#475569; display:flex; align-items:flex-start; gap:6px; margin-bottom:6px;">
+                            <span style="font-size:1rem; line-height:1.2;">📍</span>
+                            <span><strong>Teman ada di:</strong> ${m.tinggalDi || m.alamat || '-'}</span>
+                        </div>
+                        ${waLink ? `
+                            <div style="font-size:0.8rem; margin-top:4px;">
+                                <a href="${waLink}" target="_blank" rel="noopener noreferrer" style="color:#059669; text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; background:#ecfdf5; padding:3px 8px; border-radius:6px;">
+                                    <span>💬</span> WhatsApp: ${m.noHp}
+                                </a>
+                            </div>
+                        ` : ''}
+                    `;
+                    listEl.appendChild(item);
+                });
+            }
+
+            if (teamCard) teamCard.style.display = 'block';
         }
 
         // Inisialisasi Ambil Data dari Firebase
