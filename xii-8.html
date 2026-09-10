@@ -272,6 +272,8 @@
     <!-- ======================================================== -->
     <div id="wheelModal" class="wheel-modal-backdrop" style="display: none;">
         <div class="wheel-modal-content">
+            <button type="button" id="btnCornerCloseWheel" class="wheel-close-corner" title="Keluar & Tutup">✕</button>
+
             <div class="wheel-header">
                 <h3 id="wheelModalTitle">🎡 Pengundian Kelompok Tim</h3>
                 <p id="wheelModalSubtitle">Roda sedang berputar mengundi kelompok untuk <strong id="wheelStudentName">Siswa</strong>...</p>
@@ -294,9 +296,14 @@
                     <div class="wheel-team-result" id="wheelResultTeam">KELOMPOK 1</div>
                     <p class="wheel-lock-note">🔒 Kelompok sudah resmi dikunci oleh sistem & tidak dapat diubah.</p>
                 </div>
-                <button type="button" id="btnCloseWheelModal" class="btn btn-primary btn-block" style="margin-top: 14px; padding: 12px; font-weight: 700;">
-                    👥 Lihat Teman Satu Kelompok
-                </button>
+                <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                    <button type="button" id="btnCloseWheelModal" class="btn btn-primary btn-block" style="padding: 12px; font-weight: 700;">
+                        🚪 Keluar Sekarang (<span id="wheelCountdown">5</span>s)
+                    </button>
+                    <p id="wheelAutoCloseText" style="margin: 0; font-size: 0.78rem; color: #64748b; text-align: center;">
+                        Pop up akan hilang otomatis dalam <strong id="wheelCountdownSec">5</strong> detik dan halaman otomatis refresh.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -540,7 +547,7 @@
                 if (saveResult && saveResult.isNewSpin) {
                     // KASUS 1: TIDAK ADA DATA DI DATABASE -> JALANKAN SPIN ULANG / RODA BERPUTAR!
                     showAlert('success', `🎉 Sukses! Biodata ${nama} tersimpan dan kelompokmu sedang diundi melalui roda berputar!`);
-                    triggerWheelSpin(nama, teamNum, assignedTeamNama, (saveResult && saveResult.teamMembers) || []);
+                    triggerWheelSpin(nama, teamNum, assignedTeamNama, (saveResult && saveResult.teamMembers) || [], absen);
                 } else {
                     // KASUS 2: DATA SUDAH ADA DI DATABASE -> SISTEM TERKUNCI (TIDAK BERUBAH KELOMPOK)
                     showAlert('success', `🎉 Sukses! Biodata ${nama} (Absen ${absen}) berhasil diperbarui! Kelompokmu tetap terkunci di <strong>${assignedTeamNama}</strong>.`);
@@ -677,7 +684,7 @@
                     btnReplay.onclick = () => {
                         const studentName = document.getElementById('inputNama').value.trim() || 'Kamu';
                         const teamNum = parseInt(timNama.replace(/\D/g, '')) || 1;
-                        triggerWheelSpin(studentName, teamNum, timNama, members);
+                        triggerWheelSpin(studentName, teamNum, timNama, members, selectAbsenNama.value);
                     };
                 }
             }
@@ -859,7 +866,7 @@
             } catch(e) {}
         }
 
-        function triggerWheelSpin(studentName, targetTeamNumber, targetTeamNama, teammates) {
+        function triggerWheelSpin(studentName, targetTeamNumber, targetTeamNama, teammates, targetAbsen) {
             const wheelModal = document.getElementById('wheelModal');
             const wheelDisc = document.getElementById('wheelDisc');
             const wheelStudentName = document.getElementById('wheelStudentName');
@@ -867,6 +874,15 @@
             const wheelResultName = document.getElementById('wheelResultName');
             const wheelResultTeam = document.getElementById('wheelResultTeam');
             const btnCloseWheelModal = document.getElementById('btnCloseWheelModal');
+            const btnCornerCloseWheel = document.getElementById('btnCornerCloseWheel');
+            const countdownEl = document.getElementById('wheelCountdown');
+            const countdownSecEl = document.getElementById('wheelCountdownSec');
+
+            // Hentikan timer sebelumnya jika ada
+            if (window._wheelCountdownInterval) {
+                clearInterval(window._wheelCountdownInterval);
+                window._wheelCountdownInterval = null;
+            }
 
             drawWheel();
             if (wheelStudentName) wheelStudentName.textContent = studentName || 'Kamu';
@@ -874,6 +890,27 @@
             if (wheelResultTeam) wheelResultTeam.textContent = `KELOMPOK ${targetTeamNumber}`;
             if (wheelResultBox) wheelResultBox.style.display = 'none';
             if (wheelModal) wheelModal.style.display = 'flex';
+
+            const curAbsen = targetAbsen || selectAbsenNama.value;
+
+            function exitAndRefresh() {
+                if (window._wheelCountdownInterval) {
+                    clearInterval(window._wheelCountdownInterval);
+                    window._wheelCountdownInterval = null;
+                }
+                if (wheelModal) wheelModal.style.display = 'none';
+                if (curAbsen) {
+                    window.location.href = `${window.location.pathname}?absen=${curAbsen}`;
+                } else {
+                    window.location.reload();
+                }
+            }
+
+            if (btnCornerCloseWheel) {
+                btnCornerCloseWheel.onclick = () => {
+                    exitAndRefresh();
+                };
+            }
 
             // Hitung sudut perhentian tepat di Kelompok targetTeamNumber
             const sliceCenter = (targetTeamNumber - 1) * 60 + 30;
@@ -905,24 +942,39 @@
             }
             scheduleTick();
 
-            // Selesai berputar
+            // Selesai berputar (setelah 4.3 detik)
             setTimeout(() => {
                 playVictoryFanfare();
                 if (wheelResultBox) wheelResultBox.style.display = 'block';
 
-                // Render kartu tim di halaman
+                // Render kartu tim di background
                 displayTeamMembers(targetTeamNama, teammates || []);
-            }, 4300);
 
-            if (btnCloseWheelModal) {
-                btnCloseWheelModal.onclick = () => {
-                    if (wheelModal) wheelModal.style.display = 'none';
-                    const teamCard = document.getElementById('studentTeamCard');
-                    if (teamCard) {
-                        teamCard.scrollIntoView({ behavior: 'smooth' });
+                // Mulai Hitung Mundur 5 Detik untuk Hilang Otomatis & Refresh Halaman
+                let secondsLeft = 5;
+                if (countdownEl) countdownEl.textContent = secondsLeft;
+                if (countdownSecEl) countdownSecEl.textContent = secondsLeft;
+
+                if (btnCloseWheelModal) {
+                    btnCloseWheelModal.innerHTML = `🚪 Keluar Sekarang (<span id="wheelCountdown">${secondsLeft}</span>s)`;
+                    btnCloseWheelModal.onclick = () => {
+                        exitAndRefresh();
+                    };
+                }
+
+                window._wheelCountdownInterval = setInterval(() => {
+                    secondsLeft--;
+                    const dynamicCount = document.getElementById('wheelCountdown');
+                    const dynamicSec = document.getElementById('wheelCountdownSec');
+                    if (dynamicCount) dynamicCount.textContent = secondsLeft;
+                    if (dynamicSec) dynamicSec.textContent = secondsLeft;
+
+                    if (secondsLeft <= 0) {
+                        exitAndRefresh();
                     }
-                };
-            }
+                }, 1000);
+
+            }, 4300);
         }
 
         // Inisialisasi Ambil Data dari Firebase
