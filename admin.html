@@ -1067,6 +1067,7 @@
                 }
                 document.getElementById('studentDetailModal').classList.remove('show');
                 renderClassRecap();
+                try { if (typeof syncKelompokData === 'function') syncKelompokData(); } catch(e){}
                 showToast(`Data Kelas ${kelas} Absen ${absen} berhasil dihapus.`);
             }
         };

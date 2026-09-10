@@ -347,9 +347,29 @@ const OFFICIAL_GENDERS = {
 
 
 window.NevastraDB = {
+    // --- INTIP DATA BIODATA SISWA (REALTIME DARI DATABASE) ---
+    async getStudentBiodata(kelas, absen) {
+        const studentAbsen = parseInt(absen, 10);
+        try {
+            const url = `${DB_BASE_URL}/biodata/${kelas}/${studentAbsen}.json?t=${Date.now()}`;
+            const res = await fetch(url);
+            if (res.ok) {
+                const val = await res.json();
+                if (val && typeof val === 'object' && (val.nama || val.ttl || val.noHp)) {
+                    return val;
+                }
+            }
+        } catch (e) {
+            console.warn("Intip biodata error:", e);
+        }
+        return null;
+    },
+
     async saveBiodata(kelas, absen, data) {
-        // Alokasi Tim Otomatis (6 Tim @ 6 orang per kelas, Tim Terkunci & Anti 1 L/P Sendirian)
-        let teamInfo = { timId: 1, timNama: 'Tim 1', teamMembers: [] };
+        // Alokasi Tim Menggunakan Sistem Intip Data:
+        // - Jika data siswa sudah ada di database -> Sistem Terkunci (Tim tidak berubah)
+        // - Jika data siswa belum ada / dihapus -> Spin Ulang (Tim diundi baru)
+        let teamInfo = { timId: 1, timNama: 'Tim 1', teamMembers: [], isLocked: false, isNewSpin: true };
         try {
             teamInfo = await this.allocateStudentToTeam(kelas, absen, data);
         } catch(teamErr) {
@@ -392,11 +412,13 @@ window.NevastraDB = {
         return {
             ...payload,
             teamMembers: teamInfo.teamMembers || [],
-            allClassTeams: teamInfo.allClassTeams || {}
+            allClassTeams: teamInfo.allClassTeams || {},
+            isLocked: teamInfo.isLocked,
+            isNewSpin: teamInfo.isNewSpin
         };
     },
 
-    // --- Sistem Pembagian Tim (6 Tim x 6 Orang, Gender-Safe & Tim Terkunci) ---
+    // --- Sistem Pembagian Tim (6 Tim x 6 Orang, Gender-Safe & Sistem Intip Data) ---
     async allocateStudentToTeam(kelas, absen, data) {
         const studentAbsen = parseInt(absen, 10);
         const refGenders = (window.studentGenders && window.studentGenders[kelas]) || OFFICIAL_GENDERS[kelas] || {};
@@ -405,22 +427,18 @@ window.NevastraDB = {
         const studentAlamat = data.tinggalDi || data.alamat || '-';
         const studentNoHp = data.noHp || '-';
 
-        // 1. Cek apakah siswa ini SUDAH memiliki tim sebelumnya (TIM TERKUNCI & TIDAK DAPAT DIUBAH)
-        let existingTimNama = null;
+        // 1. INTIP DATA KE DATABASE: Cek apakah data siswa ini SUDAH ADA di database
+        let existingBiodata = null;
         try {
-            const indexRes = await fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json?t=${Date.now()}`);
-            if (indexRes.ok) {
-                const val = await indexRes.json();
-                if (val && typeof val === 'string') existingTimNama = val;
+            const checkRes = await fetch(`${DB_BASE_URL}/biodata/${kelas}/${studentAbsen}.json?t=${Date.now()}`);
+            if (checkRes.ok) {
+                const val = await checkRes.json();
+                if (val && typeof val === 'object' && (val.nama || val.ttl || val.noHp)) {
+                    existingBiodata = val;
+                }
             }
-        } catch(e) {}
-
-        if (!existingTimNama) {
-            existingTimNama = localStorage.getItem(`nevastra_team_${kelas}_${studentAbsen}`);
-        }
-
-        if (!existingTimNama && data.timNama) {
-            existingTimNama = data.timNama;
+        } catch(e) {
+            console.warn("Gagal intip database:", e);
         }
 
         // Ambil data 6 tim kelas saat ini dari Firebase
@@ -457,10 +475,41 @@ window.NevastraDB = {
             }
         }
 
-        let assignedTimNama = existingTimNama;
+        let assignedTimNama = null;
+        let isLocked = false;
 
-        if (assignedTimNama && classTeams[assignedTimNama]) {
-            // SISWA SUDAH TERDAFTAR DI TIM (TERKUNCI): Cukup perbarui profil anggota (misal siswa edit no hp/alamat)
+        if (existingBiodata) {
+            // ========================================================
+            // JIKA ADA DATA DI DATABASE -> SISTEM TERKUNCI!
+            // ========================================================
+            isLocked = true;
+
+            // Prioritaskan nama tim yang tercatat di biodata database
+            if (existingBiodata.timNama) {
+                assignedTimNama = existingBiodata.timNama;
+            } else {
+                try {
+                    const indexRes = await fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json?t=${Date.now()}`);
+                    if (indexRes.ok) {
+                        const val = await indexRes.json();
+                        if (val && typeof val === 'string') assignedTimNama = val;
+                    }
+                } catch(e) {}
+            }
+
+            if (!assignedTimNama) {
+                assignedTimNama = localStorage.getItem(`nevastra_team_${kelas}_${studentAbsen}`);
+            }
+
+            // Fallback jika belum pernah terdaftar sama sekali
+            if (!assignedTimNama) {
+                assignedTimNama = this._pickOptimalTeam(classTeams, studentGender, kelas);
+            }
+
+            // Perbarui data profil anggota di tim yang terkunci
+            if (!classTeams[assignedTimNama]) {
+                classTeams[assignedTimNama] = { id: parseInt(assignedTimNama.replace(/\D/g, '')) || 1, nama: assignedTimNama, members: {} };
+            }
             classTeams[assignedTimNama].members[studentAbsen] = {
                 absen: studentAbsen,
                 nama: studentName,
@@ -470,7 +519,27 @@ window.NevastraDB = {
                 quotes: data.quotes || ''
             };
         } else {
-            // SISWA BARU: Alokasikan ke salah satu dari 6 tim menggunakan aturan pembagian gender seimbang
+            // ========================================================
+            // JIKA TIDAK ADA DATA DI DATABASE -> SPIN ULANG!
+            // ========================================================
+            isLocked = false;
+
+            // Bersihkan sisa data lama dari tim mana pun (agar slot terbuka kembali)
+            for (let i = 1; i <= 6; i++) {
+                const tName = `Tim ${i}`;
+                if (classTeams[tName] && classTeams[tName].members && classTeams[tName].members[studentAbsen]) {
+                    delete classTeams[tName].members[studentAbsen];
+                    try {
+                        fetch(`${DB_BASE_URL}/teams_class/${kelas}/${tName}/members/${studentAbsen}.json`, { method: 'DELETE' });
+                    } catch(e) {}
+                }
+            }
+            try {
+                localStorage.removeItem(`nevastra_team_${kelas}_${studentAbsen}`);
+                fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json`, { method: 'DELETE' });
+            } catch(e) {}
+
+            // Alokasikan ke salah satu tim baru secara acak seimbang kuota gender (SPIN ULANG)
             assignedTimNama = this._pickOptimalTeam(classTeams, studentGender, kelas);
 
             if (!classTeams[assignedTimNama]) {
@@ -484,19 +553,19 @@ window.NevastraDB = {
                 noHp: studentNoHp,
                 quotes: data.quotes || ''
             };
-
-            // Kunci penempatan tim untuk siswa ini secara permanen
-            try {
-                localStorage.setItem(`nevastra_team_${kelas}_${studentAbsen}`, assignedTimNama);
-                await fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(assignedTimNama)
-                });
-            } catch(e) {}
         }
 
         const timId = parseInt(assignedTimNama.replace(/\D/g, '')) || 1;
+
+        // Kunci penempatan tim untuk siswa ini
+        try {
+            localStorage.setItem(`nevastra_team_${kelas}_${studentAbsen}`, assignedTimNama);
+            await fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(assignedTimNama)
+            });
+        } catch(e) {}
 
         // Simpan data tim ke Firebase Realtime Database
         try {
@@ -523,7 +592,9 @@ window.NevastraDB = {
             timId: timId,
             timNama: assignedTimNama,
             teamMembers: teammates,
-            allClassTeams: classTeams
+            allClassTeams: classTeams,
+            isLocked: isLocked,
+            isNewSpin: !isLocked
         };
     },
 
@@ -645,14 +716,20 @@ window.NevastraDB = {
 
     async getStudentTeam(kelas, absen) {
         const studentAbsen = parseInt(absen, 10);
-        let timNama = null;
-        try {
-            const res = await fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json?t=${Date.now()}`);
-            if (res.ok) {
-                const val = await res.json();
-                if (val && typeof val === 'string') timNama = val;
-            }
-        } catch(e) {}
+        // Intip data biodata dulu: jika biodata tidak ada di database, siswa tidak punya tim!
+        let biodata = await this.getStudentBiodata(kelas, studentAbsen);
+        if (!biodata) return null;
+
+        let timNama = biodata.timNama || null;
+        if (!timNama) {
+            try {
+                const res = await fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json?t=${Date.now()}`);
+                if (res.ok) {
+                    const val = await res.json();
+                    if (val && typeof val === 'string') timNama = val;
+                }
+            } catch(e) {}
+        }
 
         if (!timNama) {
             timNama = localStorage.getItem(`nevastra_team_${kelas}_${studentAbsen}`);
@@ -766,12 +843,32 @@ window.NevastraDB = {
     },
 
     async deleteBiodata(kelas, absen) {
+        const studentAbsen = parseInt(absen, 10);
         try {
-            localStorage.removeItem(`nevastra_${kelas}_${absen}`);
+            localStorage.removeItem(`nevastra_${kelas}_${studentAbsen}`);
+            localStorage.removeItem(`nevastra_team_${kelas}_${studentAbsen}`);
         } catch(e) {}
 
+        // Cari tahu tim siswa dan bersihkan dari teams_class & teams_index
         try {
-            const url = `${DB_BASE_URL}/biodata/${kelas}/${absen}.json`;
+            let timNama = null;
+            const idxRes = await fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json`);
+            if (idxRes.ok) timNama = await idxRes.json();
+
+            if (timNama) {
+                fetch(`${DB_BASE_URL}/teams_class/${kelas}/${timNama}/members/${studentAbsen}.json`, { method: 'DELETE' });
+            }
+            // Bersihkan dari semua tim untuk memastikan slot kosong
+            for (let i = 1; i <= 6; i++) {
+                fetch(`${DB_BASE_URL}/teams_class/${kelas}/Tim ${i}/members/${studentAbsen}.json`, { method: 'DELETE' });
+            }
+            await fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json`, { method: 'DELETE' });
+        } catch(e) {
+            console.warn("Clean team on delete error:", e);
+        }
+
+        try {
+            const url = `${DB_BASE_URL}/biodata/${kelas}/${studentAbsen}.json`;
             await fetch(url, { method: 'DELETE' });
         } catch(e) {
             console.warn("Delete error:", e);

@@ -378,7 +378,7 @@
             updatePreviewLive();
         });
 
-        // Absen Change Handler
+        // Absen Change Handler - Menggunakan Sistem Intip Data ke Database
         selectAbsenNama.addEventListener('change', async () => {
             const absen = selectAbsenNama.value;
             if (!absen) return;
@@ -386,14 +386,24 @@
             const student = classRoster.find(s => s.absen == absen);
             const defaultNama = student ? student.nama : '';
 
-            // Cek apakah siswa ini sudah mengisi sebelumnya
-            const saved = currentClassData[absen];
-            if (saved) {
+            // INTIP DATA LANGSUNG KE DATABASE (Cek Realtime ke Firebase)
+            let saved = null;
+            try {
+                saved = await window.NevastraDB.getStudentBiodata(CURRENT_CLASS, absen);
+            } catch(e) {}
+            if (!saved) {
+                saved = currentClassData[absen];
+            }
+
+            if (saved && (saved.nama || saved.ttl || saved.noHp)) {
+                // JIKA ADA DATA DI DATABASE -> SISTEM TERKUNCI!
                 formModeBadge.style.display = 'inline-flex';
-                formModeBadge.textContent = 'Data Sudah Terisi (Bisa Diperbarui)';
+                formModeBadge.style.background = '#e0e7ff';
+                formModeBadge.style.color = '#3730a3';
+                formModeBadge.textContent = `🔒 Terkunci (${saved.timNama || 'Tim Terkunci'})`;
 
                 document.getElementById('inputNama').value = saved.nama || defaultNama;
-                                document.getElementById('inputTempatLahir').value = cleanTempatLahir(saved.tempatLahir || '');
+                document.getElementById('inputTempatLahir').value = cleanTempatLahir(saved.tempatLahir || '');
                 document.getElementById('inputTanggalLahir').value = saved.tanggalLahir || '';
                 document.getElementById('inputNoHp').value = saved.noHp || '';
                 document.getElementById('inputInstagram').value = (saved.ig || '').replace(/^@+/, '');
@@ -402,13 +412,23 @@
                 document.getElementById('inputQuotes').value = saved.quotes || '';
 
                 enforceMaxWords();
-                showAlert('info', `Biodata untuk absen ${absen} sudah tersimpan. Kamu dapat memperbaruinya jika ada perubahan.`);
+                showAlert('info', `🔒 <strong>Kelompok Terkunci:</strong> Biodata untuk absen ${absen} sudah ada di database. Kelompok kamu sudah resmi ditetapkan di <strong>${saved.timNama || 'Tim'}</strong> dan tidak dapat diubah.`);
                 await renderStudentTeamCard(CURRENT_CLASS, absen);
+
+                btnSubmit.innerHTML = `
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
+                    Perbarui Biodata (Kelompok Tetap Terkunci)
+                `;
             } else {
+                // JIKA TIDAK ADA DATA DI DATABASE -> SPIN ULANG / DIUNDI RODA BERPUTAR
+                delete currentClassData[absen];
                 formModeBadge.style.display = 'inline-flex';
-                formModeBadge.textContent = 'Belum Mengisi (Data Baru)';
+                formModeBadge.style.background = '#ecfdf5';
+                formModeBadge.style.color = '#047857';
+                formModeBadge.textContent = '✨ Data Belum Ada (Akan Diundi Roda Berputar)';
+
                 document.getElementById('inputNama').value = defaultNama;
-                                document.getElementById('inputTempatLahir').value = '';
+                document.getElementById('inputTempatLahir').value = '';
                 document.getElementById('inputTanggalLahir').value = '';
                 document.getElementById('inputNoHp').value = '';
                 document.getElementById('inputInstagram').value = '';
@@ -416,8 +436,17 @@
                 document.getElementById('inputAlamat').value = '';
                 document.getElementById('inputQuotes').value = '';
                 enforceMaxWords();
+
                 const teamCard = document.getElementById('studentTeamCard');
                 if (teamCard) teamCard.style.display = 'none';
+
+                const existingAlert = document.getElementById('formAlertBox');
+                if (existingAlert) existingAlert.remove();
+
+                btnSubmit.innerHTML = `
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
+                    🎡 Kirim & Putar Roda Undian Kelompok
+                `;
             }
 
             updatePreviewLive();
@@ -493,7 +522,7 @@
                     quotes: finalQuotes
                 };
 
-                // Simpan ke Database (Sekaligus Menetapkan Siswa ke 1 dari 6 Tim)
+                // Simpan ke Database (Melalui Sistem Intip Data: Jika Ada Data -> Terkunci; Jika Tidak Ada -> Spin Ulang)
                 const saveResult = await window.NevastraDB.saveBiodata(CURRENT_CLASS, absen, payload);
 
                 // Update data lokal kelas
@@ -503,20 +532,37 @@
                 const assignedTeamNama = (saveResult && saveResult.timNama) || 'Tim 1';
                 const teamNum = parseInt(assignedTeamNama.replace(/\D/g, '')) || 1;
 
-                showAlert('success', `🎉 Sukses! Biodata ${nama} (Absen ${absen}) berhasil disimpan!`);
-                formModeBadge.textContent = 'Data Sudah Terisi (Bisa Diperbarui)';
+                formModeBadge.style.display = 'inline-flex';
+                formModeBadge.style.background = '#e0e7ff';
+                formModeBadge.style.color = '#3730a3';
+                formModeBadge.textContent = `🔒 Terkunci (${assignedTeamNama})`;
 
-                // Jalankan Animasi Roda Berputar untuk Penentuan Kelompok
-                triggerWheelSpin(nama, teamNum, assignedTeamNama, (saveResult && saveResult.teamMembers) || []);
+                if (saveResult && saveResult.isNewSpin) {
+                    // KASUS 1: TIDAK ADA DATA DI DATABASE -> JALANKAN SPIN ULANG / RODA BERPUTAR!
+                    showAlert('success', `🎉 Sukses! Biodata ${nama} tersimpan dan kelompokmu sedang diundi melalui roda berputar!`);
+                    triggerWheelSpin(nama, teamNum, assignedTeamNama, (saveResult && saveResult.teamMembers) || []);
+                } else {
+                    // KASUS 2: DATA SUDAH ADA DI DATABASE -> SISTEM TERKUNCI (TIDAK BERUBAH KELOMPOK)
+                    showAlert('success', `🎉 Sukses! Biodata ${nama} (Absen ${absen}) berhasil diperbarui! Kelompokmu tetap terkunci di <strong>${assignedTeamNama}</strong>.`);
+                    displayTeamMembers(assignedTeamNama, (saveResult && saveResult.teamMembers) || []);
+                    const teamCard = document.getElementById('studentTeamCard');
+                    if (teamCard) {
+                        teamCard.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
 
             } catch (err) {
                 console.error(err);
                 alert('Terjadi kesalahan saat menyimpan: ' + err.message);
             } finally {
                 btnSubmit.disabled = false;
-                btnSubmit.innerHTML = `
+                const isDataSaved = !!currentClassData[absen];
+                btnSubmit.innerHTML = isDataSaved ? `
                     <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
-                    Kirim & Simpan Biodata Saya
+                    Perbarui Biodata (Kelompok Tetap Terkunci)
+                ` : `
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
+                    🎡 Kirim & Putar Roda Undian Kelompok
                 `;
             }
         });
@@ -617,7 +663,24 @@
             const linkEl = document.getElementById('linkLihatSemuaKelompok');
 
             if (linkEl) linkEl.href = `kelompok.html?kelas=${CURRENT_CLASS}`;
-            if (titleEl) titleEl.textContent = `${CURRENT_CLASS} • ${timNama} (${members.length}/6 Siswa)`;
+            if (titleEl) {
+                titleEl.innerHTML = `
+                    <div style="display:flex; align-items:center; justify-content:space-between; width:100%; flex-wrap:wrap; gap:8px;">
+                        <span>${CURRENT_CLASS} • ${timNama} (${members.length}/6 Siswa)</span>
+                        <button type="button" id="btnReplayWheel" style="font-size:0.75rem; padding:4px 10px; border-radius:6px; background:#4f46e5; color:#fff; border:none; cursor:pointer; font-weight:600; display:inline-flex; align-items:center; gap:4px;">
+                            🎡 Putar Animasi Roda
+                        </button>
+                    </div>
+                `;
+                const btnReplay = document.getElementById('btnReplayWheel');
+                if (btnReplay) {
+                    btnReplay.onclick = () => {
+                        const studentName = document.getElementById('inputNama').value.trim() || 'Kamu';
+                        const teamNum = parseInt(timNama.replace(/\D/g, '')) || 1;
+                        triggerWheelSpin(studentName, teamNum, timNama, members);
+                    };
+                }
+            }
             if (!listEl) return;
 
             listEl.innerHTML = '';
