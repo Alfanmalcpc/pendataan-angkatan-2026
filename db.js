@@ -1,6 +1,351 @@
 // Koneksi Database Firebase REST API & Google Drive Integration
 const DB_BASE_URL = "https://nevastra-default-rtdb.asia-southeast1.firebasedatabase.app";
 
+// Data Referensi Resmi Jenis Kelamin (Disinkronkan dari Absen Manual 2026 Ganjil SMAN 1 Sumberrejo)
+const OFFICIAL_GENDERS = {
+  "XII-1": {
+    "1": "L",
+    "2": "L",
+    "3": "L",
+    "4": "L",
+    "5": "L",
+    "6": "P",
+    "7": "L",
+    "8": "L",
+    "9": "P",
+    "10": "P",
+    "11": "P",
+    "12": "P",
+    "13": "L",
+    "14": "P",
+    "15": "P",
+    "16": "L",
+    "17": "P",
+    "18": "L",
+    "19": "L",
+    "20": "L",
+    "21": "L",
+    "22": "L",
+    "23": "L",
+    "24": "L",
+    "25": "L",
+    "26": "L",
+    "27": "L",
+    "28": "L",
+    "29": "P",
+    "30": "P",
+    "31": "L",
+    "32": "P",
+    "33": "P",
+    "34": "P",
+    "35": "L",
+    "36": "P"
+  },
+  "XII-2": {
+    "2": "P",
+    "3": "L",
+    "4": "P",
+    "5": "P",
+    "6": "L",
+    "7": "P",
+    "8": "P",
+    "9": "L",
+    "10": "P",
+    "11": "L",
+    "12": "P",
+    "13": "L",
+    "14": "L",
+    "15": "P",
+    "16": "P",
+    "17": "P",
+    "18": "P",
+    "19": "L",
+    "20": "L",
+    "21": "L",
+    "22": "L",
+    "23": "L",
+    "24": "L",
+    "25": "L",
+    "26": "L",
+    "27": "P",
+    "28": "L",
+    "29": "L",
+    "30": "L",
+    "31": "P",
+    "32": "L",
+    "33": "P",
+    "34": "P",
+    "35": "P",
+    "36": "L",
+    "1": "L"
+  },
+  "XII-3": {
+    "1": "P",
+    "2": "L",
+    "3": "L",
+    "4": "P",
+    "5": "P",
+    "6": "P",
+    "7": "P",
+    "8": "P",
+    "9": "P",
+    "10": "P",
+    "11": "P",
+    "12": "P",
+    "13": "L",
+    "14": "P",
+    "15": "P",
+    "16": "P",
+    "17": "P",
+    "18": "L",
+    "19": "P",
+    "20": "P",
+    "21": "L",
+    "22": "L",
+    "23": "L",
+    "24": "L",
+    "25": "P",
+    "26": "P",
+    "27": "P",
+    "28": "P",
+    "29": "P",
+    "30": "P",
+    "31": "P",
+    "32": "P",
+    "33": "P",
+    "34": "P",
+    "35": "P",
+    "36": "P"
+  },
+  "XII-4": {
+    "1": "L",
+    "2": "L",
+    "3": "P",
+    "4": "P",
+    "5": "P",
+    "6": "L",
+    "7": "P",
+    "8": "L",
+    "9": "P",
+    "10": "P",
+    "11": "P",
+    "12": "P",
+    "13": "P",
+    "14": "P",
+    "15": "P",
+    "16": "P",
+    "17": "P",
+    "18": "L",
+    "19": "P",
+    "20": "P",
+    "21": "P",
+    "22": "P",
+    "23": "P",
+    "24": "P",
+    "25": "L",
+    "26": "P",
+    "27": "P",
+    "28": "L",
+    "29": "P",
+    "30": "P",
+    "31": "P",
+    "32": "P",
+    "33": "P",
+    "34": "P",
+    "35": "P",
+    "36": "P"
+  },
+  "XII-5": {
+    "1": "P",
+    "2": "P",
+    "3": "P",
+    "4": "P",
+    "5": "L",
+    "6": "L",
+    "7": "P",
+    "8": "P",
+    "9": "L",
+    "10": "L",
+    "11": "L",
+    "12": "P",
+    "13": "L",
+    "14": "L",
+    "15": "L",
+    "16": "L",
+    "17": "P",
+    "18": "L",
+    "19": "L",
+    "20": "P",
+    "21": "P",
+    "22": "P",
+    "23": "P",
+    "24": "L",
+    "25": "L",
+    "26": "L",
+    "27": "P",
+    "28": "P",
+    "29": "P",
+    "30": "L",
+    "31": "P",
+    "32": "L",
+    "33": "P",
+    "34": "P",
+    "35": "P",
+    "36": "P"
+  },
+  "XII-6": {
+    "1": "P",
+    "2": "L",
+    "3": "L",
+    "4": "L",
+    "5": "P",
+    "6": "P",
+    "7": "L",
+    "8": "L",
+    "9": "P",
+    "10": "P",
+    "11": "L",
+    "12": "L",
+    "13": "P",
+    "14": "P",
+    "15": "P",
+    "16": "L",
+    "17": "P",
+    "18": "P",
+    "19": "P",
+    "20": "P",
+    "21": "L",
+    "22": "L",
+    "23": "P",
+    "24": "P",
+    "25": "L",
+    "26": "L",
+    "27": "L",
+    "28": "P",
+    "29": "P",
+    "30": "P",
+    "31": "L",
+    "32": "P",
+    "33": "P",
+    "34": "P",
+    "35": "P"
+  },
+  "XII-7": {
+    "1": "L",
+    "2": "P",
+    "3": "P",
+    "4": "P",
+    "5": "P",
+    "6": "P",
+    "7": "P",
+    "8": "L",
+    "9": "P",
+    "10": "P",
+    "11": "P",
+    "12": "P",
+    "13": "L",
+    "14": "L",
+    "15": "L",
+    "16": "L",
+    "17": "L",
+    "18": "L",
+    "19": "L",
+    "20": "L",
+    "21": "L",
+    "22": "P",
+    "23": "P",
+    "24": "P",
+    "25": "P",
+    "26": "P",
+    "27": "L",
+    "28": "P",
+    "29": "P",
+    "30": "L",
+    "31": "L",
+    "32": "P",
+    "33": "L",
+    "34": "L",
+    "35": "P",
+    "36": "P"
+  },
+  "XII-8": {
+    "1": "L",
+    "2": "P",
+    "3": "P",
+    "4": "L",
+    "5": "P",
+    "6": "P",
+    "7": "P",
+    "8": "P",
+    "9": "P",
+    "10": "P",
+    "11": "L",
+    "12": "P",
+    "13": "P",
+    "14": "P",
+    "15": "P",
+    "16": "P",
+    "17": "P",
+    "18": "L",
+    "19": "L",
+    "20": "P",
+    "21": "P",
+    "22": "P",
+    "23": "P",
+    "24": "P",
+    "25": "L",
+    "26": "P",
+    "27": "P",
+    "28": "L",
+    "29": "P",
+    "30": "P",
+    "31": "L",
+    "32": "P",
+    "33": "P",
+    "34": "P",
+    "35": "P"
+  },
+  "XII-9": {
+    "1": "L",
+    "2": "P",
+    "3": "P",
+    "4": "P",
+    "5": "P",
+    "6": "P",
+    "7": "P",
+    "8": "P",
+    "9": "P",
+    "10": "L",
+    "11": "P",
+    "12": "L",
+    "13": "L",
+    "14": "L",
+    "15": "P",
+    "16": "P",
+    "17": "P",
+    "18": "P",
+    "19": "P",
+    "20": "L",
+    "21": "P",
+    "22": "P",
+    "23": "P",
+    "24": "P",
+    "25": "P",
+    "26": "P",
+    "27": "P",
+    "28": "P",
+    "29": "P",
+    "30": "P",
+    "31": "P",
+    "32": "P",
+    "33": "L",
+    "34": "P",
+    "35": "P",
+    "36": "P"
+  }
+};
+
+
 window.NevastraDB = {
     async saveBiodata(kelas, absen, data) {
         // Alokasi Tim Otomatis (6 Tim @ 6 orang per kelas, Tim Terkunci & Anti 1 L/P Sendirian)
@@ -54,7 +399,8 @@ window.NevastraDB = {
     // --- Sistem Pembagian Tim (6 Tim x 6 Orang, Gender-Safe & Tim Terkunci) ---
     async allocateStudentToTeam(kelas, absen, data) {
         const studentAbsen = parseInt(absen, 10);
-        const studentGender = ((data.jenisKelamin || data.jk || 'L') + '').toUpperCase(); // 'L' atau 'P'
+        const refGenders = (window.studentGenders && window.studentGenders[kelas]) || OFFICIAL_GENDERS[kelas] || {};
+        const studentGender = ((data.jk || data.jenisKelamin || refGenders[studentAbsen] || 'L') + '').toUpperCase(); // 'L' atau 'P'
         const studentName = data.nama || data.namaRoster || 'Siswa';
         const studentAlamat = data.tinggalDi || data.alamat || '-';
         const studentNoHp = data.noHp || '-';
@@ -125,7 +471,7 @@ window.NevastraDB = {
             };
         } else {
             // SISWA BARU: Alokasikan ke salah satu dari 6 tim menggunakan aturan pembagian gender seimbang
-            assignedTimNama = this._pickOptimalTeam(classTeams, studentGender);
+            assignedTimNama = this._pickOptimalTeam(classTeams, studentGender, kelas);
 
             if (!classTeams[assignedTimNama]) {
                 classTeams[assignedTimNama] = { id: parseInt(assignedTimNama.replace(/\D/g, '')) || 1, nama: assignedTimNama, members: {} };
@@ -181,90 +527,88 @@ window.NevastraDB = {
         };
     },
 
-    // Algoritma Penentuan Tim: Menjamin tidak ada 1 L atau 1 P sendirian dalam kelompok (Maks 6 orang)
-    _pickOptimalTeam(classTeams, gender) {
+    // Hitung Kuota Target 6 Tim per Kelas (Berdasarkan Jumlah L & P Resmi, Anti 1 Gender Sendirian)
+    getClassTeamQuotas(kelas) {
+        const refGenders = (window.studentGenders && window.studentGenders[kelas]) || OFFICIAL_GENDERS[kelas] || {};
+        const absens = Object.keys(refGenders);
+        const classSize = absens.length || 36;
+        const nL = absens.filter(a => refGenders[a] === 'L').length;
+        const nP = classSize - nL;
+
+        const teamCapacities = [6, 6, 6, 6, 6, 6];
+        if (classSize === 35) {
+            teamCapacities[5] = 5; // Tim 6 kapasitas 5
+        }
+
+        const maleQuotas = [0, 0, 0, 0, 0, 0];
+
+        if (nL >= 12) {
+            const baseM = Math.floor(nL / 6);
+            const remM = nL % 6;
+            for (let i = 0; i < 6; i++) maleQuotas[i] = baseM;
+            for (let r = 0; r < remM; r++) maleQuotas[r] += 1;
+        } else {
+            // Jika laki-laki < 12 (misal 7 atau 8 siswa):
+            // Dikelompokkan minimal 2 atau 3 anak per tim agar tidak ada 1 anak sendirian
+            if (nL === 8) {
+                maleQuotas[0] = 2; maleQuotas[1] = 2; maleQuotas[2] = 2; maleQuotas[3] = 2;
+            } else if (nL === 7) {
+                maleQuotas[0] = 3; maleQuotas[1] = 2; maleQuotas[2] = 2;
+            } else {
+                let left = nL;
+                for (let i = 0; i < 6 && left >= 2; i++) {
+                    maleQuotas[i] = 2;
+                    left -= 2;
+                }
+                if (left > 0) maleQuotas[0] += left;
+            }
+        }
+
+        const quotas = {};
+        for (let i = 0; i < 6; i++) {
+            const tName = `Tim ${i + 1}`;
+            quotas[tName] = {
+                capacity: teamCapacities[i],
+                L: maleQuotas[i],
+                P: teamCapacities[i] - maleQuotas[i]
+            };
+        }
+        return quotas;
+    },
+
+    // Algoritma Penentuan Tim Acak Berdasarkan Kuota Gender (Anti 1 Gender Sendirian)
+    _pickOptimalTeam(classTeams, gender, kelas) {
         const teamNames = ['Tim 1', 'Tim 2', 'Tim 3', 'Tim 4', 'Tim 5', 'Tim 6'];
         const G = gender === 'P' ? 'P' : 'L';
-        const Opp = G === 'L' ? 'P' : 'L';
+        const quotas = this.getClassTeamQuotas(kelas || 'XII-1');
 
-        let bestTeam = null;
-        let bestScore = -99999;
-
-        for (const tName of teamNames) {
+        // Cari semua tim yang masih memiliki sisa kuota untuk gender G
+        const eligibleTeams = teamNames.filter(tName => {
             const team = classTeams[tName] || { members: {} };
             const members = Object.values(team.members || {});
-            const total = members.length;
-            const countL = members.filter(m => (m.jk || '').toUpperCase() === 'L').length;
-            const countP = members.filter(m => (m.jk || '').toUpperCase() === 'P').length;
+            const currentGCount = members.filter(m => (m.jk || '').toUpperCase() === G).length;
+            const currentTotal = members.length;
+            const targetG = (quotas[tName] && quotas[tName][G] !== undefined) ? quotas[tName][G] : 3;
+            const cap = (quotas[tName] && quotas[tName].capacity) ? quotas[tName].capacity : 6;
+            return currentGCount < targetG && currentTotal < cap;
+        });
 
-            const countSame = G === 'L' ? countL : countP;
-            const countOpp = G === 'L' ? countP : countL;
-            const R = 6 - total; // Sisa kuota anggota
+        if (eligibleTeams.length > 0) {
+            // Sisa siswa ditaruh secara acak di tim yang masih eligible!
+            const chosen = eligibleTeams[Math.floor(Math.random() * eligibleTeams.length)];
+            return chosen;
+        }
 
-            // 1. Lewati jika tim sudah penuh (6 orang)
-            if (R <= 0) continue;
-
-            // 2. Jika sisa 1 slot (R == 1):
-            // - Jika countSame == 0, masuknya G membuat gender G hanya ada 1 orang (dilarang!)
-            // - Jika countOpp == 1, masuknya G membuat gender Opp tetap 1 orang (dilarang!)
-            if (R === 1) {
-                if (countSame === 0 || countOpp === 1) continue;
-            }
-
-            // 3. Jika sisa 2 slot (R == 2):
-            // - Jika countOpp == 4 dan countSame == 0, masuknya G membuat countSame = 1 dan sisa 1 slot berisiko terkunci
-            if (R === 2) {
-                if (countOpp === 4 && countSame === 0) continue;
-            }
-
-            // Pembobotan Skor Tim:
-            let score = 0;
-
-            // Prioritas Tertinggi: Tim yang saat ini memiliki 1 teman dengan gender yang sama!
-            // Masuknya G langsung membuat kelompok memiliki minimal 2 orang gender sama (aman dari isolasi)
-            if (countSame === 1 && countOpp <= 4) {
-                score += 2500;
-            }
-            // Prioritas 2: Tim masih kosong
-            else if (total === 0) {
-                score += 1200;
-            }
-            // Prioritas 3: Tim saat ini hanya beranggotakan gender yang sama (kelompok sesama jenis diperbolehkan)
-            else if (countOpp === 0) {
-                score += 900;
-            }
-            // Prioritas 4: Tim yang sudah seimbang (minimal 2 L dan 2 P)
-            else if (countSame >= 2 && countOpp >= 2) {
-                score += 700;
-            }
-            // Prioritas 5: Tim baru dengan lawan jenis <= 2 dan sisa slot banyak (R >= 3)
-            else if (countSame === 0 && countOpp <= 2 && R >= 3) {
-                score += 500;
-            } else {
-                score += 100;
-            }
-
-            // Bonus pemerataan kuota tim (utamakan tim yang anggotanya lebih sedikit)
-            score += (R * 25);
-
-            if (score > bestScore) {
-                bestScore = score;
-                bestTeam = tName;
+        // Fallback: Tim mana pun yang masih memiliki slot kosong (< kapasitas)
+        for (const tName of teamNames) {
+            const team = classTeams[tName] || { members: {} };
+            const cap = (quotas[tName] && quotas[tName].capacity) ? quotas[tName].capacity : 6;
+            if (Object.keys(team.members || {}).length < cap) {
+                return tName;
             }
         }
 
-        // Fallback jika semua skor ketat
-        if (!bestTeam) {
-            for (const tName of teamNames) {
-                const team = classTeams[tName] || { members: {} };
-                if (Object.keys(team.members || {}).length < 6) {
-                    bestTeam = tName;
-                    break;
-                }
-            }
-        }
-
-        return bestTeam || 'Tim 1';
+        return 'Tim 1';
     },
 
     async getClassTeams(kelas) {

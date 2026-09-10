@@ -86,19 +86,6 @@
                         <span class="tip">Kamu dapat merapikan ejaan atau huruf kapital nama kamu jika diperlukan.</span>
                     </div>
 
-                    <!-- Jenis Kelamin (Untuk Pembagian 6 Tim Kelompok) -->
-                    <div class="form-group">
-                        <label for="selectJenisKelamin">
-                            Jenis Kelamin <span class="req">*</span>
-                        </label>
-                        <select id="selectJenisKelamin" class="form-control" required style="font-weight: 600;">
-                            <option value="" disabled selected>-- Pilih Jenis Kelamin --</option>
-                            <option value="L">Laki-laki (L)</option>
-                            <option value="P">Perempuan (P)</option>
-                        </select>
-                        <span class="tip">🔒 Digunakan sistem untuk pembagian 6 tim per kelas secara adil & aman (anti 1 anak sendirian). Tidak dicetak di rekap buku tahunan.</span>
-                    </div>
-
 
                     <!-- 4. TTL (Tempat, Tanggal Lahir) -->
                     <div class="form-group">
@@ -288,14 +275,13 @@
     <script src="db.js"></script>
     <script>
         const CURRENT_CLASS = "XII-1";
-        const classRoster = [{"absen": 1, "nama": "Achmad Al Fadli Azizul Hakim"}, {"absen": 2, "nama": "Achmad Nabil Purniawan Al Alif"}, {"absen": 3, "nama": "Adhy Dhamar Rahmadan"}, {"absen": 4, "nama": "Adila Ibnu Azzam"}, {"absen": 5, "nama": "Agus Bayu Fahredza"}, {"absen": 6, "nama": "Aisyah Aryantani"}, {"absen": 7, "nama": "Alansky Dafa Wijaya"}, {"absen": 8, "nama": "Andhika Arya Pratama"}, {"absen": 9, "nama": "Angelina Lola Adam"}, {"absen": 10, "nama": "Aufa Naura Hana"}, {"absen": 11, "nama": "Aulia Silfi Nur Haliza"}, {"absen": 12, "nama": "Aulia Syiva Dwi Anggraeni"}, {"absen": 13, "nama": "Bayu Arga Ardi Saputra"}, {"absen": 14, "nama": "Biru Langit Satrawi"}, {"absen": 15, "nama": "Feby Eka Yuliana"}, {"absen": 16, "nama": "Ihsani Habibullah"}, {"absen": 17, "nama": "Intan Nadya Fuzy Pratiwi"}, {"absen": 18, "nama": "M. Afrizal Amirudin"}, {"absen": 19, "nama": "M. Bilal Rizqi Salam"}, {"absen": 20, "nama": "M. Zamzami Fajar Mauluddin"}, {"absen": 21, "nama": "Moch. Achsan Arya Pratama"}, {"absen": 22, "nama": "Mochamad Andhika Radityansyah"}, {"absen": 23, "nama": "Muhammad Fahrezy Taufiqurrohman"}, {"absen": 24, "nama": "Muhammad Mahfud Angga Ardiansyah"}, {"absen": 25, "nama": "Muhammad Reyhan Al Iqbal"}, {"absen": 26, "nama": "Muhammad Tamamun Ni'Am"}, {"absen": 27, "nama": "Nur Azis"}, {"absen": 28, "nama": "Nururridho Ahmad Setia"}, {"absen": 29, "nama": "Putri Rahayu"}, {"absen": 30, "nama": "Rahma Aulia Putri"}, {"absen": 31, "nama": "Risky Adiansyah"}, {"absen": 32, "nama": "Sella Marselina"}, {"absen": 33, "nama": "Talita Luthfi Zayyana"}, {"absen": 34, "nama": "Tyssa Aurora Lailaisya"}, {"absen": 35, "nama": "Vano Tarangga Putra Prawoto"}, {"absen": 36, "nama": "Velixia Nova Safira"}];
+        const classRoster = [{"absen": 1, "nama": "Achmad Al Fadli Azizul Hakim", "jk": "L"}, {"absen": 2, "nama": "Achmad Nabil Purniawan Al Alif", "jk": "L"}, {"absen": 3, "nama": "Adhy Dhamar Rahmadan", "jk": "L"}, {"absen": 4, "nama": "Adila Ibnu Azzam", "jk": "L"}, {"absen": 5, "nama": "Agus Bayu Fahredza", "jk": "L"}, {"absen": 6, "nama": "Aisyah Aryantani", "jk": "P"}, {"absen": 7, "nama": "Alansky Dafa Wijaya", "jk": "L"}, {"absen": 8, "nama": "Andhika Arya Pratama", "jk": "L"}, {"absen": 9, "nama": "Angelina Lola Adam", "jk": "P"}, {"absen": 10, "nama": "Aufa Naura Hana", "jk": "P"}, {"absen": 11, "nama": "Aulia Silfi Nur Haliza", "jk": "P"}, {"absen": 12, "nama": "Aulia Syiva Dwi Anggraeni", "jk": "P"}, {"absen": 13, "nama": "Bayu Arga Ardi Saputra", "jk": "L"}, {"absen": 14, "nama": "Biru Langit Satrawi", "jk": "P"}, {"absen": 15, "nama": "Feby Eka Yuliana", "jk": "P"}, {"absen": 16, "nama": "Ihsani Habibullah", "jk": "L"}, {"absen": 17, "nama": "Intan Nadya Fuzy Pratiwi", "jk": "P"}, {"absen": 18, "nama": "M. Afrizal Amirudin", "jk": "L"}, {"absen": 19, "nama": "M. Bilal Rizqi Salam", "jk": "L"}, {"absen": 20, "nama": "M. Zamzami Fajar Mauluddin", "jk": "L"}, {"absen": 21, "nama": "Moch. Achsan Arya Pratama", "jk": "L"}, {"absen": 22, "nama": "Mochamad Andhika Radityansyah", "jk": "L"}, {"absen": 23, "nama": "Muhammad Fahrezy Taufiqurrohman", "jk": "L"}, {"absen": 24, "nama": "Muhammad Mahfud Angga Ardiansyah", "jk": "L"}, {"absen": 25, "nama": "Muhammad Reyhan Al Iqbal", "jk": "L"}, {"absen": 26, "nama": "Muhammad Tamamun Ni'Am", "jk": "L"}, {"absen": 27, "nama": "Nur Azis", "jk": "L"}, {"absen": 28, "nama": "Nururridho Ahmad Setia", "jk": "L"}, {"absen": 29, "nama": "Putri Rahayu", "jk": "P"}, {"absen": 30, "nama": "Rahma Aulia Putri", "jk": "P"}, {"absen": 31, "nama": "Risky Adiansyah", "jk": "L"}, {"absen": 32, "nama": "Sella Marselina", "jk": "P"}, {"absen": 33, "nama": "Talita Luthfi Zayyana", "jk": "P"}, {"absen": 34, "nama": "Tyssa Aurora Lailaisya", "jk": "P"}, {"absen": 35, "nama": "Vano Tarangga Putra Prawoto", "jk": "L"}, {"absen": 36, "nama": "Velixia Nova Safira", "jk": "P"}];
 
         let currentClassData = {};
 
         // Elements
         const selectAbsenNama = document.getElementById('selectAbsenNama');
-        const selectJenisKelamin = document.getElementById('selectJenisKelamin');
-        const formModeBadge = document.getElementById('formModeBadge');
+                const formModeBadge = document.getElementById('formModeBadge');
         const studentForm = document.getElementById('studentForm');
         const btnSubmit = document.getElementById('btnSubmit');
 
@@ -373,8 +359,7 @@
                 formModeBadge.textContent = 'Data Sudah Terisi (Bisa Diperbarui)';
 
                 document.getElementById('inputNama').value = saved.nama || defaultNama;
-                selectJenisKelamin.value = saved.jenisKelamin || saved.jk || '';
-                document.getElementById('inputTempatLahir').value = cleanTempatLahir(saved.tempatLahir || '');
+                                document.getElementById('inputTempatLahir').value = cleanTempatLahir(saved.tempatLahir || '');
                 document.getElementById('inputTanggalLahir').value = saved.tanggalLahir || '';
                 document.getElementById('inputNoHp').value = saved.noHp || '';
                 document.getElementById('inputInstagram').value = (saved.ig || '').replace(/^@+/, '');
@@ -389,8 +374,7 @@
                 formModeBadge.style.display = 'inline-flex';
                 formModeBadge.textContent = 'Belum Mengisi (Data Baru)';
                 document.getElementById('inputNama').value = defaultNama;
-                selectJenisKelamin.value = '';
-                document.getElementById('inputTempatLahir').value = '';
+                                document.getElementById('inputTempatLahir').value = '';
                 document.getElementById('inputTanggalLahir').value = '';
                 document.getElementById('inputNoHp').value = '';
                 document.getElementById('inputInstagram').value = '';
@@ -426,7 +410,7 @@
             const student = classRoster.find(s => s.absen == absen);
             const namaRoster = student ? student.nama : '';
             const nama = document.getElementById('inputNama').value.trim();
-            const jenisKelamin = selectJenisKelamin.value;
+            const studentJk = (student && student.jk) ? student.jk : 'L';
             const tempatLahir = document.getElementById('inputTempatLahir').value.trim();
             const tanggalLahir = document.getElementById('inputTanggalLahir').value;
             const noHp = document.getElementById('inputNoHp').value.trim();
@@ -435,9 +419,8 @@
             const alamat = document.getElementById('inputAlamat').value.trim();
             const quotes = document.getElementById('inputQuotes').value.trim();
 
-            if (!nama || !jenisKelamin || !tempatLahir || !tanggalLahir || !noHp || !ig || !alamat || !quotes) {
-                alert('Harap lengkapi semua kolom biodata bertanda bintang (*), termasuk Jenis Kelamin!');
-                if (!jenisKelamin) selectJenisKelamin.focus();
+            if (!nama || !tempatLahir || !tanggalLahir || !noHp || !ig || !alamat || !quotes) {
+                alert('Harap lengkapi semua kolom biodata bertanda bintang (*)!');
                 return;
             }
 
@@ -464,8 +447,8 @@
                 const payload = {
                     namaRoster: namaRoster,
                     nama: nama,
-                    jenisKelamin: jenisKelamin,
-                    jk: jenisKelamin,
+                    jenisKelamin: studentJk,
+                    jk: studentJk,
                     tempatLahir: cleanTempat,
                     tanggalLahir: tanggalLahir,
                     ttl: ttl,
@@ -483,23 +466,14 @@
                 currentClassData[absen] = payload;
                 updateProgressBar();
 
-                // Tampilkan Kartu Tim Kelompok Kamu
-                if (saveResult && saveResult.timNama) {
-                    displayTeamMembers(saveResult.timNama, saveResult.teamMembers || []);
-                } else {
-                    await renderStudentTeamCard(CURRENT_CLASS, absen);
-                }
+                const assignedTeamNama = (saveResult && saveResult.timNama) || 'Tim 1';
+                const teamNum = parseInt(assignedTeamNama.replace(/\D/g, '')) || 1;
 
-                showAlert('success', `🎉 Sukses! Biodata ${nama} (Absen ${absen}) berhasil disimpan! Tim kamu: <strong>${saveResult.timNama || 'Tim Terpilih'}</strong>`);
+                showAlert('success', `🎉 Sukses! Biodata ${nama} (Absen ${absen}) berhasil disimpan!`);
                 formModeBadge.textContent = 'Data Sudah Terisi (Bisa Diperbarui)';
 
-                // Scroll ke kartu kelompok agar siswa langsung melihat timnya
-                const teamCard = document.getElementById('studentTeamCard');
-                if (teamCard) {
-                    teamCard.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    document.querySelector('.preview-sticky').scrollIntoView({ behavior: 'smooth' });
-                }
+                // Jalankan Animasi Roda Berputar untuk Penentuan Kelompok
+                triggerWheelSpin(nama, teamNum, assignedTeamNama, (saveResult && saveResult.teamMembers) || []);
 
             } catch (err) {
                 console.error(err);
@@ -659,6 +633,201 @@
             if (teamCard) teamCard.style.display = 'block';
         }
 
+        
+        // ========================================================
+        // ANIMASI RODA BERPUTAR (SPINNING WHEEL MODAL)
+        // ========================================================
+        const wheelModal = document.getElementById('wheelModal');
+        const wheelDisc = document.getElementById('wheelDisc');
+        const wheelCanvas = document.getElementById('wheelCanvas');
+        const wheelStudentName = document.getElementById('wheelStudentName');
+        const wheelResultBox = document.getElementById('wheelResultBox');
+        const wheelResultName = document.getElementById('wheelResultName');
+        const wheelResultTeam = document.getElementById('wheelResultTeam');
+        const btnCloseWheelModal = document.getElementById('btnCloseWheelModal');
+
+        function drawWheel() {
+            if (!wheelCanvas) return;
+            const ctx = wheelCanvas.getContext('2d');
+            const w = wheelCanvas.width;
+            const h = wheelCanvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+            const radius = cx - 10;
+            const numSlices = 6;
+            const sliceAngle = (2 * Math.PI) / numSlices;
+
+            const colors = [
+                '#3b82f6', // Kelompok 1 - Blue
+                '#8b5cf6', // Kelompok 2 - Purple
+                '#ec4899', // Kelompok 3 - Pink
+                '#06b6d4', // Kelompok 4 - Cyan
+                '#10b981', // Kelompok 5 - Emerald
+                '#f59e0b'  // Kelompok 6 - Amber
+            ];
+
+            ctx.clearRect(0, 0, w, h);
+
+            // Outer ring
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius + 6, 0, 2 * Math.PI);
+            ctx.fillStyle = '#1e293b';
+            ctx.fill();
+            ctx.lineWidth = 5;
+            ctx.strokeStyle = '#f8fafc';
+            ctx.stroke();
+
+            // Slices
+            for (let i = 0; i < numSlices; i++) {
+                const startAngle = i * sliceAngle;
+                const endAngle = startAngle + sliceAngle;
+
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, radius, startAngle, endAngle);
+                ctx.closePath();
+                ctx.fillStyle = colors[i];
+                ctx.fill();
+                ctx.lineWidth = 2.5;
+                ctx.strokeStyle = '#ffffff';
+                ctx.stroke();
+
+                // Slice Text
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(startAngle + sliceAngle / 2);
+                ctx.textAlign = 'right';
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 14px "Plus Jakarta Sans", sans-serif';
+                ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                ctx.shadowBlur = 4;
+                ctx.fillText(`Kelompok ${i + 1}`, radius - 20, 5);
+                ctx.restore();
+            }
+
+            // Decorative border studs
+            for (let j = 0; j < 24; j++) {
+                const dotAngle = (j * 2 * Math.PI) / 24;
+                const dx = cx + (radius + 3) * Math.cos(dotAngle);
+                const dy = cy + (radius + 3) * Math.sin(dotAngle);
+                ctx.beginPath();
+                ctx.arc(dx, dy, 2.5, 0, 2 * Math.PI);
+                ctx.fillStyle = '#fef08a';
+                ctx.fill();
+            }
+
+            // Center Pin
+            ctx.beginPath();
+            ctx.arc(cx, cy, 26, 0, 2 * Math.PI);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = 'var(--primary)';
+            ctx.stroke();
+
+            ctx.fillStyle = 'var(--primary)';
+            ctx.font = 'bold 15px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('⚡', cx, cy);
+        }
+
+        // Web Audio synthesized sound effects
+        function playWheelTick() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(480, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.035);
+                gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.035);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.04);
+            } catch(e) {}
+        }
+
+        function playVictoryFanfare() {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContext) return;
+                const ctx = new AudioContext();
+                const notes = [523.25, 659.25, 783.99, 1046.50];
+                notes.forEach((freq, idx) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.frequency.value = freq;
+                    gain.gain.setValueAtTime(0.14, ctx.currentTime + idx * 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.1 + 0.35);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + idx * 0.1);
+                    osc.stop(ctx.currentTime + idx * 0.1 + 0.4);
+                });
+            } catch(e) {}
+        }
+
+        function triggerWheelSpin(studentName, targetTeamNumber, targetTeamNama, teammates) {
+            drawWheel();
+            wheelStudentName.textContent = studentName;
+            wheelResultName.textContent = studentName;
+            wheelResultTeam.textContent = `KELOMPOK ${targetTeamNumber}`;
+            wheelResultBox.style.display = 'none';
+            wheelModal.style.display = 'flex';
+
+            // Hitung sudut perhentian tepat di Kelompok targetTeamNumber
+            // Slice targetTeamNumber (1..6) berjarak 60 deg, slice center = (num - 1)*60 + 30
+            const sliceCenter = (targetTeamNumber - 1) * 60 + 30;
+            // Pointer ada di jam 12 (270 deg)
+            const targetOffset = ((270 - sliceCenter) % 360 + 360) % 360;
+            const jitter = (Math.random() * 20 - 10); // variasi halus +-10 deg
+            const totalRotations = 360 * 6; // 6 putaran penuh
+            const finalDegrees = totalRotations + targetOffset + jitter;
+
+            // Reset rotasi
+            wheelDisc.style.transition = 'none';
+            wheelDisc.style.transform = 'rotate(0deg)';
+            void wheelDisc.offsetWidth; // force reflow
+
+            // Putar roda dengan easing natural
+            wheelDisc.style.transition = 'transform 4.2s cubic-bezier(0.15, 0.95, 0.25, 1)';
+            wheelDisc.style.transform = `rotate(${finalDegrees}deg)`;
+
+            // Suara ketukan roda
+            let tickCount = 0;
+            const totalTicks = 28;
+            function scheduleTick() {
+                if (tickCount >= totalTicks) return;
+                playWheelTick();
+                tickCount++;
+                const delay = 40 + Math.pow(tickCount / totalTicks, 2.5) * 350;
+                setTimeout(scheduleTick, delay);
+            }
+            scheduleTick();
+
+            // Selesai berputar
+            setTimeout(() => {
+                playVictoryFanfare();
+                wheelResultBox.style.display = 'block';
+
+                // Render kartu tim di background
+                displayTeamMembers(targetTeamNama, teammates || []);
+            }, 4300);
+
+            btnCloseWheelModal.onclick = () => {
+                wheelModal.style.display = 'none';
+                const teamCard = document.getElementById('studentTeamCard');
+                if (teamCard) {
+                    teamCard.scrollIntoView({ behavior: 'smooth' });
+                }
+            };
+        }
+
         // Inisialisasi Ambil Data dari Firebase
         async function initPage() {
             try {
@@ -678,5 +847,40 @@
 
         initPage();
     </script>
+
+    <!-- ======================================================== -->
+    <!-- MODAL POPUP RODA BERPUTAR (SPINNING WHEEL ANIMATION)     -->
+    <!-- ======================================================== -->
+    <div id="wheelModal" class="wheel-modal-backdrop" style="display: none;">
+        <div class="wheel-modal-content">
+            <div class="wheel-header">
+                <h3 id="wheelModalTitle">🎡 Pengundian Kelompok Tim</h3>
+                <p id="wheelModalSubtitle">Roda sedang berputar mengundi kelompok untuk <strong id="wheelStudentName">Siswa</strong>...</p>
+            </div>
+
+            <div class="wheel-stage">
+                <div class="wheel-pointer-container">
+                    <div class="wheel-pointer">▼</div>
+                </div>
+                <div class="wheel-disc" id="wheelDisc">
+                    <canvas id="wheelCanvas" width="310" height="310"></canvas>
+                </div>
+            </div>
+
+            <div id="wheelResultBox" class="wheel-result-box" style="display: none;">
+                <div class="wheel-congratulations">
+                    <span class="confetti-icon">🎉</span>
+                    <h4>Selamat, <span id="wheelResultName">Kamu</span>!</h4>
+                    <p style="margin: 0; font-size: 0.85rem; color: #475569;">Sistem telah menetapkan kelompokmu:</p>
+                    <div class="wheel-team-result" id="wheelResultTeam">KELOMPOK 1</div>
+                    <p class="wheel-lock-note">🔒 Kelompok sudah resmi dikunci oleh sistem & tidak dapat diubah.</p>
+                </div>
+                <button type="button" id="btnCloseWheelModal" class="btn btn-primary btn-block" style="margin-top: 14px; padding: 12px; font-weight: 700;">
+                    👥 Lihat Teman Satu Kelompok
+                </button>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
