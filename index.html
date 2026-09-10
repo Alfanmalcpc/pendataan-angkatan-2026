@@ -19,6 +19,11 @@
                     <p class="student-subtitle">SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
                 </div>
             </div>
+            <div>
+                <a href="kelompok.html" class="btn btn-secondary" style="font-size: 0.85rem; padding: 8px 16px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; text-decoration: none;">
+                    👥 Halaman Kelompok
+                </a>
+            </div>
         </div>
     </header>
 
@@ -29,6 +34,26 @@
             <p class="hero-subtitle" style="margin: 0 auto; max-width: 650px;">
                 Selamat datang di sistem pendataan buku tahunan Nevastra 2026 SMAN 1 Sumberrejo. Klik kelas kamu di bawah ini untuk langsung mengisi formulir biodata pribadi.
             </p>
+        </div>
+
+        <!-- Banner Halaman Kelompok Tim Siswa -->
+        <div style="background: linear-gradient(135deg, rgba(79, 70, 229, 0.08), rgba(247, 37, 133, 0.08)); border: 1.5px solid rgba(79, 70, 229, 0.22); border-radius: 16px; padding: 18px 22px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; box-shadow: var(--shadow-sm);">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff; flex-shrink: 0; box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);">
+                    👥
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: var(--dark);">
+                        Daftar Pembagian 6 Kelompok Tim
+                    </h3>
+                    <p style="margin: 4px 0 0; font-size: 0.82rem; color: #475569;">
+                        Lihat pembagian kelompok tim kelasmu, kenali teman satu kelompok, lokasi rumah, dan koordinasi WhatsApp.
+                    </p>
+                </div>
+            </div>
+            <a href="kelompok.html" class="btn btn-primary" style="padding: 10px 20px; font-weight: 700; text-decoration: none; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;">
+                Buka Halaman Kelompok →
+            </a>
         </div>
 
         <div class="card">
@@ -82,9 +107,14 @@
                         <span id="pct-${cls}" style="font-weight: 700;">0%</span>
                     </div>
                 </div>
-                <a href="${cls.toLowerCase()}.html" class="btn btn-primary btn-block" style="padding: 12px;">
-                    Buka Formulir Kelas ${cls} →
-                </a>
+                <div style="display: flex; gap: 8px; margin-top: 10px;">
+                    <a href="${cls.toLowerCase()}.html" class="btn btn-primary" style="flex: 1; padding: 11px 8px; font-size: 0.85rem; text-align: center; text-decoration: none; font-weight: 700;">
+                        Isi Formulir →
+                    </a>
+                    <a href="kelompok.html?kelas=${cls}" class="btn btn-secondary" style="padding: 11px 12px; font-size: 0.85rem; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;" title="Lihat Pembagian Kelompok Kelas ${cls}">
+                        👥 Tim
+                    </a>
+                </div>
             `;
             grid.appendChild(card);
         });
