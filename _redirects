@@ -1,6 +1,7 @@
 # Cloudflare Pages Redirects & Clean URLs
 /admin          /admin.html      200
 /voting         /voting.html     200
-/kelompok       /kelompok.html   200
+/kelompok/kelompok.html   /kelompok   301
+/kelompok/                /kelompok   301
 /rekap          /rekap.html      200
 /links          /links.html      200
