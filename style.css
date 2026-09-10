@@ -77,17 +77,31 @@ body {
 }
 
 .brand-icon {
-  width: 42px;
-  height: 42px;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  width: 44px;
+  height: 44px;
+  background: #ffffff;
+  border: 1.5px solid rgba(67, 97, 238, 0.15);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
-  font-size: 1.3rem;
-  font-weight: 800;
-  box-shadow: 0 4px 10px rgba(67, 97, 238, 0.35);
+  padding: 2px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(67, 97, 238, 0.15);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.brand-icon:hover {
+  transform: scale(1.05);
+}
+
+.brand-icon img,
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .brand-text h1 {
