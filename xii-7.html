@@ -267,6 +267,40 @@
         </div>
     </main>
 
+        <!-- ======================================================== -->
+    <!-- MODAL POPUP RODA BERPUTAR (SPINNING WHEEL ANIMATION)     -->
+    <!-- ======================================================== -->
+    <div id="wheelModal" class="wheel-modal-backdrop" style="display: none;">
+        <div class="wheel-modal-content">
+            <div class="wheel-header">
+                <h3 id="wheelModalTitle">🎡 Pengundian Kelompok Tim</h3>
+                <p id="wheelModalSubtitle">Roda sedang berputar mengundi kelompok untuk <strong id="wheelStudentName">Siswa</strong>...</p>
+            </div>
+
+            <div class="wheel-stage">
+                <div class="wheel-pointer-container">
+                    <div class="wheel-pointer">▼</div>
+                </div>
+                <div class="wheel-disc" id="wheelDisc">
+                    <canvas id="wheelCanvas" width="310" height="310"></canvas>
+                </div>
+            </div>
+
+            <div id="wheelResultBox" class="wheel-result-box" style="display: none;">
+                <div class="wheel-congratulations">
+                    <span class="confetti-icon">🎉</span>
+                    <h4>Selamat, <span id="wheelResultName">Kamu</span>!</h4>
+                    <p style="margin: 0; font-size: 0.85rem; color: #475569;">Sistem telah menetapkan kelompokmu:</p>
+                    <div class="wheel-team-result" id="wheelResultTeam">KELOMPOK 1</div>
+                    <p class="wheel-lock-note">🔒 Kelompok sudah resmi dikunci oleh sistem & tidak dapat diubah.</p>
+                </div>
+                <button type="button" id="btnCloseWheelModal" class="btn btn-primary btn-block" style="margin-top: 14px; padding: 12px; font-weight: 700;">
+                    👥 Lihat Teman Satu Kelompok
+                </button>
+            </div>
+        </div>
+    </div>
+
     <footer class="app-footer">
         <p>Panitia Buku Tahunan NEVASTRA 2026 • SMAN 1 Sumberrejo</p>
     </footer>
@@ -632,21 +666,11 @@
 
             if (teamCard) teamCard.style.display = 'block';
         }
-
-        
         // ========================================================
         // ANIMASI RODA BERPUTAR (SPINNING WHEEL MODAL)
         // ========================================================
-        const wheelModal = document.getElementById('wheelModal');
-        const wheelDisc = document.getElementById('wheelDisc');
-        const wheelCanvas = document.getElementById('wheelCanvas');
-        const wheelStudentName = document.getElementById('wheelStudentName');
-        const wheelResultBox = document.getElementById('wheelResultBox');
-        const wheelResultName = document.getElementById('wheelResultName');
-        const wheelResultTeam = document.getElementById('wheelResultTeam');
-        const btnCloseWheelModal = document.getElementById('btnCloseWheelModal');
-
         function drawWheel() {
+            const wheelCanvas = document.getElementById('wheelCanvas');
             if (!wheelCanvas) return;
             const ctx = wheelCanvas.getContext('2d');
             const w = wheelCanvas.width;
@@ -773,30 +797,38 @@
         }
 
         function triggerWheelSpin(studentName, targetTeamNumber, targetTeamNama, teammates) {
+            const wheelModal = document.getElementById('wheelModal');
+            const wheelDisc = document.getElementById('wheelDisc');
+            const wheelStudentName = document.getElementById('wheelStudentName');
+            const wheelResultBox = document.getElementById('wheelResultBox');
+            const wheelResultName = document.getElementById('wheelResultName');
+            const wheelResultTeam = document.getElementById('wheelResultTeam');
+            const btnCloseWheelModal = document.getElementById('btnCloseWheelModal');
+
             drawWheel();
-            wheelStudentName.textContent = studentName;
-            wheelResultName.textContent = studentName;
-            wheelResultTeam.textContent = `KELOMPOK ${targetTeamNumber}`;
-            wheelResultBox.style.display = 'none';
-            wheelModal.style.display = 'flex';
+            if (wheelStudentName) wheelStudentName.textContent = studentName || 'Kamu';
+            if (wheelResultName) wheelResultName.textContent = studentName || 'Kamu';
+            if (wheelResultTeam) wheelResultTeam.textContent = `KELOMPOK ${targetTeamNumber}`;
+            if (wheelResultBox) wheelResultBox.style.display = 'none';
+            if (wheelModal) wheelModal.style.display = 'flex';
 
             // Hitung sudut perhentian tepat di Kelompok targetTeamNumber
-            // Slice targetTeamNumber (1..6) berjarak 60 deg, slice center = (num - 1)*60 + 30
             const sliceCenter = (targetTeamNumber - 1) * 60 + 30;
-            // Pointer ada di jam 12 (270 deg)
             const targetOffset = ((270 - sliceCenter) % 360 + 360) % 360;
-            const jitter = (Math.random() * 20 - 10); // variasi halus +-10 deg
-            const totalRotations = 360 * 6; // 6 putaran penuh
+            const jitter = (Math.random() * 20 - 10);
+            const totalRotations = 360 * 6;
             const finalDegrees = totalRotations + targetOffset + jitter;
 
             // Reset rotasi
-            wheelDisc.style.transition = 'none';
-            wheelDisc.style.transform = 'rotate(0deg)';
-            void wheelDisc.offsetWidth; // force reflow
+            if (wheelDisc) {
+                wheelDisc.style.transition = 'none';
+                wheelDisc.style.transform = 'rotate(0deg)';
+                void wheelDisc.offsetWidth; // force reflow
 
-            // Putar roda dengan easing natural
-            wheelDisc.style.transition = 'transform 4.2s cubic-bezier(0.15, 0.95, 0.25, 1)';
-            wheelDisc.style.transform = `rotate(${finalDegrees}deg)`;
+                // Putar roda
+                wheelDisc.style.transition = 'transform 4.2s cubic-bezier(0.15, 0.95, 0.25, 1)';
+                wheelDisc.style.transform = `rotate(${finalDegrees}deg)`;
+            }
 
             // Suara ketukan roda
             let tickCount = 0;
@@ -813,19 +845,21 @@
             // Selesai berputar
             setTimeout(() => {
                 playVictoryFanfare();
-                wheelResultBox.style.display = 'block';
+                if (wheelResultBox) wheelResultBox.style.display = 'block';
 
-                // Render kartu tim di background
+                // Render kartu tim di halaman
                 displayTeamMembers(targetTeamNama, teammates || []);
             }, 4300);
 
-            btnCloseWheelModal.onclick = () => {
-                wheelModal.style.display = 'none';
-                const teamCard = document.getElementById('studentTeamCard');
-                if (teamCard) {
-                    teamCard.scrollIntoView({ behavior: 'smooth' });
-                }
-            };
+            if (btnCloseWheelModal) {
+                btnCloseWheelModal.onclick = () => {
+                    if (wheelModal) wheelModal.style.display = 'none';
+                    const teamCard = document.getElementById('studentTeamCard');
+                    if (teamCard) {
+                        teamCard.scrollIntoView({ behavior: 'smooth' });
+                    }
+                };
+            }
         }
 
         // Inisialisasi Ambil Data dari Firebase
@@ -847,40 +881,6 @@
 
         initPage();
     </script>
-
-    <!-- ======================================================== -->
-    <!-- MODAL POPUP RODA BERPUTAR (SPINNING WHEEL ANIMATION)     -->
-    <!-- ======================================================== -->
-    <div id="wheelModal" class="wheel-modal-backdrop" style="display: none;">
-        <div class="wheel-modal-content">
-            <div class="wheel-header">
-                <h3 id="wheelModalTitle">🎡 Pengundian Kelompok Tim</h3>
-                <p id="wheelModalSubtitle">Roda sedang berputar mengundi kelompok untuk <strong id="wheelStudentName">Siswa</strong>...</p>
-            </div>
-
-            <div class="wheel-stage">
-                <div class="wheel-pointer-container">
-                    <div class="wheel-pointer">▼</div>
-                </div>
-                <div class="wheel-disc" id="wheelDisc">
-                    <canvas id="wheelCanvas" width="310" height="310"></canvas>
-                </div>
-            </div>
-
-            <div id="wheelResultBox" class="wheel-result-box" style="display: none;">
-                <div class="wheel-congratulations">
-                    <span class="confetti-icon">🎉</span>
-                    <h4>Selamat, <span id="wheelResultName">Kamu</span>!</h4>
-                    <p style="margin: 0; font-size: 0.85rem; color: #475569;">Sistem telah menetapkan kelompokmu:</p>
-                    <div class="wheel-team-result" id="wheelResultTeam">KELOMPOK 1</div>
-                    <p class="wheel-lock-note">🔒 Kelompok sudah resmi dikunci oleh sistem & tidak dapat diubah.</p>
-                </div>
-                <button type="button" id="btnCloseWheelModal" class="btn btn-primary btn-block" style="margin-top: 14px; padding: 12px; font-weight: 700;">
-                    👥 Lihat Teman Satu Kelompok
-                </button>
-            </div>
-        </div>
-    </div>
 
 </body>
 </html>
