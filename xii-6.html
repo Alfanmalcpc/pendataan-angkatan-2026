@@ -560,12 +560,12 @@
                 // Simpan ke Database (Melalui Sistem Intip Data: Jika Ada Data -> Terkunci; Jika Tidak Ada -> Spin Ulang)
                 const saveResult = await window.NevastraDB.saveBiodata(CURRENT_CLASS, absen, payload);
 
+                const assignedTeamNama = (saveResult && saveResult.timNama) || 'Tim 1';
+                const teamNum = parseInt(assignedTeamNama.replace(/\D/g, '')) || 1;
+
                 // Update data lokal kelas
                 currentClassData[absen] = { ...payload, timNama: assignedTeamNama, timId: teamNum };
                 updateProgressBar();
-
-                const assignedTeamNama = (saveResult && saveResult.timNama) || 'Tim 1';
-                const teamNum = parseInt(assignedTeamNama.replace(/\D/g, '')) || 1;
 
                 formModeBadge.style.display = 'inline-flex';
                 formModeBadge.style.background = '#e0e7ff';
