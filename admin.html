@@ -45,16 +45,16 @@
             </a>
             <div class="nav-links">
                 <a href="index.html" target="_blank" class="btn btn-outline btn-sm">
-                    👁️ Portal Siswa
+                    Portal Siswa
                 </a>
                 <a href="voting.html" target="_blank" class="btn btn-outline btn-sm" style="color: var(--primary); font-weight: 700; border-color: var(--primary);">
-                    🗳️ Buka Voting
+                    Buka Voting
                 </a>
                 <a href="links.html" class="btn btn-outline btn-sm">
-                    🔗 Link Kelas
+                    Link Kelas
                 </a>
                 <a href="rekap.html" class="btn btn-outline btn-sm">
-                    📊 Rekapitulasi
+                    Rekapitulasi
                 </a>
             </div>
         </div>
@@ -63,7 +63,7 @@
     <main class="main-wrapper">
         <div class="hero-banner" style="margin-bottom: 20px;">
             <div class="hero-content">
-                <span class="hero-badge">⚡ DASHBOARD PANITIA ANGKATAN</span>
+                <span class="hero-badge">DASHBOARD PANITIA ANGKATAN</span>
                 <h2 class="hero-title">Rekapitulasi Data Siswa per Kelas</h2>
                 <p class="hero-subtitle">Pantau biodata seluruh siswa per kelas, bagikan link WhatsApp, dan unduh hasil rekap ke format resmi <code>BIODATA.xlsx</code>.</p>
             </div>
@@ -72,13 +72,19 @@
         <!-- Mode Switcher (Biodata vs Kelompok vs Voting) -->
         <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
             <button id="btnSwitchBiodata" class="btn btn-primary" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md);">
-                📋 Rekap Biodata Siswa (XII-1 s/d XII-9)
+                Rekap Biodata Siswa (XII-1 s/d XII-9)
             </button>
             <button id="btnSwitchKelompok" class="btn btn-outline" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md); border-color: #0d9488; color: #0d9488;">
-                👥 Data 6 Kelompok Tim (Per Kelas)
+                Data 6 Kelompok Tim (Per Kelas)
             </button>
             <button id="btnSwitchVoting" class="btn btn-outline" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md); border-color: var(--secondary); color: var(--secondary);">
-                🗳️ Rekap Voting Kelompok Angkatan
+                Rekap Voting Kelompok Angkatan
+            </button>
+            <button id="btnSwitchKelas" class="btn btn-outline" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md); border-color: #2563eb; color: #2563eb;">
+                Manajemen Kelas
+            </button>
+            <button id="btnSwitchPendataanTambahan" class="btn btn-outline" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md); border-color: #d97706; color: #d97706;">
+                Kelas & Pendataan Tambahan (Contoh Pengisian)
             </button>
         </div>
 
@@ -118,13 +124,13 @@
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                 <input type="text" id="activeClassUrlInput" class="form-control" style="flex: 1; min-width: 280px; font-size: 0.88rem; font-weight: 600; background: white;" readonly>
                 <button id="btnCopyActiveLink" class="btn btn-primary btn-sm">
-                    📋 Salin Link
+                    Salin Link
                 </button>
                 <button id="btnCopyActiveWa" class="btn btn-outline btn-sm" style="border-color: #25D366; color: #128C7E;">
-                    💬 Salin Pesan WA
+                    Salin Pesan WA
                 </button>
                 <button id="btnOpenActiveWa" class="btn btn-sm" style="background-color: #25D366; color: white;">
-                    🚀 Buka di WA
+                    Buka di WA
                 </button>
                 <a id="btnVisitActiveLink" href="xii-1.html" target="_blank" class="btn btn-outline btn-sm">
                     ↗ Buka Halaman Siswa
@@ -182,16 +188,16 @@
             <!-- Action buttons -->
             <div class="admin-action-bar" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px;">
                 <button id="btnDownloadClassExcel" class="btn btn-primary btn-sm" style="background: #107c41;">
-                    📥 Download Excel Kelas Ini (.xlsx)
+                    Download Excel Kelas Ini (.xlsx)
                 </button>
                 <button id="btnDownloadAllExcel" class="btn btn-outline btn-sm" style="border-color: #107c41; color: #107c41; font-weight: 700;">
-                    🌐 Download BIODATA.xlsx (Semua Kelas)
+                    Download BIODATA.xlsx (Semua Kelas)
                 </button>
                 <button id="btnCopyPendingList" class="btn btn-outline btn-sm" style="border-color: #ef4444; color: #dc2626;">
-                    📋 Salin Siswa Belum Mengisi
+                    Salin Siswa Belum Mengisi
                 </button>
                 <button onclick="window.print()" class="btn btn-outline btn-sm">
-                    🖨️ Cetak Rekap
+                    Cetak Rekap
                 </button>
             </div>
 
@@ -242,7 +248,7 @@
             <div class="card" style="margin-bottom: 20px; border-left: 5px solid #0d9488;">
                 <div class="card-header" style="flex-wrap: wrap; gap: 12px; align-items: flex-start;">
                     <div>
-                        <span class="hero-badge" style="background: #ccfbf1; color: #0f766e;">👥 6 TIM / KELAS (MAKS 6 SISWA)</span>
+                        <span class="hero-badge" style="background: #ccfbf1; color: #0f766e;">6 TIM / KELAS (MAKS 6 SISWA)</span>
                         <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--dark); margin: 6px 0 4px 0;">
                             Data 6 Kelompok Tim per Kelas (Terkunci & Gender Seimbang)
                         </h2>
@@ -252,13 +258,13 @@
                     </div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                         <button id="btnDownloadKelompokExcel" class="btn btn-primary btn-sm" style="background: #107c41; font-weight: 700;">
-                            📥 Download Excel Data Kelompok (.xlsx)
+                            Download Excel Data Kelompok (.xlsx)
                         </button>
                         <button id="btnSyncOldBiodata" class="btn btn-outline btn-sm" style="border-color: #0d9488; color: #0f766e; font-weight: 700;">
-                            🔄 Sinkronkan Siswa Lama ke Tim
+                            Sinkronkan Siswa Lama ke Tim
                         </button>
                         <button id="btnResetKelompokClass" class="btn btn-outline btn-sm" style="border-color: #ef4444; color: #dc2626; font-weight: 700;">
-                            🗑️ Reset Tim Kelas Ini
+                            Reset Tim Kelas Ini
                         </button>
                         <a id="btnBukaKelompokSiswa" href="kelompok.html" target="_blank" class="btn btn-outline btn-sm" style="font-weight: 700;">
                             ↗ Buka Halaman Siswa
@@ -322,8 +328,8 @@
                         <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: block;">Filter Gender:</label>
                         <select id="filterKelompokGender" class="form-control" style="font-size: 0.85rem;">
                             <option value="ALL">Semua Gender (L & P)</option>
-                            <option value="L">👦 Hanya Laki-laki (L)</option>
-                            <option value="P">👧 Hanya Perempuan (P)</option>
+                            <option value="L">L - Laki-laki</option>
+                            <option value="P">P - Perempuan</option>
                         </select>
                     </div>
                     <div>
@@ -420,8 +426,8 @@
                 <!-- Visual Bar Perbandingan Opsi 1 vs Opsi 2 -->
                 <div style="margin: 18px 0;">
                     <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px;">
-                        <span style="color: #1e40af;">📋 Opsi 1: Kelompok Urut Absen (<span id="adminBarPct1">0%</span>)</span>
-                        <span style="color: #6b21a8;">🎲 Opsi 2: Kelompok Diacak Sistem (<span id="adminBarPct2">0%</span>)</span>
+                        <span style="color: #1e40af;">Opsi 1: Kelompok Urut Absen (<span id="adminBarPct1">0%</span>)</span>
+                        <span style="color: #6b21a8;">Opsi 2: Kelompok Diacak Sistem (<span id="adminBarPct2">0%</span>)</span>
                     </div>
                     <div class="vote-dual-bar" style="height: 26px;">
                         <div id="adminDualBar1" class="vote-bar-seg1" style="width: 50%;">0%</div>
@@ -433,24 +439,24 @@
                 <div class="card" style="border: 1.5px solid #cbd5e1; background: #f8fafc; margin: 20px 0; padding: 18px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 1.3rem;">📊</span>
+                            <span style="font-size: 1.3rem; display: inline-flex;"><svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5h-2v12h2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zM1 11a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/></svg></span>
                             <div>
                                 <strong style="font-size: 0.92rem; color: var(--dark);">Penyimpanan Langsung ke Google Sheets</strong>
                                 <div style="font-size: 0.76rem; color: var(--text-muted);">Setiap suara siswa otomatis tercatat ke Google Spreadsheet Anda secara realtime.</div>
                             </div>
                         </div>
                         <button type="button" id="btnToggleGuideSheet" class="btn btn-outline btn-sm" style="font-size: 0.78rem;">
-                            📖 Panduan Pasang Script Google Sheet
+                            Panduan Pasang Script Google Sheet
                         </button>
                     </div>
 
                     <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
                         <input type="text" id="adminSheetScriptUrl" class="form-control" style="flex: 1; min-width: 280px; font-size: 0.85rem;" placeholder="https://script.google.com/macros/s/.../exec">
                         <button id="btnSaveSheetConfig" class="btn btn-primary btn-sm">
-                            💾 Simpan URL Sheet
+                            Simpan URL Sheet
                         </button>
                         <button id="btnTestSheetConnection" class="btn btn-outline btn-sm" style="border-color: #0284c7; color: #0284c7;">
-                            🧪 Tes Koneksi
+                            Tes Koneksi
                         </button>
                     </div>
                     <div id="sheetStatusNotice" style="font-size: 0.78rem; color: var(--text-muted);">
@@ -475,19 +481,19 @@
                 <!-- Action buttons -->
                 <div class="admin-action-bar" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px;">
                     <button id="btnDownloadVotingExcel" class="btn btn-primary btn-sm" style="background: #107c41;">
-                        📥 Download Hasil Voting (.xlsx)
+                        Download Hasil Voting (.xlsx)
                     </button>
                     <button id="btnCopyVotingPageLink" class="btn btn-outline btn-sm">
-                        📋 Salin Link Halaman Voting
+                        Salin Link Halaman Voting
                     </button>
                     <button id="btnCopyVotingBroadcastWa" class="btn btn-outline btn-sm" style="border-color: #25D366; color: #128C7E;">
-                        💬 Salin Pesan Broadcast WA Voting
+                        Salin Pesan Broadcast WA Voting
                     </button>
                     <a href="voting.html" target="_blank" class="btn btn-outline btn-sm">
                         ↗ Buka Halaman Siswa
                     </a>
                     <button id="btnRefreshVotingData" class="btn btn-outline btn-sm">
-                        🔄 Segarkan Data Suara
+                        Segarkan Data Suara
                     </button>
                 </div>
 
@@ -541,6 +547,384 @@
                 </div>
             </div>
         </div>
+
+        <!-- ======================================================== -->
+        <!-- MANAJEMEN DATA KELAS (ADMIN ONLY)                        -->
+        <!-- ======================================================== -->
+        <div id="kelasSectionAdmin" style="display: none; margin-bottom: 24px;">
+            <div class="card" style="margin-bottom: 20px; border-left: 5px solid #2563eb;">
+                <div class="card-header" style="flex-wrap: wrap; gap: 12px; align-items: flex-start;">
+                    <div>
+                        <span class="hero-badge" style="background: #dbeafe; color: #1e40af;">KHUSUS ADMIN — MANAJEMEN KELAS</span>
+                        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--dark); margin: 6px 0 4px 0;">
+                            Data Kelas Angkatan 2026
+                        </h2>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">
+                            Kelola informasi kelas, wali kelas, dan jumlah siswa per kelas. Halaman ini hanya dapat diakses oleh admin/panitia.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabel Data Kelas -->
+            <div class="card">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <h3 class="card-title">Informasi Kelas XII (Angkatan 2026)</h3>
+                        <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+                            Data wali kelas, jurusan, dan jumlah siswa per kelas
+                        </div>
+                    </div>
+                    <span class="yb-badge" style="font-size: 0.8rem;">9 Kelas</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">No</th>
+                                <th>Kelas</th>
+                                <th>Jurusan / Program</th>
+                                <th>Wali Kelas</th>
+                                <th style="width: 100px; text-align: center;">Jumlah L</th>
+                                <th style="width: 100px; text-align: center;">Jumlah P</th>
+                                <th style="width: 100px; text-align: center;">Total Siswa</th>
+                                <th style="width: 120px; text-align: center;">Terisi Biodata</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kelasTableBody">
+                            <!-- Diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- KELAS & PENDATAAN TAMBAHAN (CONTOH PENGISIAN - ADMIN)    -->
+        <!-- ======================================================== -->
+        <div id="pendataanTambahanSectionAdmin" style="display: none; margin-bottom: 24px;">
+            <div class="card" style="margin-bottom: 20px; border-left: 5px solid #d97706;">
+                <div class="card-header" style="flex-wrap: wrap; gap: 12px; align-items: flex-start;">
+                    <div>
+                        <span class="hero-badge" style="background: #fef3c7; color: #92400e;">KHUSUS ADMIN — PANDUAN & CONTOH PENGISIAN</span>
+                        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--dark); margin: 6px 0 4px 0;">
+                            Kelas & Pendataan Tambahan (Contoh Pengisian Biodata)
+                        </h2>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">
+                            Data dan formulir simulasi ini hanya dapat diakses melalui panel admin. Formulir ini memiliki isian yang sama persis dengan pendataan biodata siswa asli (Nama, TTL, Alamat, Phone, IG, TikTok, Quotes max 5 kata) untuk dijadikan acuan contoh resmi bagi panitia dan siswa.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button id="btnDownloadContohExcel" class="btn btn-primary btn-sm" style="background: #107c41; font-weight: 700;">
+                            Download Excel BIODATA Contoh (.xlsx)
+                        </button>
+                        <button id="btnResetDefaultContoh" class="btn btn-outline btn-sm" style="border-color: #d97706; color: #d97706; font-weight: 700;">
+                            Reset ke Contoh Bawaan
+                        </button>
+                        <button id="btnCopyContohWa" class="btn btn-outline btn-sm" style="border-color: #25D366; color: #128C7E; font-weight: 700;">
+                            Salin Format Contoh WA
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tombol Muat Contoh Cepat -->
+            <div class="card" style="margin-bottom: 20px; padding: 14px 18px; background: #fffbeb; border: 1.5px solid #fde68a;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <strong style="font-size: 0.88rem; color: #92400e; display: block;">Muat Cepat Contoh Pengisian Valid:</strong>
+                        <span style="font-size: 0.76rem; color: #b45309;">Klik salah satu contoh untuk langsung melihat simulasi pengisian dan pratinjau kartu buku tahunan.</span>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-outline btn-sm btn-quick-sample" data-sample="1" style="background: white; border-color: #f59e0b; font-size: 0.78rem; font-weight: 700;">
+                            Contoh 1: Rafathar (L)
+                        </button>
+                        <button type="button" class="btn btn-outline btn-sm btn-quick-sample" data-sample="2" style="background: white; border-color: #f59e0b; font-size: 0.78rem; font-weight: 700;">
+                            Contoh 2: Siti Nurhaliza (P)
+                        </button>
+                        <button type="button" class="btn btn-outline btn-sm btn-quick-sample" data-sample="3" style="background: white; border-color: #f59e0b; font-size: 0.78rem; font-weight: 700;">
+                            Contoh 3: Tanpa TikTok (-)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid Layout Form Input & Live Preview Kartu -->
+            <div class="grid-layout" style="margin-bottom: 24px;">
+                <!-- Formulir Biodata Contoh -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/><path d="M4 4h8v1H4V4zm0 2h8v1H4V6zm0 2h8v1H4V8zm0 2h5v1H4v-1z"/></svg>
+                            Formulir Input Data Contoh
+                        </h3>
+                        <span class="badge-status done" style="font-size: 0.75rem;">Simulasi Form Siswa</span>
+                    </div>
+
+                    <form id="contohForm" novalidate onsubmit="return false;">
+                        <!-- 1. Kelas Contoh -->
+                        <div class="form-group">
+                            <label for="contohInputKelas">Pilihan Kelas <span class="req">*</span></label>
+                            <select id="contohInputKelas" class="form-control" style="font-weight: 600;">
+                                <option value="Kelas Contoh">Kelas Contoh (Simulasi Admin)</option>
+                                <option value="XII-Tambahan">XII-Tambahan (Kelas Tambahan)</option>
+                                <option value="XII-1">Kelas XII-1</option>
+                                <option value="XII-2">Kelas XII-2</option>
+                                <option value="XII-3">Kelas XII-3</option>
+                                <option value="XII-4">Kelas XII-4</option>
+                                <option value="XII-5">Kelas XII-5</option>
+                                <option value="XII-6">Kelas XII-6</option>
+                                <option value="XII-7">Kelas XII-7</option>
+                                <option value="XII-8">Kelas XII-8</option>
+                                <option value="XII-9">Kelas XII-9</option>
+                            </select>
+                        </div>
+
+                        <!-- 2. Absen -->
+                        <div class="form-group">
+                            <label for="contohInputAbsen">Nomor Absen <span class="req">*</span></label>
+                            <input type="number" id="contohInputAbsen" class="form-control" min="1" max="50" placeholder="Contoh: 1" value="1" required style="font-weight: 600;">
+                            <span class="tip">Nomor urut absen siswa di dalam kelas contoh / tambahan.</span>
+                        </div>
+
+                        <!-- 3. Nama Lengkap untuk Buku Tahunan -->
+                        <div class="form-group">
+                            <label for="contohInputNama">Nama Lengkap untuk Buku Tahunan <span class="req">*</span></label>
+                            <input type="text" id="contohInputNama" class="form-control" placeholder="Contoh: Rafathar Malik Ahmad" required>
+                            <span class="tip">Gunakan huruf kapital di awal setiap kata sesuai ejaan yang benar.</span>
+                        </div>
+
+                        <!-- 4. TTL (Tempat & Tanggal Lahir) -->
+                        <div class="form-group">
+                            <label>Tempat & Tanggal Lahir (TTL) <span class="req">*</span></label>
+                            <div class="form-row">
+                                <input type="text" id="contohInputTempatLahir" class="form-control" placeholder="Kota Kelahiran saja (contoh: Bojonegoro)" required>
+                                <input type="date" id="contohInputTanggalLahir" class="form-control" required>
+                            </div>
+                            <span class="tip">Isi hanya nama kota kelahiran saja di kolom pertama, tanggal lahir dipilih di kalender.</span>
+                        </div>
+
+                        <!-- 5. No HP / WhatsApp (PHONE) -->
+                        <div class="form-group">
+                            <label for="contohInputNoHp">No. HP / WhatsApp <span class="req">*</span></label>
+                            <div class="input-wrapper">
+                                <div class="input-icon">
+                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H5z"/><path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+                                </div>
+                                <input type="tel" id="contohInputNoHp" class="form-control has-icon" placeholder="Contoh: 081234567890" required>
+                            </div>
+                        </div>
+
+                        <!-- 6. Akun Instagram (IG) -->
+                        <div class="form-group">
+                            <label for="contohInputIG">Akun Instagram (IG) <span class="req">*</span></label>
+                            <div class="input-wrapper">
+                                <div class="input-icon">
+                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/><path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"/></svg>
+                                </div>
+                                <input type="text" id="contohInputIG" class="form-control has-icon" placeholder="username_kamu (tanpa @)" required>
+                            </div>
+                        </div>
+
+                        <!-- 7. Akun TikTok -->
+                        <div class="form-group">
+                            <label for="contohInputTikTok">Akun TikTok <span class="req">*</span></label>
+                            <div class="input-wrapper">
+                                <div class="input-icon">
+                                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13c0-1.104 1.12-2 2.5-2s2.5.896 2.5 2zm9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2z"/><path fill-rule="evenodd" d="M14 11V2h.5a.5.5 0 0 0 0-1H6a.5.5 0 0 0 0 1h.5v9a1.5 1.5 0 1 0 1-1.415V3h5v6.5A1.5 1.5 0 1 0 14 11z"/></svg>
+                                </div>
+                                <input type="text" id="contohInputTikTok" class="form-control has-icon" placeholder="username_tiktok (tanpa @ atau strip -)" required>
+                            </div>
+                            <span class="tip">Jika tidak memiliki TikTok, ketik tanda strip (-)</span>
+                        </div>
+
+                        <!-- 8. Tinggal Di (Alamat Domisili) -->
+                        <div class="form-group">
+                            <label for="contohInputAlamat">Tinggal Di (Alamat Domisili) <span class="req">*</span></label>
+                            <textarea id="contohInputAlamat" class="form-control" rows="2" placeholder="Tulis alamat sesingkat mungkin yaa... (contoh: Ds. Sumberrejo, Bojonegoro)" required></textarea>
+                            <span class="tip">Format: Nama Desa/Kelurahan, Kecamatan, Kota/Kabupaten (singkat & padat).</span>
+                        </div>
+
+                        <!-- 9. Quotes Buku Tahunan (Maksimal 5 Kata) -->
+                        <div class="form-group">
+                            <label for="contohInputQuotes">Kata-kata / Quotes Buku Tahunan (Maksimal 5 Kata) <span class="req">*</span></label>
+                            <textarea id="contohInputQuotes" class="form-control" rows="2" placeholder="Tuliskan quotes singkat (maksimal 5 kata)..." required></textarea>
+                            <div class="char-counter"><span id="contohWordCount">0</span>/5 kata</div>
+                            
+                            <div class="quote-templates">
+                                <span class="quote-chip contoh-quote-chip" data-quote="Langkah awal masa depan.">Langkah Awal</span>
+                                <span class="quote-chip contoh-quote-chip" data-quote="Terima kasih semua kenangannya.">Kenangan Indah</span>
+                                <span class="quote-chip contoh-quote-chip" data-quote="Jangan pernah berhenti melangkah.">Terus Melangkah</span>
+                                <span class="quote-chip contoh-quote-chip" data-quote="Penuh bangga dan harapan.">Penuh Bangga</span>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;">
+                            <button type="button" id="btnSimpanContoh" class="btn btn-primary" style="flex: 1; min-width: 180px; padding: 12px; font-weight: 700;">
+                                Simpan ke Data Contoh
+                            </button>
+                            <button type="button" id="btnResetFormContoh" class="btn btn-outline" style="padding: 12px;">
+                                Kosongkan Form
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Pratinjau Kartu Buku Tahunan (Live Preview) -->
+                <div class="preview-sticky">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/><path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/></svg>
+                                Pratinjau Buku Tahunan (Live Preview)
+                            </h3>
+                            <span class="yb-badge" style="background: #d97706; color: white;">Kartu Contoh</span>
+                        </div>
+                        
+                        <div class="yearbook-card">
+                            <!-- Header Kartu: Inisial Nama & Identitas Siswa -->
+                            <div class="yb-header">
+                                <div class="yb-avatar" id="prevContohAvatar">RM</div>
+                                <div class="yb-meta">
+                                    <h4 class="yb-name" id="prevContohName">Rafathar Malik Ahmad</h4>
+                                    <div class="yb-badge-row">
+                                        <span class="yb-badge" id="prevContohKelas">KELAS CONTOH</span>
+                                        <span class="yb-badge yb-badge-secondary" id="prevContohAbsen">ABSEN 01</span>
+                                    </div>
+                                    <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-muted); margin-top: 5px; text-transform: uppercase;">
+                                        NEVASTRA • SMAN 1 SUMBERREJO
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="yb-divider"></div>
+
+                            <div class="yb-info-list">
+                                <div class="yb-info-item">
+                                    <div class="yb-info-icon">
+                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683z"/></svg>
+                                    </div>
+                                    <div class="yb-info-content">
+                                        <span class="yb-info-label">Tempat, Tanggal Lahir</span>
+                                        <span id="prevContohTTL">Jakarta, 15 Agustus 2008</span>
+                                    </div>
+                                </div>
+
+                                <div class="yb-info-item">
+                                    <div class="yb-info-icon">
+                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H5z"/><path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+                                    </div>
+                                    <div class="yb-info-content">
+                                        <span class="yb-info-label">WhatsApp (Phone)</span>
+                                        <span id="prevContohNoHp">081234567890</span>
+                                    </div>
+                                </div>
+
+                                <div class="yb-info-item">
+                                    <div class="yb-info-icon">
+                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/><path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"/></svg>
+                                    </div>
+                                    <div class="yb-info-content">
+                                        <span class="yb-info-label">Instagram (IG)</span>
+                                        <span id="prevContohIG">rafatharma</span>
+                                    </div>
+                                </div>
+
+                                <div class="yb-info-item">
+                                    <div class="yb-info-icon">
+                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13c0-1.104 1.12-2 2.5-2s2.5.896 2.5 2zm9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2z"/><path fill-rule="evenodd" d="M14 11V2h.5a.5.5 0 0 0 0-1H6a.5.5 0 0 0 0 1h.5v9a1.5 1.5 0 1 0 1-1.415V3h5v6.5A1.5 1.5 0 1 0 14 11z"/></svg>
+                                    </div>
+                                    <div class="yb-info-content">
+                                        <span class="yb-info-label">TikTok</span>
+                                        <span id="prevContohTikTok">rafathar_</span>
+                                    </div>
+                                </div>
+
+                                <div class="yb-info-item">
+                                    <div class="yb-info-icon">
+                                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/><path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+                                    </div>
+                                    <div class="yb-info-content">
+                                        <span class="yb-info-label">Tinggal Di (Alamat)</span>
+                                        <span id="prevContohAlamat">Ds. Sumberrejo, Bojonegoro</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="yb-quote-box">
+                                <p class="yb-quote-text" id="prevContohQuotes">“Langkah awal masa depan.”</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 14px; text-align: center; font-size: 0.76rem; color: var(--text-muted);">
+                            Format kartu ini persis seperti yang akan tampil di halaman siswa dan hasil cetak buku tahunan.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Bar Data Contoh -->
+            <div class="class-stat-grid" style="margin-bottom: 20px;">
+                <div class="class-stat-box">
+                    <div class="class-stat-label">TOTAL SISWA CONTOH</div>
+                    <div class="class-stat-num" id="statContohTotal" style="color: var(--primary);">0</div>
+                    <div style="font-size: 0.76rem; color: var(--text-muted);">Tersimpan di panel admin</div>
+                </div>
+                <div class="class-stat-box">
+                    <div class="class-stat-label">QUOTES VALID (MAX 5 KATA)</div>
+                    <div class="class-stat-num" id="statContohQuotesValid" style="color: var(--success);">0</div>
+                    <div style="font-size: 0.76rem; color: var(--success); font-weight: 700;">Format Benar</div>
+                </div>
+                <div class="class-stat-box">
+                    <div class="class-stat-label">WHATSAPP TERISI</div>
+                    <div class="class-stat-num" id="statContohWa" style="color: #059669;">0</div>
+                    <div style="font-size: 0.76rem; color: var(--text-muted);">Kontak aktif</div>
+                </div>
+                <div class="class-stat-box">
+                    <div class="class-stat-label">STATUS DATA</div>
+                    <div class="class-stat-num" id="statContohStatus" style="color: #d97706; font-size: 1.15rem; margin-top: 4px;">Siap Jadi Contoh</div>
+                    <div style="font-size: 0.76rem; color: var(--text-muted);">Khusus Akses Admin</div>
+                </div>
+            </div>
+
+            <!-- Tabel Data Contoh Rekapitulasi -->
+            <div class="card">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <h3 class="card-title">Tabel Rekapitulasi Data Contoh & Kelas Tambahan</h3>
+                        <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 2px;">
+                            Daftar contoh pengisian biodata resmi yang dapat diekspor ke BIODATA.xlsx
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="text" id="searchContoh" class="form-control" style="font-size: 0.85rem; padding: 6px 12px; width: 220px;" placeholder="Cari data contoh...">
+                        <span id="contohCountBadge" class="yb-badge" style="font-size: 0.8rem; background: #d97706; color: white;">0 Siswa</span>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 45px;">Absen</th>
+                                <th style="width: 90px;">Kelas</th>
+                                <th>Nama Resmi di Buku</th>
+                                <th>TTL</th>
+                                <th>Alamat (Tinggal Di)</th>
+                                <th>No. HP / WA</th>
+                                <th>Instagram</th>
+                                <th>TikTok</th>
+                                <th style="min-width: 150px;">Quotes (Max 5 Kata)</th>
+                                <th style="width: 110px; text-align: center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contohTableBody">
+                            <!-- Diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Modal Kartu Siswa -->
@@ -570,7 +954,7 @@
 
                 <div class="yb-info-list">
                     <div class="yb-info-item">
-                        <div class="yb-info-icon">🎂</div>
+                        <div class="yb-info-icon"><svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683z"/></svg></div>
                         <div class="yb-info-content">
                             <span class="yb-info-label">Tempat, Tanggal Lahir</span>
                             <span id="mTTL">-</span>
@@ -578,7 +962,7 @@
                     </div>
 
                     <div class="yb-info-item">
-                        <div class="yb-info-icon">📱</div>
+                        <div class="yb-info-icon"><svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h6zM5 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H5z"/><path d="M8 14a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg></div>
                         <div class="yb-info-content">
                             <span class="yb-info-label">WhatsApp (Phone)</span>
                             <span id="mNoHp">-</span>
@@ -586,7 +970,7 @@
                     </div>
 
                     <div class="yb-info-item">
-                        <div class="yb-info-icon">📸</div>
+                        <div class="yb-info-icon"><svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/><path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z"/></svg></div>
                         <div class="yb-info-content">
                             <span class="yb-info-label">Instagram (IG)</span>
                             <span id="mIG">-</span>
@@ -594,7 +978,7 @@
                     </div>
 
                     <div class="yb-info-item">
-                        <div class="yb-info-icon">🎵</div>
+                        <div class="yb-info-icon"><svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M6 13c0 1.105-1.12 2-2.5 2S1 14.105 1 13c0-1.104 1.12-2 2.5-2s2.5.896 2.5 2zm9-2c0 1.105-1.12 2-2.5 2s-2.5-.895-2.5-2 1.12-2 2.5-2 2.5.895 2.5 2z"/><path fill-rule="evenodd" d="M14 11V2h.5a.5.5 0 0 0 0-1H6a.5.5 0 0 0 0 1h.5v9a1.5 1.5 0 1 0 1-1.415V3h5v6.5A1.5 1.5 0 1 0 14 11z"/></svg></div>
                         <div class="yb-info-content">
                             <span class="yb-info-label">TikTok</span>
                             <span id="mTikTok">-</span>
@@ -602,7 +986,7 @@
                     </div>
 
                     <div class="yb-info-item">
-                        <div class="yb-info-icon">📍</div>
+                        <div class="yb-info-icon"><svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/><path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg></div>
                         <div class="yb-info-content">
                             <span class="yb-info-label">Tinggal Di (Alamat)</span>
                             <span id="mAlamat">-</span>
@@ -684,7 +1068,7 @@
             const allBtn = document.createElement('button');
             allBtn.className = `class-tab-btn ${activeClass === 'ALL' ? 'active' : ''}`;
             allBtn.style.fontWeight = '800';
-            allBtn.textContent = '🌐 Semua Kelas (1 s/d 9)';
+            allBtn.textContent = 'Semua Kelas (1 s/d 9)';
             allBtn.onclick = () => selectClass('ALL');
             classTabsBar.appendChild(allBtn);
         }
@@ -708,7 +1092,7 @@
                 const fullUrl = base + 'index.html';
                 activeClassUrlInput.value = fullUrl;
                 btnVisitActiveLink.href = fullUrl;
-                btnDownloadClassExcel.textContent = '📥 Download BIODATA.xlsx';
+                btnDownloadClassExcel.textContent = 'Download BIODATA.xlsx';
             } else {
                 activeLinkBox.style.display = 'block';
                 activeClassTitle.textContent = `Halaman Siswa Kelas ${activeClass}`;
@@ -717,7 +1101,7 @@
                 const fullUrl = base + filename;
                 activeClassUrlInput.value = fullUrl;
                 btnVisitActiveLink.href = fullUrl;
-                btnDownloadClassExcel.textContent = `📥 Download Excel Kelas ${activeClass} (.xlsx)`;
+                btnDownloadClassExcel.textContent = `Download Excel Kelas ${activeClass} (.xlsx)`;
             }
         }
 
@@ -888,7 +1272,7 @@
                     </td>
                     <td>
                         <span class="badge-status ${item.isFilled ? 'done' : 'pending'}">
-                            ${item.isFilled ? '✓ Terisi' : '⏳ Belum'}
+                            ${item.isFilled ? '✓ Terisi' : '✗ Belum'}
                         </span>
                     </td>
                     <td>${cleanDisplayTTL(item.ttl)}</td>
@@ -907,7 +1291,7 @@
                     </td>
                     <td>
                         <button class="btn btn-outline btn-sm btn-view-modal" data-kelas="${item.kelas}" data-absen="${item.absen}" title="Lihat Kartu">
-                            👁️
+                            Lihat
                         </button>
                     </td>
                 `;
@@ -1094,36 +1478,47 @@
         // ==================================================================
         let allVotingRecords = {};
         let allTeamsData = {};
-        let currentAdminMode = 'biodata'; // 'biodata' | 'kelompok' | 'voting'
+        let currentAdminMode = 'biodata'; // 'biodata' | 'kelompok' | 'voting' | 'kelas' | 'pendataanTambahan'
         let activeKelompokClass = 'XII-1';
+        let activePendataanClass = 'XII-1';
 
         const btnSwitchBiodata = document.getElementById('btnSwitchBiodata');
         const btnSwitchVoting = document.getElementById('btnSwitchVoting');
         const btnSwitchKelompok = document.getElementById('btnSwitchKelompok');
+        const btnSwitchKelas = document.getElementById('btnSwitchKelas');
+        const btnSwitchPendataanTambahan = document.getElementById('btnSwitchPendataanTambahan');
         const biodataWrapper = document.getElementById('biodataWrapper');
         const votingSectionAdmin = document.getElementById('votingSectionAdmin');
         const kelompokSectionAdmin = document.getElementById('kelompokSectionAdmin');
+        const kelasSectionAdmin = document.getElementById('kelasSectionAdmin');
+        const pendataanTambahanSectionAdmin = document.getElementById('pendataanTambahanSectionAdmin');
 
         function switchAdminMode(mode) {
             currentAdminMode = mode;
-            btnSwitchBiodata.className = 'btn btn-outline';
-            btnSwitchBiodata.style.color = '';
-            btnSwitchBiodata.style.background = '';
-            btnSwitchBiodata.style.borderColor = '';
+            // Reset all buttons to outline
+            [btnSwitchBiodata, btnSwitchKelompok, btnSwitchVoting, btnSwitchKelas, btnSwitchPendataanTambahan].forEach(btn => {
+                btn.className = 'btn btn-outline';
+                btn.style.background = '';
+                btn.style.color = '';
+                btn.style.borderColor = '';
+            });
 
-            btnSwitchVoting.className = 'btn btn-outline';
-            btnSwitchVoting.style.borderColor = 'var(--secondary)';
-            btnSwitchVoting.style.color = 'var(--secondary)';
-            btnSwitchVoting.style.background = '';
-
-            btnSwitchKelompok.className = 'btn btn-outline';
+            // Reset default outline colors
             btnSwitchKelompok.style.borderColor = '#0d9488';
             btnSwitchKelompok.style.color = '#0d9488';
-            btnSwitchKelompok.style.background = '';
+            btnSwitchVoting.style.borderColor = 'var(--secondary)';
+            btnSwitchVoting.style.color = 'var(--secondary)';
+            btnSwitchKelas.style.borderColor = '#2563eb';
+            btnSwitchKelas.style.color = '#2563eb';
+            btnSwitchPendataanTambahan.style.borderColor = '#d97706';
+            btnSwitchPendataanTambahan.style.color = '#d97706';
 
+            // Hide all sections
             biodataWrapper.style.display = 'none';
             votingSectionAdmin.style.display = 'none';
             kelompokSectionAdmin.style.display = 'none';
+            kelasSectionAdmin.style.display = 'none';
+            pendataanTambahanSectionAdmin.style.display = 'none';
 
             if (mode === 'biodata') {
                 btnSwitchBiodata.className = 'btn btn-primary';
@@ -1143,19 +1538,41 @@
                 kelompokSectionAdmin.style.display = 'block';
                 renderKelompokTabs();
                 syncKelompokData();
+            } else if (mode === 'kelas') {
+                btnSwitchKelas.className = 'btn btn-primary';
+                btnSwitchKelas.style.background = '#2563eb';
+                btnSwitchKelas.style.borderColor = '#2563eb';
+                btnSwitchKelas.style.color = 'white';
+                kelasSectionAdmin.style.display = 'block';
+                renderKelasTable();
+            } else if (mode === 'pendataanTambahan') {
+                btnSwitchPendataanTambahan.className = 'btn btn-primary';
+                btnSwitchPendataanTambahan.style.background = '#d97706';
+                btnSwitchPendataanTambahan.style.borderColor = '#d97706';
+                btnSwitchPendataanTambahan.style.color = 'white';
+                pendataanTambahanSectionAdmin.style.display = 'block';
+                renderContohTable();
+                updateContohLivePreview();
             }
         }
 
         btnSwitchBiodata.onclick = () => switchAdminMode('biodata');
         btnSwitchVoting.onclick = () => switchAdminMode('voting');
         btnSwitchKelompok.onclick = () => switchAdminMode('kelompok');
+        btnSwitchKelas.onclick = () => switchAdminMode('kelas');
+        btnSwitchPendataanTambahan.onclick = () => switchAdminMode('pendataanTambahan');
 
         // Check query param e.g. admin.html?tab=kelompok or admin.html?tab=voting
         const urlParamsAdmin = new URLSearchParams(window.location.search);
-        if (urlParamsAdmin.get('tab') === 'kelompok') {
+        const tabParam = urlParamsAdmin.get('tab');
+        if (tabParam === 'kelompok') {
             switchAdminMode('kelompok');
-        } else if (urlParamsAdmin.get('tab') === 'voting') {
+        } else if (tabParam === 'voting') {
             switchAdminMode('voting');
+        } else if (tabParam === 'kelas') {
+            switchAdminMode('kelas');
+        } else if (tabParam === 'pendataan') {
+            switchAdminMode('pendataanTambahan');
         }
 
         // Google Sheet Config Handlers
@@ -1176,7 +1593,7 @@
                 const cfg = await window.NevastraDB.getVotingSheetConfig();
                 if (cfg && cfg.scriptUrl) {
                     adminSheetScriptUrl.value = cfg.scriptUrl;
-                    sheetStatusNotice.innerHTML = `🟢 <strong>Terkoneksi:</strong> Mengirim otomatis ke Google Sheets.`;
+                    sheetStatusNotice.innerHTML = `[AKTIF] <strong>Terkoneksi:</strong> Mengirim otomatis ke Google Sheets.`;
                     sheetStatusNotice.style.color = 'var(--success)';
                 }
             } catch(e) {}
@@ -1189,10 +1606,10 @@
 
             await window.NevastraDB.saveVotingSheetConfig({ scriptUrl: val });
             btnSaveSheetConfig.disabled = false;
-            btnSaveSheetConfig.textContent = '💾 Simpan URL Sheet';
+            btnSaveSheetConfig.textContent = 'Simpan URL Sheet';
 
             if (val) {
-                sheetStatusNotice.innerHTML = `🟢 <strong>Tersimpan:</strong> Mengirim otomatis ke Google Sheets.`;
+                sheetStatusNotice.innerHTML = `[AKTIF] <strong>Tersimpan:</strong> Mengirim otomatis ke Google Sheets.`;
                 sheetStatusNotice.style.color = 'var(--success)';
             } else {
                 sheetStatusNotice.innerHTML = `Data voting tetap tersimpan aman di Firebase Realtime Database.`;
@@ -1216,17 +1633,17 @@
                 const res = await fetch(url);
                 const data = await res.json();
                 btnTestSheetConnection.disabled = false;
-                btnTestSheetConnection.textContent = '🧪 Tes Koneksi';
+                btnTestSheetConnection.textContent = 'Tes Koneksi';
 
                 if (data.status === 'active') {
-                    alert(`✅ KONEKSI SUKSES!\n\nLayanan Google Sheets Voting Aktif!\nNama Sheet: ${data.sheetName || 'Hasil Voting'}\nTotal Baris Tercatat di Sheet: ${data.totalSuaraTercatat || 0}`);
+                    alert(`[SUKSES] KONEKSI SUKSES!\n\nLayanan Google Sheets Voting Aktif!\nNama Sheet: ${data.sheetName || 'Hasil Voting'}\nTotal Baris Tercatat di Sheet: ${data.totalSuaraTercatat || 0}`);
                     showToast('Koneksi Google Sheets berhasil!');
                 } else {
                     alert('Respon dari Google Sheets: ' + JSON.stringify(data));
                 }
             } catch (err) {
                 btnTestSheetConnection.disabled = false;
-                btnTestSheetConnection.textContent = '🧪 Tes Koneksi';
+                btnTestSheetConnection.textContent = 'Tes Koneksi';
                 alert('Gagal menghubungi Google Apps Script: ' + err.message + '\n\nPastikan izin "Who has access" sudah diatur ke "Anyone" (Siapa saja).');
             }
         };
@@ -1358,7 +1775,7 @@
                     <td style="font-size: 0.82rem; color: var(--text-muted);">${r.email || '-'}</td>
                     <td style="text-align: center;">
                         <button class="btn btn-outline btn-sm btn-del-vote" data-uid="${r.uid}" data-kelas="${r.kelas}" data-absen="${r.absen}" data-nama="${r.nama}" style="padding: 3px 8px; border-color: #ef4444; color: #ef4444;" title="Hapus Suara Siswa">
-                            🗑️
+                            Hapus
                         </button>
                     </td>
                 `;
@@ -1486,7 +1903,7 @@
             const allBtn = document.createElement('button');
             allBtn.className = `class-tab-btn ${activeKelompokClass === 'ALL' ? 'active' : ''}`;
             allBtn.style.fontWeight = '800';
-            allBtn.textContent = '🌐 Semua Kelas (1 s/d 9)';
+            allBtn.textContent = 'Semua Kelas (1 s/d 9)';
             allBtn.onclick = () => {
                 activeKelompokClass = 'ALL';
                 renderKelompokTabs();
@@ -1612,8 +2029,8 @@
 
                 const isMale = item.jk === 'L';
                 const genderBadge = isMale
-                    ? `<span style="background:#e0f2fe; color:#0369a1; padding:3px 8px; border-radius:5px; font-size:0.75rem; font-weight:700;">👦 Laki-laki</span>`
-                    : `<span style="background:#fce7f3; color:#be185d; padding:3px 8px; border-radius:5px; font-size:0.75rem; font-weight:700;">👧 Perempuan</span>`;
+                    ? `<span style="background:#e0f2fe; color:#0369a1; padding:3px 8px; border-radius:5px; font-size:0.75rem; font-weight:700;">L - Laki-laki</span>`
+                    : `<span style="background:#fce7f3; color:#be185d; padding:3px 8px; border-radius:5px; font-size:0.75rem; font-weight:700;">P - Perempuan</span>`;
 
                 tr.innerHTML = `
                     <td><strong>${idx + 1}</strong></td>
@@ -1622,9 +2039,9 @@
                     <td><strong>${String(item.absen).padStart(2, '0')}</strong></td>
                     <td><strong>${item.nama}</strong></td>
                     <td>${genderBadge}</td>
-                    <td><span style="color:#334155;">📍 ${item.tinggalDi}</span></td>
+                    <td><span style="color:#334155;">${item.tinggalDi}</span></td>
                     <td>
-                        ${waLink ? `<a href="${waLink}" target="_blank" rel="noopener noreferrer" style="color:#059669; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; background:#ecfdf5; padding:2px 8px; border-radius:5px;">💬 ${item.noHp}</a>` : item.noHp}
+                        ${waLink ? `<a href="${waLink}" target="_blank" rel="noopener noreferrer" style="color:#059669; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; background:#ecfdf5; padding:2px 8px; border-radius:5px;">${item.noHp}</a>` : item.noHp}
                     </td>
                     <td style="font-style:italic; font-size:0.8rem; color:var(--text-muted);">${item.quotes}</td>
                 `;
@@ -1698,7 +2115,7 @@
                 return;
             }
 
-            const promptVal = confirm(`⚠️ PERINGATAN RESMI:\n\nApakah Anda yakin ingin MENGHAPUS / MERESET data pembagian 6 tim untuk KELAS ${activeKelompokClass}?\n\n- Seluruh alokasi tim kelas ${activeKelompokClass} akan dikosongkan.\n- Siswa yang sudah mengisi akan dialokasikan ulang otomatis saat memperbarui biodata.`);
+            const promptVal = confirm(`[PERINGATAN RESMI]:\n\nApakah Anda yakin ingin MENGHAPUS / MERESET data pembagian 6 tim untuk KELAS ${activeKelompokClass}?\n\n- Seluruh alokasi tim kelas ${activeKelompokClass} akan dikosongkan.\n- Siswa yang sudah mengisi akan dialokasikan ulang otomatis saat memperbarui biodata.`);
             if (!promptVal) return;
 
             btnResetKelompokClass.disabled = true;
@@ -1706,7 +2123,7 @@
 
             const success = await window.NevastraDB.resetClassTeams(activeKelompokClass);
             btnResetKelompokClass.disabled = false;
-            btnResetKelompokClass.textContent = '🗑️ Reset Tim Kelas Ini';
+            btnResetKelompokClass.textContent = 'Reset Tim Kelas Ini';
 
             if (success) {
                 showToast(`Data 6 tim kelas ${activeKelompokClass} berhasil direset!`);
@@ -1733,7 +2150,7 @@
             }
 
             btnSyncOldBiodata.disabled = false;
-            btnSyncOldBiodata.textContent = '🔄 Sinkronkan Siswa Lama ke Tim';
+            btnSyncOldBiodata.textContent = 'Sinkronkan Siswa Lama ke Tim';
 
             await syncKelompokData();
             showToast(`Berhasil menyinkronkan ${totalSynced} siswa ke dalam 6 tim!`);
@@ -1743,6 +2160,690 @@
         if (filterKelompokGender) filterKelompokGender.onchange = renderKelompokRecap;
         if (searchKelompok) searchKelompok.oninput = renderKelompokRecap;
 
+        // ==================================================================
+        // SISTEM LOGIKA ADMIN: MANAJEMEN KELAS (ADMIN ONLY)
+        // ==================================================================
+        const kelasTableBody = document.getElementById('kelasTableBody');
+
+        // Contoh data wali kelas & jurusan (bisa diedit admin)
+        const kelasInfo = {
+            'XII-1': { jurusan: 'IPA', waliKelas: '-' },
+            'XII-2': { jurusan: 'IPA', waliKelas: '-' },
+            'XII-3': { jurusan: 'IPA', waliKelas: '-' },
+            'XII-4': { jurusan: 'IPA', waliKelas: '-' },
+            'XII-5': { jurusan: 'IPA', waliKelas: '-' },
+            'XII-6': { jurusan: 'IPS', waliKelas: '-' },
+            'XII-7': { jurusan: 'IPS', waliKelas: '-' },
+            'XII-8': { jurusan: 'IPS', waliKelas: '-' },
+            'XII-9': { jurusan: 'IPS', waliKelas: '-' }
+        };
+
+        // Load saved kelas info from localStorage
+        try {
+            const savedKelasInfo = localStorage.getItem('nevastra_kelas_info');
+            if (savedKelasInfo) {
+                const parsed = JSON.parse(savedKelasInfo);
+                Object.keys(parsed).forEach(k => {
+                    if (kelasInfo[k]) Object.assign(kelasInfo[k], parsed[k]);
+                });
+            }
+        } catch(e) {}
+
+        function renderKelasTable() {
+            if (!kelasTableBody) return;
+            kelasTableBody.innerHTML = '';
+
+            let totalAll = 0, totalL = 0, totalP = 0, totalFilled = 0;
+
+            classes.forEach((cls, idx) => {
+                const roster = rosterAll[cls] || [];
+                const total = roster.length;
+                const classSaved = allBiodata[cls] || {};
+                const filled = Object.keys(classSaved).length;
+
+                // Count gender from teams data or estimate
+                let countL = 0, countP = 0;
+                const classTeams = allTeamsData[cls] || {};
+                for (let i = 1; i <= 6; i++) {
+                    const tName = `Tim ${i}`;
+                    const teamObj = classTeams[tName] || {};
+                    const members = Object.values(teamObj.members || {});
+                    members.forEach(m => {
+                        if ((m.jk || m.jenisKelamin || 'L').toUpperCase() === 'P') countP++;
+                        else countL++;
+                    });
+                }
+                // Fallback: if no team data
+                if (countL === 0 && countP === 0) {
+                    countL = Math.ceil(total * 0.45);
+                    countP = total - countL;
+                }
+
+                totalAll += total;
+                totalL += countL;
+                totalP += countP;
+                totalFilled += filled;
+
+                const info = kelasInfo[cls] || { jurusan: '-', waliKelas: '-' };
+                const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${idx + 1}</strong></td>
+                    <td><strong>${cls}</strong></td>
+                    <td>${info.jurusan}</td>
+                    <td>
+                        <input type="text" class="form-control kelas-wali-input" data-kelas="${cls}" value="${info.waliKelas}" style="font-size: 0.82rem; padding: 4px 8px; min-width: 160px;" placeholder="Nama wali kelas...">
+                    </td>
+                    <td style="text-align: center; color: #0284c7; font-weight: 700;">${countL}</td>
+                    <td style="text-align: center; color: #db2777; font-weight: 700;">${countP}</td>
+                    <td style="text-align: center; font-weight: 800;">${total}</td>
+                    <td style="text-align: center;">
+                        <span class="badge-status ${pct >= 100 ? 'done' : 'pending'}" style="font-size: 0.78rem;">
+                            ${filled} / ${total} (${pct}%)
+                        </span>
+                    </td>
+                `;
+                kelasTableBody.appendChild(tr);
+            });
+
+            // Add total row
+            const trTotal = document.createElement('tr');
+            trTotal.style.background = '#f1f5f9';
+            trTotal.style.fontWeight = '800';
+            trTotal.innerHTML = `
+                <td></td>
+                <td><strong>TOTAL</strong></td>
+                <td></td>
+                <td></td>
+                <td style="text-align: center; color: #0284c7;">${totalL}</td>
+                <td style="text-align: center; color: #db2777;">${totalP}</td>
+                <td style="text-align: center; font-weight: 900;">${totalAll}</td>
+                <td style="text-align: center;">
+                    <span class="yb-badge" style="font-size: 0.78rem;">${totalFilled} / ${totalAll}</span>
+                </td>
+            `;
+            kelasTableBody.appendChild(trTotal);
+
+            // Bind wali kelas auto-save
+            document.querySelectorAll('.kelas-wali-input').forEach(input => {
+                input.addEventListener('change', () => {
+                    const cls = input.getAttribute('data-kelas');
+                    if (kelasInfo[cls]) kelasInfo[cls].waliKelas = input.value.trim();
+                    try {
+                        localStorage.setItem('nevastra_kelas_info', JSON.stringify(kelasInfo));
+                        showToast(`Wali kelas ${cls} disimpan: ${input.value.trim()}`);
+                    } catch(e) {}
+                });
+            });
+        }
+
+        // ==================================================================
+        // SISTEM LOGIKA ADMIN: KELAS & PENDATAAN TAMBAHAN (CONTOH PENGISIAN)
+        // ==================================================================
+        const defaultContohList = [
+            {
+                id: 1,
+                kelas: "Kelas Contoh",
+                absen: 1,
+                nama: "Rafathar Malik Ahmad",
+                tempatLahir: "Jakarta",
+                tanggalLahir: "2008-08-15",
+                ttl: "Jakarta, 15 Agustus 2008",
+                noHp: "081234567890",
+                ig: "rafatharma",
+                tiktok: "rafathar_",
+                tinggalDi: "Ds. Sumberrejo, Bojonegoro",
+                quotes: "Langkah awal masa depan."
+            },
+            {
+                id: 2,
+                kelas: "Kelas Contoh",
+                absen: 2,
+                nama: "Siti Nurhaliza Zahra",
+                tempatLahir: "Bojonegoro",
+                tanggalLahir: "2008-05-20",
+                ttl: "Bojonegoro, 20 Mei 2008",
+                noHp: "081298765432",
+                ig: "sitinurhaliza_z",
+                tiktok: "sitinurhaliza",
+                tinggalDi: "Ds. Mejuwet, Sumberrejo",
+                quotes: "Terima kasih semua kenangannya."
+            },
+            {
+                id: 3,
+                kelas: "Kelas Contoh",
+                absen: 3,
+                nama: "Budi Santoso Putra",
+                tempatLahir: "Bojonegoro",
+                tanggalLahir: "2008-01-10",
+                ttl: "Bojonegoro, 10 Januari 2008",
+                noHp: "085712345678",
+                ig: "budi_santoso",
+                tiktok: "-",
+                tinggalDi: "Ds. Prayungan, Sumberrejo",
+                quotes: "Jangan pernah berhenti melangkah."
+            },
+            {
+                id: 4,
+                kelas: "XII-Tambahan",
+                absen: 1,
+                nama: "Amanda Putri Lestari",
+                tempatLahir: "Surabaya",
+                tanggalLahir: "2008-11-28",
+                ttl: "Surabaya, 28 November 2008",
+                noHp: "082155667788",
+                ig: "amandaputri.l",
+                tiktok: "amandalestari",
+                tinggalDi: "Ds. Talun, Sumberrejo",
+                quotes: "Penuh bangga dan harapan."
+            }
+        ];
+
+        let contohDataList = [];
+        try {
+            const saved = localStorage.getItem('nevastra_pendataan_contoh');
+            if (saved) {
+                contohDataList = JSON.parse(saved);
+            } else {
+                contohDataList = JSON.parse(JSON.stringify(defaultContohList));
+                localStorage.setItem('nevastra_pendataan_contoh', JSON.stringify(contohDataList));
+            }
+        } catch(e) {
+            contohDataList = JSON.parse(JSON.stringify(defaultContohList));
+        }
+
+        function saveContohData() {
+            try {
+                localStorage.setItem('nevastra_pendataan_contoh', JSON.stringify(contohDataList));
+            } catch(e) {}
+        }
+
+        function formatIndoDate(dateStr) {
+            if (!dateStr) return '';
+            const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                const y = parts[0];
+                const m = parseInt(parts[1], 10) - 1;
+                const d = parseInt(parts[2], 10);
+                return `${d} ${months[m] || ''} ${y}`;
+            }
+            return dateStr;
+        }
+
+        // DOM elements for Contoh Form & Preview
+        const contohInputKelas = document.getElementById('contohInputKelas');
+        const contohInputAbsen = document.getElementById('contohInputAbsen');
+        const contohInputNama = document.getElementById('contohInputNama');
+        const contohInputTempatLahir = document.getElementById('contohInputTempatLahir');
+        const contohInputTanggalLahir = document.getElementById('contohInputTanggalLahir');
+        const contohInputNoHp = document.getElementById('contohInputNoHp');
+        const contohInputIG = document.getElementById('contohInputIG');
+        const contohInputTikTok = document.getElementById('contohInputTikTok');
+        const contohInputAlamat = document.getElementById('contohInputAlamat');
+        const contohInputQuotes = document.getElementById('contohInputQuotes');
+        const contohWordCount = document.getElementById('contohWordCount');
+
+        const prevContohAvatar = document.getElementById('prevContohAvatar');
+        const prevContohName = document.getElementById('prevContohName');
+        const prevContohKelas = document.getElementById('prevContohKelas');
+        const prevContohAbsen = document.getElementById('prevContohAbsen');
+        const prevContohTTL = document.getElementById('prevContohTTL');
+        const prevContohNoHp = document.getElementById('prevContohNoHp');
+        const prevContohIG = document.getElementById('prevContohIG');
+        const prevContohTikTok = document.getElementById('prevContohTikTok');
+        const prevContohAlamat = document.getElementById('prevContohAlamat');
+        const prevContohQuotes = document.getElementById('prevContohQuotes');
+
+        const contohTableBody = document.getElementById('contohTableBody');
+        const contohCountBadge = document.getElementById('contohCountBadge');
+        const searchContoh = document.getElementById('searchContoh');
+        const btnSimpanContoh = document.getElementById('btnSimpanContoh');
+        const btnResetFormContoh = document.getElementById('btnResetFormContoh');
+        const btnResetDefaultContoh = document.getElementById('btnResetDefaultContoh');
+        const btnDownloadContohExcel = document.getElementById('btnDownloadContohExcel');
+        const btnCopyContohWa = document.getElementById('btnCopyContohWa');
+
+        let editingContohId = null;
+
+        function updateContohLivePreview() {
+            if (!contohInputNama) return;
+            const nama = (contohInputNama.value || '').trim();
+            const absen = (contohInputAbsen.value || '').trim();
+            const kelas = (contohInputKelas.value || '').trim();
+            const tempat = (contohInputTempatLahir.value || '').trim();
+            const tgl = contohInputTanggalLahir.value;
+            const tglIndo = formatIndoDate(tgl);
+            const ttl = (tempat && tglIndo) ? `${tempat}, ${tglIndo}` : (tempat || tglIndo || '-');
+            const noHp = (contohInputNoHp.value || '').trim();
+            const ig = (contohInputIG.value || '').replace(/^@+/, '').trim();
+            const tiktok = (contohInputTikTok.value || '').replace(/^@+/, '').trim();
+            const alamat = (contohInputAlamat.value || '').trim();
+            const quotes = (contohInputQuotes.value || '').trim();
+
+            const initials = nama.split(' ').filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase() || '?';
+            if (prevContohAvatar) prevContohAvatar.textContent = initials;
+            if (prevContohName) prevContohName.textContent = nama || 'Nama Siswa';
+            if (prevContohKelas) prevContohKelas.textContent = (kelas || 'KELAS CONTOH').toUpperCase();
+            if (prevContohAbsen) {
+                const num = parseInt(absen, 10);
+                const pAbs = !isNaN(num) ? (num < 10 ? '0' + num : '' + num) : '--';
+                prevContohAbsen.textContent = 'ABSEN ' + pAbs;
+            }
+            if (prevContohTTL) prevContohTTL.textContent = ttl;
+            if (prevContohNoHp) prevContohNoHp.textContent = noHp || '-';
+            if (prevContohIG) prevContohIG.textContent = ig || '-';
+            if (prevContohTikTok) prevContohTikTok.textContent = tiktok || '-';
+            if (prevContohAlamat) prevContohAlamat.textContent = alamat || '-';
+            if (prevContohQuotes) prevContohQuotes.textContent = quotes ? `“${quotes}”` : 'Quotes terbaikmu...';
+
+            // Word counter
+            const words = quotes ? quotes.split(/\s+/).filter(Boolean) : [];
+            if (contohWordCount) {
+                contohWordCount.textContent = words.length;
+                contohWordCount.style.color = words.length > 5 ? 'var(--danger)' : 'inherit';
+                contohWordCount.style.fontWeight = words.length > 5 ? '800' : 'normal';
+            }
+        }
+
+        // Live input listeners
+        [contohInputKelas, contohInputAbsen, contohInputNama, contohInputTempatLahir,
+         contohInputTanggalLahir, contohInputNoHp, contohInputIG, contohInputTikTok,
+         contohInputAlamat, contohInputQuotes].forEach(el => {
+            if (el) {
+                el.addEventListener('input', updateContohLivePreview);
+                el.addEventListener('change', updateContohLivePreview);
+            }
+        });
+
+        // Quote template chips
+        document.querySelectorAll('.contoh-quote-chip').forEach(chip => {
+            chip.addEventListener('click', () => {
+                if (contohInputQuotes) {
+                    contohInputQuotes.value = chip.getAttribute('data-quote') || '';
+                    updateContohLivePreview();
+                }
+            });
+        });
+
+        // Quick sample buttons
+        document.querySelectorAll('.btn-quick-sample').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const sType = btn.getAttribute('data-sample');
+                editingContohId = null;
+                if (sType === '1') {
+                    contohInputKelas.value = 'Kelas Contoh';
+                    contohInputAbsen.value = '1';
+                    contohInputNama.value = 'Rafathar Malik Ahmad';
+                    contohInputTempatLahir.value = 'Jakarta';
+                    contohInputTanggalLahir.value = '2008-08-15';
+                    contohInputNoHp.value = '081234567890';
+                    contohInputIG.value = 'rafatharma';
+                    contohInputTikTok.value = 'rafathar_';
+                    contohInputAlamat.value = 'Ds. Sumberrejo, Bojonegoro';
+                    contohInputQuotes.value = 'Langkah awal masa depan.';
+                } else if (sType === '2') {
+                    contohInputKelas.value = 'Kelas Contoh';
+                    contohInputAbsen.value = '2';
+                    contohInputNama.value = 'Siti Nurhaliza Zahra';
+                    contohInputTempatLahir.value = 'Bojonegoro';
+                    contohInputTanggalLahir.value = '2008-05-20';
+                    contohInputNoHp.value = '081298765432';
+                    contohInputIG.value = 'sitinurhaliza_z';
+                    contohInputTikTok.value = 'sitinurhaliza';
+                    contohInputAlamat.value = 'Ds. Mejuwet, Sumberrejo';
+                    contohInputQuotes.value = 'Terima kasih semua kenangannya.';
+                } else if (sType === '3') {
+                    contohInputKelas.value = 'Kelas Contoh';
+                    contohInputAbsen.value = '3';
+                    contohInputNama.value = 'Budi Santoso Putra';
+                    contohInputTempatLahir.value = 'Bojonegoro';
+                    contohInputTanggalLahir.value = '2008-01-10';
+                    contohInputNoHp.value = '085712345678';
+                    contohInputIG.value = 'budi_santoso';
+                    contohInputTikTok.value = '-';
+                    contohInputAlamat.value = 'Ds. Prayungan, Sumberrejo';
+                    contohInputQuotes.value = 'Jangan pernah berhenti melangkah.';
+                }
+                updateContohLivePreview();
+                showToast('Data contoh berhasil dimuat ke formulir!');
+            });
+        });
+
+        // Reset form
+        function resetContohForm() {
+            editingContohId = null;
+            if (contohInputKelas) contohInputKelas.value = 'Kelas Contoh';
+            if (contohInputAbsen) contohInputAbsen.value = String(contohDataList.length + 1);
+            if (contohInputNama) contohInputNama.value = '';
+            if (contohInputTempatLahir) contohInputTempatLahir.value = '';
+            if (contohInputTanggalLahir) contohInputTanggalLahir.value = '';
+            if (contohInputNoHp) contohInputNoHp.value = '';
+            if (contohInputIG) contohInputIG.value = '';
+            if (contohInputTikTok) contohInputTikTok.value = '';
+            if (contohInputAlamat) contohInputAlamat.value = '';
+            if (contohInputQuotes) contohInputQuotes.value = '';
+            updateContohLivePreview();
+        }
+
+        if (btnResetFormContoh) {
+            btnResetFormContoh.onclick = resetContohForm;
+        }
+
+        // Save sample
+        if (btnSimpanContoh) {
+            btnSimpanContoh.onclick = () => {
+                const nama = (contohInputNama.value || '').trim();
+                const absen = parseInt(contohInputAbsen.value, 10) || 1;
+                const kelas = (contohInputKelas.value || '').trim() || 'Kelas Contoh';
+                const tempat = (contohInputTempatLahir.value || '').trim();
+                const tgl = contohInputTanggalLahir.value;
+                const tglIndo = formatIndoDate(tgl);
+                const ttl = (tempat && tglIndo) ? `${tempat}, ${tglIndo}` : (tempat || tglIndo || '-');
+                const noHp = (contohInputNoHp.value || '').trim();
+                const ig = (contohInputIG.value || '').replace(/^@+/, '').trim();
+                const tiktok = (contohInputTikTok.value || '').replace(/^@+/, '').trim() || '-';
+                const alamat = (contohInputAlamat.value || '').trim();
+                const quotes = (contohInputQuotes.value || '').trim();
+
+                if (!nama) {
+                    alert('Silakan masukkan nama lengkap siswa terlebih dahulu.');
+                    contohInputNama.focus();
+                    return;
+                }
+
+                const words = quotes ? quotes.split(/\s+/).filter(Boolean) : [];
+                if (words.length > 5) {
+                    alert(`Quotes maksimal 5 kata. Saat ini terhitung ${words.length} kata. Silakan persingkat quotes.`);
+                    contohInputQuotes.focus();
+                    return;
+                }
+
+                if (editingContohId !== null) {
+                    const idx = contohDataList.findIndex(item => item.id === editingContohId);
+                    if (idx !== -1) {
+                        contohDataList[idx] = {
+                            id: editingContohId,
+                            kelas, absen, nama, tempatLahir: tempat,
+                            tanggalLahir: tgl, ttl, noHp, ig, tiktok,
+                            tinggalDi: alamat, quotes
+                        };
+                        showToast(`Data contoh ${nama} berhasil diperbarui!`);
+                    }
+                    editingContohId = null;
+                } else {
+                    const newId = Date.now();
+                    contohDataList.push({
+                        id: newId,
+                        kelas, absen, nama, tempatLahir: tempat,
+                        tanggalLahir: tgl, ttl, noHp, ig, tiktok,
+                        tinggalDi: alamat, quotes
+                    });
+                    showToast(`Data contoh ${nama} berhasil ditambahkan!`);
+                }
+
+                saveContohData();
+                renderContohTable();
+                resetContohForm();
+            };
+        }
+
+        // Reset to default
+        if (btnResetDefaultContoh) {
+            btnResetDefaultContoh.onclick = () => {
+                if (confirm('Kembalikan seluruh data contoh ke format bawaan resmi?')) {
+                    contohDataList = JSON.parse(JSON.stringify(defaultContohList));
+                    saveContohData();
+                    renderContohTable();
+                    resetContohForm();
+                    showToast('Data contoh telah direset ke bawaan resmi.');
+                }
+            };
+        }
+
+        // Render Table
+        function renderContohTable() {
+            if (!contohTableBody) return;
+
+            const q = (searchContoh ? searchContoh.value : '').trim().toLowerCase();
+            const filtered = contohDataList.filter(item => {
+                if (!q) return true;
+                const matchNama = (item.nama || '').toLowerCase().includes(q);
+                const matchAbs = String(item.absen || '').includes(q);
+                const matchQuotes = (item.quotes || '').toLowerCase().includes(q);
+                const matchAlamat = (item.tinggalDi || '').toLowerCase().includes(q);
+                const matchHp = (item.noHp || '').includes(q);
+                const matchKelas = (item.kelas || '').toLowerCase().includes(q);
+                return matchNama || matchAbs || matchQuotes || matchAlamat || matchHp || matchKelas;
+            });
+
+            // Update stats
+            const total = contohDataList.length;
+            const validQuotes = contohDataList.filter(item => {
+                const words = (item.quotes || '').split(/\s+/).filter(Boolean);
+                return words.length > 0 && words.length <= 5;
+            }).length;
+            const validWa = contohDataList.filter(item => (item.noHp || '').length >= 10).length;
+
+            const elTotal = document.getElementById('statContohTotal');
+            const elQuotes = document.getElementById('statContohQuotesValid');
+            const elWa = document.getElementById('statContohWa');
+            if (elTotal) elTotal.textContent = total;
+            if (elQuotes) elQuotes.textContent = `${validQuotes} dari ${total}`;
+            if (elWa) elWa.textContent = `${validWa} dari ${total}`;
+            if (contohCountBadge) contohCountBadge.textContent = `${filtered.length} Siswa`;
+
+            contohTableBody.innerHTML = '';
+            if (filtered.length === 0) {
+                contohTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="10" style="text-align: center; padding: 30px; color: var(--text-muted);">
+                            Tidak ada data contoh yang cocok dengan pencarian.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filtered.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                const padded = item.absen < 10 ? '0' + item.absen : '' + item.absen;
+
+                const cleanHp = (item.noHp || '').replace(/\D/g, '');
+                const waLink = cleanHp ? `https://wa.me/${cleanHp.startsWith('0') ? '62' + cleanHp.slice(1) : cleanHp}` : null;
+                const cleanIg = (item.ig || '').replace(/^@+/, '').trim();
+                const igLink = cleanIg ? `https://instagram.com/${cleanIg}` : null;
+                const cleanTiktok = (item.tiktok || '').replace(/^@+/, '').trim();
+                const tiktokLink = (cleanTiktok && cleanTiktok !== '-') ? `https://tiktok.com/@${cleanTiktok}` : null;
+
+                tr.innerHTML = `
+                    <td><strong>${padded}</strong></td>
+                    <td><span class="yb-badge" style="font-size: 0.76rem;">${item.kelas || 'Contoh'}</span></td>
+                    <td><strong>${item.nama}</strong></td>
+                    <td>${item.ttl || '-'}</td>
+                    <td style="max-width: 180px;">${item.tinggalDi || '-'}</td>
+                    <td>
+                        ${waLink ? `<a href="${waLink}" target="_blank" rel="noopener noreferrer" style="color:#059669; font-weight:600; text-decoration:none;">${item.noHp}</a>` : (item.noHp || '-')}
+                    </td>
+                    <td>
+                        ${igLink ? `<a href="${igLink}" target="_blank" rel="noopener noreferrer" style="color:var(--primary); font-weight:600; text-decoration:none;">${cleanIg}</a>` : (cleanIg || '-')}
+                    </td>
+                    <td>
+                        ${tiktokLink ? `<a href="${tiktokLink}" target="_blank" rel="noopener noreferrer" style="color:#000; font-weight:600; text-decoration:none;">${cleanTiktok}</a>` : (cleanTiktok || '-')}
+                    </td>
+                    <td style="font-style: italic; max-width: 180px;">
+                        ${item.quotes ? `“${item.quotes}”` : '-'}
+                    </td>
+                    <td style="text-align: center; white-space: nowrap;">
+                        <button class="btn btn-outline btn-sm btn-view-contoh" data-id="${item.id}" style="padding: 2px 7px; font-size: 0.78rem;" title="Lihat Kartu">
+                            Lihat
+                        </button>
+                        <button class="btn btn-outline btn-sm btn-edit-contoh" data-id="${item.id}" style="padding: 2px 7px; font-size: 0.78rem; border-color: #0284c7; color: #0284c7;" title="Edit Form">
+                            Edit
+                        </button>
+                        <button class="btn btn-outline btn-sm btn-del-contoh" data-id="${item.id}" style="padding: 2px 7px; font-size: 0.78rem; border-color: #ef4444; color: #ef4444;" title="Hapus Data">
+                            Hapus
+                        </button>
+                    </td>
+                `;
+                contohTableBody.appendChild(tr);
+            });
+
+            // Bind action buttons
+            document.querySelectorAll('.btn-view-contoh').forEach(btn => {
+                btn.onclick = () => {
+                    const id = parseInt(btn.getAttribute('data-id'), 10);
+                    const item = contohDataList.find(s => s.id === id);
+                    if (!item) return;
+
+                    // Open student detail modal with sample data
+                    document.getElementById('mName').textContent = item.nama;
+                    document.getElementById('mKelas').textContent = (item.kelas || 'KELAS CONTOH').toUpperCase();
+                    document.getElementById('mAbsen').textContent = 'ABSEN ' + item.absen;
+
+                    const initials = item.nama.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase() || '?';
+                    document.getElementById('mAvatar').textContent = initials;
+                    document.getElementById('mTTL').textContent = item.ttl || '-';
+                    document.getElementById('mNoHp').textContent = item.noHp || '-';
+                    document.getElementById('mIG').textContent = (item.ig || '').replace(/^@+/, '') || '-';
+                    const elTikTok = document.getElementById('mTikTok');
+                    if (elTikTok) elTikTok.textContent = (item.tiktok || '').replace(/^@+/, '') || '-';
+                    document.getElementById('mAlamat').textContent = item.tinggalDi || '-';
+                    document.getElementById('mQuotes').textContent = item.quotes ? `“${item.quotes}”` : 'Belum mengisi quotes.';
+
+                    const btnOpen = document.getElementById('btnOpenFormDirect');
+                    if (btnOpen) btnOpen.style.display = 'none';
+                    const btnDel = document.getElementById('btnDeleteStudentData');
+                    if (btnDel) btnDel.style.display = 'none';
+
+                    document.getElementById('studentDetailModal').classList.add('show');
+                };
+            });
+
+            document.querySelectorAll('.btn-edit-contoh').forEach(btn => {
+                btn.onclick = () => {
+                    const id = parseInt(btn.getAttribute('data-id'), 10);
+                    const item = contohDataList.find(s => s.id === id);
+                    if (!item) return;
+
+                    editingContohId = item.id;
+                    contohInputKelas.value = item.kelas || 'Kelas Contoh';
+                    contohInputAbsen.value = String(item.absen || 1);
+                    contohInputNama.value = item.nama || '';
+                    contohInputTempatLahir.value = item.tempatLahir || '';
+                    contohInputTanggalLahir.value = item.tanggalLahir || '';
+                    contohInputNoHp.value = item.noHp || '';
+                    contohInputIG.value = (item.ig || '').replace(/^@+/, '');
+                    contohInputTikTok.value = (item.tiktok || '').replace(/^@+/, '');
+                    contohInputAlamat.value = item.tinggalDi || '';
+                    contohInputQuotes.value = item.quotes || '';
+
+                    updateContohLivePreview();
+                    contohInputNama.focus();
+                    showToast(`Mode edit data: ${item.nama}`);
+                };
+            });
+
+            document.querySelectorAll('.btn-del-contoh').forEach(btn => {
+                btn.onclick = () => {
+                    const id = parseInt(btn.getAttribute('data-id'), 10);
+                    const item = contohDataList.find(s => s.id === id);
+                    if (!item) return;
+
+                    if (confirm(`Hapus data contoh "${item.nama}"?`)) {
+                        contohDataList = contohDataList.filter(s => s.id !== id);
+                        saveContohData();
+                        renderContohTable();
+                        showToast(`Data contoh ${item.nama} berhasil dihapus.`);
+                    }
+                };
+            });
+        }
+
+        if (searchContoh) {
+            searchContoh.addEventListener('input', renderContohTable);
+        }
+
+        // Export Excel format BIODATA.xlsx
+        if (btnDownloadContohExcel) {
+            btnDownloadContohExcel.onclick = () => {
+                const aoa = [
+                    ["NO", "NAMA", "TTL", "ALAMAT", "PHONE", "IG", "TIKTOK", "QUOTES (MAX 5 KATA)"],
+                    ["EX:", "Rafathar Malik Ahmad", "Jakarta, 15 Agustus 2015", "(TULIS ALAMAT SESINGKAT MUNGKIN YAA..)", "08123456789", "Rafathar2015", "Rafathar_", "Setiap pertemuan pasti ada perpisahan"]
+                ];
+
+                contohDataList.forEach((item, i) => {
+                    aoa.push([
+                        item.absen || (i + 1),
+                        item.nama || '',
+                        item.ttl || '',
+                        item.tinggalDi || '',
+                        item.noHp || '',
+                        (item.ig || '').replace(/^@+/, ''),
+                        (item.tiktok || '').replace(/^@+/, ''),
+                        item.quotes || ''
+                    ]);
+                });
+
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.aoa_to_sheet(aoa);
+                ws['!cols'] = [
+                    { wch: 6 },
+                    { wch: 30 },
+                    { wch: 25 },
+                    { wch: 42 },
+                    { wch: 18 },
+                    { wch: 20 },
+                    { wch: 20 },
+                    { wch: 52 }
+                ];
+                XLSX.utils.book_append_sheet(wb, ws, "Contoh Biodata");
+                XLSX.writeFile(wb, "BIODATA_CONTOH_PENGISIAN.xlsx");
+                showToast("File BIODATA_CONTOH_PENGISIAN.xlsx berhasil diunduh!");
+            };
+        }
+
+        // Copy WhatsApp format
+        if (btnCopyContohWa) {
+            btnCopyContohWa.onclick = () => {
+                const text = `*📢 PANDUAN & CONTOH RESMI PENGISIAN BIODATA NEVASTRA 2026*
+
+Halo teman-teman Angkatan 2026! ✨
+Agar tidak terjadi kesalahan cetak di buku tahunan, mohon perhatikan contoh pengisian biodata yang benar berikut ini:
+
+*Contoh Format 1 (Siswa Laki-laki):*
+- Nama Lengkap: Rafathar Malik Ahmad
+- TTL: Jakarta, 15 Agustus 2008
+- Alamat: Ds. Sumberrejo, Bojonegoro
+- No. HP/WA: 081234567890
+- Instagram: rafatharma
+- TikTok: rafathar_
+- Quotes: Langkah awal masa depan.
+
+*Contoh Format 2 (Siswa Perempuan):*
+- Nama Lengkap: Siti Nurhaliza Zahra
+- TTL: Bojonegoro, 20 Mei 2008
+- Alamat: Ds. Mejuwet, Sumberrejo
+- No. HP/WA: 081298765432
+- Instagram: sitinurhaliza_z
+- TikTok: sitinurhaliza
+- Quotes: Terima kasih semua kenangannya.
+
+*Poin Penting:*
+1. Kota lahir ditulis nama kotanya saja (contoh: Bojonegoro).
+2. Alamat ditulis sesingkat dan sejelas mungkin.
+3. Username IG & TikTok tanpa tanda @ (jika tidak punya TikTok, ketik strip -).
+4. Quotes MAKSIMAL 5 KATA.
+
+Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 🎓🙏`;
+
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast('Format teks panduan pengisian WA berhasil disalin!');
+                });
+            };
+        }
+
         renderTabs();
         renderKelompokTabs();
         updateActiveClassLink();
@@ -1750,6 +2851,8 @@
         syncData();
         syncVotingData();
         syncKelompokData();
+        renderContohTable();
+        updateContohLivePreview();
         setInterval(syncData, 15000);
         setInterval(syncVotingData, 15000);
         setInterval(syncKelompokData, 15000);
