@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Admin & Rekapitulasi per Kelas - NEVASTRA 2026</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -69,8 +69,8 @@
             </div>
         </div>
 
-        <!-- Mode Switcher (Biodata vs Kelompok vs Voting) -->
-        <div style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
+        <!-- Mode Switcher (Biodata vs Kelompok vs Voting vs Kelas vs Pendataan Tambahan) -->
+        <div class="admin-mode-switcher" style="display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;">
             <button id="btnSwitchBiodata" class="btn btn-primary" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md);">
                 Rekap Biodata Siswa (XII-1 s/d XII-9)
             </button>
@@ -92,9 +92,9 @@
         <div id="biodataWrapper">
             <!-- Base URL Config -->
             <div class="card" style="margin-bottom: 16px; padding: 14px 18px;">
-                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                    <label style="font-size: 0.82rem; font-weight: 700; white-space: nowrap; margin-bottom: 0;">Alamat Host / Domain Website:</label>
-                    <input type="text" id="adminHostUrl" class="form-control" style="flex: 1; min-width: 280px; font-size: 0.85rem; padding: 7px 12px;" placeholder="http://...">
+                <div class="responsive-input-group" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                    <label style="font-size: 0.82rem; font-weight: 700; margin-bottom: 0;">Alamat Host / Domain Website:</label>
+                    <input type="text" id="adminHostUrl" class="form-control" style="flex: 1; min-width: 240px; font-size: 0.85rem; padding: 7px 12px;" placeholder="http://...">
                     <span style="font-size: 0.74rem; color: var(--text-muted);">Tautan kelas otomatis menyesuaikan domain di atas.</span>
                 </div>
             </div>
@@ -121,20 +121,22 @@
                 <span id="activeClassFileBadge" class="yb-badge" style="font-size: 0.8rem;">xii-1.html</span>
             </div>
 
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                <input type="text" id="activeClassUrlInput" class="form-control" style="flex: 1; min-width: 280px; font-size: 0.88rem; font-weight: 600; background: white;" readonly>
-                <button id="btnCopyActiveLink" class="btn btn-primary btn-sm">
-                    Salin Link
-                </button>
-                <button id="btnCopyActiveWa" class="btn btn-outline btn-sm" style="border-color: #25D366; color: #128C7E;">
-                    Salin Pesan WA
-                </button>
-                <button id="btnOpenActiveWa" class="btn btn-sm" style="background-color: #25D366; color: white;">
-                    Buka di WA
-                </button>
-                <a id="btnVisitActiveLink" href="xii-1.html" target="_blank" class="btn btn-outline btn-sm">
-                    ↗ Buka Halaman Siswa
-                </a>
+            <div class="active-link-row" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <input type="text" id="activeClassUrlInput" class="form-control" style="flex: 1; min-width: 240px; font-size: 0.88rem; font-weight: 600; background: white;" readonly>
+                <div class="active-link-buttons" style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <button id="btnCopyActiveLink" class="btn btn-primary btn-sm">
+                        Salin Link
+                    </button>
+                    <button id="btnCopyActiveWa" class="btn btn-outline btn-sm" style="border-color: #25D366; color: #128C7E;">
+                        Salin Pesan WA
+                    </button>
+                    <button id="btnOpenActiveWa" class="btn btn-sm" style="background-color: #25D366; color: white;">
+                        Buka di WA
+                    </button>
+                    <a id="btnVisitActiveLink" href="xii-1.html" target="_blank" class="btn btn-outline btn-sm">
+                        Buka Halaman Siswa
+                    </a>
+                </div>
             </div>
             <span class="tip" style="margin-top: 8px; display: block;">
                 Klik <strong>Salin Link</strong> atau <strong>Salin Pesan WA</strong> di atas lalu kirimkan ke grup WhatsApp kelas agar siswa langsung mengisi biodata di halamannya masing-masing.
@@ -238,6 +240,7 @@
                     </tbody>
                 </table>
             </div>
+            <div class="table-scroll-hint">Geser tabel ke kanan untuk melihat kolom lengkap →</div>
         </div>
         </div> <!-- End biodataWrapper -->
 
@@ -372,6 +375,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="table-scroll-hint">Geser tabel ke kanan untuk melihat kolom lengkap →</div>
             </div>
         </div>
 
@@ -450,8 +454,8 @@
                         </button>
                     </div>
 
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
-                        <input type="text" id="adminSheetScriptUrl" class="form-control" style="flex: 1; min-width: 280px; font-size: 0.85rem;" placeholder="https://script.google.com/macros/s/.../exec">
+                    <div class="responsive-input-group" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+                        <input type="text" id="adminSheetScriptUrl" class="form-control" style="flex: 1; min-width: 200px; font-size: 0.85rem;" placeholder="https://script.google.com/macros/s/.../exec">
                         <button id="btnSaveSheetConfig" class="btn btn-primary btn-sm">
                             Simpan URL Sheet
                         </button>
@@ -490,7 +494,7 @@
                         Salin Pesan Broadcast WA Voting
                     </button>
                     <a href="voting.html" target="_blank" class="btn btn-outline btn-sm">
-                        ↗ Buka Halaman Siswa
+                        Buka Halaman Siswa
                     </a>
                     <button id="btnRefreshVotingData" class="btn btn-outline btn-sm">
                         Segarkan Data Suara
@@ -545,6 +549,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="table-scroll-hint">Geser tabel ke kanan untuk melihat kolom lengkap →</div>
             </div>
         </div>
 
@@ -596,6 +601,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="table-scroll-hint">Geser tabel ke kanan untuk melihat kolom lengkap →</div>
             </div>
         </div>
 
@@ -922,6 +928,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="table-scroll-hint">Geser tabel ke kanan untuk melihat kolom lengkap →</div>
             </div>
         </div>
 
