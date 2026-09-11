@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Pendataan Guru & Staff - NEVASTRA 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .loading-screen {
+            display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.9);
+            z-index: 1000; justify-content: center; align-items: center; flex-direction: column;
+        }
+        .loading-screen.active { display: flex; }
+        
+        .success-screen {
+            display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.95);
+            z-index: 1000; justify-content: center; align-items: center; flex-direction: column; text-align: center;
+            padding: 2rem;
+        }
+        .success-screen.active { display: flex; }
+        .success-screen i { font-size: 4rem; color: #10b981; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+
+    <header class="student-header">
+        <div class="student-header-inner">
+            <div class="student-brand">
+                <div class="brand-icon"><img src="logo.svg" alt="NEVASTRA 2026" class="brand-logo-img"></div>
+                <div>
+                    <h1 class="student-title">NEVASTRA 2026</h1>
+                    <p class="student-subtitle">SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
+                </div>
+            </div>
+            <div class="yb-badge" style="font-size: 0.85rem; padding: 6px 14px; font-weight: bold; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 999px;">
+                GURU & STAFF
+            </div>
+        </div>
+    </header>
+
+    <main class="main-wrapper" style="max-width: 600px; margin: 0 auto; padding: 1.5rem;">
+        <div class="hero-banner" style="margin-bottom: 2rem; text-align: center;">
+            <div class="hero-content">
+                <span class="hero-badge" style="display: inline-block; padding: 4px 12px; background: #eff6ff; color: #3b82f6; border-radius: 999px; font-size: 0.8rem; font-weight: bold; margin-bottom: 8px;">✨ PENDATAAN GURU & STAFF</span>
+                <h2 class="hero-title" style="margin: 0.5rem 0; font-size: 1.5rem;">Formulir Data Guru & Staff</h2>
+                <p class="hero-subtitle" style="color: #64748b; font-size: 0.9rem;">Silakan isi berdasarkan file Excel DAFTAR GURU yang telah diunduh.</p>
+            </div>
+        </div>
+
+        <div class="card form-card" style="background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 1.5rem;">
+            <form id="guruForm" novalidate>
+                <!-- Kategori -->
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Kategori <span class="req" style="color: #ef4444;">*</span></label>
+                    <select id="inputKategori" class="form-control" required style="width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px; font-weight: 600;">
+                        <option value="" disabled selected>-- Pilih Kategori --</option>
+                        <option value="GURU">Guru</option>
+                        <option value="STAFF">Staff Karyawan</option>
+                    </select>
+                </div>
+
+                <!-- Urutan -->
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Nomor Urut (Dari Excel) <span class="req" style="color: #ef4444;">*</span></label>
+                    <input type="number" id="inputUrutan" class="form-control" required placeholder="Contoh: 1" min="1" style="width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px;">
+                    <span class="tip" style="display: block; font-size: 0.8rem; color: #64748b; margin-top: 4px;">Sesuai kolom URUTAN GURU / URUTAN STAFF</span>
+                </div>
+
+                <!-- Nama Lengkap -->
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Nama Lengkap (Beserta Gelar) <span class="req" style="color: #ef4444;">*</span></label>
+                    <input type="text" id="inputNama" class="form-control" required placeholder="Contoh: Budi Santoso, S.Pd., M.Pd." style="width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px;">
+                </div>
+
+                <!-- Mata Pelajaran / Jabatan -->
+                <div class="form-group" id="groupMapel" style="margin-bottom: 1.5rem;">
+                    <label id="labelMapel" style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Mata Pelajaran / Jabatan <span class="req" style="color: #ef4444;">*</span></label>
+                    <input type="text" id="inputMapel" class="form-control" required placeholder="Contoh: Matematika" style="width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px;">
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" id="btnSubmit" class="btn btn-primary" style="width: 100%; padding: 0.75rem; background: #3b82f6; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                        <i class="fas fa-save" style="margin-right: 8px;"></i> Simpan Data
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+    
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <h3 style="color: #333;">Menyimpan Data...</h3>
+    </div>
+    
+    <!-- Success Screen -->
+    <div class="success-screen" id="successScreen">
+        <i class="fas fa-check-circle"></i>
+        <h3 style="margin-bottom: 0.5rem;">Berhasil Tersimpan!</h3>
+        <p style="color: #64748b; margin-bottom: 1.5rem;">Data guru/staff telah ditambahkan ke database.</p>
+        <div style="display: flex; gap: 1rem; width: 100%; max-width: 300px;">
+            <button class="btn" onclick="window.location.reload()" style="flex: 1; padding: 0.75rem; background: #e2e8f0; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">Input Lagi</button>
+            <a href="index.html" class="btn" style="flex: 1; padding: 0.75rem; background: #3b82f6; color: white; text-decoration: none; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-align: center;">Beranda</a>
+        </div>
+    </div>
+
+    <!-- Firebase & DB Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="db.js"></script>
+    
+    <script>
+        const form = document.getElementById('guruForm');
+        const selectKategori = document.getElementById('inputKategori');
+        const inputUrutan = document.getElementById('inputUrutan');
+        const inputNama = document.getElementById('inputNama');
+        const inputMapel = document.getElementById('inputMapel');
+        const labelMapel = document.getElementById('labelMapel');
+        const btnSubmit = document.getElementById('btnSubmit');
+        
+        selectKategori.addEventListener('change', (e) => {
+            const val = e.target.value;
+            if (val === 'GURU') {
+                labelMapel.innerHTML = 'Mata Pelajaran <span class="req" style="color: #ef4444;">*</span>';
+                inputMapel.placeholder = 'Contoh: Matematika';
+            } else if (val === 'STAFF') {
+                labelMapel.innerHTML = 'Jabatan <span class="req" style="color: #ef4444;">*</span>';
+                inputMapel.placeholder = 'Contoh: Staff TU / Satpam';
+            }
+        });
+        
+        // Auto-fill existing data
+        inputUrutan.addEventListener('change', async () => {
+            const kategori = selectKategori.value;
+            const urutan = inputUrutan.value;
+            if (kategori && urutan) {
+                try {
+                    const existing = await window.NevastraDB.getStudentBiodata(kategori, urutan);
+                    if (existing && existing.nama) {
+                        inputNama.value = existing.nama;
+                        inputMapel.value = existing.mapel_jabatan || existing.mapel || existing.jabatan || '';
+                        btnSubmit.innerHTML = '<i class="fas fa-edit" style="margin-right: 8px;"></i> Update Data';
+                    } else {
+                        inputNama.value = '';
+                        inputMapel.value = '';
+                        btnSubmit.innerHTML = '<i class="fas fa-save" style="margin-right: 8px;"></i> Simpan Data';
+                    }
+                } catch (e) {
+                    console.log('Belum ada data sebelumnya', e);
+                }
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!selectKategori.value || !inputUrutan.value || !inputNama.value || !inputMapel.value) {
+                alert('Mohon lengkapi semua field yang wajib (*)');
+                return;
+            }
+            
+            const kategori = selectKategori.value; // "GURU" or "STAFF"
+            const urutan = inputUrutan.value;
+            
+            const dataToSave = {
+                nama: inputNama.value.trim(),
+                mapel_jabatan: inputMapel.value.trim(),
+                kategori: kategori,
+                urutan: parseInt(urutan, 10),
+                timestamp: new Date().toISOString()
+            };
+            
+            document.getElementById('loadingScreen').classList.add('active');
+            
+            try {
+                // Reuse saveBiodata: saves to /biodata/GURU/1
+                await window.NevastraDB.saveBiodata(kategori, urutan, dataToSave);
+                
+                document.getElementById('loadingScreen').classList.remove('active');
+                document.getElementById('successScreen').classList.add('active');
+            } catch (err) {
+                console.error(err);
+                document.getElementById('loadingScreen').classList.remove('active');
+                alert('Gagal menyimpan data: ' + err.message);
+            }
+        });
+    </script>
+</body>
+</html>
