@@ -477,87 +477,65 @@ window.NevastraDB = {
 
         let assignedTimNama = null;
         let isLocked = false;
+        const quotas = this.getClassTeamQuotas(kelas || 'XII-1');
 
-        if (existingBiodata) {
-            // ========================================================
-            // JIKA ADA DATA DI DATABASE -> SISTEM TERKUNCI!
-            // ========================================================
-            isLocked = true;
+        // Cek apakah siswa sudah memiliki kelompok yang valid
+        const recordedTim = (existingBiodata && existingBiodata.timNama) || null;
 
-            // Prioritaskan nama tim yang tercatat di biodata database
-            if (existingBiodata.timNama) {
-                assignedTimNama = existingBiodata.timNama;
-            } else {
-                try {
-                    const indexRes = await fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json?t=${Date.now()}`);
-                    if (indexRes.ok) {
-                        const val = await indexRes.json();
-                        if (val && typeof val === 'string') assignedTimNama = val;
-                    }
-                } catch(e) {}
+        if (recordedTim && classTeams[recordedTim]) {
+            const teamObj = classTeams[recordedTim];
+            const isAlreadyInTeam = teamObj.members && !!teamObj.members[studentAbsen];
+            const currentCount = Object.keys(teamObj.members || {}).length;
+            const cap = (quotas[recordedTim] && quotas[recordedTim].capacity) ? quotas[recordedTim].capacity : 6;
+
+            // Kunci hanya jika siswa memang sudah terdaftar di tim itu, atau tim belum mencapai batas kapasitas (< cap)
+            if (isAlreadyInTeam || currentCount < cap) {
+                assignedTimNama = recordedTim;
+                isLocked = true;
             }
+        }
 
-            if (!assignedTimNama) {
-                assignedTimNama = localStorage.getItem(`nevastra_team_${kelas}_${studentAbsen}`);
-            }
-
-            // Fallback jika belum pernah terdaftar sama sekali
-            if (!assignedTimNama) {
-                assignedTimNama = this._pickOptimalTeam(classTeams, studentGender, kelas);
-            }
-
-            // Perbarui data profil anggota di tim yang terkunci
-            if (!classTeams[assignedTimNama]) {
-                classTeams[assignedTimNama] = { id: parseInt(assignedTimNama.replace(/\D/g, '')) || 1, nama: assignedTimNama, members: {} };
-            }
-            classTeams[assignedTimNama].members[studentAbsen] = {
-                absen: studentAbsen,
-                nama: studentName,
-                jk: studentGender,
-                tinggalDi: studentAlamat,
-                noHp: studentNoHp,
-                quotes: data.quotes || ''
-            };
-        } else {
-            // ========================================================
-            // JIKA TIDAK ADA DATA DI DATABASE -> SPIN ULANG!
-            // ========================================================
+        // Jika belum terkunci atau tim lama ternyata melebihi kapasitas (>= cap)
+        if (!assignedTimNama) {
+            // SISTEM BELUM TERKUNCI / TIM DIRESET -> SPIN ULANG!
             isLocked = false;
 
-            // Bersihkan sisa data lama dari tim mana pun (agar slot terbuka kembali)
+            // Bersihkan sisa data lama dari seluruh tim (AWAITED untuk mencegah race condition!)
             for (let i = 1; i <= 6; i++) {
                 const tName = `Tim ${i}`;
                 if (classTeams[tName] && classTeams[tName].members && classTeams[tName].members[studentAbsen]) {
                     delete classTeams[tName].members[studentAbsen];
                     try {
-                        fetch(`${DB_BASE_URL}/teams_class/${kelas}/${tName}/members/${studentAbsen}.json`, { method: 'DELETE' });
+                        await fetch(`${DB_BASE_URL}/teams_class/${kelas}/${tName}/members/${studentAbsen}.json`, { method: 'DELETE' });
                     } catch(e) {}
                 }
             }
             try {
                 localStorage.removeItem(`nevastra_team_${kelas}_${studentAbsen}`);
-                fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json`, { method: 'DELETE' });
+                await fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json`, { method: 'DELETE' });
             } catch(e) {}
 
-            // Alokasikan ke salah satu tim baru secara acak seimbang kuota gender (SPIN ULANG)
+            // Alokasikan ke tim baru yang masih tersedia (< cap) dan seimbang
             assignedTimNama = this._pickOptimalTeam(classTeams, studentGender, kelas);
-
-            if (!classTeams[assignedTimNama]) {
-                classTeams[assignedTimNama] = { id: parseInt(assignedTimNama.replace(/\D/g, '')) || 1, nama: assignedTimNama, members: {} };
-            }
-            classTeams[assignedTimNama].members[studentAbsen] = {
-                absen: studentAbsen,
-                nama: studentName,
-                jk: studentGender,
-                tinggalDi: studentAlamat,
-                noHp: studentNoHp,
-                quotes: data.quotes || ''
-            };
         }
+
+        if (!classTeams[assignedTimNama]) {
+            classTeams[assignedTimNama] = { id: parseInt(assignedTimNama.replace(/\D/g, '')) || 1, nama: assignedTimNama, members: {} };
+        }
+
+        const memberData = {
+            absen: studentAbsen,
+            nama: studentName,
+            jk: studentGender,
+            tinggalDi: studentAlamat,
+            noHp: studentNoHp,
+            quotes: data.quotes || ''
+        };
+        classTeams[assignedTimNama].members[studentAbsen] = memberData;
 
         const timId = parseInt(assignedTimNama.replace(/\D/g, '')) || 1;
 
-        // Kunci penempatan tim untuk siswa ini
+        // Simpan data tim ke Firebase Realtime Database secara berurutan dan terjamin
         try {
             localStorage.setItem(`nevastra_team_${kelas}_${studentAbsen}`, assignedTimNama);
             await fetch(`${DB_BASE_URL}/teams_index/${kelas}/${studentAbsen}.json`, {
@@ -565,14 +543,10 @@ window.NevastraDB = {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(assignedTimNama)
             });
-        } catch(e) {}
-
-        // Simpan data tim ke Firebase Realtime Database
-        try {
             await fetch(`${DB_BASE_URL}/teams_class/${kelas}/${assignedTimNama}/members/${studentAbsen}.json`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(classTeams[assignedTimNama].members[studentAbsen])
+                body: JSON.stringify(memberData)
             });
             await fetch(`${DB_BASE_URL}/teams_class/${kelas}/${assignedTimNama}/id.json`, {
                 method: 'PUT',
@@ -584,9 +558,11 @@ window.NevastraDB = {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(assignedTimNama)
             });
-        } catch(e) {}
+        } catch(e) {
+            console.warn("Gagal simpan ke Firebase teams:", e);
+        }
 
-        const teammates = Object.values(classTeams[assignedTimNama].members || {});
+        const teammates = Object.values(classTeams[assignedTimNama].members || {}).filter(m => m && m.nama);
 
         return {
             timId: timId,
@@ -647,52 +623,83 @@ window.NevastraDB = {
         return quotas;
     },
 
-    // Algoritma Penentuan Tim Acak Berdasarkan Kuota Gender (Anti 1 Gender Sendirian)
+    // Algoritma Penentuan Tim Acak Berdasarkan Kuota Gender (Strict Anti-Overload & Anti 1 Gender Sendirian)
     _pickOptimalTeam(classTeams, gender, kelas) {
         const teamNames = ['Tim 1', 'Tim 2', 'Tim 3', 'Tim 4', 'Tim 5', 'Tim 6'];
         const G = gender === 'P' ? 'P' : 'L';
         const quotas = this.getClassTeamQuotas(kelas || 'XII-1');
 
-        // Cari semua tim yang masih memiliki sisa kuota untuk gender G
+        // Helper untuk menghitung anggota aktif di suatu tim secara aman
+        const getMemberCount = (tName) => {
+            const team = classTeams[tName] || {};
+            const mems = team.members || {};
+            return Object.keys(mems).filter(k => mems[k] && mems[k].nama).length;
+        };
+
+        const getGenderCount = (tName, g) => {
+            const team = classTeams[tName] || {};
+            const mems = team.members || {};
+            return Object.values(mems).filter(m => m && (m.jk || '').toUpperCase() === g).length;
+        };
+
+        // 1. Cari tim yang masih memiliki sisa kuota untuk gender G dan belum mencapai kapasitas maksimal
         const eligibleTeams = teamNames.filter(tName => {
-            const team = classTeams[tName] || { members: {} };
-            const members = Object.values(team.members || {});
-            const currentGCount = members.filter(m => (m.jk || '').toUpperCase() === G).length;
-            const currentTotal = members.length;
+            const currentTotal = getMemberCount(tName);
+            const currentGCount = getGenderCount(tName, G);
             const targetG = (quotas[tName] && quotas[tName][G] !== undefined) ? quotas[tName][G] : 3;
             const cap = (quotas[tName] && quotas[tName].capacity) ? quotas[tName].capacity : 6;
-            return currentGCount < targetG && currentTotal < cap;
+            return currentTotal < cap && currentGCount < targetG;
         });
 
         if (eligibleTeams.length > 0) {
-            // Sisa siswa ditaruh secara acak di tim yang masih eligible!
-            const chosen = eligibleTeams[Math.floor(Math.random() * eligibleTeams.length)];
-            return chosen;
+            // Urutkan berdasarkan tim yang paling sedikit anggotanya agar terdistribusi merata
+            eligibleTeams.sort((a, b) => getMemberCount(a) - getMemberCount(b));
+            const minCount = getMemberCount(eligibleTeams[0]);
+            const tiedTeams = eligibleTeams.filter(t => getMemberCount(t) === minCount);
+            return tiedTeams[Math.floor(Math.random() * tiedTeams.length)];
         }
 
-        // Fallback: Tim mana pun yang masih memiliki slot kosong (< kapasitas)
-        for (const tName of teamNames) {
-            const team = classTeams[tName] || { members: {} };
+        // 2. Fallback: Tim mana pun yang masih memiliki slot kosong (< kapasitas tim)
+        const availableTeams = teamNames.filter(tName => {
+            const currentTotal = getMemberCount(tName);
             const cap = (quotas[tName] && quotas[tName].capacity) ? quotas[tName].capacity : 6;
-            if (Object.keys(team.members || {}).length < cap) {
-                return tName;
-            }
+            return currentTotal < cap;
+        });
+
+        if (availableTeams.length > 0) {
+            availableTeams.sort((a, b) => getMemberCount(a) - getMemberCount(b));
+            const minCount = getMemberCount(availableTeams[0]);
+            const tiedTeams = availableTeams.filter(t => getMemberCount(t) === minCount);
+            return tiedTeams[Math.floor(Math.random() * tiedTeams.length)];
         }
 
-        return 'Tim 1';
+        // 3. Fallback Darurat: Tim dengan total anggota paling sedikit (Strict Anti-Overload)
+        const sortedAll = [...teamNames].sort((a, b) => getMemberCount(a) - getMemberCount(b));
+        return sortedAll[0];
     },
 
     async getClassTeams(kelas) {
         let classTeams = {};
+        let classBiodata = null;
+
         try {
-            const res = await fetch(`${DB_BASE_URL}/teams_class/${kelas}.json?t=${Date.now()}`);
-            if (res.ok) {
-                const val = await res.json();
+            const [teamsRes, bioRes] = await Promise.all([
+                fetch(`${DB_BASE_URL}/teams_class/${kelas}.json?t=${Date.now()}`),
+                fetch(`${DB_BASE_URL}/biodata/${kelas}.json?t=${Date.now()}`)
+            ]);
+            if (teamsRes.ok) {
+                const val = await teamsRes.json();
                 if (val && typeof val === 'object') classTeams = val;
+            }
+            if (bioRes.ok) {
+                const bVal = await bioRes.json();
+                if (bVal && typeof bVal === 'object') classBiodata = bVal;
             }
         } catch(e) {}
 
+        const quotas = this.getClassTeamQuotas(kelas || 'XII-1');
         const result = {};
+
         for (let i = 1; i <= 6; i++) {
             const tName = `Tim ${i}`;
             const raw = classTeams[tName] || {};
@@ -705,12 +712,51 @@ window.NevastraDB = {
                     }
                 }
             }
+            const cleanMembers = {};
+            for (const [k, v] of Object.entries(members)) {
+                if (v && typeof v === 'object' && v.nama) {
+                    cleanMembers[k] = v;
+                }
+            }
             result[tName] = {
                 id: raw.id || i,
                 nama: tName,
-                members: members
+                members: cleanMembers
             };
         }
+
+        // Sinkronisasi otomatis dari biodata (Self-Healing jika ada siswa yang belum masuk ke teams_class)
+        if (classBiodata) {
+            const bioList = Array.isArray(classBiodata) ? classBiodata : Object.values(classBiodata);
+            bioList.forEach(student => {
+                if (!student || !student.nama || !student.absen || !student.timNama) return;
+                const tName = student.timNama;
+                if (!result[tName]) return;
+
+                const tObj = result[tName];
+                const studentKey = String(student.absen);
+                const cap = (quotas[tName] && quotas[tName].capacity) ? quotas[tName].capacity : 6;
+
+                // Pastikan siswa masuk jika tim belum penuh (< cap) dan belum tercatat
+                if (!tObj.members[studentKey] && Object.keys(tObj.members).length < cap) {
+                    tObj.members[studentKey] = {
+                        absen: student.absen,
+                        nama: student.nama,
+                        jk: student.jk || student.jenisKelamin || 'L',
+                        tinggalDi: student.tinggalDi || student.alamat || '-',
+                        noHp: student.noHp || '-',
+                        quotes: student.quotes || ''
+                    };
+                    // Sinkronkan ke Firebase di background agar konsisten
+                    fetch(`${DB_BASE_URL}/teams_class/${kelas}/${tName}/members/${studentKey}.json`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(tObj.members[studentKey])
+                    }).catch(() => {});
+                }
+            });
+        }
+
         return result;
     },
 

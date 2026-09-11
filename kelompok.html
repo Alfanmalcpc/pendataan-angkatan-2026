@@ -694,7 +694,7 @@
                 });
 
                 if (!q) {
-                    const emptyCount = 6 - rawMembers.length;
+                    const emptyCount = Math.max(0, 6 - rawMembers.length);
                     for (let s = 1; s <= emptyCount; s++) {
                         const emptyCard = document.createElement('div');
                         emptyCard.className = 'empty-slot';

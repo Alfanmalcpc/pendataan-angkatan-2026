@@ -403,29 +403,57 @@
             }
 
             if (saved && (saved.nama || saved.ttl || saved.noHp)) {
-                // JIKA ADA DATA DI DATABASE -> SISTEM TERKUNCI!
-                formModeBadge.style.display = 'inline-flex';
-                formModeBadge.style.background = '#e0e7ff';
-                formModeBadge.style.color = '#3730a3';
-                formModeBadge.textContent = `🔒 Terkunci (${saved.timNama || 'Tim Terkunci'})`;
+                if (saved.timNama) {
+                    // JIKA DATA SUDAH ADA & SUDAH MEMILIKI TIM -> SISTEM TERKUNCI!
+                    formModeBadge.style.display = 'inline-flex';
+                    formModeBadge.style.background = '#e0e7ff';
+                    formModeBadge.style.color = '#3730a3';
+                    formModeBadge.textContent = `🔒 Terkunci (${saved.timNama})`;
 
-                document.getElementById('inputNama').value = saved.nama || defaultNama;
-                document.getElementById('inputTempatLahir').value = cleanTempatLahir(saved.tempatLahir || '');
-                document.getElementById('inputTanggalLahir').value = saved.tanggalLahir || '';
-                document.getElementById('inputNoHp').value = saved.noHp || '';
-                document.getElementById('inputInstagram').value = (saved.ig || '').replace(/^@+/, '');
-                document.getElementById('inputTiktok').value = (saved.tiktok || '').replace(/^@+/, '');
-                document.getElementById('inputAlamat').value = saved.tinggalDi || '';
-                document.getElementById('inputQuotes').value = saved.quotes || '';
+                    document.getElementById('inputNama').value = saved.nama || defaultNama;
+                    document.getElementById('inputTempatLahir').value = cleanTempatLahir(saved.tempatLahir || '');
+                    document.getElementById('inputTanggalLahir').value = saved.tanggalLahir || '';
+                    document.getElementById('inputNoHp').value = saved.noHp || '';
+                    document.getElementById('inputInstagram').value = (saved.ig || '').replace(/^@+/, '');
+                    document.getElementById('inputTiktok').value = (saved.tiktok || '').replace(/^@+/, '');
+                    document.getElementById('inputAlamat').value = saved.tinggalDi || '';
+                    document.getElementById('inputQuotes').value = saved.quotes || '';
 
-                enforceMaxWords();
-                showAlert('info', `🔒 <strong>Kelompok Terkunci:</strong> Biodata untuk absen ${absen} sudah ada di database. Kelompok kamu sudah resmi ditetapkan di <strong>${saved.timNama || 'Tim'}</strong> dan tidak dapat diubah.`);
-                await renderStudentTeamCard(CURRENT_CLASS, absen);
+                    enforceMaxWords();
+                    showAlert('info', `🔒 <strong>Kelompok Terkunci:</strong> Biodata untuk absen ${absen} sudah ada di database. Kelompok kamu sudah resmi ditetapkan di <strong>${saved.timNama}</strong> dan tidak dapat diubah.`);
+                    await renderStudentTeamCard(CURRENT_CLASS, absen);
 
-                btnSubmit.innerHTML = `
-                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
-                    Perbarui Biodata (Kelompok Tetap Terkunci)
-                `;
+                    btnSubmit.innerHTML = `
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
+                        Perbarui Biodata (Kelompok Tetap Terkunci)
+                    `;
+                } else {
+                    // JIKA BIODATA SUDAH ADA TAPI KELOMPOK BELUM DIUNDI / DIRESET -> SIAP SPIN!
+                    formModeBadge.style.display = 'inline-flex';
+                    formModeBadge.style.background = '#fef3c7';
+                    formModeBadge.style.color = '#b45309';
+                    formModeBadge.textContent = '✨ Biodata Terdaftar • Kelompok Siap Diundi';
+
+                    document.getElementById('inputNama').value = saved.nama || defaultNama;
+                    document.getElementById('inputTempatLahir').value = cleanTempatLahir(saved.tempatLahir || '');
+                    document.getElementById('inputTanggalLahir').value = saved.tanggalLahir || '';
+                    document.getElementById('inputNoHp').value = saved.noHp || '';
+                    document.getElementById('inputInstagram').value = (saved.ig || '').replace(/^@+/, '');
+                    document.getElementById('inputTiktok').value = (saved.tiktok || '').replace(/^@+/, '');
+                    document.getElementById('inputAlamat').value = saved.tinggalDi || '';
+                    document.getElementById('inputQuotes').value = saved.quotes || '';
+
+                    enforceMaxWords();
+                    showAlert('warning', `🎡 <strong>Kelompok Siap Diundi:</strong> Biodata untuk absen ${absen} sudah tersimpan, namun belum memiliki kelompok. Klik tombol di bawah untuk memutar roda undian!`);
+                    
+                    const teamCard = document.getElementById('studentTeamCard');
+                    if (teamCard) teamCard.style.display = 'none';
+
+                    btnSubmit.innerHTML = `
+                        <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
+                        🎡 Putar Roda Undian Kelompok
+                    `;
+                }
             } else {
                 // JIKA TIDAK ADA DATA DI DATABASE -> SPIN ULANG / DIUNDI RODA BERPUTAR
                 delete currentClassData[absen];
@@ -533,7 +561,7 @@
                 const saveResult = await window.NevastraDB.saveBiodata(CURRENT_CLASS, absen, payload);
 
                 // Update data lokal kelas
-                currentClassData[absen] = payload;
+                currentClassData[absen] = { ...payload, timNama: assignedTeamNama, timId: teamNum };
                 updateProgressBar();
 
                 const assignedTeamNama = (saveResult && saveResult.timNama) || 'Tim 1';
@@ -564,7 +592,8 @@
             } finally {
                 btnSubmit.disabled = false;
                 const isDataSaved = !!currentClassData[absen];
-                btnSubmit.innerHTML = isDataSaved ? `
+                const hasTeam = isDataSaved && !!currentClassData[absen].timNama;
+                btnSubmit.innerHTML = hasTeam ? `
                     <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
                     Perbarui Biodata (Kelompok Tetap Terkunci)
                 ` : `
