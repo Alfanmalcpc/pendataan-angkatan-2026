@@ -531,33 +531,64 @@
         });
 
         // ==========================================
-        // EXPORT EXCEL: EXACT BIODATA.xlsx FORMAT
+        // EXPORT EXCEL: EXACT BIODATA.xlsx FORMAT (HANYA DATA TERSIMPAN DI DATABASE)
         // ==========================================
-        document.getElementById('btnExportExcel').addEventListener('click', () => {
+        document.getElementById('btnExportExcel').addEventListener('click', async () => {
             const workbook = XLSX.utils.book_new();
             const targetClass = filterKelas.value;
             const classesToExport = targetClass === 'ALL' ? classes : [targetClass];
+
+            // Muat data terbaru dari database jika memungkinkan
+            try {
+                const fresh = await window.NevastraDB.getAllBiodata();
+                if (fresh && typeof fresh === 'object' && Object.keys(fresh).length > 0) {
+                    allBiodata = fresh;
+                }
+            } catch(e) {}
 
             classesToExport.forEach(cls => {
                 const sheetName = cls.replace('-', ' ');
                 const roster = studentRoster[cls] || [];
                 const classSaved = allBiodata[cls] || {};
 
+                // Header resmi tanpa baris contoh (EX:)
                 const aoa = [
-                    ["NO", "NAMA", "TTL", "ALAMAT", "PHONE", "IG", "TIKTOK", "QUOTES (MAX 5 KATA)"],
-                    ["EX:", "Rafathar Malik Ahmad", "Jakarta, 15 Agustus 2015", "(TULIS ALAMAT SESINGKAT MUNGKIN YAA..)", "08123456789", "Rafathar2015", "Rafathar_", "Setiap pertemuan pasti ada perpisahan"]
+                    ["NO", "NAMA", "TTL", "ALAMAT", "PHONE", "IG", "TIKTOK", "QUOTES (MAX 5 KATA)"]
                 ];
 
-                roster.forEach(stu => {
-                    const saved = classSaved[stu.absen];
-                    const no = stu.absen;
-                    const nama = saved ? (saved.nama || stu.nama) : stu.nama;
-                    const ttl = saved ? cleanDisplayTTL(saved.ttl) : "";
-                    const alamat = saved ? (saved.tinggalDi || "") : "";
-                    const phone = saved ? (saved.noHp || "") : "";
-                    const ig = saved ? (saved.ig || "").replace(/^@+/, "").trim() : "";
-                    const tiktok = saved ? (saved.tiktok || "").replace(/^@+/, "").trim() : "";
-                    const quotes = saved ? (saved.quotes || "").trim() : "";
+                // Hanya sertakan siswa yang benar-benar tersimpan di database
+                const savedMap = {};
+                if (Array.isArray(classSaved)) {
+                    classSaved.forEach((saved, idx) => {
+                        if (saved && typeof saved === 'object' && (saved.nama || saved.absen || saved.noHp || saved.tinggalDi)) {
+                            const abs = parseInt(saved.absen || idx, 10);
+                            if (abs) savedMap[abs] = saved;
+                        }
+                    });
+                } else if (typeof classSaved === 'object' && classSaved !== null) {
+                    Object.keys(classSaved).forEach(k => {
+                        const saved = classSaved[k];
+                        if (saved && typeof saved === 'object' && (saved.nama || saved.absen || saved.noHp || saved.tinggalDi)) {
+                            const abs = parseInt(saved.absen || k, 10);
+                            if (abs) savedMap[abs] = saved;
+                        }
+                    });
+                }
+
+                const savedAbsens = Object.keys(savedMap).map(k => parseInt(k, 10)).sort((a, b) => a - b);
+
+                savedAbsens.forEach(absen => {
+                    const saved = savedMap[absen];
+                    const stu = roster.find(s => s.absen == absen);
+                    const no = absen;
+                    const nama = saved.nama || (stu ? stu.nama : "");
+                    const rawTTL = saved.ttl || (saved.tempatLahir ? (saved.tanggalLahir ? `${saved.tempatLahir}, ${saved.tanggalLahir}` : saved.tempatLahir) : "");
+                    const ttl = cleanDisplayTTL(rawTTL);
+                    const alamat = saved.tinggalDi || saved.alamat || "";
+                    const phone = saved.noHp || "";
+                    const ig = (saved.ig || "").replace(/^@+/, "").trim();
+                    const tiktok = (saved.tiktok && saved.tiktok !== '-') ? saved.tiktok.replace(/^@+/, "").trim() : (saved.tiktok || "");
+                    const quotes = (saved.quotes || "").trim();
 
                     aoa.push([no, nama, ttl, alamat, phone, ig, tiktok, quotes]);
                 });
