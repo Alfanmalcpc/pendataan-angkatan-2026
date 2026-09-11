@@ -12,21 +12,34 @@
             display: flex;
             gap: 8px;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             padding: 6px 2px 14px 2px;
             scrollbar-width: thin;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+        .class-selector-pills::-webkit-scrollbar {
+            height: 4px;
+        }
+        .class-selector-pills::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
         .class-pill {
-            padding: 9px 18px;
+            padding: 8px 16px;
             border-radius: 999px;
             background: #ffffff;
             border: 1.5px solid var(--border);
             font-weight: 700;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             cursor: pointer;
             white-space: nowrap;
             transition: all 0.2s ease;
             box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
         }
         .class-pill:hover {
             border-color: var(--primary);
@@ -44,12 +57,10 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 16px;
             margin-top: 15px;
-        }
-        @media (max-width: 600px) {
-            .teams-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
         }
         .team-box {
             background: #ffffff;
@@ -60,18 +71,24 @@
             display: flex;
             flex-direction: column;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
         }
         .team-box:hover {
             box-shadow: var(--shadow-md);
             transform: translateY(-2px);
         }
         .team-box-header {
-            padding: 14px 18px;
+            padding: 12px 16px;
             background: #f8fafc;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         .team-box-header.full {
             background: #f0fdf4;
@@ -79,40 +96,44 @@
         }
         .team-title {
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: var(--dark);
             display: flex;
             align-items: center;
             gap: 8px;
         }
         .team-badge-count {
-            font-size: 0.76rem;
+            font-size: 0.74rem;
             font-weight: 700;
             padding: 4px 10px;
             border-radius: 999px;
             background: #e2e8f0;
             color: #334155;
+            white-space: nowrap;
         }
         .team-badge-count.full {
             background: #dcfce7;
             color: #166534;
         }
         .team-meta-bar {
-            padding: 8px 18px;
+            padding: 8px 16px;
             background: #ffffff;
             border-bottom: 1px dashed var(--border);
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
             color: var(--text-muted);
         }
         .member-list {
-            padding: 12px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             gap: 8px;
             flex-grow: 1;
+            min-width: 0;
         }
         .member-card {
             background: #f8fafc;
@@ -123,6 +144,12 @@
             flex-direction: column;
             gap: 4px;
             transition: background 0.15s ease;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
         .member-card:hover {
             background: #f1f5f9;
@@ -131,11 +158,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            min-width: 0;
         }
         .member-name {
             font-weight: 700;
             font-size: 0.88rem;
             color: var(--dark);
+            word-break: break-word;
+            overflow-wrap: break-word;
+            min-width: 0;
+            flex: 1 1 auto;
         }
         .member-location {
             font-size: 0.78rem;
@@ -143,12 +177,17 @@
             display: flex;
             align-items: flex-start;
             gap: 5px;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            min-width: 0;
         }
         .member-actions {
             display: flex;
             align-items: center;
             gap: 8px;
             margin-top: 3px;
+            flex-wrap: wrap;
+            width: 100%;
         }
         .wa-btn {
             display: inline-flex;
@@ -158,23 +197,29 @@
             font-weight: 600;
             color: #059669;
             background: #ecfdf5;
-            padding: 2px 8px;
+            padding: 4px 10px;
             border-radius: 6px;
             text-decoration: none;
             transition: all 0.15s ease;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         .wa-btn:hover {
             background: #d1fae5;
         }
         .empty-slot {
-            padding: 12px;
+            padding: 10px;
             border: 1.5px dashed #cbd5e1;
             border-radius: 10px;
             text-align: center;
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             color: #94a3b8;
             font-weight: 600;
             background: #fbfcfe;
+            width: 100%;
+            box-sizing: border-box;
         }
         .gender-badge-l {
             background: #e0f2fe;
@@ -183,6 +228,8 @@
             border-radius: 5px;
             font-size: 0.68rem;
             font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .gender-badge-p {
             background: #fce7f3;
@@ -191,14 +238,20 @@
             border-radius: 5px;
             font-size: 0.68rem;
             font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
         .search-box {
             position: relative;
             max-width: 450px;
             width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
         }
         .search-box input {
             padding-left: 38px;
+            width: 100%;
+            box-sizing: border-box;
         }
         .search-box i {
             position: absolute;
@@ -218,6 +271,187 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 12px;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+        .info-card-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1 1 300px;
+            min-width: 0;
+        }
+        .info-card-text {
+            min-width: 0;
+            flex: 1;
+        }
+        .info-card-text h3 {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 2px;
+            word-break: break-word;
+        }
+        .info-card-text p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+            word-break: break-word;
+            line-height: 1.4;
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .content-wrapper {
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+        .search-filter-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+        }
+
+        /* RESPONSIVE BREAKPOINT KHUSUS HP (<= 768px & <= 540px) */
+        @media (max-width: 768px) {
+            .app-container {
+                margin: 16px auto !important;
+                padding: 0 12px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+            .info-card {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                padding: 12px 14px !important;
+                gap: 12px !important;
+            }
+            .info-card-content {
+                flex: 1 1 auto !important;
+                width: 100% !important;
+            }
+            #activeClassLinkWrapper {
+                width: 100% !important;
+            }
+            #btnKembaliKeForm {
+                width: 100% !important;
+                text-align: center !important;
+                justify-content: center !important;
+                display: flex !important;
+                padding: 10px 14px !important;
+            }
+            .teams-grid {
+                grid-template-columns: 100% !important;
+                gap: 12px !important;
+            }
+            .search-filter-wrapper {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 8px !important;
+            }
+            .search-box {
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            #statsBar {
+                width: 100% !important;
+                font-size: 0.78rem !important;
+            }
+        }
+
+        @media (max-width: 540px) {
+            .app-navbar {
+                padding: 10px 12px !important;
+            }
+            .nav-container {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 10px !important;
+                width: 100% !important;
+            }
+            .nav-actions {
+                width: 100% !important;
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 8px !important;
+            }
+            .nav-actions .btn {
+                width: 100% !important;
+                justify-content: center !important;
+                text-align: center !important;
+                padding: 8px 6px !important;
+                font-size: 0.76rem !important;
+            }
+            .class-pill {
+                padding: 7px 14px !important;
+                font-size: 0.8rem !important;
+            }
+            .info-card-text h3 {
+                font-size: 0.92rem !important;
+            }
+            .info-card-text p {
+                font-size: 0.75rem !important;
+            }
+            .team-box-header {
+                padding: 10px 12px !important;
+            }
+            .team-title {
+                font-size: 0.98rem !important;
+            }
+            .team-meta-bar {
+                padding: 6px 12px !important;
+                font-size: 0.72rem !important;
+            }
+            .member-list {
+                padding: 8px !important;
+            }
+            .member-card {
+                padding: 8px 10px !important;
+            }
+            .member-name {
+                font-size: 0.82rem !important;
+            }
+            .member-location {
+                font-size: 0.74rem !important;
+            }
+            .wa-btn {
+                width: 100% !important;
+                justify-content: center !important;
+                padding: 5px 8px !important;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .nav-actions .btn {
+                font-size: 0.72rem !important;
+                padding: 7px 4px !important;
+                gap: 4px !important;
+            }
+            .team-badge-count {
+                font-size: 0.68rem !important;
+                padding: 3px 7px !important;
+            }
+            .class-pill {
+                padding: 6px 12px !important;
+                font-size: 0.78rem !important;
+            }
         }
     </style>
 </head>
@@ -232,7 +466,7 @@
                     <p>Pembagian 6 Tim Kelompok per Kelas</p>
                 </div>
             </a>
-            <div style="display: flex; align-items: center; gap: 8px;">
+            <div class="nav-actions">
                 <button id="btnRefresh" class="btn btn-secondary" style="font-size: 0.8rem; padding: 7px 14px;">
                     <i class="fa-solid fa-rotate"></i> Perbarui Data
                 </button>
@@ -246,17 +480,13 @@
     <main class="app-container" style="max-width: 1140px; margin: 24px auto; padding: 0 16px;">
         <!-- Banner Informasi Tim Terkunci & Gender Seimbang -->
         <div class="info-card">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <div style="font-size: 1.6rem; color: var(--primary);">
+            <div class="info-card-content">
+                <div style="font-size: 1.6rem; color: var(--primary); flex-shrink: 0;">
                     <i class="fa-solid fa-shield-halved"></i>
                 </div>
-                <div>
-                    <h3 style="font-size: 1rem; font-weight: 800; color: var(--dark); margin-bottom: 2px;">
-                        Sistem Pembagian 6 Tim Otomatis & Terkunci
-                    </h3>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">
-                        Setiap kelas dibagi merata ke dalam 6 tim (maksimal 6 siswa). Tim ditentukan otomatis secara aman (tidak ada 1 laki-laki / 1 perempuan sendirian). Tim yang sudah didapat tidak dapat diubah.
-                    </p>
+                <div class="info-card-text">
+                    <h3>Sistem Pembagian 6 Tim Otomatis & Terkunci</h3>
+                    <p>Setiap kelas dibagi merata ke dalam 6 tim (maksimal 6 siswa). Tim ditentukan otomatis secara aman (tidak ada 1 laki-laki / 1 perempuan sendirian). Tim yang sudah didapat tidak dapat diubah.</p>
                 </div>
             </div>
             <div id="activeClassLinkWrapper">
@@ -267,12 +497,12 @@
         </div>
 
         <!-- Filter Kelas & Search -->
-        <div style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 14px;">
+        <div class="content-wrapper">
             <div class="class-selector-pills" id="classSelector">
                 <!-- Tombol Kelas XII-1 s/d XII-9 -->
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div class="search-filter-wrapper">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" id="inputSearch" class="form-control" placeholder="Cari nama teman, absen, atau domisili tinggal...">
