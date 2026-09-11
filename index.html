@@ -131,7 +131,7 @@
                 const classData = allData[cls] || {};
                 
                 // Hanya hitung data siswa yang valid dan tidak melebihi total roster
-                let filled = Object.keys(classData).filter(key => !isNaN(key) && parseInt(key) > 0 && parseInt(key) <= total).length;
+                let filled = Object.keys(classData).filter(key => !isNaN(key) && parseInt(key) > 0 && parseInt(key) <= total && classData[key] && (classData[key].noHp || classData[key].quotes)).length;
                 
                 // Pastikan tidak tembus 100% atau lebih dari total
                 filled = Math.min(filled, total);
