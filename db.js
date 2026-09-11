@@ -488,8 +488,10 @@ window.NevastraDB = {
             const currentCount = Object.keys(teamObj.members || {}).length;
             const cap = (quotas[recordedTim] && quotas[recordedTim].capacity) ? quotas[recordedTim].capacity : 6;
 
-            // Kunci hanya jika siswa memang sudah terdaftar di tim itu, atau tim belum mencapai batas kapasitas (< cap)
-            if (isAlreadyInTeam || currentCount < cap) {
+            // Kunci HANYA jika:
+            // 1. Siswa memang sudah tercatat di tim tersebut DAN tim tersebut tidak melebihi batas kapasitas (currentCount <= cap)
+            // 2. ATAU jika siswa belum tercatat namun tim masih memiliki slot kosong (< cap)
+            if ((isAlreadyInTeam && currentCount <= cap) || (!isAlreadyInTeam && currentCount < cap)) {
                 assignedTimNama = recordedTim;
                 isLocked = true;
             }
@@ -583,8 +585,8 @@ window.NevastraDB = {
         const nP = classSize - nL;
 
         const teamCapacities = [6, 6, 6, 6, 6, 6];
-        if (classSize === 35) {
-            teamCapacities[5] = 5; // Tim 6 kapasitas 5
+        if (classSize === 35 || kelas === 'XII-6') {
+            teamCapacities[5] = 5; // Tim 6 kapasitas 5 (khusus XII-6 atau kelas 35 siswa)
         }
 
         const maleQuotas = [0, 0, 0, 0, 0, 0];
@@ -725,7 +727,7 @@ window.NevastraDB = {
             };
         }
 
-        // Sinkronisasi otomatis dari biodata (Self-Healing jika ada siswa yang belum masuk ke teams_class)
+        // Sinkronisasi membaca dari biodata (Self-Healing jika ada siswa yang belum masuk ke teams_class)
         if (classBiodata) {
             const bioList = Array.isArray(classBiodata) ? classBiodata : Object.values(classBiodata);
             bioList.forEach(student => {
@@ -737,7 +739,7 @@ window.NevastraDB = {
                 const studentKey = String(student.absen);
                 const cap = (quotas[tName] && quotas[tName].capacity) ? quotas[tName].capacity : 6;
 
-                // Pastikan siswa masuk jika tim belum penuh (< cap) dan belum tercatat
+                // Pastikan siswa masuk ke tampilan HANYA jika tim belum penuh (< cap)
                 if (!tObj.members[studentKey] && Object.keys(tObj.members).length < cap) {
                     tObj.members[studentKey] = {
                         absen: student.absen,
@@ -747,14 +749,23 @@ window.NevastraDB = {
                         noHp: student.noHp || '-',
                         quotes: student.quotes || ''
                     };
-                    // Sinkronkan ke Firebase di background agar konsisten
-                    fetch(`${DB_BASE_URL}/teams_class/${kelas}/${tName}/members/${studentKey}.json`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(tObj.members[studentKey])
-                    }).catch(() => {});
                 }
             });
+        }
+
+        // STRICT ENFORCEMENT PADA HASIL KELOMPOK:
+        // Setiap tim dibatasi secara tegas sesuai kapasitas maksimalnya (Tim 1-5 maks 6, Tim 6 maks 5 untuk XII-6)
+        for (let i = 1; i <= 6; i++) {
+            const tName = `Tim ${i}`;
+            const cap = (quotas[tName] && quotas[tName].capacity) ? quotas[tName].capacity : 6;
+            const memKeys = Object.keys(result[tName].members);
+            if (memKeys.length > cap) {
+                const trimmed = {};
+                memKeys.slice(0, cap).forEach(k => {
+                    trimmed[k] = result[tName].members[k];
+                });
+                result[tName].members = trimmed;
+            }
         }
 
         return result;
