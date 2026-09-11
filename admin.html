@@ -5,10 +5,249 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Admin & Rekapitulasi per Kelas - NEVASTRA 2026</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- SheetJS for Excel generation -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
+        /* Security Auth Gate Styles */
+        body.auth-locked {
+            overflow: hidden !important;
+            height: 100vh !important;
+            background: #0f172a !important;
+        }
+        body.auth-locked .app-navbar,
+        body.auth-locked .main-wrapper,
+        body.auth-locked footer,
+        body.auth-locked .modal-backdrop {
+            display: none !important;
+        }
+
+        .admin-auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 15%, rgba(67, 97, 238, 0.25), rgba(15, 23, 42, 0.97) 75%);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999999;
+            padding: 18px;
+            box-sizing: border-box;
+        }
+
+        .admin-auth-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 430px;
+            border-radius: 20px;
+            padding: 32px 28px 26px 28px;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(67, 97, 238, 0.2);
+            border: 1.5px solid rgba(226, 232, 240, 0.8);
+            box-sizing: border-box;
+            animation: authCardFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        @keyframes authCardFadeIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes authShake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-9px); }
+            40%, 80% { transform: translateX(9px); }
+        }
+
+        .auth-shake {
+            animation: authShake 0.4s ease-in-out !important;
+        }
+
+        .admin-auth-header {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .admin-auth-logo {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 14px;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 7px;
+            box-shadow: 0 10px 25px rgba(67, 97, 238, 0.25);
+            border: 2px solid rgba(67, 97, 238, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .admin-auth-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .admin-auth-header h2 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 6px;
+            letter-spacing: -0.3px;
+        }
+
+        .admin-auth-header p {
+            font-size: 0.84rem;
+            color: #64748b;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        .admin-auth-alert {
+            background: #fef2f2;
+            border: 1.5px solid #fecaca;
+            color: #b91c1c;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            line-height: 1.35;
+        }
+
+        .admin-auth-field {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            text-align: left;
+        }
+
+        .admin-auth-field label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #334155;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-auth-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .admin-auth-input-wrapper .input-icon {
+            position: absolute;
+            left: 14px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            pointer-events: none;
+            transition: color 0.2s;
+        }
+
+        .admin-auth-input {
+            width: 100%;
+            padding: 12px 42px 12px 42px;
+            font-size: 0.92rem;
+            border-radius: 12px;
+            border: 1.5px solid #cbd5e1;
+            background: #f8fafc;
+            color: #0f172a;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .admin-auth-input:focus {
+            background: #ffffff;
+            border-color: #4361ee;
+            box-shadow: 0 0 0 4px rgba(67, 97, 238, 0.15);
+        }
+
+        .admin-auth-input-wrapper:focus-within .input-icon {
+            color: #4361ee;
+        }
+
+        .btn-toggle-eye {
+            position: absolute;
+            right: 8px;
+            background: none;
+            border: none;
+            padding: 6px 10px;
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+
+        .btn-toggle-eye:hover {
+            color: #334155;
+        }
+
+        .btn-auth-submit {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 14px rgba(67, 97, 238, 0.35);
+            margin-top: 6px;
+        }
+
+        .btn-auth-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.45);
+        }
+
+        .btn-auth-submit:active {
+            transform: translateY(0);
+        }
+
+        .admin-auth-footer {
+            margin-top: 20px;
+            text-align: center;
+            padding-top: 14px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .btn-auth-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.82rem;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.15s;
+        }
+
+        .btn-auth-back:hover {
+            color: #4361ee;
+        }
+
         @media print {
             .app-navbar, .class-tabs-container, .admin-action-bar, .card-header button, footer, #activeLinkBox, .admin-filter-bar {
                 display: none !important;
@@ -31,7 +270,56 @@
         }
     </style>
 </head>
-<body>
+<body class="auth-locked">
+
+    <!-- SECURITY AUTH OVERLAY -->
+    <div id="adminAuthOverlay" class="admin-auth-overlay">
+        <div class="admin-auth-card">
+            <div class="admin-auth-header">
+                <div class="admin-auth-logo">
+                    <img src="logo.svg" alt="NEVASTRA 2026">
+                </div>
+                <h2>Akses Panel Admin</h2>
+                <p>Silakan masukkan kredensial resmi Panitia NEVASTRA 2026 untuk melanjutkan.</p>
+            </div>
+
+            <div id="authAlert" class="admin-auth-alert" style="display: none;">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="authAlertText">Username atau kata sandi salah! Akses ditolak.</span>
+            </div>
+
+            <form id="formAdminLogin" onsubmit="return false;" autocomplete="off">
+                <div class="admin-auth-field">
+                    <label for="adminUsernameInput">Username</label>
+                    <div class="admin-auth-input-wrapper">
+                        <i class="fa-solid fa-user input-icon"></i>
+                        <input type="text" id="adminUsernameInput" class="admin-auth-input" placeholder="Masukkan username admin..." required autofocus autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="admin-auth-field">
+                    <label for="adminPasswordInput">Kata Sandi</label>
+                    <div class="admin-auth-input-wrapper">
+                        <i class="fa-solid fa-lock input-icon"></i>
+                        <input type="password" id="adminPasswordInput" class="admin-auth-input" placeholder="Masukkan kata sandi admin..." required autocomplete="off">
+                        <button type="button" id="btnTogglePass" class="btn-toggle-eye" title="Tampilkan/Sembunyikan Sandi" tabindex="-1">
+                            <i class="fa-solid fa-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="btnSubmitAdminLogin" class="btn-auth-submit">
+                    <i class="fa-solid fa-shield-halved"></i> Masuk ke Panel Admin
+                </button>
+            </form>
+
+            <div class="admin-auth-footer">
+                <a href="index.html" class="btn-auth-back">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Portal Siswa
+                </a>
+            </div>
+        </div>
+    </div>
 
     <!-- Admin Navigation Bar -->
     <nav class="app-navbar">
@@ -56,6 +344,9 @@
                 <a href="rekap.html" class="btn btn-outline btn-sm">
                     Rekapitulasi
                 </a>
+                <button id="btnAdminLogout" class="btn btn-outline btn-sm" style="color: #ef4444; border-color: #ef4444; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Keluar
+                </button>
             </div>
         </div>
     </nav>
@@ -2851,18 +3142,124 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
             };
         }
 
-        renderTabs();
-        renderKelompokTabs();
-        updateActiveClassLink();
-        loadSheetConfig();
-        syncData();
-        syncVotingData();
-        syncKelompokData();
-        renderContohTable();
-        updateContohLivePreview();
-        setInterval(syncData, 15000);
-        setInterval(syncVotingData, 15000);
-        setInterval(syncKelompokData, 15000);
+        // ========================================================
+        // SISTEM KEAMANAN & AUTENTIKASI AKSES ADMIN NEVASTRA 2026
+        // ========================================================
+        const ADMIN_AUTH_SESSION_KEY = 'nevastra_admin_session_auth';
+        const REQUIRED_USERNAME = 'Nevastra44';
+        const REQUIRED_PASSWORD = 'Nevastra44##*//';
+
+        let isAdminAppStarted = false;
+
+        function startAdminApp() {
+            if (isAdminAppStarted) return;
+            isAdminAppStarted = true;
+            renderTabs();
+            renderKelompokTabs();
+            updateActiveClassLink();
+            loadSheetConfig();
+            syncData();
+            syncVotingData();
+            syncKelompokData();
+            renderContohTable();
+            updateContohLivePreview();
+            setInterval(syncData, 15000);
+            setInterval(syncVotingData, 15000);
+            setInterval(syncKelompokData, 15000);
+        }
+
+        function checkAdminAuth() {
+            const overlay = document.getElementById('adminAuthOverlay');
+            const isAuth = sessionStorage.getItem(ADMIN_AUTH_SESSION_KEY) === 'authenticated';
+
+            if (isAuth) {
+                document.body.classList.remove('auth-locked');
+                if (overlay) overlay.style.display = 'none';
+                startAdminApp();
+            } else {
+                document.body.classList.add('auth-locked');
+                if (overlay) overlay.style.display = 'flex';
+                setTimeout(() => {
+                    const uInput = document.getElementById('adminUsernameInput');
+                    if (uInput) uInput.focus();
+                }, 150);
+            }
+        }
+
+        function handleAdminLoginSubmit(e) {
+            if (e) e.preventDefault();
+            const uInput = document.getElementById('adminUsernameInput');
+            const pInput = document.getElementById('adminPasswordInput');
+            const alertBox = document.getElementById('authAlert');
+            const alertText = document.getElementById('authAlertText');
+            const card = document.querySelector('.admin-auth-card');
+
+            const enteredUser = (uInput ? uInput.value : '').trim();
+            const enteredPass = (pInput ? pInput.value : '');
+
+            if (enteredUser === REQUIRED_USERNAME && enteredPass === REQUIRED_PASSWORD) {
+                // Kredensial benar
+                sessionStorage.setItem(ADMIN_AUTH_SESSION_KEY, 'authenticated');
+                if (alertBox) alertBox.style.display = 'none';
+                checkAdminAuth();
+            } else {
+                // Kredensial salah -> Tolak akses!
+                if (alertText) {
+                    alertText.textContent = 'Username atau kata sandi salah! Akses ke panel admin ditolak.';
+                }
+                if (alertBox) alertBox.style.display = 'flex';
+                if (card) {
+                    card.classList.remove('auth-shake');
+                    void card.offsetWidth; // Force reflow
+                    card.classList.add('auth-shake');
+                }
+                if (pInput) {
+                    pInput.value = '';
+                    pInput.focus();
+                }
+            }
+            return false;
+        }
+
+        function handleAdminLogout() {
+            if (confirm('Apakah Anda yakin ingin keluar dari Panel Admin NEVASTRA 2026?')) {
+                sessionStorage.removeItem(ADMIN_AUTH_SESSION_KEY);
+                window.location.reload();
+            }
+        }
+
+        // Toggle Eye Password Visibility
+        const btnTogglePass = document.getElementById('btnTogglePass');
+        if (btnTogglePass) {
+            btnTogglePass.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pInput = document.getElementById('adminPasswordInput');
+                const eyeIcon = document.getElementById('eyeIcon');
+                if (!pInput || !eyeIcon) return;
+                if (pInput.type === 'password') {
+                    pInput.type = 'text';
+                    eyeIcon.className = 'fa-solid fa-eye-slash';
+                } else {
+                    pInput.type = 'password';
+                    eyeIcon.className = 'fa-solid fa-eye';
+                }
+            });
+        }
+
+        // Bind form login
+        const formAdminLogin = document.getElementById('formAdminLogin');
+        if (formAdminLogin) {
+            formAdminLogin.addEventListener('submit', handleAdminLoginSubmit);
+        }
+
+        // Bind logout button
+        const btnAdminLogout = document.getElementById('btnAdminLogout');
+        if (btnAdminLogout) {
+            btnAdminLogout.addEventListener('click', handleAdminLogout);
+        }
+
+        // Jalankan pengecekan autentikasi
+        checkAdminAuth();
     </script>
 </body>
 </html>
