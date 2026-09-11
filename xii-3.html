@@ -664,8 +664,9 @@
 
         function updateProgressBar() {
             const total = classRoster.length;
-            const filled = Object.keys(currentClassData).length;
-            const pct = Math.round((filled / total) * 100);
+            let filled = Object.keys(currentClassData).filter(key => !isNaN(key) && parseInt(key) > 0 && parseInt(key) <= total).length;
+            filled = Math.min(filled, total);
+            const pct = Math.min(100, Math.round((filled / total) * 100));
 
             document.getElementById('classProgressFill').style.width = pct + '%';
             document.getElementById('classProgressPct').textContent = pct + '%';

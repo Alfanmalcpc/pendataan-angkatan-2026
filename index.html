@@ -129,8 +129,13 @@
             classes.forEach(cls => {
                 const total = (rosterAll[cls] && rosterAll[cls].length) || (cls === 'XII-6' || cls === 'XII-8' ? 35 : 36);
                 const classData = allData[cls] || {};
-                const filled = Object.keys(classData).length;
-                const pct = Math.round((filled / total) * 100);
+                
+                // Hanya hitung data siswa yang valid dan tidak melebihi total roster
+                let filled = Object.keys(classData).filter(key => !isNaN(key) && parseInt(key) > 0 && parseInt(key) <= total).length;
+                
+                // Pastikan tidak tembus 100% atau lebih dari total
+                filled = Math.min(filled, total);
+                const pct = Math.min(100, Math.round((filled / total) * 100));
 
                 const fillEl = document.getElementById('fill-' + cls);
                 const statEl = document.getElementById('stat-' + cls);
