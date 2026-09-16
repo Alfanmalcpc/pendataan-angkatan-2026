@@ -366,6 +366,12 @@ window.NevastraDB = {
     },
 
     async saveBiodata(kelas, absen, data) {
+        // PENGECEKAN BATAS WAKTU PENGISIAN
+        const deadline = new Date('2026-09-17T00:00:00').getTime();
+        if (new Date().getTime() >= deadline) {
+            throw new Error("PENGISIAN DITUTUP: Batas waktu pengisian dan pengeditan telah berakhir. Kamu hanya bisa melihat data.");
+        }
+
         // Alokasi Tim Menggunakan Sistem Intip Data:
         // - Jika data siswa sudah ada di database -> Sistem Terkunci (Tim tidak berubah)
         // - Jika data siswa belum ada / dihapus -> Spin Ulang (Tim diundi baru)

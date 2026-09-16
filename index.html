@@ -9,6 +9,17 @@
 </head>
 <body>
 
+    <!-- Countdown Banner -->
+    <div id="countdown-banner" style="background: #e74c3c; color: white; text-align: center; padding: 12px; font-weight: 700; font-size: 1rem; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <span style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; margin-bottom: 4px;">Batas Waktu Pengisian & Pengeditan</span>
+        <div id="cd-timer-wrap" style="display: flex; gap: 8px; font-size: 1.2rem; align-items: baseline;">
+            <span id="cd-hours">00</span><span style="font-size: 0.8rem; font-weight: 400;">JAM</span> :
+            <span id="cd-minutes">00</span><span style="font-size: 0.8rem; font-weight: 400;">MNT</span> :
+            <span id="cd-seconds">00</span><span style="font-size: 0.8rem; font-weight: 400;">DTK</span>
+        </div>
+        <div id="cd-closed-msg" style="display: none; font-size: 1.1rem; letter-spacing: 0.5px;">PENDATAAN DITUTUP</div>
+    </div>
+
     <!-- Minimalist Header -->
     <header class="student-header">
         <div class="student-header-inner">
@@ -149,6 +160,34 @@
 
         updateProgress();
         setInterval(updateProgress, 10000);
+
+        // Countdown Logic
+        function startCountdown() {
+            // Target: Hari ini pada 23:59:59 (atau besok 00:00:00)
+            const targetDate = new Date('2026-09-17T00:00:00').getTime();
+            
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    clearInterval(timer);
+                    document.getElementById('cd-timer-wrap').style.display = 'none';
+                    document.getElementById('cd-closed-msg').style.display = 'block';
+                    document.getElementById('countdown-banner').style.background = '#333';
+                    return;
+                }
+
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
+                document.getElementById('cd-minutes').innerText = minutes.toString().padStart(2, '0');
+                document.getElementById('cd-seconds').innerText = seconds.toString().padStart(2, '0');
+            }, 1000);
+        }
+        startCountdown();
     </script>
 </body>
 </html>
