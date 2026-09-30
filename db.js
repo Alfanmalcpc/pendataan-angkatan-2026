@@ -1043,6 +1043,20 @@ window.NevastraDB = {
         }
     },
 
+    async deleteKaosTtd(kelas, absen) {
+        try {
+            const url = `${DB_BASE_URL}/kaos_ttd/${kelas}/${absen}.json`;
+            const res = await fetch(url, {
+                method: 'DELETE'
+            });
+            if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
+            return true;
+        } catch (e) {
+            console.error("Error deleting kaos & ttd:", e);
+            throw e;
+        }
+    },
+
     // --- Sistem Voting Angkatan 2026 ---
     async saveVote(voteData) {
         const { uid, email, nama, kelas, absen, pilihan, pilihanKode } = voteData;

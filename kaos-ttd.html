@@ -44,7 +44,7 @@
         /* Grid Ukuran Kaos */
         .size-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
             gap: 12px;
             margin-bottom: 16px;
         }
@@ -53,11 +53,15 @@
             background: #f8fafc;
             border: 2px solid #e2e8f0;
             border-radius: 14px;
-            padding: 14px 10px;
+            padding: 18px 8px;
             text-align: center;
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 64px;
         }
         .size-card:hover {
             border-color: #94a3b8;
@@ -70,21 +74,14 @@
             box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
         }
         .size-name {
-            font-size: 1.3rem;
+            font-size: 1.45rem;
             font-weight: 800;
             color: #1e293b;
-            margin-bottom: 4px;
+            margin: 0;
+            line-height: 1;
         }
         .size-card.active .size-name {
             color: #1d4ed8;
-        }
-        .size-dim {
-            font-size: 0.72rem;
-            font-weight: 600;
-            color: #64748b;
-        }
-        .size-card.active .size-dim {
-            color: #2563eb;
         }
         .size-check {
             position: absolute;
@@ -365,43 +362,36 @@
                     <div class="size-card" data-size="S" onclick="selectSize('S')">
                         <i class="fa-solid fa-circle-check size-check"></i>
                         <div class="size-name">S</div>
-                        <div class="size-dim">L: 47 | P: 68</div>
                     </div>
                     <div class="size-card" data-size="M" onclick="selectSize('M')">
                         <i class="fa-solid fa-circle-check size-check"></i>
                         <div class="size-name">M</div>
-                        <div class="size-dim">L: 50 | P: 71</div>
                     </div>
                     <div class="size-card" data-size="L" onclick="selectSize('L')">
                         <i class="fa-solid fa-circle-check size-check"></i>
                         <div class="size-name">L</div>
-                        <div class="size-dim">L: 53 | P: 73</div>
                     </div>
                     <div class="size-card" data-size="XL" onclick="selectSize('XL')">
                         <i class="fa-solid fa-circle-check size-check"></i>
                         <div class="size-name">XL</div>
-                        <div class="size-dim">L: 56 | P: 76</div>
                     </div>
                     <div class="size-card" data-size="XXL" onclick="selectSize('XXL')">
                         <i class="fa-solid fa-circle-check size-check"></i>
                         <div class="size-name">XXL</div>
-                        <div class="size-dim">L: 59 | P: 78</div>
                     </div>
                     <div class="size-card" data-size="3XL" onclick="selectSize('3XL')">
                         <i class="fa-solid fa-circle-check size-check"></i>
                         <div class="size-name">3XL</div>
-                        <div class="size-dim">L: 62 | P: 80</div>
                     </div>
                     <div class="size-card" data-size="4XL" onclick="selectSize('4XL')">
                         <i class="fa-solid fa-circle-check size-check"></i>
                         <div class="size-name">4XL</div>
-                        <div class="size-dim">L: 65 | P: 82</div>
                     </div>
                 </div>
 
-                <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 10px 14px; font-size: 0.78rem; color: #64748b; display: flex; align-items: center; gap: 8px;">
+                <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 10px 14px; font-size: 0.82rem; color: #64748b; display: flex; align-items: center; gap: 8px;">
                     <i class="fa-solid fa-circle-info" style="color: #3b82f6;"></i>
-                    <span>Ukuran kaos yang dipilih: <strong id="selectedSizeLabel" style="color: #1e293b;">Belum dipilih</strong>. Satuan ukuran dalam Centimeter (cm).</span>
+                    <span>Ukuran kaos yang dipilih: <strong id="selectedSizeLabel" style="color: #1e293b;">Belum dipilih</strong>.</span>
                 </div>
             </div>
 
@@ -420,20 +410,30 @@
                 <div class="sleeve-grid">
                     <div class="sleeve-card" id="cardLenganPendek" onclick="selectSleeve('Lengan Pendek')">
                         <div class="sleeve-icon">
-                            <i class="fa-solid fa-shirt"></i>
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 4h12l4 5-3 3-2-2v10H7V10l-2 2-3-3 4-5z"/>
+                                <path d="M9 4a3 3 0 0 0 6 0"/>
+                                <line x1="4" y1="10" x2="6.5" y2="8"/>
+                                <line x1="20" y1="10" x2="17.5" y2="8"/>
+                            </svg>
                         </div>
                         <div>
                             <div class="sleeve-title">Lengan Pendek</div>
-                            <div class="sleeve-sub">Model kaos standar santai & adem</div>
+                            <div class="sleeve-sub">Model kaos santai lengan pendek standar</div>
                         </div>
                     </div>
                     <div class="sleeve-card" id="cardLenganPanjang" onclick="selectSleeve('Lengan Panjang')">
                         <div class="sleeve-icon">
-                            <i class="fa-solid fa-vest-patches"></i>
+                            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M7 4h10l4 7v8h-3.5L16 10v9H8V10l-1.5 9H3v-8l4-7z"/>
+                                <path d="M9.5 4a2.5 2.5 0 0 0 5 0"/>
+                                <line x1="3" y1="16" x2="6.5" y2="16"/>
+                                <line x1="17.5" y1="16" x2="21" y2="16"/>
+                            </svg>
                         </div>
                         <div>
                             <div class="sleeve-title">Lengan Panjang</div>
-                            <div class="sleeve-sub">Cocok untuk hijab & gaya kasual sopan</div>
+                            <div class="sleeve-sub">Model kaos lengan panjang sampai pergelangan tangan</div>
                         </div>
                     </div>
                 </div>
@@ -594,6 +594,8 @@
         let hasDrawn = false;
         let lastX = 0;
         let lastY = 0;
+        let strokeList = [];
+        let currentStroke = null;
 
         function resizeCanvas() {
             const rect = canvas.getBoundingClientRect();
@@ -662,6 +664,15 @@
             lastX = pos.x;
             lastY = pos.y;
 
+            const rect = canvas.getBoundingClientRect();
+            currentStroke = {
+                points: [{
+                    x: pos.x / (rect.width || 1),
+                    y: pos.y / (rect.height || 1)
+                }]
+            };
+            strokeList.push(currentStroke);
+
             ctx.beginPath();
             ctx.moveTo(lastX, lastY);
             ctx.strokeStyle = '#000000';
@@ -676,6 +687,14 @@
             if (!isDrawing) return;
             e.preventDefault();
             const pos = getCanvasPos(e);
+
+            if (currentStroke) {
+                const rect = canvas.getBoundingClientRect();
+                currentStroke.points.push({
+                    x: pos.x / (rect.width || 1),
+                    y: pos.y / (rect.height || 1)
+                });
+            }
 
             ctx.beginPath();
             ctx.moveTo(lastX, lastY);
@@ -694,6 +713,7 @@
             if (!isDrawing) return;
             e.preventDefault();
             isDrawing = false;
+            currentStroke = null;
         }
 
         // Pointer Events (Mouse, Touch, Stylus Pen)
@@ -707,18 +727,74 @@
         document.getElementById('btnClearSignature').addEventListener('click', () => {
             fillCanvasWhite();
             hasDrawn = false;
+            strokeList = [];
+            currentStroke = null;
             signatureHint.style.display = 'flex';
         });
+
+        // Generate Ultra High-Res Signature (5000 px)
+        function getHighResSignature5000() {
+            const targetWidth = 5000;
+            const aspect = (canvas.clientHeight > 0 && canvas.clientWidth > 0)
+                ? (canvas.clientHeight / canvas.clientWidth)
+                : (canvas.height / canvas.width);
+            const targetHeight = Math.max(1200, Math.round(targetWidth * aspect));
+
+            const hiCanvas = document.createElement('canvas');
+            hiCanvas.width = targetWidth;
+            hiCanvas.height = targetHeight;
+            const hctx = hiCanvas.getContext('2d');
+
+            // 1. Background putih pekat #FFFFFF
+            hctx.fillStyle = '#FFFFFF';
+            hctx.fillRect(0, 0, targetWidth, targetHeight);
+            hctx.imageSmoothingEnabled = true;
+            hctx.imageSmoothingQuality = 'high';
+
+            // 2. Render goresan vektor atau scaled canvas
+            if (strokeList && strokeList.length > 0) {
+                const displayW = canvas.clientWidth || 800;
+                const scale = targetWidth / displayW;
+                const strokeW = Math.max(14, Math.round(3.8 * scale));
+
+                hctx.strokeStyle = '#000000';
+                hctx.lineWidth = strokeW;
+                hctx.lineCap = 'round';
+                hctx.lineJoin = 'round';
+
+                strokeList.forEach(stk => {
+                    if (!stk.points || stk.points.length === 0) return;
+                    hctx.beginPath();
+                    const p0 = stk.points[0];
+                    hctx.moveTo(p0.x * targetWidth, p0.y * targetHeight);
+                    if (stk.points.length === 1) {
+                        hctx.lineTo(p0.x * targetWidth + 0.1, p0.y * targetHeight + 0.1);
+                    } else {
+                        for (let i = 1; i < stk.points.length; i++) {
+                            const pt = stk.points[i];
+                            hctx.lineTo(pt.x * targetWidth, pt.y * targetHeight);
+                        }
+                    }
+                    hctx.stroke();
+                });
+            } else {
+                // Fallback: draw directly from the existing canvas
+                hctx.drawImage(canvas, 0, 0, targetWidth, targetHeight);
+            }
+
+            return hiCanvas.toDataURL('image/png');
+        }
+        window.getHighResSignature5000 = getHighResSignature5000;
 
         // Preview Modal
         const modalPreviewTtd = document.getElementById('modalPreviewTtd');
         const imgModalPreview = document.getElementById('imgModalPreview');
         document.getElementById('btnPreviewSignature').addEventListener('click', () => {
-            if (!hasDrawn) {
+            if (!hasDrawn && (!existingTtdData || !existingTtdData.ttdBase64)) {
                 alert("Silakan bubuhkan tanda tangan Anda terlebih dahulu pada area kanvas!");
                 return;
             }
-            const pngData = canvas.toDataURL('image/png');
+            const pngData = getHighResSignature5000();
             imgModalPreview.src = pngData;
             modalPreviewTtd.style.display = 'flex';
         });
@@ -889,14 +965,14 @@
             btnSubmitText.textContent = "⏳ Memproses berkas PNG tanda tangan...";
 
             try {
-                // 1. Dapatkan Base64 PNG background putih & tinta hitam
+                // 1. Dapatkan Base64 PNG background putih & tinta hitam (Ultra HD 5000 px)
                 let pngBase64 = '';
                 if (hasDrawn) {
-                    pngBase64 = canvas.toDataURL('image/png');
+                    pngBase64 = getHighResSignature5000();
                 } else if (existingTtdData && existingTtdData.ttdBase64) {
                     pngBase64 = existingTtdData.ttdBase64;
                 } else {
-                    pngBase64 = canvas.toDataURL('image/png');
+                    pngBase64 = getHighResSignature5000();
                 }
 
                 const cleanNama = currentStudentData.nama.replace(/[/\\?%*:|"<>]/g, '').trim();

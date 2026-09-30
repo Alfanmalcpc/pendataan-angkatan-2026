@@ -1497,7 +1497,8 @@
             <div style="margin-top: 18px; display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap;">
                 <a id="btnOpenKaosTtdDirect" href="#" target="_blank" class="btn btn-primary btn-sm" style="font-weight: 700; background: #4f46e5; border-color: #4f46e5;">+ Isi Kaos & TTD</a>
                 <a id="btnOpenFormDirect" href="#" target="_blank" class="btn btn-outline btn-sm">Buka Halaman Biodata</a>
-                <button id="btnDeleteStudentData" class="btn btn-sm" style="background: var(--danger); color: white;">Hapus Data Ini</button>
+                <button id="btnDeleteKaosTtdData" class="btn btn-sm" style="background: #e11d48; color: white; display: none;"><i class="fa-solid fa-trash-can"></i> Hapus Kaos & TTD</button>
+                <button id="btnDeleteStudentData" class="btn btn-sm" style="background: var(--danger); color: white;">Hapus Biodata Siswa</button>
             </div>
         </div>
     </div>
@@ -1803,10 +1804,11 @@
                     : `<span style="color: #94a3b8; font-style: italic; font-size: 0.78rem;">Belum Tertaut</span>`;
 
                 const kaosCell = item.isKaosFilled
-                    ? `<div style="display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                    ? `<div style="display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap;">
                         <span class="badge-status" style="background:#ecfdf5; color:#047857; font-weight:800; padding:2px 7px; border-radius:6px; font-size:0.75rem;">✓ ${item.kaosData.ukuranKaos} (${item.kaosData.tipeLengan === 'Lengan Panjang' ? 'Pjg' : 'Pdk'})</span>
                         ${item.kaosData.ttdBase64 ? `<img src="${item.kaosData.ttdBase64}" style="width:38px; height:18px; object-fit:contain; background:#ffffff; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer;" onclick="openTtdZoom('${encodeURIComponent(item.nama)}', '${encodeURIComponent(item.kelas)}', '${item.absen}', this.src)" title="Klik zoom TTD">` : ''}
                         <a href="kaos-ttd.html?kelas=${item.kelas}&absen=${item.absen}" target="_blank" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#047857; border-color:#10b981; font-weight:700;" title="Edit Ukuran Kaos & TTD Siswa Ini">✏️ Edit</a>
+                        <button type="button" class="btn btn-sm btn-del-kaos-inline" data-kelas="${item.kelas}" data-absen="${item.absen}" data-nama="${encodeURIComponent(item.nama)}" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#b91c1c; background:#fee2e2; border:1px solid #fecaca; font-weight:700; cursor:pointer;" title="Hapus Data Kaos & TTD Siswa Ini">🗑️</button>
                       </div>`
                     : `<div style="display:inline-flex; align-items:center; gap:6px;">
                         <span class="badge-status" style="background:#fef2f2; color:#b91c1c; font-size:0.75rem; padding:2px 6px; border-radius:6px;">✗ Belum</span>
@@ -1854,6 +1856,40 @@
                     const c = btn.getAttribute('data-kelas');
                     const a = btn.getAttribute('data-absen');
                     openStudentModal(c, a);
+                };
+            });
+
+            document.querySelectorAll('.btn-del-kaos-inline').forEach(btn => {
+                btn.onclick = async (e) => {
+                    e.stopPropagation();
+                    const k = btn.getAttribute('data-kelas');
+                    const a = btn.getAttribute('data-absen');
+                    const sName = decodeURIComponent(btn.getAttribute('data-nama') || 'Siswa');
+
+                    const ok = confirm(`⚠️ Konfirmasi Hapus Data Kaos & TTD:\nApakah Anda yakin ingin menghapus data Ukuran Kaos & TTD untuk ${sName} (${k} Absen ${a})?\n\nData di database akan dikosongkan.`);
+                    if (!ok) return;
+
+                    btn.disabled = true;
+                    btn.textContent = '...';
+
+                    try {
+                        if (window.NevastraDB && window.NevastraDB.deleteKaosTtd) {
+                            await window.NevastraDB.deleteKaosTtd(k, a);
+                        }
+                        if (allKaosTtdData && (allKaosTtdData[k] || allKaosTtdData[k.toUpperCase()])) {
+                            const targetObj = allKaosTtdData[k] || allKaosTtdData[k.toUpperCase()];
+                            delete targetObj[a];
+                            delete targetObj[String(a)];
+                            delete targetObj[parseInt(a, 10)];
+                        }
+                        showToast(`✓ Data Kaos & TTD ${sName} berhasil dihapus.`);
+                        renderClassRecap();
+                        if (typeof renderKaosTtdTable === 'function') renderKaosTtdTable();
+                    } catch (err) {
+                        alert("Gagal menghapus: " + err.message);
+                        btn.disabled = false;
+                        btn.textContent = '🗑️';
+                    }
                 };
             });
         }
@@ -2067,6 +2103,40 @@
 
             document.getElementById('btnOpenFormDirect').href = cls.toLowerCase() + '.html?absen=' + abs;
             document.getElementById('btnDeleteStudentData').style.display = saved ? 'inline-block' : 'none';
+
+            const btnDelKaosModal = document.getElementById('btnDeleteKaosTtdData');
+            if (btnDelKaosModal) {
+                const hasKaos = !!(kaosRecord && (kaosRecord.ukuranKaos || kaosRecord.tipeLengan || kaosRecord.ttdBase64));
+                btnDelKaosModal.style.display = hasKaos ? 'inline-block' : 'none';
+                btnDelKaosModal.onclick = async () => {
+                    const ok = confirm(`⚠️ Konfirmasi Hapus Data Kaos & TTD:\nApakah Anda yakin ingin menghapus data Ukuran Kaos & TTD untuk ${nama} (Kelas ${cls} Absen ${abs})?\n\nData di database Nevastra akan dikosongkan.`);
+                    if (!ok) return;
+
+                    btnDelKaosModal.disabled = true;
+                    btnDelKaosModal.textContent = 'Menghapus...';
+
+                    try {
+                        if (window.NevastraDB && window.NevastraDB.deleteKaosTtd) {
+                            await window.NevastraDB.deleteKaosTtd(cls, abs);
+                        }
+                        if (allKaosTtdData && (allKaosTtdData[cls] || allKaosTtdData[cls.toUpperCase()])) {
+                            const targetObj = allKaosTtdData[cls] || allKaosTtdData[cls.toUpperCase()];
+                            delete targetObj[abs];
+                            delete targetObj[String(abs)];
+                            delete targetObj[parseInt(abs, 10)];
+                        }
+                        showToast(`✓ Data Kaos & TTD ${nama} berhasil dihapus.`);
+                        openStudentModal(cls, abs);
+                        renderClassRecap();
+                        if (typeof renderKaosTtdTable === 'function') renderKaosTtdTable();
+                    } catch (err) {
+                        alert("Gagal menghapus: " + err.message);
+                    } finally {
+                        btnDelKaosModal.disabled = false;
+                        btnDelKaosModal.innerHTML = '<i class="fa-solid fa-trash-can"></i> Hapus Kaos & TTD';
+                    }
+                };
+            }
 
             document.getElementById('studentDetailModal').classList.add('show');
         }
@@ -3953,7 +4023,10 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                     : `<span class="badge-status pending" style="background: #fef2f2; color: #b91c1c; font-size: 0.75rem; padding: 4px 8px; border-radius: 6px;">✗ Belum</span>`;
 
                 const actionBtn = it.isFilled 
-                    ? `<a href="kaos-ttd.html?kelas=${it.kelas}&absen=${it.absen}" target="_blank" class="btn btn-outline btn-sm" style="border-color: #10b981; color: #047857; font-weight: 700; font-size: 0.78rem; padding: 3px 10px; border-radius: 6px;" title="Perbarui / Edit Data Kaos & TTD Siswa Ini">✏️ Edit</a>`
+                    ? `<div style="display:inline-flex; align-items:center; gap:4px; justify-content:center;">
+                        <a href="kaos-ttd.html?kelas=${it.kelas}&absen=${it.absen}" target="_blank" class="btn btn-outline btn-sm" style="border-color: #10b981; color: #047857; font-weight: 700; font-size: 0.78rem; padding: 3px 8px; border-radius: 6px;" title="Perbarui / Edit Data Kaos & TTD Siswa Ini">✏️ Edit</a>
+                        <button type="button" class="btn btn-sm btn-del-kaos-tab" data-kelas="${it.kelas}" data-absen="${it.absen}" data-nama="${encodeURIComponent(it.nama)}" style="background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; font-weight: 700; font-size: 0.76rem; padding: 3px 8px; border-radius: 6px; cursor: pointer;" title="Hapus Data Kaos & TTD">🗑️ Hapus</button>
+                       </div>`
                     : `<a href="kaos-ttd.html?kelas=${it.kelas}&absen=${it.absen}" target="_blank" class="btn btn-primary btn-sm" style="background: #4f46e5; border-color: #4f46e5; font-weight: 700; font-size: 0.78rem; padding: 3px 10px; border-radius: 6px;" title="Isi Ukuran Kaos & TTD Siswa Ini">+ Isi</a>`;
 
                 html += `
@@ -3973,6 +4046,39 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                 `;
             });
             tableBody.innerHTML = html;
+
+            tableBody.querySelectorAll('.btn-del-kaos-tab').forEach(btn => {
+                btn.onclick = async () => {
+                    const k = btn.getAttribute('data-kelas');
+                    const a = btn.getAttribute('data-absen');
+                    const sName = decodeURIComponent(btn.getAttribute('data-nama') || 'Siswa');
+
+                    const ok = confirm(`⚠️ Konfirmasi Hapus Data Kaos & TTD:\nApakah Anda yakin ingin menghapus data Ukuran Kaos & TTD siswa ${sName} (${k} Absen ${a})?\n\nData di database Nevastra akan dikosongkan.`);
+                    if (!ok) return;
+
+                    btn.disabled = true;
+                    btn.textContent = '...';
+
+                    try {
+                        if (window.NevastraDB && window.NevastraDB.deleteKaosTtd) {
+                            await window.NevastraDB.deleteKaosTtd(k, a);
+                        }
+                        if (allKaosTtdData && (allKaosTtdData[k] || allKaosTtdData[k.toUpperCase()])) {
+                            const targetObj = allKaosTtdData[k] || allKaosTtdData[k.toUpperCase()];
+                            delete targetObj[a];
+                            delete targetObj[String(a)];
+                            delete targetObj[parseInt(a, 10)];
+                        }
+                        showToast(`✓ Data Kaos & TTD ${sName} berhasil dihapus.`);
+                        renderKaosTtdTable();
+                        renderClassRecap();
+                    } catch (e) {
+                        alert("Gagal menghapus: " + e.message);
+                        btn.disabled = false;
+                        btn.textContent = '🗑️ Hapus';
+                    }
+                };
+            });
         }
 
         // Export Kaos & TTD ke Excel (.xlsx)
