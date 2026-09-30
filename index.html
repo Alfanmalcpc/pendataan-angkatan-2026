@@ -9,17 +9,27 @@
 </head>
 <body>
 
-    <!-- Countdown Banner -->
-    <div id="countdown-banner" style="background: linear-gradient(135deg, #1e293b, #0f172a); color: #f8fafc; text-align: center; padding: 14px; font-weight: 600; font-family: 'Plus Jakarta Sans', sans-serif; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border-bottom: 2px solid #39b7bb; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: #94a3b8; margin-bottom: 6px;">Batas Waktu Pendataan</span>
-        <div id="cd-timer-wrap" style="display: flex; gap: 12px; font-size: 1.5rem; font-weight: 800; align-items: baseline;">
-            <div style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);"><span id="cd-hours" style="color: #39b7bb;">00</span><span style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin-left: 4px;">JAM</span></div>
-            <span style="color: #475569;">:</span>
-            <div style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);"><span id="cd-minutes" style="color: #39b7bb;">00</span><span style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin-left: 4px;">MNT</span></div>
-            <span style="color: #475569;">:</span>
-            <div style="background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);"><span id="cd-seconds" style="color: #39b7bb;">00</span><span style="font-size: 0.7rem; font-weight: 500; color: #64748b; margin-left: 4px;">DTK</span></div>
+    <!-- FULLSCREEN GOOGLE SSO AUTH OVERLAY (LANGSUNG KETIKA BARU MASUK LINK) -->
+    <div id="mainAuthModalOverlay" style="position: fixed; inset: 0; z-index: 99999; background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: #ffffff; border-radius: 24px; padding: 36px 30px; max-width: 440px; width: 100%; box-shadow: 0 25px 60px -15px rgba(0,0,0,0.5); text-align: center; border: 1px solid rgba(255,255,255,0.4);">
+            <div style="width: 72px; height: 72px; margin: 0 auto 16px; border-radius: 20px; background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(67, 97, 238, 0.4);">
+                <img src="logo.svg" alt="NEVASTRA" style="width: 44px; height: 44px; object-fit: contain;">
+            </div>
+            <span style="font-size: 0.72rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #4361ee; background: #eef2ff; padding: 4px 12px; border-radius: 999px; display: inline-block; margin-bottom: 12px;">
+                SSO GOOGLE • NEVASTRA 2026
+            </span>
+            <h2 style="font-size: 1.45rem; font-weight: 800; color: #0f172a; margin: 0 0 10px 0; line-height: 1.3;">
+                Wajib Masuk Akun Google
+            </h2>
+            <p style="font-size: 0.88rem; color: #64748b; line-height: 1.5; margin: 0 0 24px 0;">
+                Untuk melanjutkan ke sistem pendataan buku tahunan dan mengunci identitas Anda, silakan masuk menggunakan akun Google / Bajza Anda.
+            </p>
+            <button id="btnPortalGoogleSignIn" type="button" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; background: #ffffff; color: #1e293b; border: 2px solid #e2e8f0; border-radius: 14px; padding: 13px 20px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.06);">
+                <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.15C3.25 21.36 7.31 24 12 24Z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.26C.46 8.16 0 9.99 0 12s.46 3.84 1.26 5.42l4.02-3.15Z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.64 1.26 6.58l4.02 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/></svg>
+                <span id="btnPortalGoogleText">Lanjutkan dengan Google</span>
+            </button>
+            <div id="portalAuthError" style="margin-top: 14px; font-size: 0.8rem; color: #dc2626; display: none;"></div>
         </div>
-        <div id="cd-closed-msg" style="display: none; font-size: 1.1rem; letter-spacing: 1px; color: #ef4444; font-weight: 800; padding: 4px;">TUTUP</div>
     </div>
 
     <!-- Minimalist Header -->
@@ -32,7 +42,12 @@
                     <p class="student-subtitle">SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
                 </div>
             </div>
-            <div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div id="portalUserHeader" style="display: none; align-items: center; gap: 10px; background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 999px; padding: 4px 12px 4px 6px;">
+                    <img id="portalUserAvatar" src="" alt="Avatar" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;">
+                    <span id="portalUserName" style="font-size: 0.82rem; font-weight: 700; color: #1e293b; max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</span>
+                    <button id="btnPortalLogout" type="button" style="background: none; border: none; color: #ef4444; font-size: 0.78rem; font-weight: 700; cursor: pointer; padding: 2px 6px;">Keluar</button>
+                </div>
                 <a href="kelompok.html" class="btn btn-secondary" style="font-size: 0.85rem; padding: 8px 16px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; text-decoration: none;">
                     Halaman Kelompok
                 </a>
@@ -47,6 +62,28 @@
             <p class="hero-subtitle" style="margin: 0 auto; max-width: 650px;">
                 Selamat datang di sistem pendataan buku tahunan Nevastra 2026 SMAN 1 Sumberrejo. Klik kelas kamu di bawah ini untuk langsung mengisi formulir biodata pribadi.
             </p>
+        </div>
+
+        <!-- Banner Profil Siswa Tertaut (Muncul Otomatis Jika Akun Sudah Ditautkan) -->
+        <div id="linkedStudentBanner" style="display: none; background: linear-gradient(135deg, #ecfdf5, #f0fdf4); border: 2px solid #10b981; border-radius: 16px; padding: 18px 24px; margin-bottom: 24px; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.12); align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <div style="width: 44px; height: 44px; border-radius: 12px; background: #10b981; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                    ✓
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #065f46;">
+                        Profil Tertaut: <span id="bannerStudentName">-</span>
+                    </h3>
+                    <p style="margin: 3px 0 0 0; font-size: 0.85rem; color: #047857;">
+                        Akun Google Anda resmi tertaut ke <strong id="bannerStudentClass">-</strong> (Absen <span id="bannerStudentAbsen">-</span>). Data biodata Anda siap dibuka dan diperbarui kapan saja.
+                    </p>
+                </div>
+            </div>
+            <div>
+                <a id="btnDirectStudentForm" href="#" class="btn btn-primary" style="background: #059669; font-weight: 700; border-radius: 999px; padding: 10px 20px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                    Buka Form Biodata Saya →
+                </a>
+            </div>
         </div>
 
 
@@ -162,34 +199,122 @@
 
         updateProgress();
         setInterval(updateProgress, 10000);
+    </script>
 
-        // Countdown Logic
-        function startCountdown() {
-            // Target: Hari ini pada 23:59:59 (atau besok 00:00:00)
-            const targetDate = new Date('2026-09-17T00:00:00').getTime();
-            
-            const timer = setInterval(() => {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
+    <!-- SISTEM AUTENTIKASI SSO GOOGLE TERPUSAT (LANGSUNG KETIKA BARU MASUK LINK) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { 
+            getAuth, 
+            GoogleAuthProvider, 
+            signInWithPopup, 
+            signOut, 
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+        import { 
+            getDatabase, 
+            ref, 
+            get 
+        } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 
-                if (distance < 0) {
-                    clearInterval(timer);
-                    document.getElementById('cd-timer-wrap').style.display = 'none';
-                    document.getElementById('cd-closed-msg').style.display = 'block';
-                    document.getElementById('countdown-banner').style.background = '#333';
-                    return;
+        const firebaseConfig = {
+          apiKey: ***
+          authDomain: "nevastra.firebaseapp.com",
+          databaseURL: "https://nevastra-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "nevastra",
+          storageBucket: "nevastra.firebasestorage.app",
+          messagingSenderId: "464439721083",
+          appId: "1:464439721083:web:6f91107a6a027103f076de",
+          measurementId: "G-3S4QMH5W6T"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        const mainAuthModalOverlay = document.getElementById('mainAuthModalOverlay');
+        const btnPortalGoogleSignIn = document.getElementById('btnPortalGoogleSignIn');
+        const btnPortalGoogleText = document.getElementById('btnPortalGoogleText');
+        const portalAuthError = document.getElementById('portalAuthError');
+        const portalUserHeader = document.getElementById('portalUserHeader');
+        const portalUserAvatar = document.getElementById('portalUserAvatar');
+        const portalUserName = document.getElementById('portalUserName');
+        const btnPortalLogout = document.getElementById('btnPortalLogout');
+
+        const linkedStudentBanner = document.getElementById('linkedStudentBanner');
+        const bannerStudentName = document.getElementById('bannerStudentName');
+        const bannerStudentClass = document.getElementById('bannerStudentClass');
+        const bannerStudentAbsen = document.getElementById('bannerStudentAbsen');
+        const btnDirectStudentForm = document.getElementById('btnDirectStudentForm');
+
+        // Sign In Button Action
+        btnPortalGoogleSignIn.addEventListener('click', async () => {
+            btnPortalGoogleSignIn.disabled = true;
+            btnPortalGoogleText.textContent = "Membuka jendela login Google...";
+            portalAuthError.style.display = 'none';
+
+            try {
+                await signInWithPopup(auth, googleProvider);
+            } catch (err) {
+                console.error("Sign-in error:", err);
+                btnPortalGoogleSignIn.disabled = false;
+                btnPortalGoogleText.textContent = "Lanjutkan dengan Google";
+                portalAuthError.textContent = "Gagal login Google: " + (err.message || err.code);
+                portalAuthError.style.display = 'block';
+            }
+        });
+
+        // Logout Button Action
+        btnPortalLogout.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+            } catch (err) {
+                console.error("Logout error:", err);
+            }
+        });
+
+        // Auth State Changed
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // User Logged In
+                mainAuthModalOverlay.style.display = 'none';
+                portalUserHeader.style.display = 'flex';
+                portalUserName.textContent = user.displayName || user.email;
+                if (portalUserAvatar) {
+                    portalUserAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'U')}&background=4361ee&color=fff`;
                 }
 
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                // Check if user is already bound to a student
+                try {
+                    const snap = await get(ref(db, `user_to_student/${user.uid}`));
+                    if (snap.exists()) {
+                        const linkInfo = snap.val();
+                        // Get student details
+                        const bindSnap = await get(ref(db, `auth_bindings/${linkInfo.studentKey}`));
+                        const bindData = bindSnap.exists() ? bindSnap.val() : {};
 
-                document.getElementById('cd-hours').innerText = hours.toString().padStart(2, '0');
-                document.getElementById('cd-minutes').innerText = minutes.toString().padStart(2, '0');
-                document.getElementById('cd-seconds').innerText = seconds.toString().padStart(2, '0');
-            }, 1000);
-        }
-        startCountdown();
+                        bannerStudentName.textContent = bindData.nama || user.displayName;
+                        bannerStudentClass.textContent = linkInfo.kelas;
+                        bannerStudentAbsen.textContent = linkInfo.absen;
+                        btnDirectStudentForm.href = `${linkInfo.kelas.toLowerCase()}.html?absen=${linkInfo.absen}`;
+
+                        linkedStudentBanner.style.display = 'flex';
+                    } else {
+                        linkedStudentBanner.style.display = 'none';
+                    }
+                } catch (e) {
+                    console.warn("Gagal cek user_to_student:", e);
+                }
+            } else {
+                // User Not Logged In -> SHOW MODAL BARRIER IMMEDIATELY
+                mainAuthModalOverlay.style.display = 'flex';
+                portalUserHeader.style.display = 'none';
+                linkedStudentBanner.style.display = 'none';
+                btnPortalGoogleSignIn.disabled = false;
+                btnPortalGoogleText.textContent = "Lanjutkan dengan Google";
+            }
+        });
     </script>
 </body>
 </html>

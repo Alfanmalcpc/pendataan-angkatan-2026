@@ -391,6 +391,55 @@ export function setupClassAuthBinding(options) {
   `;
   document.body.appendChild(modalAppeal);
 
+  // 5. Modal Wajib Login Google Langsung (Muncul seketika saat baru buka link jika belum login)
+  const modalRequireLogin = document.createElement('div');
+  modalRequireLogin.className = 'auth-modal-overlay';
+  modalRequireLogin.id = 'modalRequireLogin';
+  modalRequireLogin.innerHTML = `
+    <div class="auth-modal-card" style="text-align: center; max-width: 420px; padding: 34px 28px;">
+      <div style="width: 68px; height: 68px; margin: 0 auto 16px; border-radius: 20px; background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(67, 97, 238, 0.4);">
+        <img src="logo.svg" alt="NEVASTRA" style="width: 40px; height: 40px; object-fit: contain;">
+      </div>
+      <span style="font-size: 0.72rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #4361ee; background: #eef2ff; padding: 4px 12px; border-radius: 999px; display: inline-block; margin-bottom: 12px;">
+        SSO GOOGLE • KELAS ${kelas}
+      </span>
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: #0f172a; margin: 0 0 8px 0;">
+        Wajib Masuk Akun Google
+      </h3>
+      <p style="font-size: 0.88rem; color: #64748b; margin: 0 0 22px 0; line-height: 1.5;">
+        Untuk mengisi, memilih nama, atau memperbarui biodata buku tahunan, Anda wajib masuk dengan akun Google terlebih dahulu.
+      </p>
+      <button id="btnModalRequireGoogleLogin" type="button" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; background: #ffffff; color: #1e293b; border: 2px solid #e2e8f0; border-radius: 12px; padding: 12px 18px; font-size: 0.92rem; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.06); margin-bottom: 14px;">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.15C3.25 21.36 7.31 24 12 24Z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.26C.46 8.16 0 9.99 0 12s.46 3.84 1.26 5.42l4.02-3.15Z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.64 1.26 6.58l4.02 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/></svg>
+        <span id="btnModalRequireGoogleText">Lanjutkan dengan Google</span>
+      </button>
+      <a href="index.html" class="btn btn-outline btn-sm" style="font-size: 0.8rem; color: #64748b; text-decoration: none; display: inline-block;">
+        ← Kembali ke Portal Utama
+      </a>
+      <div id="modalRequireLoginError" style="margin-top: 10px; font-size: 0.78rem; color: #dc2626; display: none;"></div>
+    </div>
+  `;
+  document.body.appendChild(modalRequireLogin);
+
+  const btnModalRequireGoogleLogin = document.getElementById('btnModalRequireGoogleLogin');
+  const btnModalRequireGoogleText = document.getElementById('btnModalRequireGoogleText');
+  const modalRequireLoginError = document.getElementById('modalRequireLoginError');
+
+  btnModalRequireGoogleLogin.addEventListener('click', async () => {
+    btnModalRequireGoogleLogin.disabled = true;
+    btnModalRequireGoogleText.textContent = "Membuka jendela Google...";
+    modalRequireLoginError.style.display = 'none';
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (err) {
+      console.error("Sign-in modal error:", err);
+      btnModalRequireGoogleLogin.disabled = false;
+      btnModalRequireGoogleText.textContent = "Lanjutkan dengan Google";
+      modalRequireLoginError.textContent = "Gagal login: " + (err.message || err.code);
+      modalRequireLoginError.style.display = 'block';
+    }
+  });
+
   // Helper Elements
   const btnAuthSignIn = document.getElementById('btnAuthSignIn');
   const authGateInfo = document.getElementById('authGateInfo');
@@ -449,6 +498,7 @@ export function setupClassAuthBinding(options) {
         selectAbsenNama.value = "";
       }
       setFormLockedState(true, "🔒 Wajib Masuk Akun Google untuk Mengisi");
+      modalRequireLogin.classList.add('show');
 
       authGateInfo.innerHTML = `
         <div class="auth-avatar-placeholder">
@@ -480,6 +530,7 @@ export function setupClassAuthBinding(options) {
 
     // User is logged in!
     currentUser = user;
+    modalRequireLogin.classList.remove('show');
     if (selectAbsenNama) selectAbsenNama.disabled = false;
 
     const photoUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=39b7bb&color=fff`;
