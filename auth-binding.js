@@ -1,5 +1,6 @@
 // auth-binding.js — Modul SSO Auth Bajza & Penautan Profil Siswa NEVASTRA 2026
 // Additive & Modular: Mengintegrasikan Google Sign-In, Double Confirmation Modal, dan Sistem Aju Banding
+// Semua database dibebankan 100% ke database data (nevastra-default-rtdb), akun Bajza khusus untuk Google Auth.
 
 import { 
   auth, 
@@ -15,7 +16,7 @@ import {
   onValue 
 } from './firebase-config.js';
 
-// Database Operations
+// Database Operations (Tersimpan 100% di Database NEVASTRA)
 export async function getStudentBinding(kelas, absen) {
   try {
     const bindingRef = ref(db, `auth_bindings/${kelas}_${absen}`);
@@ -39,6 +40,12 @@ export async function getUserBinding(uid) {
 }
 
 export async function bindStudentToUser(kelas, absen, namaSiswa, user) {
+  const nowIso = new Date().toISOString();
+  const nowFormatted = new Intl.DateTimeFormat('id-ID', {
+    dateStyle: 'full',
+    timeStyle: 'short'
+  }).format(new Date());
+
   const bindingData = {
     kelas: kelas,
     absen: parseInt(absen, 10),
@@ -47,11 +54,8 @@ export async function bindStudentToUser(kelas, absen, namaSiswa, user) {
     email: user.email,
     displayName: user.displayName || namaSiswa,
     photoURL: user.photoURL || '',
-    linkedAt: new Date().toISOString(),
-    linkedAtFormatted: new Intl.DateTimeFormat('id-ID', {
-      dateStyle: 'full',
-      timeStyle: 'short'
-    }).format(new Date())
+    linkedAt: nowIso,
+    linkedAtFormatted: nowFormatted
   };
 
   const userMapping = {
@@ -60,7 +64,7 @@ export async function bindStudentToUser(kelas, absen, namaSiswa, user) {
     studentKey: `${kelas}_${absen}`,
     nama: namaSiswa,
     email: user.email,
-    linkedAt: bindingData.linkedAt
+    linkedAt: nowIso
   };
 
   await set(ref(db, `auth_bindings/${kelas}_${absen}`), bindingData);
@@ -113,20 +117,17 @@ export function setupClassAuthBinding(options) {
     styleEl.id = 'authBindingStyles';
     styleEl.textContent = `
       .auth-gate-card {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 248, 255, 0.9));
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1.5px solid rgba(57, 183, 187, 0.3);
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
         border-radius: var(--radius-lg, 16px);
-        padding: 18px 24px;
-        margin-bottom: 24px;
-        box-shadow: 0 10px 30px -8px rgba(15, 23, 42, 0.08);
+        padding: 16px 20px;
+        margin-bottom: 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 16px;
         flex-wrap: wrap;
-        transition: all 0.3s ease;
+        gap: 16px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
       }
       .auth-gate-info {
         display: flex;
@@ -196,15 +197,18 @@ export function setupClassAuthBinding(options) {
         left: 0;
         width: 100vw;
         height: 100vh;
-        background: rgba(15, 23, 42, 0.7);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
         display: none;
         align-items: center;
         justify-content: center;
         z-index: 999999;
         padding: 20px;
         box-sizing: border-box;
+      }
+      .auth-modal-overlay.show {
+        display: flex !important;
       }
       .auth-modal-card {
         background: #ffffff;
@@ -238,28 +242,25 @@ export function setupClassAuthBinding(options) {
         justify-content: flex-end;
         gap: 10px;
       }
-      .badge-binding {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.76rem;
+      .locked-badge-box {
+        margin-top: 8px;
+        font-size: 0.83rem;
         font-weight: 700;
-        padding: 4px 10px;
-        border-radius: 20px;
-      }
-      .badge-binding.bound-you {
-        background: #dcfce7;
-        color: #15803d;
-      }
-      .badge-binding.bound-other {
-        background: #fee2e2;
-        color: #b91c1c;
+        color: #1e40af;
+        background: #eff6ff;
+        border: 1.5px solid #bfdbfe;
+        border-radius: 10px;
+        padding: 8px 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        line-height: 1.4;
       }
     `;
     document.head.appendChild(styleEl);
   }
 
-  // 2. Buat Elemen Auth Gate Bar (Dipasang di atas hero atau progress bar secara additive)
+  // 2. Buat Elemen Auth Gate Bar (Dipasang di atas form secara additive)
   const authBar = document.createElement('div');
   authBar.className = 'auth-gate-card';
   authBar.id = 'authGateCard';
@@ -290,7 +291,6 @@ export function setupClassAuthBinding(options) {
     </div>
   `;
 
-  // Sisipkan tepat di atas hero-banner atau class progress
   const targetParent = document.querySelector('.main-wrapper') || document.body;
   if (targetParent.firstChild) {
     targetParent.insertBefore(authBar, targetParent.firstChild);
@@ -324,7 +324,7 @@ export function setupClassAuthBinding(options) {
           <div style="font-size: 0.95rem; font-weight: 700; color: #1e3a8a;" id="bindModalEmailUser">-</div>
         </div>
         <div style="font-size: 0.82rem; color: #b45309; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 14px;">
-          ⚠️ <strong>Penting:</strong> Setelah ditautkan, profil ini hanya dapat diubah oleh akun Google Anda. Pastikan tidak salah memilih nama teman Anda.
+          ⚠️ <strong>Penting:</strong> Setelah ditautkan, nomor absen & profil ini akan terkunci permanen untuk akun Google Anda dan tidak dapat diubah ke nama orang lain.
         </div>
       </div>
       <div class="auth-modal-footer">
@@ -371,7 +371,7 @@ export function setupClassAuthBinding(options) {
   `;
   document.body.appendChild(modalAppeal);
 
-  // 5. Modal Wajib Login Google Langsung (Muncul seketika saat baru buka link jika belum login)
+  // 5. Modal Wajib Login Google Langsung (Barrier jika belum login)
   const modalRequireLogin = document.createElement('div');
   modalRequireLogin.className = 'auth-modal-overlay';
   modalRequireLogin.id = 'modalRequireLogin';
@@ -387,7 +387,7 @@ export function setupClassAuthBinding(options) {
         Wajib Masuk Akun Google
       </h3>
       <p style="font-size: 0.88rem; color: #64748b; margin: 0 0 22px 0; line-height: 1.5;">
-        Untuk mengisi, memilih nama, atau memperbarui biodata buku tahunan, Anda wajib masuk dengan akun Google terlebih dahulu.
+        Untuk mengisi, melihat data, dan mengunci identitas buku tahunan Anda, Anda wajib masuk dengan akun Google terlebih dahulu.
       </p>
       <button id="btnModalRequireGoogleLogin" type="button" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; background: #ffffff; color: #1e293b; border: 2px solid #e2e8f0; border-radius: 12px; padding: 12px 18px; font-size: 0.92rem; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.06); margin-bottom: 14px;">
         <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.15C3.25 21.36 7.31 24 12 24Z"/><path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.26C.46 8.16 0 9.99 0 12s.46 3.84 1.26 5.42l4.02-3.15Z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.64 1.26 6.58l4.02 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/></svg>
@@ -420,6 +420,16 @@ export function setupClassAuthBinding(options) {
     }
   });
 
+  // 6. Elemen Notifikasi Terkunci di Bawah Select Absen
+  let lockBadge = document.getElementById('selectAbsenLockNotice');
+  if (!lockBadge && selectAbsenNama && selectAbsenNama.parentNode) {
+    lockBadge = document.createElement('div');
+    lockBadge.id = 'selectAbsenLockNotice';
+    lockBadge.className = 'locked-badge-box';
+    lockBadge.style.display = 'none';
+    selectAbsenNama.parentNode.insertBefore(lockBadge, selectAbsenNama.nextSibling);
+  }
+
   // Helper Elements
   const btnAuthSignIn = document.getElementById('btnAuthSignIn');
   const authGateInfo = document.getElementById('authGateInfo');
@@ -433,7 +443,7 @@ export function setupClassAuthBinding(options) {
   const btnCancelAppeal = document.getElementById('btnCancelAppeal');
   const btnCancelAppealCorner = document.getElementById('btnCancelAppealCorner');
 
-  // Lock or Unlock Form
+  // Lock or Unlock Form Inputs (KECUALI selectAbsenNama yang diatur secara terpisah)
   function setFormLockedState(locked, reason = "") {
     const inputs = studentForm.querySelectorAll('input:not(#selectAbsenNama), textarea, select:not(#selectAbsenNama)');
     inputs.forEach(el => {
@@ -445,7 +455,131 @@ export function setupClassAuthBinding(options) {
       if (locked && reason) {
         btnSubmit.setAttribute('data-original-text', btnSubmit.innerHTML);
         btnSubmit.innerHTML = reason;
+      } else {
+        const orig = btnSubmit.getAttribute('data-original-text');
+        if (orig) btnSubmit.innerHTML = orig;
       }
+    }
+  }
+
+  // FUNGSI INTI: Muat & Tampilkan Data Siswa dari Database NEVASTRA
+  async function loadAndDisplayStudentData(absen) {
+    if (!absen) return;
+    const student = classRoster.find(s => s.absen == absen);
+    const defaultNama = student ? student.nama : '';
+
+    let saved = null;
+    try {
+      if (window.NevastraDB && typeof window.NevastraDB.getStudentBiodata === 'function') {
+        saved = await window.NevastraDB.getStudentBiodata(kelas, absen);
+      } else {
+        const snap = await get(ref(db, `biodata/${kelas}/${absen}`));
+        saved = snap.exists() ? snap.val() : null;
+      }
+    } catch (e) {
+      console.warn("Gagal memuat biodata siswa:", e);
+    }
+
+    const inputNama = document.getElementById('inputNama');
+    const inputTempatLahir = document.getElementById('inputTempatLahir');
+    const inputTanggalLahir = document.getElementById('inputTanggalLahir');
+    const inputNoHp = document.getElementById('inputNoHp');
+    const inputInstagram = document.getElementById('inputInstagram');
+    const inputTiktok = document.getElementById('inputTiktok');
+    const inputAlamat = document.getElementById('inputAlamat');
+    const inputQuotes = document.getElementById('inputQuotes');
+    const formModeBadge = document.getElementById('formModeBadge');
+
+    function cleanDisplayTTL(text) {
+      if (!text) return '';
+      let cleaned = text.trim();
+      cleaned = cleaned.replace(/,?\s*\d{1,2}\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember|[A-Za-z]+)\s+\d{2,4}/gi, '');
+      cleaned = cleaned.replace(/,?\s*\d{1,2}[-/]\d{1,2}[-/]\d{2,4}/g, '');
+      cleaned = cleaned.replace(/,?\s*\d{4}[-/]\d{1,2}[-/]\d{1,2}/g, '');
+      cleaned = cleaned.replace(/,\s*$/, '').trim();
+      return cleaned || text.trim();
+    }
+
+    if (saved && (saved.nama || saved.ttl || saved.noHp || saved.tinggalDi)) {
+      if (formModeBadge) {
+        formModeBadge.style.display = 'inline-flex';
+        formModeBadge.style.background = '#e0e7ff';
+        formModeBadge.style.color = '#3730a3';
+        formModeBadge.textContent = saved.timNama ? `✨ Data Aktif • ${saved.timNama}` : '✨ Data Aktif Terdaftar';
+      }
+
+      if (inputNama) inputNama.value = saved.nama || defaultNama;
+      if (inputTempatLahir) inputTempatLahir.value = cleanDisplayTTL(saved.tempatLahir || '');
+      if (inputTanggalLahir) inputTanggalLahir.value = saved.tanggalLahir || '';
+      if (inputNoHp) inputNoHp.value = saved.noHp || '';
+      if (inputInstagram) inputInstagram.value = (saved.ig || '').replace(/^@+/, '');
+      if (inputTiktok) inputTiktok.value = (saved.tiktok || '').replace(/^@+/, '');
+      if (inputAlamat) inputAlamat.value = saved.tinggalDi || '';
+      if (inputQuotes) inputQuotes.value = saved.quotes || '';
+    } else {
+      if (formModeBadge) {
+        formModeBadge.style.display = 'inline-flex';
+        formModeBadge.style.background = '#ecfdf5';
+        formModeBadge.style.color = '#047857';
+        formModeBadge.textContent = '✨ Data Belum Ada • Silakan Lengkapi';
+      }
+
+      if (inputNama) inputNama.value = defaultNama;
+      if (inputTempatLahir) inputTempatLahir.value = '';
+      if (inputTanggalLahir) inputTanggalLahir.value = '';
+      if (inputNoHp) inputNoHp.value = '';
+      if (inputInstagram) inputInstagram.value = '';
+      if (inputTiktok) inputTiktok.value = '';
+      if (inputAlamat) inputAlamat.value = '';
+      if (inputQuotes) inputQuotes.value = '';
+    }
+
+    // Trigger update live preview buku tahunan
+    try {
+      const evt = new Event('input', { bubbles: true });
+      if (inputNama) inputNama.dispatchEvent(evt);
+      if (inputQuotes) inputQuotes.dispatchEvent(evt);
+      if (typeof window.updatePreviewLive === 'function') {
+        window.updatePreviewLive();
+      }
+    } catch (e) {}
+
+    // Tampilkan kartu tim kelompok jika sudah ada
+    const teamCard = document.getElementById('studentTeamCard');
+    const teamTitle = document.getElementById('teamCardTitle');
+    if (saved && saved.timNama && teamCard) {
+      teamCard.style.display = 'block';
+      if (teamTitle) teamTitle.textContent = `Tim Kelompok Kamu: ${saved.timNama}`;
+      if (typeof window.renderStudentTeamCard === 'function') {
+        window.renderStudentTeamCard(kelas, absen);
+      }
+    }
+
+    if (btnSubmit) {
+      btnSubmit.innerHTML = `
+        <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/></svg>
+        Simpan & Perbarui Biodata
+      `;
+    }
+  }
+
+  // FUNGSI UNTUK MENGUNCI IDENTITAS SISWA TERPILIH ("hanya saja tidak bisa di ubah")
+  function lockStudentIdentity(student, user) {
+    if (selectAbsenNama) {
+      selectAbsenNama.value = student.absen;
+      selectAbsenNama.disabled = true;
+      selectAbsenNama.style.backgroundColor = '#f1f5f9';
+      selectAbsenNama.style.borderColor = '#93c5fd';
+      selectAbsenNama.style.cursor = 'not-allowed';
+      selectAbsenNama.title = 'Nomor absen dan nama resmi terkunci permanen untuk akun Google Anda.';
+    }
+
+    if (lockBadge) {
+      lockBadge.style.display = 'flex';
+      lockBadge.innerHTML = `
+        <span>🔒</span>
+        <span>Profil Resmi Terkunci: <strong>${student.nama} (Absen ${student.absen})</strong> — Ditautkan ke akun Google: <em>${user.email}</em>. Identitas tidak dapat diubah ke nama orang lain.</span>
+      `;
     }
   }
 
@@ -467,7 +601,7 @@ export function setupClassAuthBinding(options) {
     }
   });
 
-  // Auth State Listener
+  // Auth State Listener (Dipicu seketika Firebase selesai mengautentikasi)
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
       currentUser = null;
@@ -477,6 +611,7 @@ export function setupClassAuthBinding(options) {
         selectAbsenNama.disabled = true;
         selectAbsenNama.value = "";
       }
+      if (lockBadge) lockBadge.style.display = 'none';
       setFormLockedState(true, "🔒 Wajib Masuk Akun Google untuk Mengisi");
       modalRequireLogin.classList.add('show');
 
@@ -508,10 +643,9 @@ export function setupClassAuthBinding(options) {
       return;
     }
 
-    // User is logged in!
+    // User Berhasil Login!
     currentUser = user;
     modalRequireLogin.classList.remove('show');
-    if (selectAbsenNama) selectAbsenNama.disabled = false;
 
     const photoUrl = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'User')}&background=39b7bb&color=fff`;
 
@@ -539,14 +673,52 @@ export function setupClassAuthBinding(options) {
       await signOut(auth);
     };
 
-    // Cek apakah user ini sudah pernah menautkan profil siswa sebelumnya
+    // CEK DATA BINDING USER KE DATABASE NEVASTRA
     userOwnBinding = await getUserBinding(user.uid);
-    if (userOwnBinding && userOwnBinding.kelas === kelas && selectAbsenNama) {
-      // Otomatis pilih absen siswa milik user ini
-      if (selectAbsenNama.value != userOwnBinding.absen) {
-        selectAbsenNama.value = userOwnBinding.absen;
-        selectAbsenNama.dispatchEvent(new Event('change'));
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryAbsen = urlParams.get('absen');
+
+    // KASUS 1: USER SUDAH PERNAH TAUTKAN NAMA SISWA SEBELUMNYA
+    if (userOwnBinding) {
+      if (userOwnBinding.kelas === kelas) {
+        const student = classRoster.find(s => s.absen == userOwnBinding.absen);
+        if (student) {
+          // 1. Kunci identitas siswa ("hanya saja tidak bisa di ubah")
+          lockStudentIdentity(student, user);
+
+          // 2. Buka semua form input agar siswa bisa mengisi / memperbarui biodata
+          setFormLockedState(false);
+
+          // 3. Tampilkan seluruh datanya yang sudah dipilih dari database
+          await loadAndDisplayStudentData(userOwnBinding.absen);
+        }
+      } else {
+        // User terdaftar di kelas yang berbeda!
+        setFormLockedState(true, "🔒 Akun Terdaftar di Kelas Lain");
+        if (selectAbsenNama) selectAbsenNama.disabled = true;
+        if (lockBadge) {
+          lockBadge.style.display = 'flex';
+          lockBadge.style.background = '#fef2f2';
+          lockBadge.style.borderColor = '#fca5a5';
+          lockBadge.style.color = '#991b1b';
+          lockBadge.innerHTML = `
+            <span>⚠️</span>
+            <span>Akun Anda (${user.email}) telah terdaftar di <strong>Kelas ${userOwnBinding.kelas}</strong> (Absen ${userOwnBinding.absen} - ${userOwnBinding.nama}). <a href="${userOwnBinding.kelas.toLowerCase()}.html?absen=${userOwnBinding.absen}" style="color: #2563eb; font-weight: 800; text-decoration: underline; margin-left: 6px;">Buka Formulir Kelas Anda →</a></span>
+          `;
+        }
       }
+      return;
+    }
+
+    // KASUS 2: USER BELUM PERNAH TAUTKAN NAMA
+    if (queryAbsen && classRoster.some(s => s.absen == queryAbsen)) {
+      selectAbsenNama.value = queryAbsen;
+      await handleSelectionBinding(queryAbsen);
+    } else {
+      // Izinkan memilih nama dari dropdown
+      if (selectAbsenNama) selectAbsenNama.disabled = false;
+      setFormLockedState(true, "Silakan Pilih Nomor Absen & Nama Anda");
     }
   });
 
@@ -555,10 +727,7 @@ export function setupClassAuthBinding(options) {
   let pendingStudent = null;
 
   async function handleSelectionBinding(absen) {
-    if (!currentUser) {
-      alert("Silakan masuk akun Google terlebih dahulu.");
-      return false;
-    }
+    if (!currentUser) return false;
 
     const student = classRoster.find(s => s.absen == absen);
     if (!student) return false;
@@ -568,7 +737,7 @@ export function setupClassAuthBinding(options) {
     activeStudentBinding = existingBinding;
 
     if (!existingBinding) {
-      // KASUS 1: BELUM TERTAUT -> MUNCULKAN POPUP KONFIRMASI GANDA
+      // KASUS BELUM TERTAUT -> MUNCULKAN POPUP KONFIRMASI GANDA
       pendingAbsen = absen;
       pendingStudent = student;
 
@@ -579,18 +748,20 @@ export function setupClassAuthBinding(options) {
       return 'pending_confirm';
     }
 
-    // KASUS 2: SUDAH TERTAUT
     if (existingBinding.uid === currentUser.uid) {
-      // COCOK: Akun ini adalah pemilik profil siswa ini
+      // Akun ini adalah pemilik profil siswa ini
+      lockStudentIdentity(student, currentUser);
       setFormLockedState(false);
+      await loadAndDisplayStudentData(absen);
       if (typeof onStudentUnlocked === 'function') onStudentUnlocked(student, existingBinding);
       return true;
     } else {
-      // TIDAK COCOK: Profil siswa ini sudah diklaim oleh akun lain!
+      // Profil siswa ini sudah diklaim oleh akun lain!
       setFormLockedState(true, "🔒 Profil Telah Tertaut dengan Akun Lain");
+      if (selectAbsenNama) selectAbsenNama.disabled = false;
+      if (lockBadge) lockBadge.style.display = 'none';
       if (typeof onStudentLocked === 'function') onStudentLocked(student, existingBinding);
 
-      // Siapkan modal aju banding
       pendingAbsen = absen;
       pendingStudent = student;
       document.getElementById('appealNamaSiswa').textContent = `${student.nama} (Absen ${absen})`;
@@ -606,18 +777,13 @@ export function setupClassAuthBinding(options) {
     }
   }
 
-  // Hook Event Selection
+  // Hook Event Selection Manual Dropdown
   if (selectAbsenNama) {
-    const originalOnChange = selectAbsenNama.onchange;
-    selectAbsenNama.addEventListener('change', async (e) => {
+    selectAbsenNama.addEventListener('change', async () => {
       const val = selectAbsenNama.value;
       if (!val) return;
-      const status = await handleSelectionBinding(val);
-      if (status === 'pending_confirm') {
-        // Jangan lanjut sampai modal dikonfirmasi
-        e.stopImmediatePropagation();
-      }
-    }, true);
+      await handleSelectionBinding(val);
+    });
   }
 
   // Modal Confirm Binding Buttons
@@ -628,16 +794,21 @@ export function setupClassAuthBinding(options) {
 
     try {
       await bindStudentToUser(kelas, pendingAbsen, pendingStudent.nama, currentUser);
-      userOwnBinding = { kelas, absen: pendingAbsen, studentKey: `${kelas}_${pendingAbsen}` };
+      userOwnBinding = { kelas, absen: pendingAbsen, studentKey: `${kelas}_${pendingAbsen}`, nama: pendingStudent.nama };
       modalConfirm.style.display = 'none';
       btnConfirmBinding.disabled = false;
       btnConfirmBinding.textContent = "Ya, Tautkan Akun Saya";
 
-      setFormLockedState(false);
-      alert(`✅ Berhasil! Akun ${currentUser.email} telah resmi ditautkan ke profil ${pendingStudent.nama} (${kelas} Absen ${pendingAbsen}).`);
+      // 1. Kunci identitas siswa ("hanya saja tidak bisa di ubah")
+      lockStudentIdentity(pendingStudent, currentUser);
 
-      // Trigger change event agar data form termuat
-      selectAbsenNama.dispatchEvent(new Event('change'));
+      // 2. Buka form inputs
+      setFormLockedState(false);
+
+      // 3. Tampilkan datanya dari database
+      await loadAndDisplayStudentData(pendingAbsen);
+
+      alert(`✅ Berhasil! Akun ${currentUser.email} telah resmi ditautkan ke profil ${pendingStudent.nama} (${kelas} Absen ${pendingAbsen}).`);
     } catch (err) {
       console.error("Gagal menautkan akun:", err);
       alert("Terjadi kesalahan saat menautkan akun: " + err.message);
@@ -673,24 +844,21 @@ export function setupClassAuthBinding(options) {
       await submitStudentAppeal({
         kelas: kelas,
         absen: pendingAbsen,
-        namaSiswa: pendingStudent ? pendingStudent.nama : '',
-        claimedByUid: currentUser.uid,
-        claimedByEmail: currentUser.email,
-        claimedByName: currentUser.displayName || '',
-        currentLinkedEmail: activeStudentBinding ? activeStudentBinding.email : '',
-        currentLinkedUid: activeStudentBinding ? activeStudentBinding.uid : '',
-        noWa: noWa,
-        alasan: alasan
+        studentName: pendingStudent ? pendingStudent.nama : `Absen ${pendingAbsen}`,
+        applicantUid: currentUser.uid,
+        applicantEmail: currentUser.email,
+        applicantName: currentUser.displayName || '',
+        applicantWa: noWa,
+        reason: alasan
       });
 
+      alert("✅ Pengajuan banding berhasil dikirim ke Admin. Admin akan meninjau dan membuka tautan jika valid.");
       modalAppeal.style.display = 'none';
       btnSubmitAppeal.disabled = false;
       btnSubmitAppeal.textContent = "Kirim Aju Banding";
-      alert("✅ Pengajuan banding berhasil dikirimkan ke Admin! Admin akan meninjau dan mengonfirmasi pelepasan akun.");
-      if (selectAbsenNama) selectAbsenNama.value = "";
     } catch (err) {
-      console.error("Gagal mengirim appeal:", err);
-      alert("Gagal mengirimkan aju banding: " + err.message);
+      console.error("Gagal kirim banding:", err);
+      alert("Terjadi kesalahan saat mengirim formulir banding: " + err.message);
       btnSubmitAppeal.disabled = false;
       btnSubmitAppeal.textContent = "Kirim Aju Banding";
     }
@@ -698,7 +866,6 @@ export function setupClassAuthBinding(options) {
 
   const closeAppealModal = () => {
     modalAppeal.style.display = 'none';
-    if (selectAbsenNama) selectAbsenNama.value = "";
   };
   btnCancelAppeal.onclick = closeAppealModal;
   btnCancelAppealCorner.onclick = closeAppealModal;

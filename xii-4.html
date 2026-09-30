@@ -317,8 +317,8 @@
     <script>
         const CURRENT_CLASS = "XII-4";
         window.CURRENT_CLASS = CURRENT_CLASS;
-        window.classRoster = classRoster;
         const classRoster = [{"absen": 1, "nama": "Abi Ahmad Al Farizi", "jk": "L"}, {"absen": 2, "nama": "Abur Raihan Ahmad", "jk": "L"}, {"absen": 3, "nama": "Alfina Nurun Najwa", "jk": "P"}, {"absen": 4, "nama": "Alviana Laila Tsalist Nur Azizah", "jk": "P"}, {"absen": 5, "nama": "Aulia Dinda Nur Listiana", "jk": "P"}, {"absen": 6, "nama": "Barrack Eqtada Muhammadan", "jk": "L"}, {"absen": 7, "nama": "Bilqis Saba Putri", "jk": "P"}, {"absen": 8, "nama": "Bintang Yasta Tiandra", "jk": "L"}, {"absen": 9, "nama": "Dita Artika Laras", "jk": "P"}, {"absen": 10, "nama": "Diva Dwi Aprilia", "jk": "P"}, {"absen": 11, "nama": "Dwi Putri Setyo Ardi", "jk": "P"}, {"absen": 12, "nama": "Elok Kartika Sari", "jk": "P"}, {"absen": 13, "nama": "Hani Aryanti Dwi", "jk": "P"}, {"absen": 14, "nama": "Icha Dwi Nur Aini", "jk": "P"}, {"absen": 15, "nama": "Jesika Amelia Putri", "jk": "P"}, {"absen": 16, "nama": "Kiki Ariska Putri", "jk": "P"}, {"absen": 17, "nama": "Lutfi Miftahul Fawaida", "jk": "P"}, {"absen": 18, "nama": "Mohammad Azmi Ma Ani", "jk": "L"}, {"absen": 19, "nama": "Najwa Alfiatunnadhifah", "jk": "P"}, {"absen": 20, "nama": "Nasya Fahima Atifa", "jk": "P"}, {"absen": 21, "nama": "Nayla Cameela", "jk": "P"}, {"absen": 22, "nama": "Nina Firnanda Qumairoh", "jk": "P"}, {"absen": 23, "nama": "Nur Imamah Alfiatus Shobah", "jk": "P"}, {"absen": 24, "nama": "Nurul Hidayah Ayni", "jk": "P"}, {"absen": 25, "nama": "Ordik Bala Pradhana", "jk": "L"}, {"absen": 26, "nama": "Prasetya Elok Aprilia", "jk": "P"}, {"absen": 27, "nama": "Queenita Fatimatuz Zahra", "jk": "P"}, {"absen": 28, "nama": "Rifatulloh Ahmad Alfarisyi", "jk": "L"}, {"absen": 29, "nama": "Rizka Dwi Nuranggriani", "jk": "P"}, {"absen": 30, "nama": "Selli Marselani", "jk": "P"}, {"absen": 31, "nama": "Shafa Eka Nafista", "jk": "P"}, {"absen": 32, "nama": "Titis Ainun Zila", "jk": "P"}, {"absen": 33, "nama": "Umi Mamluatus Shofiyah", "jk": "P"}, {"absen": 34, "nama": "Veny Nur Fitria", "jk": "P"}, {"absen": 35, "nama": "Wiken Shakila Aulia Arrokim", "jk": "P"}, {"absen": 36, "nama": "Zafira Asy Syifa", "jk": "P"}];
+        window.classRoster = classRoster;
 
         let currentClassData = {};
 
@@ -1034,7 +1034,7 @@
     <script type="module">
         import { setupClassAuthBinding } from './auth-binding.js';
 
-        document.addEventListener("DOMContentLoaded", function() {
+        function initClassAuth() {
             setupClassAuthBinding({
                 kelas: window.CURRENT_CLASS,
                 selectAbsenNama: document.getElementById('selectAbsenNama'),
@@ -1042,7 +1042,12 @@
                 btnSubmit: document.getElementById('btnSubmit'),
                 classRoster: window.classRoster
             });
-        });
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener("DOMContentLoaded", initClassAuth);
+        } else {
+            initClassAuth();
+        }
     </script>
 </body>
 

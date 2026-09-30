@@ -19,7 +19,6 @@ import {
 const bajaAuthConfig = {
   apiKey: "AIzaSyCka7K9HnZIEUpm1qlIFKB7ca43kNz8t74",
   authDomain: "baja-account.firebaseapp.com",
-  databaseURL: "https://baja-account-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "baja-account",
   storageBucket: "baja-account.firebasestorage.app",
   messagingSenderId: "829858667296",

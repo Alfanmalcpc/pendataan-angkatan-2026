@@ -317,8 +317,8 @@
     <script>
         const CURRENT_CLASS = "XII-5";
         window.CURRENT_CLASS = CURRENT_CLASS;
-        window.classRoster = classRoster;
         const classRoster = [{"absen": 1, "nama": "Adelia Nur Wulan Ramadany", "jk": "P"}, {"absen": 2, "nama": "Afna Umri Bishofi", "jk": "P"}, {"absen": 3, "nama": "Alifa Annafiuz Zahra", "jk": "P"}, {"absen": 4, "nama": "Aliyah Arrazaqi Putri Mahdia", "jk": "P"}, {"absen": 5, "nama": "Andrea Dwi Andika", "jk": "L"}, {"absen": 6, "nama": "Aris Nur Afandi", "jk": "L"}, {"absen": 7, "nama": "Ashyifa Soraya Ramadhani", "jk": "P"}, {"absen": 8, "nama": "Audira Maycha Agustin", "jk": "P"}, {"absen": 9, "nama": "Bima Septyan Ramadhani", "jk": "L"}, {"absen": 10, "nama": "Daffa Wahyuandri Al Hafidz", "jk": "L"}, {"absen": 11, "nama": "Daniel Ahmad Ramadhani", "jk": "L"}, {"absen": 12, "nama": "Devita Sofia Dwi Mutiara", "jk": "P"}, {"absen": 13, "nama": "Evan Ahmad Umar Baihaqi", "jk": "L"}, {"absen": 14, "nama": "Fahri Al Hammad", "jk": "L"}, {"absen": 15, "nama": "Fairuz Alva Adinata", "jk": "L"}, {"absen": 16, "nama": "Febrieansyah Rafif Wahyuono", "jk": "L"}, {"absen": 17, "nama": "Firnanda Ayu Sekar Arum", "jk": "P"}, {"absen": 18, "nama": "Girindra Nagara Putra Raharja", "jk": "L"}, {"absen": 19, "nama": "Hazel Arkananta Fahril Ikhsan", "jk": "L"}, {"absen": 20, "nama": "Indira Ayatus Syifa' Ad-Dakhiliyah", "jk": "P"}, {"absen": 21, "nama": "Jelita Arum Nathanelya", "jk": "P"}, {"absen": 22, "nama": "Julia Zheta Prasasti P.", "jk": "P"}, {"absen": 23, "nama": "Laylatul Muna", "jk": "P"}, {"absen": 24, "nama": "M. Ilham Firmansyah", "jk": "L"}, {"absen": 25, "nama": "Maulia Rafif Alatif", "jk": "L"}, {"absen": 26, "nama": "Muhammad Amiruddin Khoiriyanto", "jk": "L"}, {"absen": 27, "nama": "Neisa Nur Aizin", "jk": "P"}, {"absen": 28, "nama": "Neiza Indra Pratama Putri", "jk": "P"}, {"absen": 29, "nama": "Putri Zahra Aprilla", "jk": "P"}, {"absen": 30, "nama": "Renno Boy Kurniawan", "jk": "L"}, {"absen": 31, "nama": "Rizki Dwi Karina", "jk": "P"}, {"absen": 32, "nama": "Rizky Aditya Rahmawan", "jk": "L"}, {"absen": 33, "nama": "Sofia Sabrina", "jk": "P"}, {"absen": 34, "nama": "Vera Veronica Angelia", "jk": "P"}, {"absen": 35, "nama": "Warda Ayu Suryani", "jk": "P"}, {"absen": 36, "nama": "Ziyadaturisyadah", "jk": "P"}];
+        window.classRoster = classRoster;
 
         let currentClassData = {};
 
@@ -1034,7 +1034,7 @@
     <script type="module">
         import { setupClassAuthBinding } from './auth-binding.js';
 
-        document.addEventListener("DOMContentLoaded", function() {
+        function initClassAuth() {
             setupClassAuthBinding({
                 kelas: window.CURRENT_CLASS,
                 selectAbsenNama: document.getElementById('selectAbsenNama'),
@@ -1042,7 +1042,12 @@
                 btnSubmit: document.getElementById('btnSubmit'),
                 classRoster: window.classRoster
             });
-        });
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener("DOMContentLoaded", initClassAuth);
+        } else {
+            initClassAuth();
+        }
     </script>
 </body>
 

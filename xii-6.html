@@ -317,8 +317,8 @@
     <script>
         const CURRENT_CLASS = "XII-6";
         window.CURRENT_CLASS = CURRENT_CLASS;
-        window.classRoster = classRoster;
         const classRoster = [{"absen": 1, "nama": "Adinda Sagita Kirana Putri", "jk": "P"}, {"absen": 2, "nama": "Ahmad Fachri Dwi Romadhoni", "jk": "L"}, {"absen": 3, "nama": "Alvaro Bautista", "jk": "L"}, {"absen": 4, "nama": "Andi Astransyah", "jk": "L"}, {"absen": 5, "nama": "Annida Nur Salfi", "jk": "P"}, {"absen": 6, "nama": "Azifa Risma Syayidatina", "jk": "P"}, {"absen": 7, "nama": "Azuan Syahriel Ahmad Dika", "jk": "L"}, {"absen": 8, "nama": "Chendikia Reva Pramana", "jk": "L"}, {"absen": 9, "nama": "Claudia Anggun Esmeralda", "jk": "P"}, {"absen": 10, "nama": "Danica Shafa Aurellia Ni'Mah", "jk": "P"}, {"absen": 11, "nama": "Dhaffa Arief Aldhika", "jk": "L"}, {"absen": 12, "nama": "Dian Teguh Nova", "jk": "L"}, {"absen": 13, "nama": "Dinda Cahaya Putri", "jk": "P"}, {"absen": 14, "nama": "Dita Mareta Putri Lestari", "jk": "P"}, {"absen": 15, "nama": "Diva Carissa Fauzizah", "jk": "P"}, {"absen": 16, "nama": "Fadly Putra Wijaya", "jk": "L"}, {"absen": 17, "nama": "Ihda Arziqa Nuril Khoiriyah", "jk": "P"}, {"absen": 18, "nama": "Indah Permatasari", "jk": "P"}, {"absen": 19, "nama": "Kaylevi Rashieka Putri Hafinudin", "jk": "P"}, {"absen": 20, "nama": "Kaysa Maratul Maftha", "jk": "P"}, {"absen": 21, "nama": "Leonel Dearen Yuana Alief Hidayatullah", "jk": "L"}, {"absen": 22, "nama": "M. Nauval Hizbullah", "jk": "L"}, {"absen": 23, "nama": "Mazaya Nauratusy Syazwina", "jk": "P"}, {"absen": 24, "nama": "Mei Alifvia Usma Saputri", "jk": "P"}, {"absen": 25, "nama": "Moch. Tegarsyah Putra Ulum", "jk": "L"}, {"absen": 26, "nama": "Moch.Neofaldo", "jk": "L"}, {"absen": 27, "nama": "Mohammad Alansyah Mahardika", "jk": "L"}, {"absen": 28, "nama": "Nazwa Aurelia Hezar", "jk": "P"}, {"absen": 29, "nama": "Nikita Khoirun Nisa'", "jk": "P"}, {"absen": 30, "nama": "Nur Laili", "jk": "P"}, {"absen": 31, "nama": "Rhido Raka", "jk": "L"}, {"absen": 32, "nama": "Selina Arthamevia Susilo Ningtyas", "jk": "P"}, {"absen": 33, "nama": "Syafrina Miftakhul Nur Ramadhani", "jk": "P"}, {"absen": 34, "nama": "Syahla Maynatania Putri", "jk": "P"}, {"absen": 35, "nama": "Ziyana Robiul Aulia", "jk": "P"}];
+        window.classRoster = classRoster;
 
         let currentClassData = {};
 
@@ -1034,7 +1034,7 @@
     <script type="module">
         import { setupClassAuthBinding } from './auth-binding.js';
 
-        document.addEventListener("DOMContentLoaded", function() {
+        function initClassAuth() {
             setupClassAuthBinding({
                 kelas: window.CURRENT_CLASS,
                 selectAbsenNama: document.getElementById('selectAbsenNama'),
@@ -1042,7 +1042,12 @@
                 btnSubmit: document.getElementById('btnSubmit'),
                 classRoster: window.classRoster
             });
-        });
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener("DOMContentLoaded", initClassAuth);
+        } else {
+            initClassAuth();
+        }
     </script>
 </body>
 
