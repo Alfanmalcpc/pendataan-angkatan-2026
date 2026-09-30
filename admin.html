@@ -1537,6 +1537,8 @@
 
         let activeClass = 'XII-1';
         let allBiodata = {};
+        window.allKaosTtdData = {};
+        var allKaosTtdData = window.allKaosTtdData;
 
         function cleanDisplayTTL(ttlStr) {
             if (!ttlStr || ttlStr === '-') return '-';
@@ -1672,12 +1674,12 @@
             targetClasses.forEach(cls => {
                 const roster = rosterAll[cls] || [];
                 const classSaved = allBiodata[cls] || {};
-                const classKaos = (allKaosTtdData && allKaosTtdData[cls]) || {};
+                const classKaos = (allKaosTtdData && (allKaosTtdData[cls] || allKaosTtdData[cls.toUpperCase()] || allKaosTtdData[cls.toLowerCase()])) || {};
 
                 roster.forEach(stu => {
                     const saved = classSaved[stu.absen];
-                    const kaos = classKaos[stu.absen] || null;
-                    const isKaosFilled = !!(kaos && kaos.ukuranKaos);
+                    const kaos = (classKaos && (classKaos[stu.absen] || classKaos[String(stu.absen)] || classKaos[parseInt(stu.absen, 10)])) || null;
+                    const isKaosFilled = !!(kaos && (kaos.ukuranKaos || kaos.tipeLengan || kaos.ttdBase64));
 
                     list.push({
                         kelas: cls,
@@ -2020,14 +2022,15 @@
             }
 
             // Status Kaos & TTD Digital di Modal
-            const kaosRecord = (allKaosTtdData[cls] && allKaosTtdData[cls][abs]) || null;
+            const classKaos = (allKaosTtdData && (allKaosTtdData[cls] || allKaosTtdData[cls.toUpperCase()] || allKaosTtdData[cls.toLowerCase()])) || {};
+            const kaosRecord = (classKaos && (classKaos[abs] || classKaos[String(abs)] || classKaos[parseInt(abs, 10)])) || null;
             const elKaosCont = document.getElementById('mKaosTtdContainer');
             const btnKaosModal = document.getElementById('btnOpenKaosTtdDirect');
             if (btnKaosModal) {
                 btnKaosModal.href = `kaos-ttd.html?kelas=${cls}&absen=${abs}`;
             }
             if (elKaosCont) {
-                if (kaosRecord && kaosRecord.ukuranKaos) {
+                if (kaosRecord && (kaosRecord.ukuranKaos || kaosRecord.tipeLengan || kaosRecord.ttdBase64)) {
                     if (btnKaosModal) {
                         btnKaosModal.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Edit Kaos & TTD`;
                         btnKaosModal.style.background = '#059669';
@@ -2035,7 +2038,7 @@
                     }
                     const driveA = kaosRecord.ttdDriveUrl 
                         ? `<a href="${kaosRecord.ttdDriveUrl}" target="_blank" style="color:#059669; font-weight:700; text-decoration:underline; display:inline-flex; align-items:center; gap:4px;"><i class="fa-brands fa-google-drive"></i> Buka Google Drive</a>`
-                        : `<span style="color:#64748b; font-size:0.75rem;">Folder tandatangan/${cls}/</span>`;
+                        : `<span style="color:#64748b; font-size:0.75rem;">Folder tanda tangan/${cls}/</span>`;
                     const ttdImg = kaosRecord.ttdBase64 
                         ? `<img src="${kaosRecord.ttdBase64}" style="width:74px; height:34px; object-fit:contain; background:#ffffff; border:1px solid #cbd5e1; border-radius:6px; cursor:pointer;" onclick="openTtdZoom('${encodeURIComponent(nama)}', '${encodeURIComponent(cls)}', '${abs}', this.src)" title="Klik zoom TTD">`
                         : `<span style="color:#94a3b8; font-size:0.75rem;">Tanpa TTD</span>`;
@@ -2043,7 +2046,7 @@
                     elKaosCont.innerHTML = `
                         <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
                             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                                <span class="badge-status" style="background:#eff6ff; color:#1d4ed8; font-weight:800; padding:4px 9px; border-radius:6px;">Ukuran: ${kaosRecord.ukuranKaos}</span>
+                                <span class="badge-status" style="background:#eff6ff; color:#1d4ed8; font-weight:800; padding:4px 9px; border-radius:6px;">Ukuran: ${kaosRecord.ukuranKaos || '-'}</span>
                                 <span class="badge-status" style="background:#f5f3ff; color:#6d28d9; font-weight:700; padding:4px 9px; border-radius:6px;">${kaosRecord.tipeLengan || '-'}</span>
                                 ${ttdImg}
                             </div>
@@ -3821,7 +3824,7 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
         // ==================================================================
         // SISTEM LOGIKA ADMIN: REKAP KAOS & TANDA TANGAN DIGITAL ANGKATAN
         // ==================================================================
-        let allKaosTtdData = {};
+        allKaosTtdData = window.allKaosTtdData || {};
 
         async function syncKaosTtdData() {
             try {
@@ -3830,6 +3833,9 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                     allKaosTtdData = (await res.json()) || {};
                 }
                 renderKaosTtdTable();
+                if (typeof renderClassRecap === 'function') {
+                    renderClassRecap();
+                }
             } catch (err) {
                 console.warn("Gagal sinkron data Kaos & TTD:", err);
             }
@@ -3856,13 +3862,13 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
 
             targetClasses.forEach(cls => {
                 const roster = rosterAll[cls] || [];
-                const classKaos = (allKaosTtdData && allKaosTtdData[cls]) || {};
+                const classKaos = (allKaosTtdData && (allKaosTtdData[cls] || allKaosTtdData[cls.toUpperCase()] || allKaosTtdData[cls.toLowerCase()])) || {};
                 const classSaved = (allBiodata && allBiodata[cls]) || {};
 
                 roster.forEach(stu => {
                     grandTotalStudents++;
-                    const record = classKaos[stu.absen] || null;
-                    const isFilled = !!(record && record.ukuranKaos);
+                    const record = (classKaos && (classKaos[stu.absen] || classKaos[String(stu.absen)] || classKaos[parseInt(stu.absen, 10)])) || null;
+                    const isFilled = !!(record && (record.ukuranKaos || record.tipeLengan || record.ttdBase64));
 
                     if (isFilled) {
                         totalFilled++;

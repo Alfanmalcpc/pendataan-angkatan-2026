@@ -629,21 +629,39 @@ export function setupClassAuthBinding(options) {
 
     const linkKaos = document.getElementById('linkAuthKaosTtd');
     if (linkKaos) {
-      linkKaos.href = `kaos-ttd.html?kelas=${kelas}&absen=${student.absen}`;
+      const normK = String(kelas).toUpperCase();
+      const normA = parseInt(student.absen, 10);
+      linkKaos.href = `kaos-ttd.html?kelas=${normK}&absen=${normA}`;
+      
+      let kData = null;
       try {
-        const kSnap = await get(ref(window.__nevastra_db, `kaos_ttd/${kelas}/${student.absen}`));
-        if (kSnap.exists() && kSnap.val() && kSnap.val().ukuranKaos) {
-          linkKaos.innerHTML = `<span>✏️ Edit Kaos & TTD</span> <span style="background: rgba(4,120,87,0.12); padding: 2px 6px; border-radius: 6px; font-size: 0.72rem;">✓ ${kSnap.val().ukuranKaos}</span>`;
-          linkKaos.style.background = '#ecfdf5';
-          linkKaos.style.borderColor = '#10b981';
-          linkKaos.style.color = '#047857';
-        } else {
-          linkKaos.innerHTML = `<span>👕✍️ Isi Kaos & TTD</span>`;
-          linkKaos.style.background = '#eef2ff';
-          linkKaos.style.borderColor = '#c7d2fe';
-          linkKaos.style.color = '#4338ca';
+        const kSnap = await get(ref(window.__nevastra_db, `kaos_ttd/${normK}/${normA}`));
+        if (kSnap.exists() && kSnap.val() && (kSnap.val().ukuranKaos || kSnap.val().tipeLengan || kSnap.val().ttdBase64)) {
+          kData = kSnap.val();
         }
       } catch (errK) {}
+
+      if (!kData) {
+        try {
+          const loc = localStorage.getItem(`nevastra_kaos_${normK}_${normA}`);
+          if (loc) {
+            const p = JSON.parse(loc);
+            if (p && (p.ukuranKaos || p.tipeLengan || p.ttdBase64)) kData = p;
+          }
+        } catch(e){}
+      }
+
+      if (kData) {
+        linkKaos.innerHTML = `<span>✏️ Edit Kaos & TTD</span> <span style="background: rgba(4,120,87,0.12); padding: 2px 6px; border-radius: 6px; font-size: 0.72rem; font-weight: 800;">✓ ${kData.ukuranKaos || 'Terisi'}</span>`;
+        linkKaos.style.background = '#ecfdf5';
+        linkKaos.style.borderColor = '#10b981';
+        linkKaos.style.color = '#047857';
+      } else {
+        linkKaos.innerHTML = `<span>👕✍️ Isi Kaos & TTD</span>`;
+        linkKaos.style.background = '#eef2ff';
+        linkKaos.style.borderColor = '#c7d2fe';
+        linkKaos.style.color = '#4338ca';
+      }
     }
   }
 

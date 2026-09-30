@@ -768,19 +768,38 @@
                         // Cek status pengisian Kaos & TTD di database
                         let isKaosFilled = false;
                         let kaosData = null;
+                        const normKelas = (linkInfo.kelas || '').toUpperCase();
+                        const normAbsen = parseInt(linkInfo.absen, 10);
+
                         try {
-                            const kaosSnap = await get(ref(db, `kaos_ttd/${linkInfo.kelas}/${linkInfo.absen}`));
-                            if (kaosSnap.exists() && kaosSnap.val() && kaosSnap.val().ukuranKaos) {
+                            const kaosSnap = await get(ref(db, `kaos_ttd/${normKelas}/${normAbsen}`));
+                            if (kaosSnap.exists() && kaosSnap.val() && (kaosSnap.val().ukuranKaos || kaosSnap.val().tipeLengan || kaosSnap.val().ttdBase64)) {
                                 isKaosFilled = true;
                                 kaosData = kaosSnap.val();
                             }
-                        } catch (errK) {}
+                        } catch (errK) {
+                            console.warn("RTDB get kaos error:", errK);
+                        }
+
+                        // Fallback check localStorage jika koneksi RTDB sedang tertahan
+                        if (!isKaosFilled) {
+                            try {
+                                const localK = localStorage.getItem(`nevastra_kaos_${normKelas}_${normAbsen}`);
+                                if (localK) {
+                                    const parsed = JSON.parse(localK);
+                                    if (parsed && (parsed.ukuranKaos || parsed.tipeLengan || parsed.ttdBase64)) {
+                                        isKaosFilled = true;
+                                        kaosData = parsed;
+                                    }
+                                }
+                            } catch(e){}
+                        }
 
                         const btnDirectKaosTtd = document.getElementById('btnDirectKaosTtd');
                         if (btnDirectKaosTtd) {
-                            btnDirectKaosTtd.href = `kaos-ttd.html?kelas=${linkInfo.kelas}&absen=${linkInfo.absen}`;
-                            if (isKaosFilled) {
-                                btnDirectKaosTtd.innerHTML = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg> Edit Ukuran Kaos & TTD <span style="background: rgba(255,255,255,0.25); padding: 2px 7px; border-radius: 99px; font-size: 0.72rem; margin-left: 4px; font-weight:800;">✓ ${kaosData.ukuranKaos}</span>`;
+                            btnDirectKaosTtd.href = `kaos-ttd.html?kelas=${normKelas}&absen=${normAbsen}`;
+                            if (isKaosFilled && kaosData) {
+                                btnDirectKaosTtd.innerHTML = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg> Edit Ukuran Kaos & TTD <span style="background: rgba(255,255,255,0.25); padding: 2px 7px; border-radius: 99px; font-size: 0.72rem; margin-left: 4px; font-weight:800;">✓ ${kaosData.ukuranKaos || 'Terisi'}</span>`;
                                 btnDirectKaosTtd.style.background = '#059669';
                                 btnDirectKaosTtd.style.boxShadow = '0 4px 12px rgba(5, 150, 105, 0.3)';
                             } else {
@@ -801,10 +820,10 @@
                         const btnGoToKaosTtdForm = document.getElementById('btnGoToKaosTtdForm');
                         if (btnGoToKaosTtdForm) {
                             btnGoToKaosTtdForm.onclick = () => {
-                                window.location.href = `kaos-ttd.html?kelas=${linkInfo.kelas}&absen=${linkInfo.absen}`;
+                                window.location.href = `kaos-ttd.html?kelas=${normKelas}&absen=${normAbsen}`;
                             };
-                            if (isKaosFilled) {
-                                btnGoToKaosTtdForm.innerHTML = `✏️ Edit Ukuran Kaos & TTD <span style="background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 99px; font-size: 0.72rem; margin-left: 6px; font-weight:800;">✓ Terisi (${kaosData.ukuranKaos})</span>`;
+                            if (isKaosFilled && kaosData) {
+                                btnGoToKaosTtdForm.innerHTML = `✏️ Edit Ukuran Kaos & TTD <span style="background: rgba(255,255,255,0.25); padding: 2px 8px; border-radius: 99px; font-size: 0.72rem; margin-left: 6px; font-weight:800;">✓ Terisi (${kaosData.ukuranKaos || 'OK'})</span>`;
                                 btnGoToKaosTtdForm.style.background = '#059669';
                             } else {
                                 btnGoToKaosTtdForm.innerHTML = `👕✍️ Isi Ukuran Kaos & Tanda Tangan Digital →`;

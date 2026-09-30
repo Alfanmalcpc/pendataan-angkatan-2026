@@ -526,23 +526,27 @@
                 Data Kaos & TTD Berhasil Disimpan!
             </h3>
             <p style="font-size: 0.85rem; color: #475569; margin-bottom: 18px; line-height: 1.5;" id="successDesc">
-                Ukuran kaos Anda dan tanda tangan digital berlatar hitam telah resmi tersimpan di sistem dan terkirim ke Google Drive panitia.
+                Ukuran kaos Anda dan tanda tangan digital berlatar putih resmi tersimpan di database Nevastra dan siap diarsipkan ke Google Drive panitia.
             </p>
 
             <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 14px; margin-bottom: 20px; text-align: left; font-size: 0.82rem;">
                 <div style="margin-bottom: 6px;"><strong>Siswa:</strong> <span id="succSiswa">-</span></div>
                 <div style="margin-bottom: 6px;"><strong>Ukuran Kaos:</strong> <span id="succKaos" style="font-weight: 800; color: #2563eb;">-</span></div>
                 <div style="margin-bottom: 6px;"><strong>Tipe Lengan:</strong> <span id="succLengan" style="font-weight: 700; color: #7c3aed;">-</span></div>
-                <div><strong>Google Drive:</strong> <span id="succDrive" style="color: #059669;">Tersimpan di folder tandatangan</span></div>
+                <div><strong>Status Penyimpanan:</strong> <span id="succDrive" style="color: #059669;">Tersimpan di Realtime Database & Folder tanda tangan</span></div>
             </div>
 
             <div style="display: flex; gap: 10px; flex-direction: column;">
-                <a id="btnSuccToBiodata" href="#" class="btn btn-primary" style="padding: 12px; font-weight: 700; border-radius: 12px; text-decoration: none; justify-content: center;">
-                    📝 Lanjut Isi / Periksa Biodata Siswa →
+                <a href="index.html" class="btn btn-primary" style="padding: 12px; font-weight: 700; border-radius: 12px; text-decoration: none; justify-content: center; background: #059669; border-color: #059669;">
+                    🏠 Kembali ke Halaman Utama (Status Jadi Edit)
                 </a>
-                <a href="index.html" class="btn btn-outline" style="padding: 10px; font-weight: 700; border-radius: 12px; text-decoration: none; justify-content: center; border-color: #cbd5e1; color: #475569;">
-                    Kembali ke Halaman Utama
+                <a id="btnSuccToBiodata" href="#" class="btn btn-outline" style="padding: 11px; font-weight: 700; border-radius: 12px; text-decoration: none; justify-content: center; border-color: #4f46e5; color: #4f46e5;">
+                    📝 Lanjut Isi / Periksa Formulir Biodata Siswa →
                 </a>
+                <button type="button" id="btnCloseSuccessModal" class="btn btn-outline" style="padding: 9px; font-weight: 600; border-radius: 12px; border-color: #cbd5e1; color: #64748b;">
+                    Tutup Notifikasi
+                </button>
+            </div>
             </div>
         </div>
     </div>
@@ -885,70 +889,106 @@
 
             try {
                 // 1. Dapatkan Base64 PNG background putih & tinta hitam
-                const pngBase64 = canvas.toDataURL('image/png');
+                let pngBase64 = '';
+                if (hasDrawn) {
+                    pngBase64 = canvas.toDataURL('image/png');
+                } else if (existingTtdData && existingTtdData.ttdBase64) {
+                    pngBase64 = existingTtdData.ttdBase64;
+                } else {
+                    pngBase64 = canvas.toDataURL('image/png');
+                }
+
                 const cleanNama = currentStudentData.nama.replace(/[/\\?%*:|"<>]/g, '').trim();
                 const targetFileName = `${cleanNama}.png`;
+                const normKelas = String(currentStudentData.kelas).trim().toUpperCase();
+                const normAbsen = parseInt(currentStudentData.absen, 10);
 
                 let driveUrl = (existingTtdData && existingTtdData.ttdDriveUrl) || '';
                 let driveId = (existingTtdData && existingTtdData.ttdDriveId) || '';
 
-                // 2. Upload ke Google Drive via Google Apps Script (Folder: tandatangan/{kelas}/{Nama Siswa}.png)
-                if (window.NevastraDB && window.NevastraDB.getDriveConfig) {
-                    btnSubmitText.textContent = "☁️ Mengunggah TTD ke Google Drive (folder tandatangan)...";
+                // 2. SIMPAN LANGSUNG KE FIREBASE REALTIME DATABASE LEWAT SDK RESMI (Sangat Cepat & Andal)
+                btnSubmitText.textContent = "💾 Menyimpan data ke database Nevastra...";
+                const payloadData = {
+                    nama: currentStudentData.nama,
+                    kelas: normKelas,
+                    absen: normAbsen,
+                    email: (currentAuthUser && currentAuthUser.email) || '',
+                    uid: (currentAuthUser && currentAuthUser.uid) || '',
+                    ukuranKaos: ukuran,
+                    tipeLengan: lengan,
+                    ttdNamaFile: targetFileName,
+                    ttdDriveUrl: driveUrl,
+                    ttdDriveId: driveId,
+                    ttdBase64: pngBase64,
+                    updatedAt: new Date().toISOString()
+                };
+
+                // Tulis langsung ke Firebase SDK
+                await set(ref(db, `kaos_ttd/${normKelas}/${normAbsen}`), payloadData);
+
+                // Simpan cache lokal
+                try {
+                    localStorage.setItem(`nevastra_kaos_${normKelas}_${normAbsen}`, JSON.stringify(payloadData));
+                } catch(e) {}
+
+                // Jika ada helper db.js, jalankan juga
+                if (window.NevastraDB && window.NevastraDB.saveKaosTtd) {
+                    try { await window.NevastraDB.saveKaosTtd(normKelas, normAbsen, payloadData); } catch(e){}
+                }
+
+                // 3. Upload ke Google Drive via Google Apps Script (Folder: tanda tangan/{kelas}/{Nama Siswa}.png)
+                // Beri batas waktu maksimal 10 detik agar tidak menggantung jika Drive sedang lambat
+                if (hasDrawn && window.NevastraDB && window.NevastraDB.getDriveConfig) {
+                    btnSubmitText.textContent = "☁️ Mengunggah TTD ke Google Drive (folder tanda tangan)...";
                     try {
                         const driveConfig = await window.NevastraDB.getDriveConfig();
                         if (driveConfig && driveConfig.scriptUrl) {
                             const payloadDrive = {
                                 type: 'tandatangan',
                                 folderCategory: 'tandatangan',
-                                kelas: currentStudentData.kelas,
-                                absen: currentStudentData.absen,
+                                kelas: normKelas,
+                                absen: normAbsen,
                                 nama: cleanNama,
                                 fileName: targetFileName,
                                 mimeType: 'image/png',
                                 base64: pngBase64
                             };
 
-                            const resDrive = await window.NevastraDB.uploadFotoToDrive(driveConfig.scriptUrl, payloadDrive);
-                            if (resDrive && resDrive.status === 'success') {
-                                driveUrl = resDrive.fileUrl || '';
+                            const drivePromise = window.NevastraDB.uploadFotoToDrive(driveConfig.scriptUrl, payloadDrive);
+                            const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout Drive 10 detik")), 10000));
+                            const resDrive = await Promise.race([drivePromise, timeoutPromise]);
+                            
+                            if (resDrive && resDrive.status === 'success' && resDrive.fileUrl) {
+                                driveUrl = resDrive.fileUrl;
                                 driveId = resDrive.fileId || '';
+                                payloadData.ttdDriveUrl = driveUrl;
+                                payloadData.ttdDriveId = driveId;
+                                await set(ref(db, `kaos_ttd/${normKelas}/${normAbsen}/ttdDriveUrl`), driveUrl);
+                                if (driveId) {
+                                    await set(ref(db, `kaos_ttd/${normKelas}/${normAbsen}/ttdDriveId`), driveId);
+                                }
                             }
                         }
                     } catch (driveErr) {
-                        console.warn("Upload Drive error (akan tetap disimpan ke database):", driveErr);
+                        console.warn("Upload Drive terlewati atau timeout, data tetap tersimpan aman di Firebase:", driveErr);
                     }
                 }
 
-                // 3. Simpan ke Firebase Realtime Database Nevastra (/kaos_ttd/{kelas}/{absen})
-                btnSubmitText.textContent = "💾 Menyimpan data ke database Nevastra...";
-                const payloadData = {
-                    nama: currentStudentData.nama,
-                    kelas: currentStudentData.kelas,
-                    absen: currentStudentData.absen,
-                    email: currentAuthUser.email,
-                    uid: currentAuthUser.uid,
-                    ukuranKaos: ukuran,
-                    tipeLengan: lengan,
-                    ttdNamaFile: targetFileName,
-                    ttdDriveUrl: driveUrl,
-                    ttdDriveId: driveId,
-                    ttdBase64: pngBase64
-                };
-
-                if (window.NevastraDB && window.NevastraDB.saveKaosTtd) {
-                    await window.NevastraDB.saveKaosTtd(currentStudentData.kelas, currentStudentData.absen, payloadData);
-                }
+                // Update form state ke mode Edit
+                existingTtdData = payloadData;
+                editModeNotice.style.display = 'flex';
+                editNoticeDetail.textContent = `Data Anda tersimpan: Ukuran ${ukuran}, ${lengan}. Tanda tangan tersimpan rapi.`;
+                btnSubmitText.textContent = "Simpan Perubahan (Edit) Ukuran Kaos & TTD";
 
                 // 4. Sukses! Tampilkan Modal
-                document.getElementById('succSiswa').textContent = `${currentStudentData.nama} (${currentStudentData.kelas} Absen ${currentStudentData.absen})`;
+                document.getElementById('succSiswa').textContent = `${currentStudentData.nama} (${normKelas} Absen ${normAbsen})`;
                 document.getElementById('succKaos').textContent = ukuran;
                 document.getElementById('succLengan').textContent = lengan;
                 document.getElementById('succDrive').innerHTML = driveUrl 
-                    ? `<a href="${driveUrl}" target="_blank" style="color: #2563eb; text-decoration: underline;">Buka Berkas di Drive (${targetFileName})</a>` 
-                    : `Tersimpan di database & folder tandatangan/${currentStudentData.kelas}/`;
+                    ? `<a href="${driveUrl}" target="_blank" style="color: #059669; font-weight: 700; text-decoration: underline;">Buka Berkas di Drive (${targetFileName})</a>` 
+                    : `Tersimpan di Realtime Database & Folder tanda tangan/${normKelas}/`;
 
-                document.getElementById('btnSuccToBiodata').href = `${currentStudentData.kelas.toLowerCase()}.html?absen=${currentStudentData.absen}`;
+                document.getElementById('btnSuccToBiodata').href = `${normKelas.toLowerCase()}.html?absen=${normAbsen}`;
                 document.getElementById('modalSuccess').style.display = 'flex';
 
             } catch (err) {
@@ -956,9 +996,16 @@
                 showAlert('danger', "Terjadi kesalahan saat menyimpan data: " + err.message);
             } finally {
                 btnSubmitKaosTtd.disabled = false;
-                btnSubmitText.textContent = "Simpan Ukuran Kaos & Unggah TTD ke Google Drive";
+                btnSubmitText.textContent = existingTtdData ? "Simpan Perubahan (Edit) Ukuran Kaos & TTD" : "Simpan Ukuran Kaos & Unggah TTD ke Google Drive";
             }
         });
+
+        const btnCloseSuccessModal = document.getElementById('btnCloseSuccessModal');
+        if (btnCloseSuccessModal) {
+            btnCloseSuccessModal.onclick = () => {
+                document.getElementById('modalSuccess').style.display = 'none';
+            };
+        }
 
         function showAlert(type, msg) {
             formAlert.style.display = 'block';
