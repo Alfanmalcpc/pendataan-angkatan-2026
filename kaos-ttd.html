@@ -156,18 +156,18 @@
 
         /* Canvas Signature Box */
         .signature-wrapper {
-            background: #000000;
-            border: 2px solid #334155;
-            border-radius: 16px;
+            background: #ffffff;
+            border: 2.5px solid #cbd5e1;
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
             position: relative;
         }
         .signature-canvas {
             display: block;
             width: 100%;
-            height: 240px;
-            background: #000000;
+            height: 380px;
+            background: #ffffff;
             cursor: crosshair;
             touch-action: none;
         }
@@ -176,13 +176,13 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: rgba(255, 255, 255, 0.25);
-            font-size: 0.95rem;
-            font-weight: 600;
+            color: #94a3b8;
+            font-size: 1.05rem;
+            font-weight: 700;
             pointer-events: none;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             letter-spacing: 0.5px;
         }
         .signature-toolbar {
@@ -200,7 +200,7 @@
             font-size: 0.76rem;
             font-weight: 700;
             color: #0f172a;
-            background: #f1f5f9;
+            background: #f8fafc;
             padding: 6px 12px;
             border-radius: 999px;
             border: 1px solid #cbd5e1;
@@ -253,7 +253,7 @@
                 grid-template-columns: 1fr;
             }
             .signature-canvas {
-                height: 200px;
+                height: 320px;
             }
             .section-card {
                 padding: 18px;
@@ -437,22 +437,22 @@
                     <span>3. Tanda Tangan Digital Resmi</span>
                 </div>
                 <div class="section-desc">
-                    Gunakan jari (pada layar HP/Tablet) atau kursor mouse (pada PC) untuk membubuhkan tanda tangan Anda di dalam kotak hitam di bawah.
+                    Gunakan jari (pada layar HP/Tablet) atau kursor mouse (pada PC) untuk membubuhkan tanda tangan Anda di area kanvas putih yang luas di bawah ini.
                 </div>
 
-                <!-- TTD Box Hitam Pekat Sesuai Permintaan -->
+                <!-- TTD Box Putih Luas & Tinta Hitam Sesuai Permintaan -->
                 <div class="signature-wrapper">
                     <canvas id="signatureCanvas" class="signature-canvas"></canvas>
                     <div class="signature-hint" id="signatureHint">
                         <i class="fa-solid fa-pencil"></i>
-                        <span>Bubuhkan Tanda Tangan Anda di Sini</span>
+                        <span>Bubuhkan Tanda Tangan Anda di Sini (Area Luas)</span>
                     </div>
                 </div>
 
                 <div class="signature-toolbar">
                     <div class="badge-black-bg">
-                        <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #000000; border: 1px solid #94a3b8;"></span>
-                        <span>Format: <strong>PNG Hitam Pekat (#000000)</strong></span>
+                        <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ffffff; border: 2px solid #0f172a;"></span>
+                        <span>Format: <strong>PNG Background Putih (#FFFFFF) & Tinta Hitam</strong></span>
                     </div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                         <button type="button" class="btn btn-outline btn-sm" id="btnClearSignature" style="font-size: 0.8rem; border-color: #cbd5e1; border-radius: 8px;">
@@ -467,7 +467,7 @@
                 <!-- Preview Area Jika Sudah Pernah Simpan -->
                 <div id="existingSignatureBox" style="display: none; margin-top: 14px; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <img id="imgExistingTtdPreview" src="" alt="TTD Sebelumnya" style="width: 70px; height: 35px; object-fit: contain; background: #000; border-radius: 6px; border: 1px solid #334155;">
+                        <img id="imgExistingTtdPreview" src="" alt="TTD Sebelumnya" style="width: 80px; height: 40px; object-fit: contain; background: #ffffff; border-radius: 6px; border: 1.5px solid #cbd5e1;">
                         <span style="font-size: 0.8rem; font-weight: 700; color: #1e293b;">
                             Tanda tangan sebelumnya sudah tersimpan di sistem.
                         </span>
@@ -491,15 +491,15 @@
 
     <!-- Modal Pratinjau TTD -->
     <div id="modalPreviewTtd" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.75); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
-        <div style="background: #ffffff; border-radius: 20px; max-width: 480px; width: 100%; padding: 24px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+        <div style="background: #ffffff; border-radius: 20px; max-width: 520px; width: 100%; padding: 24px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
             <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
-                Pratinjau Hasil Berkas PNG (Background Hitam)
+                Pratinjau Hasil Berkas PNG (Background Putih)
             </h4>
             <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 16px;">
                 Berkas ini yang akan diunggah ke Google Drive di folder <code>tandatangan/Kelas/Nama.png</code>:
             </p>
-            <div style="background: #000000; border-radius: 14px; padding: 14px; margin-bottom: 16px; border: 1.5px solid #334155;">
-                <img id="imgModalPreview" src="" alt="Preview TTD Hitam" style="max-width: 100%; max-height: 180px; display: block; margin: 0 auto;">
+            <div style="background: #ffffff; border-radius: 14px; padding: 16px; margin-bottom: 16px; border: 2px solid #cbd5e1; box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);">
+                <img id="imgModalPreview" src="" alt="Preview TTD Putih" style="max-width: 100%; max-height: 240px; display: block; margin: 0 auto;">
             </div>
             <button type="button" id="btnClosePreviewTtd" class="btn btn-secondary btn-block" style="border-radius: 12px; font-weight: 700; width: 100%; padding: 10px;">
                 Tutup Pratinjau
@@ -590,8 +590,8 @@
             canvas.height = rect.height * dpr;
             ctx.scale(dpr, dpr);
 
-            // Redraw black background
-            fillCanvasBlack();
+            // Redraw white background
+            fillCanvasWhite();
 
             // Restore existing if any
             if (existingTtdData && existingTtdData.ttdBase64 && !hasDrawn) {
@@ -605,8 +605,8 @@
             }
         }
 
-        function fillCanvasBlack() {
-            ctx.fillStyle = '#000000';
+        function fillCanvasWhite() {
+            ctx.fillStyle = '#FFFFFF';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
 
@@ -619,7 +619,7 @@
         });
 
         // Initialize Canvas
-        fillCanvasBlack();
+        fillCanvasWhite();
         setTimeout(resizeCanvas, 100);
 
         // Canvas Drawing Helpers
@@ -650,8 +650,8 @@
 
             ctx.beginPath();
             ctx.moveTo(lastX, lastY);
-            ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 3.2;
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 3.6;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             ctx.lineTo(lastX + 0.1, lastY + 0.1);
@@ -666,8 +666,8 @@
             ctx.beginPath();
             ctx.moveTo(lastX, lastY);
             ctx.lineTo(pos.x, pos.y);
-            ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 3.2;
+            ctx.strokeStyle = '#000000';
+            ctx.lineWidth = 3.6;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             ctx.stroke();
@@ -691,7 +691,7 @@
 
         // Clear Canvas
         document.getElementById('btnClearSignature').addEventListener('click', () => {
-            fillCanvasBlack();
+            fillCanvasWhite();
             hasDrawn = false;
             signatureHint.style.display = 'flex';
         });
@@ -701,7 +701,7 @@
         const imgModalPreview = document.getElementById('imgModalPreview');
         document.getElementById('btnPreviewSignature').addEventListener('click', () => {
             if (!hasDrawn) {
-                alert("Silakan bubuhkan tanda tangan Anda terlebih dahulu pada kanvas hitam!");
+                alert("Silakan bubuhkan tanda tangan Anda terlebih dahulu pada area kanvas!");
                 return;
             }
             const pngData = canvas.toDataURL('image/png');
@@ -861,7 +861,7 @@
             }
 
             if (!hasDrawn && (!existingTtdData || !existingTtdData.ttdBase64)) {
-                showAlert('danger', 'Harap bubuhkan tanda tangan Anda pada kanvas hitam di atas!');
+                showAlert('danger', 'Harap bubuhkan tanda tangan Anda pada kanvas di atas!');
                 document.getElementById('signatureCanvas').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
@@ -871,7 +871,7 @@
             btnSubmitText.textContent = "⏳ Memproses berkas PNG tanda tangan...";
 
             try {
-                // 1. Dapatkan Base64 PNG background hitam murni
+                // 1. Dapatkan Base64 PNG background putih & tinta hitam
                 const pngBase64 = canvas.toDataURL('image/png');
                 const cleanNama = currentStudentData.nama.replace(/[/\\?%*:|"<>]/g, '').trim();
                 const targetFileName = `${cleanNama}.png`;

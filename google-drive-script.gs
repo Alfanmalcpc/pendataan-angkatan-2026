@@ -111,7 +111,7 @@ function doPost(e) {
     // 5. Buat file baru di dalam folder masing-masing
     var file = targetFolder.createFile(blob);
     var fileDesc = isTtd
-      ? ("Tanda Tangan Digital Background Hitam: " + cleanName + " (" + className + " Absen " + (data.absen || "") + ")")
+      ? ("Tanda Tangan Digital Background Putih: " + cleanName + " (" + className + " Absen " + (data.absen || "") + ")")
       : ("Foto Profil Buku Tahunan: " + cleanName + " (" + className + " Absen " + (data.absen || "") + ")");
     file.setDescription(fileDesc);
     

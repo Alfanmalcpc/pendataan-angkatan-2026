@@ -1279,7 +1279,7 @@
                             Data Ukuran Kaos & Tanda Tangan Angkatan 2026
                         </h2>
                         <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">
-                            Rekapitulasi ukuran kaos angkatan (S s/d 4XL, Lengan Pendek vs Panjang) dan koleksi berkas tanda tangan digital format PNG background hitam yang tersimpan di Google Drive.
+                            Rekapitulasi ukuran kaos angkatan (S s/d 4XL, Lengan Pendek vs Panjang) dan koleksi berkas tanda tangan digital format PNG background putih yang tersimpan di Google Drive.
                         </p>
                     </div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
@@ -1372,7 +1372,7 @@
                                 <th>Nama Lengkap Siswa</th>
                                 <th style="text-align: center;">Ukuran Kaos</th>
                                 <th style="text-align: center;">Tipe Lengan</th>
-                                <th style="text-align: center; min-width: 130px;">Tanda Tangan (PNG Hitam)</th>
+                                <th style="text-align: center; min-width: 130px;">Tanda Tangan (PNG Putih)</th>
                                 <th>Status Google Drive</th>
                                 <th>Waktu Pengisian</th>
                             </tr>
@@ -1481,11 +1481,11 @@
                 <h4 id="zoomTtdTitle" style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0;">Pratinjau Tanda Tangan</h4>
                 <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('modalTtdZoomAdmin').style.display='none'" style="padding: 4px 10px;">✕</button>
             </div>
-            <div style="background: #000000; border-radius: 14px; padding: 20px; margin-bottom: 14px; border: 2px solid #334155; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+            <div style="background: #ffffff; border-radius: 14px; padding: 20px; margin-bottom: 14px; border: 2px solid #cbd5e1; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
                 <img id="zoomTtdImg" src="" alt="Zoom TTD" style="max-width: 100%; max-height: 260px; display: block; margin: 0 auto; object-fit: contain;">
             </div>
             <div style="font-size: 0.76rem; color: #64748b; margin-bottom: 14px;">
-                Format resmi: PNG dengan latar belakang hitam pekat (#000000)
+                Format resmi: PNG dengan latar belakang putih (#FFFFFF) & goresan hitam
             </div>
             <button type="button" class="btn btn-secondary btn-block" onclick="document.getElementById('modalTtdZoomAdmin').style.display='none'" style="width: 100%; border-radius: 10px; font-weight: 700;">
                 Tutup
@@ -3820,7 +3820,7 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                     : `<span style="color: #64748b; font-size: 0.78rem;">Folder tandatangan/${it.kelas}/</span>`;
 
                 const thumbHtml = it.ttdBase64 
-                    ? `<img src="${it.ttdBase64}" alt="TTD" style="width: 80px; height: 38px; object-fit: contain; background: #000000; border-radius: 6px; border: 1px solid #334155; cursor: pointer;" onclick="openTtdZoom('${encodeURIComponent(it.nama)}', '${encodeURIComponent(it.kelas)}', '${it.absen}', this.src)" title="Klik untuk memperbesar">`
+                    ? `<img src="${it.ttdBase64}" alt="TTD" style="width: 80px; height: 38px; object-fit: contain; background: #ffffff; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="openTtdZoom('${encodeURIComponent(it.nama)}', '${encodeURIComponent(it.kelas)}', '${it.absen}', this.src)" title="Klik untuk memperbesar">`
                     : `<span style="color: #94a3b8; font-size: 0.78rem;">Tidak ada TTD</span>`;
 
                 const formattedTime = it.updatedAt ? new Intl.DateTimeFormat('id-ID', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(it.updatedAt)) : '-';
