@@ -508,6 +508,8 @@
                         <option value="ALL">Semua Siswa (Terisi & Belum)</option>
                         <option value="FILLED">Hanya Yang Sudah Mengisi</option>
                         <option value="PENDING">Hanya Yang Belum Mengisi</option>
+                        <option value="LINKED">Hanya Yang Sudah Tertaut Akun Google</option>
+                        <option value="UNLINKED">Hanya Yang Belum Tertaut Akun Google</option>
                     </select>
                 </div>
                 <div>
@@ -523,6 +525,7 @@
                             <th style="width: 45px;">Absen</th>
                             <th>Nama Resmi Siswa</th>
                             <th>Nama di Buku</th>
+                            <th>Akun Google (Email)</th>
                             <th>Status</th>
                             <th>TTL</th>
                             <th>Alamat</th>
@@ -1290,6 +1293,14 @@
 
                 <div class="yb-info-list">
                     <div class="yb-info-item">
+                        <div class="yb-info-icon"><i class="fa-brands fa-google" style="color: #4285F4; font-size: 15px;"></i></div>
+                        <div class="yb-info-content">
+                            <span class="yb-info-label">Akun Google Tertaut</span>
+                            <span id="mEmailGoogle" style="font-weight: 700; color: #1d4ed8;">-</span>
+                        </div>
+                    </div>
+
+                    <div class="yb-info-item">
                         <div class="yb-info-icon"><svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.498 3.498 0 0 0 8 11.5a3.498 3.498 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.498 4.498 0 0 1 8 12.5a4.498 4.498 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683z"/></svg></div>
                         <div class="yb-info-content">
                             <span class="yb-info-label">Tempat, Tanggal Lahir</span>
@@ -1523,8 +1534,14 @@
             const q = searchStudent.value.trim().toLowerCase();
 
             return list.filter(item => {
+                const bindKey = `${item.kelas}_${item.absen}`;
+                const binding = (typeof allAuthBindings === 'object' && allAuthBindings) ? allAuthBindings[bindKey] : null;
+                const isLinked = !!(binding && binding.email);
+
                 if (st === 'FILLED' && !item.isFilled) return false;
                 if (st === 'PENDING' && item.isFilled) return false;
+                if (st === 'LINKED' && !isLinked) return false;
+                if (st === 'UNLINKED' && isLinked) return false;
 
                 if (q) {
                     const matchRoster = item.namaRoster.toLowerCase().includes(q);
@@ -1535,7 +1552,8 @@
                     const matchTiktok = (item.tiktok || '').toLowerCase().includes(q);
                     const matchAlamat = (item.tinggalDi || '').toLowerCase().includes(q);
                     const matchHp = (item.noHp || '').includes(q);
-                    return matchRoster || matchNama || matchAbs || matchQuote || matchIg || matchTiktok || matchAlamat || matchHp;
+                    const matchEmail = (binding && binding.email) ? binding.email.toLowerCase().includes(q) : false;
+                    return matchRoster || matchNama || matchAbs || matchQuote || matchIg || matchTiktok || matchAlamat || matchHp || matchEmail;
                 }
 
                 return true;
@@ -1580,7 +1598,7 @@
             if (filteredList.length === 0) {
                 classTableBody.innerHTML = `
                     <tr>
-                        <td colspan="11" style="text-align: center; padding: 30px; color: var(--text-muted);">
+                        <td colspan="12" style="text-align: center; padding: 30px; color: var(--text-muted);">
                             Tidak ada data siswa yang cocok dengan filter.
                         </td>
                     </tr>
@@ -1600,12 +1618,19 @@
 
                 const padded = item.absen < 10 ? '0' + item.absen : '' + item.absen;
 
+                const bindKey = `${item.kelas}_${item.absen}`;
+                const binding = (typeof allAuthBindings === 'object' && allAuthBindings) ? allAuthBindings[bindKey] : null;
+                const emailGoogle = (binding && binding.email)
+                    ? `<span style="color: #2563eb; font-weight: 600; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px;" title="Tertaut akun Google: ${binding.email}"><i class="fa-brands fa-google"></i> ${binding.email}</span>`
+                    : `<span style="color: #94a3b8; font-style: italic; font-size: 0.78rem;">Belum Tertaut</span>`;
+
                 tr.innerHTML = `
                     <td><strong>${activeClass === 'ALL' ? item.kelas + '-' : ''}${padded}</strong></td>
                     <td><strong>${item.namaRoster}</strong></td>
                     <td style="color: ${item.nama !== item.namaRoster ? 'var(--primary)' : 'inherit'}; font-weight: ${item.nama !== item.namaRoster ? '600' : 'normal'};">
                         ${item.isFilled ? item.nama : '<span style="color: var(--text-muted);">-</span>'}
                     </td>
+                    <td>${emailGoogle}</td>
                     <td>
                         <span class="badge-status ${item.isFilled ? 'done' : 'pending'}">
                             ${item.isFilled ? '✓ Terisi' : '✗ Belum'}
@@ -1697,7 +1722,7 @@
 
                 // Header resmi tanpa baris contoh (EX:)
                 const aoa = [
-                    ["NO", "NAMA", "TTL", "ALAMAT", "PHONE", "IG", "TIKTOK", "QUOTES (MAX 5 KATA)"]
+                    ["NO", "NAMA", "AKUN GOOGLE (EMAIL)", "TTL", "ALAMAT", "PHONE", "IG", "TIKTOK", "QUOTES (MAX 5 KATA)"]
                 ];
 
                 // Hanya sertakan siswa yang benar-benar tersimpan di database
@@ -1726,6 +1751,9 @@
                     const stu = roster.find(s => s.absen == absen);
                     const no = absen;
                     const nama = saved.nama || (stu ? stu.nama : "");
+                    const bindKey = `${cls}_${absen}`;
+                    const bind = (typeof allAuthBindings === 'object' && allAuthBindings) ? allAuthBindings[bindKey] : null;
+                    const emailGoogle = (bind && bind.email) ? bind.email : "-";
                     const rawTTL = saved.ttl || (saved.tempatLahir ? (saved.tanggalLahir ? `${saved.tempatLahir}, ${saved.tanggalLahir}` : saved.tempatLahir) : "");
                     const ttl = cleanDisplayTTL(rawTTL);
                     const alamat = saved.tinggalDi || saved.alamat || "";
@@ -1734,13 +1762,14 @@
                     const tiktok = (saved.tiktok && saved.tiktok !== '-') ? saved.tiktok.replace(/^@+/, "").trim() : (saved.tiktok || "");
                     const quotes = (saved.quotes || "").trim();
 
-                    aoa.push([no, nama, ttl, alamat, phone, ig, tiktok, quotes]);
+                    aoa.push([no, nama, emailGoogle, ttl, alamat, phone, ig, tiktok, quotes]);
                 });
 
                 const ws = XLSX.utils.aoa_to_sheet(aoa);
                 ws['!cols'] = [
                     { wch: 6 },   // NO
                     { wch: 30 },  // NAMA
+                    { wch: 28 },  // AKUN GOOGLE
                     { wch: 25 },  // TTL
                     { wch: 42 },  // ALAMAT
                     { wch: 18 },  // PHONE
@@ -1791,6 +1820,17 @@
             document.getElementById('mAlamat').textContent = saved ? (saved.tinggalDi || '-') : '-';
             document.getElementById('mQuotes').textContent = saved ? (saved.quotes || 'Belum mengisi quotes.') : 'Belum mengisi biodata.';
 
+            const bindKey = `${cls}_${abs}`;
+            const binding = (typeof allAuthBindings === 'object' && allAuthBindings) ? allAuthBindings[bindKey] : null;
+            const elEmail = document.getElementById('mEmailGoogle');
+            if (elEmail) {
+                if (binding && binding.email) {
+                    elEmail.innerHTML = `<span style="color:#1d4ed8;"><i class="fa-brands fa-google"></i> ${binding.email}</span>`;
+                } else {
+                    elEmail.innerHTML = `<span style="color:#94a3b8; font-style:italic;">Belum Tertaut</span>`;
+                }
+            }
+
             document.getElementById('btnOpenFormDirect').href = cls.toLowerCase() + '.html?absen=' + abs;
             document.getElementById('btnDeleteStudentData').style.display = saved ? 'inline-block' : 'none';
 
@@ -1832,9 +1872,18 @@
         }
 
         // Realtime Data Sync
+        let allAuthBindings = {};
         async function syncData() {
             try {
                 allBiodata = await window.NevastraDB.getAllBiodata();
+                try {
+                    const bindRes = await fetch(`${DB_BASE_URL}/auth_bindings.json?t=${Date.now()}`);
+                    if (bindRes.ok) {
+                        allAuthBindings = (await bindRes.json()) || {};
+                    }
+                } catch(eB) {
+                    console.warn("Gagal memuat auth bindings:", eB);
+                }
                 renderClassRecap();
             } catch(e) {
                 console.warn("Gagal memuat data:", e);
