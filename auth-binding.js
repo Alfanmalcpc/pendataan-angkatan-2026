@@ -430,6 +430,26 @@ export function setupClassAuthBinding(options) {
     selectAbsenNama.parentNode.insertBefore(lockBadge, selectAbsenNama.nextSibling);
   }
 
+  // 7. Elemen Tombol Aju Lepas Tautan Permanen di Bawah Form Pengisian
+  let bottomAppealBox = document.getElementById('selfAppealBottomWrapper');
+  if (!bottomAppealBox && btnSubmit && btnSubmit.parentNode) {
+    bottomAppealBox = document.createElement('div');
+    bottomAppealBox.id = 'selfAppealBottomWrapper';
+    bottomAppealBox.style.cssText = 'margin-top: 18px; padding: 14px 18px; background: #fff5f5; border: 1.5px dashed #fca5a5; border-radius: 14px; text-align: center; display: none;';
+    bottomAppealBox.innerHTML = `
+      <div style="font-size: 0.85rem; font-weight: 800; color: #991b1b; margin-bottom: 4px;">
+        ⚠️ Keliru Memilih Nama Siswa Saat Pertama Kali Login?
+      </div>
+      <div style="font-size: 0.78rem; color: #7f1d1d; margin-bottom: 10px; line-height: 1.4;">
+        Formulir ini terkunci untuk profil di atas. Jika Anda keliru mengeklik nama teman, ajukan permohonan ke Admin untuk memutus tautan ini agar akun Anda dapat memilih nama asli Anda.
+      </div>
+      <button type="button" id="btnSelfAppealBottom" class="btn btn-outline btn-sm" style="border-color: #dc2626; color: #dc2626; font-weight: 800; font-size: 0.82rem; padding: 8px 18px; background: #ffffff; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+        <span>⚖️</span> Ajukan Lepas / Reset Tautan Akun ke Admin →
+      </button>
+    `;
+    btnSubmit.parentNode.insertBefore(bottomAppealBox, btnSubmit.nextSibling);
+  }
+
   // Helper Elements
   const btnAuthSignIn = document.getElementById('btnAuthSignIn');
   const authGateInfo = document.getElementById('authGateInfo');
@@ -563,6 +583,16 @@ export function setupClassAuthBinding(options) {
     }
   }
 
+  function openSelfAppealModal(student, user) {
+    pendingAbsen = student.absen;
+    pendingStudent = student;
+    document.getElementById('appealNamaSiswa').textContent = `${student.nama} (${kelas} Absen ${student.absen})`;
+    document.getElementById('appealCurrentEmail').textContent = `${user.email} (Akun Anda Sendiri)`;
+    const reasonEl = document.getElementById('appealAlasan');
+    if (reasonEl) reasonEl.placeholder = 'Contoh: Saya salah klik nomor absen / nama teman saat memilih profil pertama kali...';
+    modalAppeal.style.display = 'flex';
+  }
+
   // FUNGSI UNTUK MENGUNCI IDENTITAS SISWA TERPILIH ("hanya saja tidak bisa di ubah")
   function lockStudentIdentity(student, user) {
     if (selectAbsenNama) {
@@ -578,27 +608,47 @@ export function setupClassAuthBinding(options) {
       lockBadge.style.display = 'flex';
       lockBadge.style.justifyContent = 'space-between';
       lockBadge.style.alignItems = 'center';
+      lockBadge.style.flexWrap = 'wrap';
+      lockBadge.style.gap = '10px';
+      lockBadge.style.background = 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)';
+      lockBadge.style.borderColor = '#fdba74';
+      lockBadge.style.padding = '12px 16px';
+      lockBadge.style.borderRadius = '12px';
       lockBadge.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
-          <span>🔒</span>
-          <span>Profil Resmi Terkunci: <strong>${student.nama} (Absen ${student.absen})</strong> — Ditautkan ke akun: <em>${user.email}</em>.</span>
+        <div style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 220px;">
+          <span style="font-size: 1.1rem;">🔒</span>
+          <div>
+            <div style="font-size: 0.88rem; font-weight: 800; color: #9a3412;">
+              Profil Terkunci: ${student.nama} (${kelas} Absen ${student.absen})
+            </div>
+            <div style="font-size: 0.76rem; color: #c2410c;">
+              Tertaut ke akun Google: <em>${user.email}</em> (Identitas siswa tidak dapat diubah)
+            </div>
+          </div>
         </div>
-        <button type="button" id="btnSelfAppealInForm" style="margin-left: 10px; font-size: 0.74rem; background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; border-radius: 8px; padding: 4px 10px; cursor: pointer; font-weight: 700; white-space: nowrap;">
-          Salah Nama? Aju Lepas
+        <button type="button" id="btnSelfAppealInForm" style="background: #dc2626; color: white; border: none; border-radius: 8px; padding: 6px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(220,38,38,0.25);">
+          <span>⚖️</span> Salah Nama? Aju Lepas
         </button>
       `;
 
       const btnSelf = document.getElementById('btnSelfAppealInForm');
       if (btnSelf) {
-        btnSelf.onclick = () => {
-          pendingAbsen = student.absen;
-          pendingStudent = student;
-          document.getElementById('appealNamaSiswa').textContent = `${student.nama} (Absen ${student.absen})`;
-          document.getElementById('appealCurrentEmail').textContent = `${user.email} (Akun Anda Sendiri)`;
-          document.getElementById('appealAlasan').placeholder = 'Contoh: Saya salah klik nama teman di daftar saat memilih...';
-          modalAppeal.style.display = 'flex';
-        };
+        btnSelf.onclick = () => openSelfAppealModal(student, user);
       }
+    }
+
+    if (bottomAppealBox) {
+      bottomAppealBox.style.display = 'block';
+      const btnBottom = document.getElementById('btnSelfAppealBottom');
+      if (btnBottom) {
+        btnBottom.onclick = () => openSelfAppealModal(student, user);
+      }
+    }
+
+    const btnAuthAppealTop = document.getElementById('btnAuthAppealTop');
+    if (btnAuthAppealTop) {
+      btnAuthAppealTop.style.display = 'inline-block';
+      btnAuthAppealTop.onclick = () => openSelfAppealModal(student, user);
     }
   }
 
@@ -684,9 +734,14 @@ export function setupClassAuthBinding(options) {
     `;
 
     authGateAction.innerHTML = `
-      <button class="auth-btn-signout" id="btnAuthSignOut">
-        Keluar Akun
-      </button>
+      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+        <button type="button" class="btn btn-outline btn-sm" id="btnAuthAppealTop" style="border-color: #fca5a5; color: #b91c1c; font-weight: 700; font-size: 0.78rem; padding: 6px 12px; background: white; border-radius: 8px; display: none; cursor: pointer;">
+          ⚖️ Aju Lepas Tautan
+        </button>
+        <button class="auth-btn-signout" id="btnAuthSignOut">
+          Keluar Akun
+        </button>
+      </div>
     `;
     document.getElementById('btnAuthSignOut').onclick = async () => {
       await signOut(auth);
