@@ -3332,23 +3332,39 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                     const isPending = item.status === 'pending';
                     const isApproved = item.status === 'approved';
                     const isRejected = item.status === 'rejected';
+                    const isSelfMistake = (item.type === 'self_mistake');
 
                     let statusBadge = '<span class="badge-status pending" style="background: #fef3c7; color: #b45309;">Menunggu Verifikasi</span>';
                     if (isApproved) statusBadge = '<span class="badge-status success" style="background: #dcfce7; color: #15803d;">Disetujui Admin</span>';
                     if (isRejected) statusBadge = '<span class="badge-status danger" style="background: #fee2e2; color: #b91c1c;">Ditolak Admin</span>';
 
-                    let rawWa = (item.noWa || '').replace(/[^0-9]/g, '');
+                    const typeBadge = isSelfMistake
+                        ? '<span class="badge-status" style="background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; font-weight: 700;">⚠️ Salah Pilih Nama Sendiri</span>'
+                        : '<span class="badge-status" style="background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; font-weight: 700;">⚖️ Sengketa Klaim Akun</span>';
+
+                    const rawWaVal = item.applicantWa || item.noWa || '';
+                    let rawWa = rawWaVal.replace(/[^0-9]/g, '');
                     if (rawWa.startsWith('0')) rawWa = '62' + rawWa.slice(1);
-                    const waLink = rawWa ? `https://wa.me/${rawWa}?text=Halo%20${encodeURIComponent(item.namaSiswa || '')},%20terkait%20pengajuan%20banding%20akun%20di%20Web%20Pendataan%20Nevastra%202026:` : '#';
+
+                    const sName = item.studentName || item.namaSiswa || 'Siswa';
+                    const realName = item.applicantRealName || item.applicantName || '';
+                    const studentEmail = item.applicantEmail || item.claimedByEmail || '';
+                    const studentUid = item.applicantUid || item.claimedByUid || '';
+
+                    const waMsg = isSelfMistake
+                        ? `Halo ${encodeURIComponent(realName || sName)}, terkait permohonan lepas tautan akun (${studentEmail}) dari profil ${encodeURIComponent(sName)} di Web Pendataan Nevastra 2026:`
+                        : `Halo ${encodeURIComponent(sName)}, terkait pengajuan banding akun di Web Pendataan Nevastra 2026:`;
+                    const waLink = rawWa ? `https://wa.me/${rawWa}?text=${waMsg}` : '#';
 
                     cardsHtml += `
-                        <div class="card" style="border: 1.5px solid ${isPending ? '#fecaca' : '#e2e8f0'}; background: ${isPending ? '#fffafb' : '#ffffff'}; padding: 20px 24px; margin-bottom: 14px;">
+                        <div class="card" style="border: 1.5px solid ${isPending ? (isSelfMistake ? '#fdba74' : '#fecaca') : '#e2e8f0'}; background: ${isPending ? (isSelfMistake ? '#fffbf7' : '#fffafb') : '#ffffff'}; padding: 20px 24px; margin-bottom: 14px;">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
                                 <div>
-                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                                         <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin: 0;">
-                                            ${item.namaSiswa || 'Siswa'} (${item.kelas} Absen ${item.absen})
+                                            ${sName} (${item.kelas} Absen ${item.absen})
                                         </h3>
+                                        ${typeBadge}
                                         ${statusBadge}
                                     </div>
                                     <span style="font-size: 0.78rem; color: #64748b;">
@@ -3361,36 +3377,51 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                                             <i class="fa-brands fa-whatsapp"></i> Chat Siswa via WA
                                         </a>
                                     ` : ''}
-                                    ${isPending ? `
-                                        <button class="btn btn-primary btn-sm btn-approve-appeal" data-id="${item.id}" data-kelas="${item.kelas}" data-absen="${item.absen}" data-uid="${item.claimedByUid}" data-email="${item.claimedByEmail}" data-name="${item.claimedByName}" style="background: #10b981; font-weight: 700;">
+                                    ${isPending ? (isSelfMistake ? `
+                                        <button class="btn btn-primary btn-sm btn-approve-self-appeal" data-id="${item.id}" data-kelas="${item.kelas}" data-absen="${item.absen}" data-uid="${studentUid}" data-email="${studentEmail}" data-nama="${sName}" data-realnama="${realName}" data-wa="${rawWa}" style="background: #ea580c; font-weight: 700; border-color: #ea580c;">
+                                            Setujui & Lepas Tautan
+                                        </button>
+                                        <button class="btn btn-outline btn-sm btn-reject-appeal" data-id="${item.id}" style="border-color: #ef4444; color: #dc2626; font-weight: 700;">
+                                            Tolak
+                                        </button>
+                                    ` : `
+                                        <button class="btn btn-primary btn-sm btn-approve-appeal" data-id="${item.id}" data-kelas="${item.kelas}" data-absen="${item.absen}" data-uid="${studentUid}" data-email="${studentEmail}" data-name="${sName}" style="background: #10b981; font-weight: 700;">
                                             Setujui & Lepas Tautan Lama
                                         </button>
                                         <button class="btn btn-outline btn-sm btn-reject-appeal" data-id="${item.id}" style="border-color: #ef4444; color: #dc2626; font-weight: 700;">
                                             Tolak
                                         </button>
-                                    ` : ''}
+                                    `) : ''}
                                 </div>
                             </div>
 
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px;">
                                 <div>
-                                    <div style="font-size: 0.75rem; font-weight: 700; color: #ef4444; text-transform: uppercase;">Akun Tertaut Saat Ini</div>
-                                    <div style="font-size: 0.88rem; font-weight: 600; color: #1e293b;">${item.currentLinkedEmail || '-'}</div>
+                                    <div style="font-size: 0.75rem; font-weight: 700; color: #ef4444; text-transform: uppercase;">
+                                        ${isSelfMistake ? 'Profil Yang Terlanjur Terpilih' : 'Akun Tertaut Saat Ini'}
+                                    </div>
+                                    <div style="font-size: 0.88rem; font-weight: 600; color: #1e293b;">
+                                        ${isSelfMistake ? `${sName} (${item.kelas} Absen ${item.absen})` : (item.currentLinkedEmail || '-')}
+                                    </div>
                                 </div>
                                 <div>
-                                    <div style="font-size: 0.75rem; font-weight: 700; color: #2563eb; text-transform: uppercase;">Akun Pemohon Asli (Claimant)</div>
-                                    <div style="font-size: 0.88rem; font-weight: 600; color: #1e293b;">${item.claimedByName || '-'} (${item.claimedByEmail || '-'})</div>
+                                    <div style="font-size: 0.75rem; font-weight: 700; color: #2563eb; text-transform: uppercase;">
+                                        ${isSelfMistake ? 'Nama Asli Pemohon & Akun' : 'Akun Pemohon Asli (Claimant)'}
+                                    </div>
+                                    <div style="font-size: 0.88rem; font-weight: 600; color: #1e293b;">
+                                        ${isSelfMistake ? `<strong style="color: #2563eb;">${realName || item.applicantName || '-'}</strong> (${studentEmail})` : `${item.claimedByName || item.applicantName || '-'} (${studentEmail})`}
+                                    </div>
                                 </div>
                                 <div>
                                     <div style="font-size: 0.75rem; font-weight: 700; color: #0d9488; text-transform: uppercase;">Kontak WhatsApp Pemohon</div>
-                                    <div style="font-size: 0.88rem; font-weight: 600; color: #1e293b;">${item.noWa || '-'}</div>
+                                    <div style="font-size: 0.88rem; font-weight: 600; color: #1e293b;">${rawWaVal || '-'}</div>
                                 </div>
                             </div>
 
                             <div>
-                                <strong style="font-size: 0.82rem; color: #475569;">Alasan Pengajuan Banding:</strong>
+                                <strong style="font-size: 0.82rem; color: #475569;">Alasan Pengajuan:</strong>
                                 <p style="font-size: 0.88rem; color: #1e293b; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; margin: 6px 0 0 0;">
-                                    "${item.alasan || '-'}"
+                                    "${item.reason || item.alasan || '-'}"
                                 </p>
                             </div>
                         </div>
@@ -3399,7 +3430,7 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
 
                 container.innerHTML = cardsHtml;
 
-                // Hook approve buttons
+                // Hook approve buttons (Claim Appeal)
                 container.querySelectorAll('.btn-approve-appeal').forEach(btn => {
                     btn.onclick = async () => {
                         const id = btn.getAttribute('data-id');
@@ -3445,8 +3476,62 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
 
                             alert("✅ Aju banding berhasil disetujui dan profil telah ditautkan ke akun pemohon!");
                             syncAppealsData();
+                            syncData();
                         } catch (e) {
                             alert("Gagal memproses persetujuan: " + e.message);
+                            btn.disabled = false;
+                        }
+                    };
+                });
+
+                // Hook approve buttons (Self Mistake Unbind)
+                container.querySelectorAll('.btn-approve-self-appeal').forEach(btn => {
+                    btn.onclick = async () => {
+                        const id = btn.getAttribute('data-id');
+                        const k = btn.getAttribute('data-kelas');
+                        const a = btn.getAttribute('data-absen');
+                        const uid = btn.getAttribute('data-uid');
+                        const email = btn.getAttribute('data-email');
+                        const nama = btn.getAttribute('data-nama');
+                        const realNama = btn.getAttribute('data-realnama');
+                        const rawWa = btn.getAttribute('data-wa');
+
+                        const sure = confirm(`⚠️ Konfirmasi Lepas Tautan:\nApakah Anda yakin ingin melepas tautan akun ${email} dari profil ${nama} (${k} Absen ${a})?\n\nProfil siswa akan kembali bebas dan akun Google siswa direset agar dapat memilih nama aslinya.`);
+                        if (!sure) return;
+
+                        btn.disabled = true;
+                        btn.textContent = "Melepas Tautan...";
+                        try {
+                            // 1. Hapus binding profil siswa
+                            await fetch(`${DB_BASE_URL}/auth_bindings/${k}_${a}.json`, {
+                                method: 'DELETE'
+                            });
+
+                            // 2. Hapus relasi akun siswa
+                            if (uid) {
+                                await fetch(`${DB_BASE_URL}/user_to_student/${uid}.json`, {
+                                    method: 'DELETE'
+                                });
+                            }
+
+                            // 3. Update status appeal
+                            await fetch(`${DB_BASE_URL}/appeals/${id}.json`, {
+                                method: 'PATCH',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ status: 'approved', resolvedAt: new Date().toISOString() })
+                            });
+
+                            alert(`✅ Sukses! Akun ${email} telah resmi dilepas dari profil ${nama}. Sekarang siswa dapat membuka kembali portal untuk memilih nama aslinya (${realNama || 'asli'}).`);
+
+                            if (rawWa) {
+                                const waUrl = `https://wa.me/${rawWa}?text=Halo%20${encodeURIComponent(realNama || 'Siswa')},%20permohonan%20lepas%20tautan%20akun%20kamu%20sudah%20disetujui%20Admin.%20Akun%20Google%20kamu%20telah%20kami%20reset,%20silakan%20buka%20kembali%20portal%20pendataan%20untuk%20memilih%20nama%20kamu%20yang%20sebenarnya%20ya!%20Terima%20kasih!`;
+                                window.open(waUrl, '_blank');
+                            }
+
+                            syncAppealsData();
+                            syncData();
+                        } catch (e) {
+                            alert("Gagal memproses lepas tautan: " + e.message);
                             btn.disabled = false;
                         }
                     };

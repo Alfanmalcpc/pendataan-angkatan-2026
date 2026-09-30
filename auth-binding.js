@@ -576,10 +576,29 @@ export function setupClassAuthBinding(options) {
 
     if (lockBadge) {
       lockBadge.style.display = 'flex';
+      lockBadge.style.justifyContent = 'space-between';
+      lockBadge.style.alignItems = 'center';
       lockBadge.innerHTML = `
-        <span>🔒</span>
-        <span>Profil Resmi Terkunci: <strong>${student.nama} (Absen ${student.absen})</strong> — Ditautkan ke akun Google: <em>${user.email}</em>. Identitas tidak dapat diubah ke nama orang lain.</span>
+        <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
+          <span>🔒</span>
+          <span>Profil Resmi Terkunci: <strong>${student.nama} (Absen ${student.absen})</strong> — Ditautkan ke akun: <em>${user.email}</em>.</span>
+        </div>
+        <button type="button" id="btnSelfAppealInForm" style="margin-left: 10px; font-size: 0.74rem; background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; border-radius: 8px; padding: 4px 10px; cursor: pointer; font-weight: 700; white-space: nowrap;">
+          Salah Nama? Aju Lepas
+        </button>
       `;
+
+      const btnSelf = document.getElementById('btnSelfAppealInForm');
+      if (btnSelf) {
+        btnSelf.onclick = () => {
+          pendingAbsen = student.absen;
+          pendingStudent = student;
+          document.getElementById('appealNamaSiswa').textContent = `${student.nama} (Absen ${student.absen})`;
+          document.getElementById('appealCurrentEmail').textContent = `${user.email} (Akun Anda Sendiri)`;
+          document.getElementById('appealAlasan').placeholder = 'Contoh: Saya salah klik nama teman di daftar saat memilih...';
+          modalAppeal.style.display = 'flex';
+        };
+      }
     }
   }
 
@@ -840,6 +859,8 @@ export function setupClassAuthBinding(options) {
     btnSubmitAppeal.disabled = true;
     btnSubmitAppeal.textContent = "Mengirim...";
 
+    const isSelfMistake = (userOwnBinding && userOwnBinding.absen == pendingAbsen);
+
     try {
       await submitStudentAppeal({
         kelas: kelas,
@@ -849,10 +870,14 @@ export function setupClassAuthBinding(options) {
         applicantEmail: currentUser.email,
         applicantName: currentUser.displayName || '',
         applicantWa: noWa,
-        reason: alasan
+        reason: alasan,
+        type: isSelfMistake ? 'self_mistake' : 'claim_appeal'
       });
 
-      alert("✅ Pengajuan banding berhasil dikirim ke Admin. Admin akan meninjau dan membuka tautan jika valid.");
+      alert(isSelfMistake 
+        ? "✅ Permohonan lepas tautan akun telah dikirim ke Admin! Admin akan meninjau dan mereset akun Anda."
+        : "✅ Pengajuan banding berhasil dikirim ke Admin. Admin akan meninjau dan membuka tautan jika valid."
+      );
       modalAppeal.style.display = 'none';
       btnSubmitAppeal.disabled = false;
       btnSubmitAppeal.textContent = "Kirim Aju Banding";

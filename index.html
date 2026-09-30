@@ -67,6 +67,44 @@
                 <button id="btnGoToAlreadyLinkedForm" type="button" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: 700; border-radius: 12px; background: #059669; justify-content: center;">
                     Buka & Ambil Data Biodata Saya →
                 </button>
+                <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed #86efac;">
+                    <button id="btnOpenSelfAppealBox" type="button" style="background: none; border: none; color: #dc2626; font-size: 0.82rem; font-weight: 700; cursor: pointer; text-decoration: underline;">
+                        ⚠️ Salah pilih nama siswa? Ajukan Lepas / Reset Tautan ke Admin →
+                    </button>
+                </div>
+            </div>
+
+            <!-- FORM AJU BANDING KELIRU PILIH NAMA SENDIRI -->
+            <div id="sectionSelfAppealForm" style="display: none; background: #fff5f5; border: 1.5px solid #fecaca; border-radius: 16px; padding: 20px; margin-bottom: 16px; text-align: left;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <h4 style="margin: 0; font-size: 1rem; font-weight: 800; color: #991b1b; display: flex; align-items: center; gap: 6px;">
+                        <span>⚖️</span> Aju Lepas Tautan (Salah Nama)
+                    </h4>
+                    <button id="btnCloseSelfAppealForm" type="button" style="background: none; border: none; font-size: 1.2rem; color: #94a3b8; cursor: pointer;">&times;</button>
+                </div>
+                <p style="font-size: 0.82rem; color: #7f1d1d; margin-bottom: 12px; line-height: 1.4;">
+                    Jika Anda keliru mengeklik nama teman saat menautkan akun, ajukan permohonan ke Admin untuk memutus tautan ini agar akun Anda bisa memilih nama asli Anda.
+                </p>
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.78rem; font-weight: 700; color: #374151;">Nama Profil Yang Keliru Terpilih:</label>
+                    <div id="selfAppealCurrentName" style="font-size: 0.88rem; font-weight: 700; color: #1e293b; background: #ffffff; padding: 8px 12px; border-radius: 8px; border: 1px solid #e5e7eb;">-</div>
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.78rem; font-weight: 700; color: #374151;">Nama Lengkap Asli Anda (Wajib) <span style="color:#dc2626;">*</span></label>
+                    <input type="text" id="selfAppealRealName" class="form-control" style="font-size: 0.85rem;" placeholder="Ketik nama asli Anda yang sebenarnya...">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <label style="font-size: 0.78rem; font-weight: 700; color: #374151;">Nomor WhatsApp Aktif Anda (Wajib) <span style="color:#dc2626;">*</span></label>
+                    <input type="tel" id="selfAppealWa" class="form-control" style="font-size: 0.85rem;" placeholder="Contoh: 081234567890">
+                </div>
+                <div style="margin-bottom: 14px;">
+                    <label style="font-size: 0.78rem; font-weight: 700; color: #374151;">Alasan Keliru Memilih <span style="color:#dc2626;">*</span></label>
+                    <textarea id="selfAppealReason" class="form-control" rows="2" style="font-size: 0.85rem;" placeholder="Jelaskan singkat (contoh: Salah klik nomor absen / nama mirip)..."></textarea>
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button type="button" id="btnCancelSelfAppealForm" class="btn btn-outline btn-sm" style="flex: 1;">Batal</button>
+                    <button type="button" id="btnSubmitSelfAppeal" class="btn btn-sm" style="flex: 2; background: #dc2626; color: white; font-weight: 700;">Kirim Permohonan ke Admin</button>
+                </div>
             </div>
 
             <!-- JIKA BELUM TERTAUT -> PILIH KELAS & NAMA -->
@@ -357,8 +395,20 @@
         const portalAppealReason = document.getElementById('portalAppealReason');
         const btnPortalSubmitAppeal = document.getElementById('btnPortalSubmitAppeal');
 
+        // Self Appeal (Salah Pilih Nama Sendiri) Elements
+        const btnOpenSelfAppealBox = document.getElementById('btnOpenSelfAppealBox');
+        const sectionSelfAppealForm = document.getElementById('sectionSelfAppealForm');
+        const btnCloseSelfAppealForm = document.getElementById('btnCloseSelfAppealForm');
+        const btnCancelSelfAppealForm = document.getElementById('btnCancelSelfAppealForm');
+        const selfAppealCurrentName = document.getElementById('selfAppealCurrentName');
+        const selfAppealRealName = document.getElementById('selfAppealRealName');
+        const selfAppealWa = document.getElementById('selfAppealWa');
+        const selfAppealReason = document.getElementById('selfAppealReason');
+        const btnSubmitSelfAppeal = document.getElementById('btnSubmitSelfAppeal');
+
         let currentAuthUser = null;
         let selectedStudentData = null;
+        let currentLinkedData = null;
 
         btnCloseModalSelectStudent.addEventListener('click', () => {
             modalSelectStudentName.style.display = 'none';
@@ -602,6 +652,82 @@
             }
         });
 
+        // Event Handlers untuk Salah Pilih Nama Sendiri
+        btnOpenSelfAppealBox.addEventListener('click', () => {
+            sectionAlreadyLinked.style.display = 'none';
+            sectionSelfAppealForm.style.display = 'block';
+            if (currentLinkedData) {
+                selfAppealCurrentName.textContent = `${currentLinkedData.nama || '-'} (${currentLinkedData.kelas || '-'} Absen ${currentLinkedData.absen || '-'})`;
+            }
+        });
+
+        const hideSelfAppeal = () => {
+            sectionSelfAppealForm.style.display = 'none';
+            sectionAlreadyLinked.style.display = 'block';
+        };
+        btnCloseSelfAppealForm.addEventListener('click', hideSelfAppeal);
+        btnCancelSelfAppealForm.addEventListener('click', hideSelfAppeal);
+
+        btnSubmitSelfAppeal.addEventListener('click', async () => {
+            if (!currentAuthUser || !currentLinkedData) return;
+            const realName = selfAppealRealName.value.trim();
+            const wa = selfAppealWa.value.trim();
+            const reason = selfAppealReason.value.trim();
+
+            if (!realName) {
+                alert("Mohon masukkan nama asli Anda yang sebenarnya.");
+                selfAppealRealName.focus();
+                return;
+            }
+            if (!wa) {
+                alert("Mohon masukkan nomor WhatsApp aktif Anda.");
+                selfAppealWa.focus();
+                return;
+            }
+            if (!reason) {
+                alert("Mohon jelaskan alasan permohonan.");
+                selfAppealReason.focus();
+                return;
+            }
+
+            btnSubmitSelfAppeal.disabled = true;
+            btnSubmitSelfAppeal.textContent = "Mengirim...";
+
+            try {
+                const appealId = `self_${currentLinkedData.kelas}_${currentLinkedData.absen}_${Date.now()}`;
+                const payload = {
+                    appealId: appealId,
+                    type: 'self_mistake',
+                    kelas: currentLinkedData.kelas,
+                    absen: currentLinkedData.absen,
+                    studentName: currentLinkedData.nama,
+                    applicantUid: currentAuthUser.uid,
+                    applicantEmail: currentAuthUser.email,
+                    applicantName: currentAuthUser.displayName || '',
+                    applicantRealName: realName,
+                    applicantWa: wa,
+                    reason: reason,
+                    status: 'pending',
+                    createdAt: new Date().toISOString(),
+                    createdAtFormatted: new Intl.DateTimeFormat('id-ID', {
+                        dateStyle: 'full',
+                        timeStyle: 'short'
+                    }).format(new Date())
+                };
+
+                await set(ref(db, `appeals/${appealId}`), payload);
+                alert("✅ Pengajuan lepas tautan berhasil dikirim ke Admin! Admin akan memutus tautan dan Anda dapat memilih nama asli Anda.");
+                sectionSelfAppealForm.style.display = 'none';
+                sectionAlreadyLinked.style.display = 'block';
+                btnSubmitSelfAppeal.disabled = false;
+                btnSubmitSelfAppeal.textContent = "Kirim Permohonan ke Admin";
+            } catch (err) {
+                alert("Gagal kirim permohonan: " + err.message);
+                btnSubmitSelfAppeal.disabled = false;
+                btnSubmitSelfAppeal.textContent = "Kirim Permohonan ke Admin";
+            }
+        });
+
         // Auth State Changed
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -626,6 +752,7 @@
                         const bindData = bindSnap.exists() ? bindSnap.val() : {};
 
                         const namaFinal = bindData.nama || linkInfo.nama || user.displayName;
+                        currentLinkedData = { kelas: linkInfo.kelas, absen: linkInfo.absen, nama: namaFinal };
                         bannerStudentName.textContent = namaFinal;
                         bannerStudentClass.textContent = linkInfo.kelas;
                         bannerStudentAbsen.textContent = linkInfo.absen;
