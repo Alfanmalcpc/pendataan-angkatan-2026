@@ -32,6 +32,107 @@
         </div>
     </div>
 
+    <!-- MODAL POPUP PILIH NAMA & AMBIL DATA (MUNCUL OTOMATIS SETELAH LOGIN GOOGLE) -->
+    <div id="modalSelectStudentName" style="position: fixed; inset: 0; z-index: 99998; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: #ffffff; border-radius: 24px; padding: 32px 28px; max-width: 480px; width: 100%; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4); text-align: left; border: 1px solid rgba(255,255,255,0.4); position: relative; max-height: 90vh; overflow-y: auto;">
+            
+            <button id="btnCloseModalSelectStudent" type="button" style="position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 1.4rem; color: #94a3b8; cursor: pointer; padding: 4px;">&times;</button>
+            
+            <!-- Greeting & Header -->
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px;">
+                <img id="modalUserAvatar" src="" alt="Avatar" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #4361ee;">
+                <div>
+                    <span style="font-size: 0.72rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #10b981; background: #ecfdf5; padding: 2px 8px; border-radius: 999px;">
+                        ✓ Berhasil Masuk Akun Google
+                    </span>
+                    <h3 style="margin: 4px 0 0 0; font-size: 1.15rem; font-weight: 800; color: #0f172a;" id="modalGreetingUser">
+                        Halo Siswa!
+                    </h3>
+                </div>
+            </div>
+
+            <!-- JIKA SUDAH PERNAH TERTAUT -->
+            <div id="sectionAlreadyLinked" style="display: none; background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px;">
+                <div style="width: 52px; height: 52px; margin: 0 auto 12px; border-radius: 50%; background: #10b981; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                    ✓
+                </div>
+                <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; font-weight: 800; color: #065f46;">
+                    Profil Anda Sudah Tertaut!
+                </h4>
+                <p style="margin: 0 0 16px 0; font-size: 0.88rem; color: #047857;">
+                    Akun Google Anda telah resmi tertaut ke data:
+                    <br><strong style="font-size: 1.05rem; color: #0f172a;" id="alreadyLinkedNama">-</strong>
+                    <br><span style="font-weight: 600; color: #059669;" id="alreadyLinkedMeta">-</span>
+                </p>
+                <button id="btnGoToAlreadyLinkedForm" type="button" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: 700; border-radius: 12px; background: #059669; justify-content: center;">
+                    Buka & Ambil Data Biodata Saya →
+                </button>
+            </div>
+
+            <!-- JIKA BELUM TERTAUT -> PILIH KELAS & NAMA -->
+            <div id="sectionSelectProfile">
+                <p style="font-size: 0.88rem; color: #64748b; margin: 0 0 18px 0; line-height: 1.5;">
+                    Pilih kelas dan nama Anda di bawah ini untuk menghubungkan akun Google dan langsung membuka data biodata pribadi Anda:
+                </p>
+
+                <div class="form-group" style="margin-bottom: 14px;">
+                    <label style="font-size: 0.82rem; font-weight: 700; color: #334155; display: block; margin-bottom: 6px;">1. Pilih Kelas Anda <span style="color:#ef4444;">*</span></label>
+                    <select id="portalSelectClass" class="form-control" style="width: 100%; padding: 10px 14px; font-size: 0.9rem; border-radius: 10px; border: 1.5px solid #cbd5e1;">
+                        <option value="">-- Pilih Kelas (XII-1 s/d XII-9) --</option>
+                        <option value="XII-1">Kelas XII-1</option>
+                        <option value="XII-2">Kelas XII-2</option>
+                        <option value="XII-3">Kelas XII-3</option>
+                        <option value="XII-4">Kelas XII-4</option>
+                        <option value="XII-5">Kelas XII-5</option>
+                        <option value="XII-6">Kelas XII-6</option>
+                        <option value="XII-7">Kelas XII-7</option>
+                        <option value="XII-8">Kelas XII-8</option>
+                        <option value="XII-9">Kelas XII-9</option>
+                    </select>
+                </div>
+
+                <div id="portalGroupSelectStudent" class="form-group" style="margin-bottom: 16px; display: none;">
+                    <label style="font-size: 0.82rem; font-weight: 700; color: #334155; display: block; margin-bottom: 6px;">2. Pilih Nama Anda <span style="color:#ef4444;">*</span></label>
+                    <select id="portalSelectStudent" class="form-control" style="width: 100%; padding: 10px 14px; font-size: 0.9rem; border-radius: 10px; border: 1.5px solid #cbd5e1;">
+                        <option value="">-- Pilih Nama dari Roster --</option>
+                    </select>
+                </div>
+
+                <!-- Preview Status Penautan Siswa -->
+                <div id="portalStudentPreviewBox" style="display: none; border-radius: 14px; padding: 16px; margin-bottom: 16px;">
+                    <!-- Terisi dinamis -->
+                </div>
+
+                <!-- Box Konfirmasi Ganda Sebelum Kunci -->
+                <div id="portalConfirmActionBox" style="display: none;">
+                    <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; margin-bottom: 14px; font-size: 0.82rem; color: #92400e;">
+                        ⚠️ <strong>Penting:</strong> Pastikan Anda benar adalah <strong><span id="portalConfirmTargetNama">-</span></strong>. Setelah dikonfirmasi, profil ini akan tertaut permanen ke akun Google Anda.
+                    </div>
+                    <button id="btnPortalConfirmAndOpen" type="button" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: 700; border-radius: 12px; justify-content: center; background: #2563eb; font-size: 0.95rem;">
+                        Ya, Tautkan Akun & Ambil Datanya →
+                    </button>
+                </div>
+
+                <!-- Box Aju Banding Jika Nama Diklaim Orang Lain -->
+                <div id="portalAppealBox" style="display: none; background: #fef2f2; border: 1.5px solid #fecaca; border-radius: 14px; padding: 16px; margin-top: 14px;">
+                    <h4 style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 800; color: #991b1b;">
+                        ⚖️ Formulir Aju Banding Klaim Akun
+                    </h4>
+                    <p style="margin: 0 0 12px 0; font-size: 0.8rem; color: #7f1d1d;">
+                        Jika ini adalah nama asli Anda dan tidak sengaja diklaim oleh orang lain, silakan ajukan banding ke Admin angkatan:
+                    </p>
+                    <input type="tel" id="portalAppealWa" class="form-control" placeholder="Nomor WhatsApp Anda (Wajib)" style="margin-bottom: 8px; font-size: 0.85rem; padding: 8px 12px;">
+                    <textarea id="portalAppealReason" class="form-control" rows="2" placeholder="Alasan aju banding..." style="margin-bottom: 10px; font-size: 0.85rem; padding: 8px 12px;"></textarea>
+                    <button id="btnPortalSubmitAppeal" type="button" class="btn btn-sm" style="width: 100%; background: #dc2626; color: white; font-weight: 700; border-radius: 8px; padding: 9px;">
+                        Kirim Aju Banding ke Admin
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
     <!-- Minimalist Header -->
     <header class="student-header">
         <div class="student-header-inner">
@@ -211,7 +312,8 @@
             signOut, 
             onAuthStateChanged,
             ref, 
-            get 
+            get,
+            set 
         } from './firebase-config.js';
 
         const mainAuthModalOverlay = document.getElementById('mainAuthModalOverlay');
@@ -228,6 +330,39 @@
         const bannerStudentClass = document.getElementById('bannerStudentClass');
         const bannerStudentAbsen = document.getElementById('bannerStudentAbsen');
         const btnDirectStudentForm = document.getElementById('btnDirectStudentForm');
+
+        // Modal Pilih Nama Elements
+        const modalSelectStudentName = document.getElementById('modalSelectStudentName');
+        const btnCloseModalSelectStudent = document.getElementById('btnCloseModalSelectStudent');
+        const modalUserAvatar = document.getElementById('modalUserAvatar');
+        const modalGreetingUser = document.getElementById('modalGreetingUser');
+
+        const sectionAlreadyLinked = document.getElementById('sectionAlreadyLinked');
+        const alreadyLinkedNama = document.getElementById('alreadyLinkedNama');
+        const alreadyLinkedMeta = document.getElementById('alreadyLinkedMeta');
+        const btnGoToAlreadyLinkedForm = document.getElementById('btnGoToAlreadyLinkedForm');
+
+        const sectionSelectProfile = document.getElementById('sectionSelectProfile');
+        const portalSelectClass = document.getElementById('portalSelectClass');
+        const portalGroupSelectStudent = document.getElementById('portalGroupSelectStudent');
+        const portalSelectStudent = document.getElementById('portalSelectStudent');
+
+        const portalStudentPreviewBox = document.getElementById('portalStudentPreviewBox');
+        const portalConfirmActionBox = document.getElementById('portalConfirmActionBox');
+        const portalConfirmTargetNama = document.getElementById('portalConfirmTargetNama');
+        const btnPortalConfirmAndOpen = document.getElementById('btnPortalConfirmAndOpen');
+
+        const portalAppealBox = document.getElementById('portalAppealBox');
+        const portalAppealWa = document.getElementById('portalAppealWa');
+        const portalAppealReason = document.getElementById('portalAppealReason');
+        const btnPortalSubmitAppeal = document.getElementById('btnPortalSubmitAppeal');
+
+        let currentAuthUser = null;
+        let selectedStudentData = null;
+
+        btnCloseModalSelectStudent.addEventListener('click', () => {
+            modalSelectStudentName.style.display = 'none';
+        });
 
         // Sign In Button Action
         btnPortalGoogleSignIn.addEventListener('click', async () => {
@@ -255,9 +390,222 @@
             }
         });
 
+        // Dropdown Kelas Change
+        portalSelectClass.addEventListener('change', () => {
+            const cls = portalSelectClass.value;
+            portalSelectStudent.innerHTML = '<option value="">-- Pilih Nama dari Roster --</option>';
+            portalStudentPreviewBox.style.display = 'none';
+            portalConfirmActionBox.style.display = 'none';
+            portalAppealBox.style.display = 'none';
+
+            if (!cls) {
+                portalGroupSelectStudent.style.display = 'none';
+                return;
+            }
+
+            const roster = (window.studentRoster && window.studentRoster[cls]) || [];
+            roster.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.absen;
+                opt.textContent = `${s.absen < 10 ? '0' + s.absen : s.absen} - ${s.nama}`;
+                portalSelectStudent.appendChild(opt);
+            });
+
+            portalGroupSelectStudent.style.display = 'block';
+        });
+
+        // Dropdown Nama Siswa Change
+        portalSelectStudent.addEventListener('change', async () => {
+            const cls = portalSelectClass.value;
+            const abs = parseInt(portalSelectStudent.value, 10);
+            portalConfirmActionBox.style.display = 'none';
+            portalAppealBox.style.display = 'none';
+
+            if (!cls || !abs) {
+                portalStudentPreviewBox.style.display = 'none';
+                return;
+            }
+
+            const roster = (window.studentRoster && window.studentRoster[cls]) || [];
+            const stu = roster.find(s => s.absen == abs);
+            if (!stu) return;
+
+            selectedStudentData = { kelas: cls, absen: abs, nama: stu.nama };
+
+            portalStudentPreviewBox.style.display = 'block';
+            portalStudentPreviewBox.style.background = '#f8fafc';
+            portalStudentPreviewBox.style.border = '1px solid #cbd5e1';
+            portalStudentPreviewBox.innerHTML = `
+                <div style="text-align: center; color: #64748b; font-size: 0.85rem;">
+                    <i class="fa-solid fa-spinner fa-spin"></i> Memeriksa status penautan profil...
+                </div>
+            `;
+
+            try {
+                const snap = await get(ref(db, `auth_bindings/${cls}_${abs}`));
+                const binding = snap.exists() ? snap.val() : null;
+
+                if (!binding) {
+                    // KASUS 1: BELUM TERTAUT -> SIAP DITAUTKAN
+                    portalStudentPreviewBox.style.background = '#f0fdf4';
+                    portalStudentPreviewBox.style.border = '1.5px solid #86efac';
+                    portalStudentPreviewBox.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                            <span style="font-size: 0.75rem; font-weight: 800; color: #15803d; text-transform: uppercase;">STATUS: 🟢 TERSEDIA</span>
+                            <span style="font-size: 0.78rem; font-weight: 700; color: #059669;">Kelas ${cls} • Absen ${abs}</span>
+                        </div>
+                        <div style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">${stu.nama}</div>
+                        <div style="font-size: 0.8rem; color: #64748b; margin-top: 4px;">Belum ada akun yang menautkan nama ini. Siap dikaitkan ke akun Google Anda.</div>
+                    `;
+
+                    portalConfirmTargetNama.textContent = stu.nama;
+                    portalConfirmActionBox.style.display = 'block';
+
+                } else if (binding.uid === currentAuthUser.uid) {
+                    // KASUS 2: SUDAH TERTAUT KE USER INI SENDIRI
+                    portalStudentPreviewBox.style.background = '#eff6ff';
+                    portalStudentPreviewBox.style.border = '1.5px solid #bfdbfe';
+                    portalStudentPreviewBox.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                            <span style="font-size: 0.75rem; font-weight: 800; color: #1d4ed8; text-transform: uppercase;">STATUS: 🔵 TERTAUT KE ANDA</span>
+                            <span style="font-size: 0.78rem; font-weight: 700; color: #2563eb;">Kelas ${cls} • Absen ${abs}</span>
+                        </div>
+                        <div style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">${stu.nama}</div>
+                        <div style="font-size: 0.8rem; color: #1e40af; margin-top: 4px;">Nama ini adalah profil resmi milik akun Google Anda.</div>
+                    `;
+
+                    setTimeout(() => {
+                        window.location.href = `${cls.toLowerCase()}.html?absen=${abs}`;
+                    }, 500);
+
+                } else {
+                    // KASUS 3: SUDAH DIKLAIM OLEH EMAIL LAIN
+                    portalStudentPreviewBox.style.background = '#fef2f2';
+                    portalStudentPreviewBox.style.border = '1.5px solid #fecaca';
+                    portalStudentPreviewBox.innerHTML = `
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                            <span style="font-size: 0.75rem; font-weight: 800; color: #b91c1c; text-transform: uppercase;">STATUS: 🔴 SUDAH DIKLAIM</span>
+                            <span style="font-size: 0.78rem; font-weight: 700; color: #dc2626;">Kelas ${cls} • Absen ${abs}</span>
+                        </div>
+                        <div style="font-size: 1.05rem; font-weight: 800; color: #0f172a;">${stu.nama}</div>
+                        <div style="font-size: 0.8rem; color: #991b1b; margin-top: 4px;">
+                            Profil ini telah diklaim oleh email: <strong>${binding.email || 'Email lain'}</strong>.
+                        </div>
+                    `;
+
+                    portalAppealBox.style.display = 'block';
+                }
+
+            } catch (e) {
+                console.error("Gagal verifikasi binding:", e);
+                portalStudentPreviewBox.innerHTML = `<div style="color: #dc2626; font-size: 0.82rem;">Terjadi kesalahan saat memeriksa database: ${e.message}</div>`;
+            }
+        });
+
+        // Konfirmasi Tautkan Akun & Buka Form
+        btnPortalConfirmAndOpen.addEventListener('click', async () => {
+            if (!currentAuthUser || !selectedStudentData) return;
+            const { kelas, absen, nama } = selectedStudentData;
+
+            btnPortalConfirmAndOpen.disabled = true;
+            btnPortalConfirmAndOpen.textContent = "Menautkan akun dan membuka data...";
+
+            try {
+                const nowIso = new Date().toISOString();
+                const nowFormatted = new Intl.DateTimeFormat('id-ID', {
+                    dateStyle: 'full',
+                    timeStyle: 'short'
+                }).format(new Date());
+
+                const bindingPayload = {
+                    kelas: kelas,
+                    absen: absen,
+                    nama: nama,
+                    uid: currentAuthUser.uid,
+                    email: currentAuthUser.email,
+                    displayName: currentAuthUser.displayName || nama,
+                    photoURL: currentAuthUser.photoURL || '',
+                    linkedAt: nowIso,
+                    linkedAtFormatted: nowFormatted
+                };
+
+                const userMappingPayload = {
+                    kelas: kelas,
+                    absen: absen,
+                    studentKey: `${kelas}_${absen}`,
+                    nama: nama,
+                    email: currentAuthUser.email,
+                    linkedAt: nowIso
+                };
+
+                await set(ref(db, `auth_bindings/${kelas}_${absen}`), bindingPayload);
+                await set(ref(db, `user_to_student/${currentAuthUser.uid}`), userMappingPayload);
+
+                // Langsung arahkan ke halaman form dengan data terpilih!
+                window.location.href = `${kelas.toLowerCase()}.html?absen=${absen}`;
+
+            } catch (err) {
+                console.error("Gagal simpan binding:", err);
+                alert("Gagal menautkan akun: " + err.message);
+                btnPortalConfirmAndOpen.disabled = false;
+                btnPortalConfirmAndOpen.textContent = "Ya, Tautkan Akun & Ambil Datanya →";
+            }
+        });
+
+        // Submit Aju Banding
+        btnPortalSubmitAppeal.addEventListener('click', async () => {
+            if (!currentAuthUser || !selectedStudentData) return;
+            const wa = portalAppealWa.value.trim();
+            const reason = portalAppealReason.value.trim();
+
+            if (!wa) {
+                alert("Mohon masukkan nomor WhatsApp Anda.");
+                portalAppealWa.focus();
+                return;
+            }
+            if (!reason) {
+                alert("Mohon jelaskan alasan aju banding.");
+                portalAppealReason.focus();
+                return;
+            }
+
+            btnPortalSubmitAppeal.disabled = true;
+            btnPortalSubmitAppeal.textContent = "Mengirim...";
+
+            try {
+                const appealId = `${selectedStudentData.kelas}_${selectedStudentData.absen}_${Date.now()}`;
+                const payload = {
+                    appealId: appealId,
+                    kelas: selectedStudentData.kelas,
+                    absen: selectedStudentData.absen,
+                    studentName: selectedStudentData.nama,
+                    applicantUid: currentAuthUser.uid,
+                    applicantEmail: currentAuthUser.email,
+                    applicantName: currentAuthUser.displayName || '',
+                    applicantWa: wa,
+                    reason: reason,
+                    status: 'pending',
+                    createdAt: new Date().toISOString(),
+                    createdAtFormatted: new Intl.DateTimeFormat('id-ID', {
+                        dateStyle: 'full',
+                        timeStyle: 'short'
+                    }).format(new Date())
+                };
+
+                await set(ref(db, `appeals/${appealId}`), payload);
+                alert("✅ Pengajuan banding berhasil dikirimkan ke Admin. Mohon tunggu konfirmasi admin di panel.");
+                portalAppealBox.style.display = 'none';
+            } catch (err) {
+                alert("Gagal mengirim aju banding: " + err.message);
+                btnPortalSubmitAppeal.disabled = false;
+                btnPortalSubmitAppeal.textContent = "Kirim Aju Banding ke Admin";
+            }
+        });
+
         // Auth State Changed
         onAuthStateChanged(auth, async (user) => {
             if (user) {
+                currentAuthUser = user;
                 // User Logged In
                 mainAuthModalOverlay.style.display = 'none';
                 portalUserHeader.style.display = 'flex';
@@ -266,30 +614,54 @@
                     portalUserAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'U')}&background=4361ee&color=fff`;
                 }
 
-                // Check if user is already bound to a student
+                modalUserAvatar.src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'U')}&background=4361ee&color=fff`;
+                modalGreetingUser.textContent = `Halo, ${user.displayName || 'Siswa'}!`;
+
+                // Cek apakah user sudah tertaut ke profil siswa
                 try {
                     const snap = await get(ref(db, `user_to_student/${user.uid}`));
                     if (snap.exists()) {
                         const linkInfo = snap.val();
-                        // Get student details
                         const bindSnap = await get(ref(db, `auth_bindings/${linkInfo.studentKey}`));
                         const bindData = bindSnap.exists() ? bindSnap.val() : {};
 
-                        bannerStudentName.textContent = bindData.nama || user.displayName;
+                        const namaFinal = bindData.nama || linkInfo.nama || user.displayName;
+                        bannerStudentName.textContent = namaFinal;
                         bannerStudentClass.textContent = linkInfo.kelas;
                         bannerStudentAbsen.textContent = linkInfo.absen;
                         btnDirectStudentForm.href = `${linkInfo.kelas.toLowerCase()}.html?absen=${linkInfo.absen}`;
 
                         linkedStudentBanner.style.display = 'flex';
+
+                        // Tampilkan di modal bahwa sudah tertaut
+                        alreadyLinkedNama.textContent = namaFinal;
+                        alreadyLinkedMeta.textContent = `Kelas ${linkInfo.kelas} • Nomor Absen ${linkInfo.absen}`;
+                        btnGoToAlreadyLinkedForm.onclick = () => {
+                            window.location.href = `${linkInfo.kelas.toLowerCase()}.html?absen=${linkInfo.absen}`;
+                        };
+
+                        sectionAlreadyLinked.style.display = 'block';
+                        sectionSelectProfile.style.display = 'none';
+                        modalSelectStudentName.style.display = 'flex';
+
                     } else {
+                        // Belum tertaut -> Buka Popup Pilih Nama Langsung!
                         linkedStudentBanner.style.display = 'none';
+                        sectionAlreadyLinked.style.display = 'none';
+                        sectionSelectProfile.style.display = 'block';
+                        modalSelectStudentName.style.display = 'flex';
                     }
                 } catch (e) {
                     console.warn("Gagal cek user_to_student:", e);
+                    sectionAlreadyLinked.style.display = 'none';
+                    sectionSelectProfile.style.display = 'block';
+                    modalSelectStudentName.style.display = 'flex';
                 }
             } else {
+                currentAuthUser = null;
                 // User Not Logged In -> SHOW MODAL BARRIER IMMEDIATELY
                 mainAuthModalOverlay.style.display = 'flex';
+                modalSelectStudentName.style.display = 'none';
                 portalUserHeader.style.display = 'none';
                 linkedStudentBanner.style.display = 'none';
                 btnPortalGoogleSignIn.disabled = false;
