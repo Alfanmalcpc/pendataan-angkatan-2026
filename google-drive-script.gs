@@ -62,11 +62,21 @@ function doPost(e) {
     var isTtd = (data.type === 'tandatangan' || data.folderCategory === 'tandatangan');
 
     if (isTtd) {
-      // Buat / ambil folder utama "tandatangan" di Drive
-      var ttdFolderIter = parentFolder.getFoldersByName("tandatangan");
-      var ttdMainFolder = ttdFolderIter.hasNext() ? ttdFolderIter.next() : parentFolder.createFolder("tandatangan");
+      // 1. Buat / ambil folder utama "tanda tangan" di Drive
+      var ttdMainFolder;
+      var iterSpasi = parentFolder.getFoldersByName("tanda tangan");
+      if (iterSpasi.hasNext()) {
+        ttdMainFolder = iterSpasi.next();
+      } else {
+        var iterTanpaSpasi = parentFolder.getFoldersByName("tandatangan");
+        if (iterTanpaSpasi.hasNext()) {
+          ttdMainFolder = iterTanpaSpasi.next();
+        } else {
+          ttdMainFolder = parentFolder.createFolder("tanda tangan");
+        }
+      }
 
-      // Buat / ambil subfolder kelas (XII-1 s/d XII-9) di dalam folder "tandatangan"
+      // 2. Buat / ambil subfolder kelas (XII-1 s/d XII-9) di dalam folder "tanda tangan"
       var classFolderIter = ttdMainFolder.getFoldersByName(className);
       targetFolder = classFolderIter.hasNext() ? classFolderIter.next() : ttdMainFolder.createFolder(className);
     } else {
@@ -130,7 +140,7 @@ function doPost(e) {
       fileUrl: fileUrl,
       directViewUrl: directViewUrl,
       fileName: finalFileName,
-      folderName: isTtd ? ("tandatangan/" + className) : className,
+      folderName: isTtd ? ("tanda tangan/" + className) : className,
       nama: cleanName,
       kelas: className,
       absen: data.absen || "",

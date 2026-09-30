@@ -630,6 +630,20 @@ export function setupClassAuthBinding(options) {
     const linkKaos = document.getElementById('linkAuthKaosTtd');
     if (linkKaos) {
       linkKaos.href = `kaos-ttd.html?kelas=${kelas}&absen=${student.absen}`;
+      try {
+        const kSnap = await get(ref(window.__nevastra_db, `kaos_ttd/${kelas}/${student.absen}`));
+        if (kSnap.exists() && kSnap.val() && kSnap.val().ukuranKaos) {
+          linkKaos.innerHTML = `<span>✏️ Edit Kaos & TTD</span> <span style="background: rgba(4,120,87,0.12); padding: 2px 6px; border-radius: 6px; font-size: 0.72rem;">✓ ${kSnap.val().ukuranKaos}</span>`;
+          linkKaos.style.background = '#ecfdf5';
+          linkKaos.style.borderColor = '#10b981';
+          linkKaos.style.color = '#047857';
+        } else {
+          linkKaos.innerHTML = `<span>👕✍️ Isi Kaos & TTD</span>`;
+          linkKaos.style.background = '#eef2ff';
+          linkKaos.style.borderColor = '#c7d2fe';
+          linkKaos.style.color = '#4338ca';
+        }
+      } catch (errK) {}
     }
   }
 

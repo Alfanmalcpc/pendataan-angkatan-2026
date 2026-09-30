@@ -509,8 +509,10 @@
                 <div>
                     <select id="filterStatus" class="form-control" style="font-size: 0.85rem;">
                         <option value="ALL">Semua Siswa (Terisi & Belum)</option>
-                        <option value="FILLED">Hanya Yang Sudah Mengisi</option>
-                        <option value="PENDING">Hanya Yang Belum Mengisi</option>
+                        <option value="FILLED">Hanya Yang Sudah Mengisi Biodata</option>
+                        <option value="PENDING">Hanya Yang Belum Mengisi Biodata</option>
+                        <option value="KAOS_FILLED">Hanya Yang Sudah Isi Kaos & TTD</option>
+                        <option value="KAOS_PENDING">Hanya Yang Belum Isi Kaos & TTD</option>
                         <option value="LINKED">Hanya Yang Sudah Tertaut Akun Google</option>
                         <option value="UNLINKED">Hanya Yang Belum Tertaut Akun Google</option>
                     </select>
@@ -529,7 +531,8 @@
                             <th>Nama Resmi Siswa</th>
                             <th>Nama di Buku</th>
                             <th>Akun Google (Email)</th>
-                            <th>Status</th>
+                            <th>Status Biodata</th>
+                            <th style="min-width: 140px;">Kaos & TTD Digital</th>
                             <th>TTL</th>
                             <th>Alamat</th>
                             <th>No. HP / WA (Phone)</th>
@@ -1357,6 +1360,18 @@
                             <option value="Lengan Panjang">Lengan Panjang</option>
                         </select>
                     </div>
+                    <div>
+                        <select id="filterKaosStatus" class="form-control" style="font-size: 0.85rem; padding: 8px 12px;">
+                            <option value="ALL">Semua Status</option>
+                            <option value="FILLED">✓ Sudah Mengisi</option>
+                            <option value="PENDING">✗ Belum Mengisi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button id="btnCopyKaosPending" type="button" class="btn btn-outline btn-sm" style="border-color: #ef4444; color: #dc2626; font-weight: 700; height: 38px; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-copy"></i> Salin Belum Isi
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -1366,15 +1381,17 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th style="width: 50px;">No</th>
-                                <th style="width: 80px;">Kelas</th>
-                                <th style="width: 65px;">Absen</th>
+                                <th style="width: 45px;">No</th>
+                                <th style="width: 75px;">Kelas</th>
+                                <th style="width: 55px;">Absen</th>
                                 <th>Nama Lengkap Siswa</th>
-                                <th style="text-align: center;">Ukuran Kaos</th>
-                                <th style="text-align: center;">Tipe Lengan</th>
-                                <th style="text-align: center; min-width: 130px;">Tanda Tangan (PNG Putih)</th>
+                                <th style="text-align: center; width: 95px;">Status</th>
+                                <th style="text-align: center; width: 90px;">Ukuran Kaos</th>
+                                <th style="text-align: center; width: 110px;">Tipe Lengan</th>
+                                <th style="text-align: center; min-width: 120px;">Tanda Tangan (PNG Putih)</th>
                                 <th>Status Google Drive</th>
                                 <th>Waktu Pengisian</th>
+                                <th style="text-align: center; width: 85px;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="kaosTtdTableBody">
@@ -1460,6 +1477,16 @@
                             <span id="mAlamat">-</span>
                         </div>
                     </div>
+
+                    <div class="yb-info-item" style="grid-column: span 2; background: #f8fafc; padding: 12px 14px; border-radius: 12px; border: 1.5px solid #e2e8f0;">
+                        <div class="yb-info-icon" style="color: #4f46e5;"><i class="fa-solid fa-shirt"></i></div>
+                        <div class="yb-info-content" style="width: 100%;">
+                            <span class="yb-info-label" style="font-weight: 800; color: #1e1b4b;">Ukuran Kaos & Tanda Tangan Digital</span>
+                            <div id="mKaosTtdContainer" style="margin-top: 6px;">
+                                <!-- Diisi JS -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="yb-quote-box">
@@ -1467,8 +1494,9 @@
                 </div>
             </div>
 
-            <div style="margin-top: 18px; display: flex; justify-content: flex-end; gap: 8px;">
-                <a id="btnOpenFormDirect" href="#" target="_blank" class="btn btn-outline btn-sm">Buka Halaman Siswa</a>
+            <div style="margin-top: 18px; display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap;">
+                <a id="btnOpenKaosTtdDirect" href="#" target="_blank" class="btn btn-primary btn-sm" style="font-weight: 700; background: #4f46e5; border-color: #4f46e5;">+ Isi Kaos & TTD</a>
+                <a id="btnOpenFormDirect" href="#" target="_blank" class="btn btn-outline btn-sm">Buka Halaman Biodata</a>
                 <button id="btnDeleteStudentData" class="btn btn-sm" style="background: var(--danger); color: white;">Hapus Data Ini</button>
             </div>
         </div>
@@ -1644,15 +1672,21 @@
             targetClasses.forEach(cls => {
                 const roster = rosterAll[cls] || [];
                 const classSaved = allBiodata[cls] || {};
+                const classKaos = (allKaosTtdData && allKaosTtdData[cls]) || {};
 
                 roster.forEach(stu => {
                     const saved = classSaved[stu.absen];
+                    const kaos = classKaos[stu.absen] || null;
+                    const isKaosFilled = !!(kaos && kaos.ukuranKaos);
+
                     list.push({
                         kelas: cls,
                         absen: stu.absen,
                         namaRoster: stu.nama,
                         nama: saved ? (saved.nama || stu.nama) : stu.nama,
                         isFilled: !!saved,
+                        kaosData: kaos,
+                        isKaosFilled: isKaosFilled,
                         tempatLahir: saved ? (saved.tempatLahir || '') : '',
                         tanggalLahir: saved ? (saved.tanggalLahir || '') : '',
                         ttl: saved ? (saved.ttl || '') : '',
@@ -1680,6 +1714,8 @@
 
                 if (st === 'FILLED' && !item.isFilled) return false;
                 if (st === 'PENDING' && item.isFilled) return false;
+                if (st === 'KAOS_FILLED' && !item.isKaosFilled) return false;
+                if (st === 'KAOS_PENDING' && item.isKaosFilled) return false;
                 if (st === 'LINKED' && !isLinked) return false;
                 if (st === 'UNLINKED' && isLinked) return false;
 
@@ -1764,6 +1800,17 @@
                     ? `<span style="color: #2563eb; font-weight: 600; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px;" title="Tertaut akun Google: ${binding.email}"><i class="fa-brands fa-google"></i> ${binding.email}</span>`
                     : `<span style="color: #94a3b8; font-style: italic; font-size: 0.78rem;">Belum Tertaut</span>`;
 
+                const kaosCell = item.isKaosFilled
+                    ? `<div style="display:inline-flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                        <span class="badge-status" style="background:#ecfdf5; color:#047857; font-weight:800; padding:2px 7px; border-radius:6px; font-size:0.75rem;">✓ ${item.kaosData.ukuranKaos} (${item.kaosData.tipeLengan === 'Lengan Panjang' ? 'Pjg' : 'Pdk'})</span>
+                        ${item.kaosData.ttdBase64 ? `<img src="${item.kaosData.ttdBase64}" style="width:38px; height:18px; object-fit:contain; background:#ffffff; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer;" onclick="openTtdZoom('${encodeURIComponent(item.nama)}', '${encodeURIComponent(item.kelas)}', '${item.absen}', this.src)" title="Klik zoom TTD">` : ''}
+                        <a href="kaos-ttd.html?kelas=${item.kelas}&absen=${item.absen}" target="_blank" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#047857; border-color:#10b981; font-weight:700;" title="Edit Ukuran Kaos & TTD Siswa Ini">✏️ Edit</a>
+                      </div>`
+                    : `<div style="display:inline-flex; align-items:center; gap:6px;">
+                        <span class="badge-status" style="background:#fef2f2; color:#b91c1c; font-size:0.75rem; padding:2px 6px; border-radius:6px;">✗ Belum</span>
+                        <a href="kaos-ttd.html?kelas=${item.kelas}&absen=${item.absen}" target="_blank" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#4f46e5; border-color:#c7d2fe; font-weight:700;" title="Isi Ukuran Kaos & TTD Siswa Ini">+ Isi</a>
+                      </div>`;
+
                 tr.innerHTML = `
                     <td><strong>${activeClass === 'ALL' ? item.kelas + '-' : ''}${padded}</strong></td>
                     <td><strong>${item.namaRoster}</strong></td>
@@ -1776,6 +1823,7 @@
                             ${item.isFilled ? '✓ Terisi' : '✗ Belum'}
                         </span>
                     </td>
+                    <td>${kaosCell}</td>
                     <td>${cleanDisplayTTL(item.ttl)}</td>
                     <td style="max-width: 200px;">${item.tinggalDi || '-'}</td>
                     <td>
@@ -1968,6 +2016,49 @@
                     elEmail.innerHTML = `<span style="color:#1d4ed8;"><i class="fa-brands fa-google"></i> ${binding.email}</span>`;
                 } else {
                     elEmail.innerHTML = `<span style="color:#94a3b8; font-style:italic;">Belum Tertaut</span>`;
+                }
+            }
+
+            // Status Kaos & TTD Digital di Modal
+            const kaosRecord = (allKaosTtdData[cls] && allKaosTtdData[cls][abs]) || null;
+            const elKaosCont = document.getElementById('mKaosTtdContainer');
+            const btnKaosModal = document.getElementById('btnOpenKaosTtdDirect');
+            if (btnKaosModal) {
+                btnKaosModal.href = `kaos-ttd.html?kelas=${cls}&absen=${abs}`;
+            }
+            if (elKaosCont) {
+                if (kaosRecord && kaosRecord.ukuranKaos) {
+                    if (btnKaosModal) {
+                        btnKaosModal.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Edit Kaos & TTD`;
+                        btnKaosModal.style.background = '#059669';
+                        btnKaosModal.style.borderColor = '#059669';
+                    }
+                    const driveA = kaosRecord.ttdDriveUrl 
+                        ? `<a href="${kaosRecord.ttdDriveUrl}" target="_blank" style="color:#059669; font-weight:700; text-decoration:underline; display:inline-flex; align-items:center; gap:4px;"><i class="fa-brands fa-google-drive"></i> Buka Google Drive</a>`
+                        : `<span style="color:#64748b; font-size:0.75rem;">Folder tandatangan/${cls}/</span>`;
+                    const ttdImg = kaosRecord.ttdBase64 
+                        ? `<img src="${kaosRecord.ttdBase64}" style="width:74px; height:34px; object-fit:contain; background:#ffffff; border:1px solid #cbd5e1; border-radius:6px; cursor:pointer;" onclick="openTtdZoom('${encodeURIComponent(nama)}', '${encodeURIComponent(cls)}', '${abs}', this.src)" title="Klik zoom TTD">`
+                        : `<span style="color:#94a3b8; font-size:0.75rem;">Tanpa TTD</span>`;
+
+                    elKaosCont.innerHTML = `
+                        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                <span class="badge-status" style="background:#eff6ff; color:#1d4ed8; font-weight:800; padding:4px 9px; border-radius:6px;">Ukuran: ${kaosRecord.ukuranKaos}</span>
+                                <span class="badge-status" style="background:#f5f3ff; color:#6d28d9; font-weight:700; padding:4px 9px; border-radius:6px;">${kaosRecord.tipeLengan || '-'}</span>
+                                ${ttdImg}
+                            </div>
+                            <div style="font-size:0.78rem;">${driveA}</div>
+                        </div>
+                    `;
+                } else {
+                    if (btnKaosModal) {
+                        btnKaosModal.innerHTML = `<i class="fa-solid fa-shirt"></i> + Isi Kaos & TTD`;
+                        btnKaosModal.style.background = '#4f46e5';
+                        btnKaosModal.style.borderColor = '#4f46e5';
+                    }
+                    elKaosCont.innerHTML = `
+                        <span style="color:#b91c1c; font-weight:700; font-size:0.82rem;">✗ Belum mengisi ukuran kaos dan tanda tangan digital</span>
+                    `;
                 }
             }
 
@@ -3751,37 +3842,60 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
             const filterKelas = document.getElementById('filterKaosKelas') ? document.getElementById('filterKaosKelas').value : 'ALL';
             const filterUkuran = document.getElementById('filterKaosUkuran') ? document.getElementById('filterKaosUkuran').value : 'ALL';
             const filterLengan = document.getElementById('filterKaosLengan') ? document.getElementById('filterKaosLengan').value : 'ALL';
+            const filterStatusVal = document.getElementById('filterKaosStatus') ? document.getElementById('filterKaosStatus').value : 'ALL';
             const searchText = (document.getElementById('searchKaosStudent') ? document.getElementById('searchKaosStudent').value : '').toLowerCase().trim();
 
             const items = [];
             const sizeCounts = { S: 0, M: 0, L: 0, XL: 0, XXL: 0, '3XL': 0, '4XL': 0 };
             let totalShort = 0;
             let totalLong = 0;
+            let totalFilled = 0;
+            let grandTotalStudents = 0;
 
-            Object.entries(allKaosTtdData).forEach(([cls, studentMap]) => {
-                if (typeof studentMap === 'object' && studentMap) {
-                    Object.entries(studentMap).forEach(([abs, record]) => {
-                        if (record && typeof record === 'object') {
-                            items.push({
-                                kelas: cls,
-                                absen: parseInt(abs, 10),
-                                ...record
-                            });
+            const targetClasses = filterKelas === 'ALL' ? classes : [filterKelas];
 
-                            if (record.ukuranKaos && sizeCounts.hasOwnProperty(record.ukuranKaos)) {
-                                sizeCounts[record.ukuranKaos]++;
-                            }
-                            if (record.tipeLengan === 'Lengan Pendek') totalShort++;
-                            if (record.tipeLengan === 'Lengan Panjang') totalLong++;
+            targetClasses.forEach(cls => {
+                const roster = rosterAll[cls] || [];
+                const classKaos = (allKaosTtdData && allKaosTtdData[cls]) || {};
+                const classSaved = (allBiodata && allBiodata[cls]) || {};
+
+                roster.forEach(stu => {
+                    grandTotalStudents++;
+                    const record = classKaos[stu.absen] || null;
+                    const isFilled = !!(record && record.ukuranKaos);
+
+                    if (isFilled) {
+                        totalFilled++;
+                        if (record.ukuranKaos && sizeCounts.hasOwnProperty(record.ukuranKaos)) {
+                            sizeCounts[record.ukuranKaos]++;
                         }
+                        if (record.tipeLengan === 'Lengan Pendek') totalShort++;
+                        if (record.tipeLengan === 'Lengan Panjang') totalLong++;
+                    }
+
+                    const savedBio = classSaved[stu.absen];
+                    const bindKey = `${cls}_${stu.absen}`;
+                    const bind = (typeof allAuthBindings === 'object' && allAuthBindings) ? allAuthBindings[bindKey] : null;
+
+                    items.push({
+                        kelas: cls,
+                        absen: stu.absen,
+                        nama: (record && record.nama) || (savedBio && savedBio.nama) || stu.nama,
+                        email: (record && record.email) || (bind && bind.email) || '',
+                        isFilled: isFilled,
+                        ukuranKaos: record ? (record.ukuranKaos || '-') : '-',
+                        tipeLengan: record ? (record.tipeLengan || '-') : '-',
+                        ttdBase64: record ? (record.ttdBase64 || '') : '',
+                        ttdDriveUrl: record ? (record.ttdDriveUrl || '') : '',
+                        updatedAt: record ? (record.updatedAt || '') : ''
                     });
-                }
+                });
             });
 
-            const totalFilled = items.length;
-            const pct = Math.round((totalFilled / 324) * 100);
+            // Update Stats Display
+            const pct = grandTotalStudents > 0 ? Math.round((totalFilled / grandTotalStudents) * 100) : 0;
             if (document.getElementById('statKaosTotal')) document.getElementById('statKaosTotal').textContent = totalFilled;
-            if (document.getElementById('statKaosPct')) document.getElementById('statKaosPct').textContent = `${pct}% dari 324 siswa`;
+            if (document.getElementById('statKaosPct')) document.getElementById('statKaosPct').textContent = `${totalFilled} dari ${grandTotalStudents} siswa (${pct}%)`;
             if (document.getElementById('statLenganPendek')) document.getElementById('statLenganPendek').textContent = totalShort;
             if (document.getElementById('statLenganPanjang')) document.getElementById('statLenganPanjang').textContent = totalLong;
             if (document.getElementById('statKaosBreakdown')) {
@@ -3789,14 +3903,17 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                     `S: ${sizeCounts.S} | M: ${sizeCounts.M} | L: ${sizeCounts.L} | XL: ${sizeCounts.XL} | XXL: ${sizeCounts.XXL} | 3XL: ${sizeCounts['3XL']} | 4XL: ${sizeCounts['4XL']}`;
             }
 
+            // Filtering
             let filtered = items.filter(it => {
-                if (filterKelas !== 'ALL' && it.kelas !== filterKelas) return false;
                 if (filterUkuran !== 'ALL' && it.ukuranKaos !== filterUkuran) return false;
                 if (filterLengan !== 'ALL' && it.tipeLengan !== filterLengan) return false;
+                if (filterStatusVal === 'FILLED' && !it.isFilled) return false;
+                if (filterStatusVal === 'PENDING' && it.isFilled) return false;
                 if (searchText && !(it.nama || '').toLowerCase().includes(searchText)) return false;
                 return true;
             });
 
+            // Sorting: Kelas lalu Absen
             filtered.sort((a, b) => {
                 if (a.kelas !== b.kelas) return a.kelas.localeCompare(b.kelas);
                 return (a.absen || 0) - (b.absen || 0);
@@ -3805,7 +3922,7 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
             if (filtered.length === 0) {
                 tableBody.innerHTML = `
                     <tr>
-                        <td colspan="9" style="text-align: center; padding: 32px; color: #64748b;">
+                        <td colspan="11" style="text-align: center; padding: 32px; color: #64748b;">
                             Tidak ada data siswa yang cocok dengan filter.
                         </td>
                     </tr>
@@ -3817,13 +3934,21 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
             filtered.forEach((it, idx) => {
                 const driveLink = it.ttdDriveUrl 
                     ? `<a href="${it.ttdDriveUrl}" target="_blank" style="color: #059669; font-weight: 700; text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-brands fa-google-drive"></i> Buka File</a>`
-                    : `<span style="color: #64748b; font-size: 0.78rem;">Folder tandatangan/${it.kelas}/</span>`;
+                    : (it.isFilled ? `<span style="color: #64748b; font-size: 0.76rem;">Folder tanda tangan/${it.kelas}/</span>` : `<span style="color: #94a3b8; font-size: 0.76rem;">-</span>`);
 
                 const thumbHtml = it.ttdBase64 
-                    ? `<img src="${it.ttdBase64}" alt="TTD" style="width: 80px; height: 38px; object-fit: contain; background: #ffffff; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="openTtdZoom('${encodeURIComponent(it.nama)}', '${encodeURIComponent(it.kelas)}', '${it.absen}', this.src)" title="Klik untuk memperbesar">`
-                    : `<span style="color: #94a3b8; font-size: 0.78rem;">Tidak ada TTD</span>`;
+                    ? `<img src="${it.ttdBase64}" alt="TTD" style="width: 76px; height: 34px; object-fit: contain; background: #ffffff; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="openTtdZoom('${encodeURIComponent(it.nama)}', '${encodeURIComponent(it.kelas)}', '${it.absen}', this.src)" title="Klik untuk memperbesar">`
+                    : `<span style="color: #94a3b8; font-size: 0.78rem;">-</span>`;
 
                 const formattedTime = it.updatedAt ? new Intl.DateTimeFormat('id-ID', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(it.updatedAt)) : '-';
+
+                const statusBadge = it.isFilled 
+                    ? `<span class="badge-status done" style="background: #ecfdf5; color: #047857; font-weight: 800; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem;">✓ Terisi</span>`
+                    : `<span class="badge-status pending" style="background: #fef2f2; color: #b91c1c; font-size: 0.75rem; padding: 4px 8px; border-radius: 6px;">✗ Belum</span>`;
+
+                const actionBtn = it.isFilled 
+                    ? `<a href="kaos-ttd.html?kelas=${it.kelas}&absen=${it.absen}" target="_blank" class="btn btn-outline btn-sm" style="border-color: #10b981; color: #047857; font-weight: 700; font-size: 0.78rem; padding: 3px 10px; border-radius: 6px;" title="Perbarui / Edit Data Kaos & TTD Siswa Ini">✏️ Edit</a>`
+                    : `<a href="kaos-ttd.html?kelas=${it.kelas}&absen=${it.absen}" target="_blank" class="btn btn-primary btn-sm" style="background: #4f46e5; border-color: #4f46e5; font-weight: 700; font-size: 0.78rem; padding: 3px 10px; border-radius: 6px;" title="Isi Ukuran Kaos & TTD Siswa Ini">+ Isi</a>`;
 
                 html += `
                     <tr>
@@ -3831,17 +3956,20 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                         <td><span class="yb-badge" style="font-size: 0.76rem;">${it.kelas}</span></td>
                         <td><strong>${String(it.absen).padStart(2, '0')}</strong></td>
                         <td><strong>${it.nama}</strong><br><span style="font-size: 0.75rem; color: #64748b;">${it.email || '-'}</span></td>
-                        <td style="text-align: center;"><span class="badge-status" style="background: #eff6ff; color: #1d4ed8; font-weight: 800; padding: 4px 10px; border-radius: 8px;">${it.ukuranKaos || '-'}</span></td>
-                        <td style="text-align: center;"><span class="badge-status" style="background: #f5f3ff; color: #6d28d9; font-weight: 700; padding: 4px 10px; border-radius: 8px;">${it.tipeLengan || '-'}</span></td>
+                        <td style="text-align: center;">${statusBadge}</td>
+                        <td style="text-align: center;"><span class="badge-status" style="background: ${it.isFilled ? '#eff6ff' : '#f8fafc'}; color: ${it.isFilled ? '#1d4ed8' : '#94a3b8'}; font-weight: 800; padding: 4px 10px; border-radius: 8px;">${it.ukuranKaos}</span></td>
+                        <td style="text-align: center;"><span class="badge-status" style="background: ${it.isFilled ? '#f5f3ff' : '#f8fafc'}; color: ${it.isFilled ? '#6d28d9' : '#94a3b8'}; font-weight: 700; padding: 4px 10px; border-radius: 8px;">${it.tipeLengan}</span></td>
                         <td style="text-align: center;">${thumbHtml}</td>
                         <td>${driveLink}</td>
                         <td style="font-size: 0.8rem; color: #64748b;">${formattedTime}</td>
+                        <td style="text-align: center;">${actionBtn}</td>
                     </tr>
                 `;
             });
             tableBody.innerHTML = html;
         }
 
+        // Export Kaos & TTD ke Excel (.xlsx)
         function exportKaosTtdToExcel() {
             if (typeof XLSX === 'undefined') {
                 alert("Pustaka XLSX belum siap.");
@@ -3849,45 +3977,42 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
             }
 
             const rows = [
-                ["NO", "KELAS", "ABSEN", "NAMA SISWA", "AKUN GOOGLE", "UKURAN KAOS", "TIPE LENGAN", "LINK GOOGLE DRIVE", "NAMA FILE PNG TTD", "WAKTU SIMPAN"]
+                ["NO", "KELAS", "ABSEN", "NAMA SISWA", "STATUS PENGISIAN", "UKURAN KAOS", "TIPE LENGAN", "LINK GOOGLE DRIVE", "WAKTU SIMPAN"]
             ];
 
             let count = 0;
             const sortedClasses = ["XII-1", "XII-2", "XII-3", "XII-4", "XII-5", "XII-6", "XII-7", "XII-8", "XII-9"];
 
             sortedClasses.forEach(cls => {
+                const roster = rosterAll[cls] || [];
                 const sMap = allKaosTtdData[cls] || {};
-                Object.keys(sMap).map(Number).sort((a,b)=>a-b).forEach(abs => {
-                    const r = sMap[abs];
-                    if (r) {
-                        count++;
-                        rows.push([
-                            count,
-                            cls,
-                            abs,
-                            r.nama || '',
-                            r.email || '',
-                            r.ukuranKaos || '',
-                            r.tipeLengan || '',
-                            r.ttdDriveUrl || '',
-                            r.ttdNamaFile || `${r.nama}.png`,
-                            r.updatedAt || ''
-                        ]);
-                    }
+
+                roster.forEach(stu => {
+                    count++;
+                    const r = sMap[stu.absen];
+                    const isFilled = !!(r && r.ukuranKaos);
+                    rows.push([
+                        count,
+                        cls,
+                        stu.absen,
+                        (r && r.nama) || stu.nama,
+                        isFilled ? "SUDAH TERISI" : "BELUM MENGISI",
+                        isFilled ? r.ukuranKaos : "-",
+                        isFilled ? r.tipeLengan : "-",
+                        (r && r.ttdDriveUrl) || "",
+                        (r && r.updatedAt) || ""
+                    ]);
                 });
             });
-
-            if (count === 0) {
-                alert("Belum ada data pengisian kaos & TTD untuk diekspor.");
-                return;
-            }
 
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.aoa_to_sheet(rows);
             XLSX.utils.book_append_sheet(wb, ws, "Rekap Kaos & TTD");
             XLSX.writeFile(wb, "REKAP_UKURAN_KAOS_DAN_TTD_NEVASTRA_2026.xlsx");
+            showToast("Rekap Excel Kaos & TTD berhasil diunduh!");
         }
 
+        // Modal Zoom TTD
         window.openTtdZoom = function(encNama, encKelas, absen, src) {
             const nama = decodeURIComponent(encNama);
             const kelas = decodeURIComponent(encKelas);
@@ -3898,7 +4023,8 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
             modal.style.display = 'flex';
         };
 
-        ['filterKaosKelas', 'filterKaosUkuran', 'filterKaosLengan', 'searchKaosStudent'].forEach(id => {
+        // Filter event listeners Kaos & TTD
+        ['filterKaosKelas', 'filterKaosUkuran', 'filterKaosLengan', 'filterKaosStatus', 'searchKaosStudent'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
                 el.addEventListener('input', renderKaosTtdTable);
@@ -3911,6 +4037,41 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
 
         const btnExportKaosTtdExcel = document.getElementById('btnExportKaosTtdExcel');
         if (btnExportKaosTtdExcel) btnExportKaosTtdExcel.onclick = exportKaosTtdToExcel;
+
+        const btnCopyKaosPending = document.getElementById('btnCopyKaosPending');
+        if (btnCopyKaosPending) {
+            btnCopyKaosPending.onclick = () => {
+                const filterKelas = document.getElementById('filterKaosKelas') ? document.getElementById('filterKaosKelas').value : 'ALL';
+                const targetClasses = filterKelas === 'ALL' ? classes : [filterKelas];
+                const pendingList = [];
+
+                targetClasses.forEach(cls => {
+                    const roster = rosterAll[cls] || [];
+                    const classKaos = (allKaosTtdData && allKaosTtdData[cls]) || {};
+                    roster.forEach(stu => {
+                        const rec = classKaos[stu.absen];
+                        if (!rec || !rec.ukuranKaos) {
+                            pendingList.push({ kelas: cls, absen: stu.absen, nama: stu.nama });
+                        }
+                    });
+                });
+
+                if (pendingList.length === 0) {
+                    showToast("Hebat! Semua siswa " + (filterKelas === 'ALL' ? 'angkatan' : 'kelas ' + filterKelas) + " sudah mengisi ukuran kaos dan TTD.");
+                    return;
+                }
+
+                let text = `*📢 PENGINGAT UKURAN KAOS & TTD DIGITAL (${filterKelas === 'ALL' ? 'SELURUH ANGKATAN' : 'KELAS ' + filterKelas}):*\n\n`;
+                pendingList.forEach((s, idx) => {
+                    text += `${idx + 1}. [${s.kelas}] Absen ${String(s.absen).padStart(2, '0')} - ${s.nama}\n`;
+                });
+                text += `\nTotal: *${pendingList.length} siswa* belum mengisi.\nYuk segera klik link berikut untuk mengisi data ukuran kaos dan tanda tangan digital:\n${window.location.origin}${window.location.pathname.replace('admin.html', '')}kaos-ttd.html\n\nTerima kasih! ✨`;
+
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(`Daftar ${pendingList.length} siswa yang belum mengisi kaos & TTD berhasil disalin!`);
+                });
+            };
+        }
 
         function startAdminApp() {
             if (isAdminAppStarted) return;

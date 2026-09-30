@@ -340,6 +340,15 @@
 
         <form id="formKaosTtd">
 
+            <!-- Banner Mode Edit Jika Sudah Mengisi -->
+            <div id="editModeNotice" style="display: none; background: #ecfdf5; border: 1.5px solid #10b981; border-radius: 14px; padding: 14px 18px; margin-bottom: 20px; font-size: 0.88rem; color: #065f46; font-weight: 700; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.25rem;">✓</span>
+                    <span>Data Anda sudah tersimpan sebelumnya. Anda saat ini dalam mode <strong>EDIT / PERBARUI</strong>.</span>
+                </div>
+                <span style="font-size: 0.78rem; background: #10b981; color: white; padding: 4px 10px; border-radius: 99px; font-weight: 800;">Mode Edit</span>
+            </div>
+
             <!-- BAGIAN 1: UKURAN KAOS -->
             <div class="section-card">
                 <div class="section-title">
@@ -809,6 +818,10 @@
                     const saved = await window.NevastraDB.getKaosTtd(targetKelas, targetAbsen);
                     if (saved) {
                         existingTtdData = saved;
+                        const editNotice = document.getElementById('editModeNotice');
+                        if (editNotice) editNotice.style.display = 'flex';
+                        const btnText = document.getElementById('btnSubmitText');
+                        if (btnText) btnText.textContent = "Simpan Perubahan (Edit) Ukuran Kaos & TTD";
                         if (saved.ukuranKaos) {
                             selectSize(saved.ukuranKaos);
                         }
