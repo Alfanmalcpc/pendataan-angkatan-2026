@@ -265,17 +265,23 @@ export function setupClassAuthBinding(options) {
   authBar.className = 'auth-gate-card';
   authBar.id = 'authGateCard';
   authBar.innerHTML = `
-    <div class="auth-gate-info" id="authGateInfo">
-      <div class="auth-avatar-placeholder">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 12c-5.33 0-8 2.67-8 4v2h16v-2c0-1.33-2.67-4-8-4z"/></svg>
-      </div>
-      <div>
-        <h4 style="font-size: 0.98rem; font-weight: 800; color: #0f172a; margin-bottom: 2px;">
-          Wajib Masuk dengan Akun Google / Bajza
-        </h4>
-        <p style="font-size: 0.82rem; color: #64748b; margin: 0;" id="authGateSubtext">
-          Masuk akun untuk menautkan biodata resmi Anda dan menjaga keamanan data.
-        </p>
+    <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+      <a href="index.html" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: #ffffff; color: #334155; border: 1.5px solid #cbd5e1; padding: 8px 14px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.04);" onmouseover="this.style.background='#f8fafc'; this.style.borderColor='#94a3b8';" onmouseout="this.style.background='#ffffff'; this.style.borderColor='#cbd5e1';">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <span>Kembali ke Halaman Utama</span>
+      </a>
+      <div class="auth-gate-info" id="authGateInfo">
+        <div class="auth-avatar-placeholder">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 12c-5.33 0-8 2.67-8 4v2h16v-2c0-1.33-2.67-4-8-4z"/></svg>
+        </div>
+        <div>
+          <h4 style="font-size: 0.98rem; font-weight: 800; color: #0f172a; margin-bottom: 2px;">
+            Wajib Masuk dengan Akun Google / Bajza
+          </h4>
+          <p style="font-size: 0.82rem; color: #64748b; margin: 0;" id="authGateSubtext">
+            Masuk akun untuk menautkan biodata resmi Anda dan menjaga keamanan data.
+          </p>
+        </div>
       </div>
     </div>
     <div id="authGateAction">
@@ -428,26 +434,6 @@ export function setupClassAuthBinding(options) {
     lockBadge.className = 'locked-badge-box';
     lockBadge.style.display = 'none';
     selectAbsenNama.parentNode.insertBefore(lockBadge, selectAbsenNama.nextSibling);
-  }
-
-  // 7. Elemen Tombol Aju Lepas Tautan Permanen di Bawah Form Pengisian
-  let bottomAppealBox = document.getElementById('selfAppealBottomWrapper');
-  if (!bottomAppealBox && btnSubmit && btnSubmit.parentNode) {
-    bottomAppealBox = document.createElement('div');
-    bottomAppealBox.id = 'selfAppealBottomWrapper';
-    bottomAppealBox.style.cssText = 'margin-top: 18px; padding: 14px 18px; background: #fff5f5; border: 1.5px dashed #fca5a5; border-radius: 14px; text-align: center; display: none;';
-    bottomAppealBox.innerHTML = `
-      <div style="font-size: 0.85rem; font-weight: 800; color: #991b1b; margin-bottom: 4px;">
-        ⚠️ Keliru Memilih Nama Siswa Saat Pertama Kali Login?
-      </div>
-      <div style="font-size: 0.78rem; color: #7f1d1d; margin-bottom: 10px; line-height: 1.4;">
-        Formulir ini terkunci untuk profil di atas. Jika Anda keliru mengeklik nama teman, ajukan permohonan ke Admin untuk memutus tautan ini agar akun Anda dapat memilih nama asli Anda.
-      </div>
-      <button type="button" id="btnSelfAppealBottom" class="btn btn-outline btn-sm" style="border-color: #dc2626; color: #dc2626; font-weight: 800; font-size: 0.82rem; padding: 8px 18px; background: #ffffff; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
-        <span>⚖️</span> Ajukan Lepas / Reset Tautan Akun ke Admin →
-      </button>
-    `;
-    btnSubmit.parentNode.insertBefore(bottomAppealBox, btnSubmit.nextSibling);
   }
 
   // Helper Elements
@@ -636,20 +622,6 @@ export function setupClassAuthBinding(options) {
         btnSelf.onclick = () => openSelfAppealModal(student, user);
       }
     }
-
-    if (bottomAppealBox) {
-      bottomAppealBox.style.display = 'block';
-      const btnBottom = document.getElementById('btnSelfAppealBottom');
-      if (btnBottom) {
-        btnBottom.onclick = () => openSelfAppealModal(student, user);
-      }
-    }
-
-    const btnAuthAppealTop = document.getElementById('btnAuthAppealTop');
-    if (btnAuthAppealTop) {
-      btnAuthAppealTop.style.display = 'inline-block';
-      btnAuthAppealTop.onclick = () => openSelfAppealModal(student, user);
-    }
   }
 
   // Default lock until user logs in
@@ -734,14 +706,9 @@ export function setupClassAuthBinding(options) {
     `;
 
     authGateAction.innerHTML = `
-      <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-        <button type="button" class="btn btn-outline btn-sm" id="btnAuthAppealTop" style="border-color: #fca5a5; color: #b91c1c; font-weight: 700; font-size: 0.78rem; padding: 6px 12px; background: white; border-radius: 8px; display: none; cursor: pointer;">
-          ⚖️ Aju Lepas Tautan
-        </button>
-        <button class="auth-btn-signout" id="btnAuthSignOut">
-          Keluar Akun
-        </button>
-      </div>
+      <button class="auth-btn-signout" id="btnAuthSignOut">
+        Keluar Akun
+      </button>
     `;
     document.getElementById('btnAuthSignOut').onclick = async () => {
       await signOut(auth);

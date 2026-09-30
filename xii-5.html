@@ -19,8 +19,14 @@
                     <p class="student-subtitle">SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
                 </div>
             </div>
-            <div class="yb-badge" style="font-size: 0.85rem; padding: 6px 14px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <a href="index.html" style="text-decoration: none; color: #334155; background: #ffffff; border: 1.5px solid #cbd5e1; padding: 6px 14px; border-radius: 10px; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    <span>Halaman Utama</span>
+                </a>
+                <div class="yb-badge" style="font-size: 0.85rem; padding: 6px 14px;">
                 KELAS XII-5
+            </div>
             </div>
         </div>
     </header>
@@ -1032,7 +1038,7 @@
 
     <!-- SISTEM AUTENTIKASI SSO & PENAUTAN PROFIL SISWA NEVASTRA 2026 -->
     <script type="module">
-        import { setupClassAuthBinding } from './auth-binding.js?v=20261001_v3';
+        import { setupClassAuthBinding } from './auth-binding.js?v=20261001_v4';
 
         function initClassAuth() {
             setupClassAuthBinding({
