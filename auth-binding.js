@@ -1,39 +1,19 @@
 // auth-binding.js — Modul SSO Auth Bajza & Penautan Profil Siswa NEVASTRA 2026
 // Additive & Modular: Mengintegrasikan Google Sign-In, Double Confirmation Modal, dan Sistem Aju Banding
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { 
-  getAuth, 
-  GoogleAuthProvider, 
+  auth, 
+  db, 
+  googleProvider, 
   signInWithPopup, 
   signOut, 
-  onAuthStateChanged 
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-import { 
-  getDatabase, 
+  onAuthStateChanged,
   ref, 
   set, 
   get, 
   remove, 
   onValue 
-} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
-
-// Konfigurasi Terpusat Firebase (Bajza Ecosystem / NEVASTRA)
-const firebaseConfig = {
-  apiKey: ***
-  authDomain: "nevastra.firebaseapp.com",
-  databaseURL: "https://nevastra-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "nevastra",
-  storageBucket: "nevastra.firebasestorage.app",
-  messagingSenderId: "464439721083",
-  appId: "1:464439721083:web:6f91107a6a027103f076de",
-  measurementId: "G-3S4QMH5W6T"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-const googleProvider = new GoogleAuthProvider();
+} from './firebase-config.js';
 
 // Database Operations
 export async function getStudentBinding(kelas, absen) {

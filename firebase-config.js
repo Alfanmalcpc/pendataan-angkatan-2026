@@ -1,4 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { 
   getDatabase, 
   ref, 
@@ -15,7 +15,20 @@ import {
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
-const firebaseConfig = {
+// Konfigurasi Akun BAJA (SSO Google Login)
+const bajaAuthConfig = {
+  apiKey: "AIzaSyCka7K9HnZIEUpm1qlIFKB7ca43kNz8t74",
+  authDomain: "baja-account.firebaseapp.com",
+  databaseURL: "https://baja-account-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "baja-account",
+  storageBucket: "baja-account.firebasestorage.app",
+  messagingSenderId: "829858667296",
+  appId: "1:829858667296:web:2e968ca50c0f6b1838d545",
+  measurementId: "G-RMHSJP0VH5"
+};
+
+// Konfigurasi Database NEVASTRA (Penyimpanan Biodata & Binding)
+const nevastraDbConfig = {
   apiKey: "AIzaSyC97LwnbOMTAoN9bAPg78XedYlkBXH2_rA",
   authDomain: "nevastra.firebaseapp.com",
   databaseURL: "https://nevastra-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -26,13 +39,14 @@ const firebaseConfig = {
   measurementId: "G-3S4QMH5W6T"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const auth = getAuth(app);
+// Inisialisasi Apps
+const authApp = getApps().find(a => a.name === "bajaAuth") || initializeApp(bajaAuthConfig, "bajaAuth");
+const dbApp = getApps().find(a => a.name === "[DEFAULT]") || initializeApp(nevastraDbConfig);
+
+const auth = getAuth(authApp);
+const db = getDatabase(dbApp);
 const googleProvider = new GoogleAuthProvider();
 
-// Save or update student biodata
 export async function saveBiodata(kelas, absen, studentData) {
   const targetRef = ref(db, `biodata/${kelas}/${absen}`);
   const payload = {
@@ -40,30 +54,27 @@ export async function saveBiodata(kelas, absen, studentData) {
     kelas: kelas,
     absen: parseInt(absen, 10),
     updatedAt: new Date().toISOString(),
-    updatedAtFormatted: new Intl.DateTimeFormat('id-ID', {
-      dateStyle: 'full',
-      timeStyle: 'short'
+    updatedAtFormatted: new Intl.DateTimeFormat("id-ID", {
+      dateStyle: "full",
+      timeStyle: "short"
     }).format(new Date())
   };
   await set(targetRef, payload);
   return payload;
 }
 
-// Get single student biodata
 export async function getStudentBiodata(kelas, absen) {
   const targetRef = ref(db, `biodata/${kelas}/${absen}`);
   const snapshot = await get(targetRef);
   return snapshot.exists() ? snapshot.val() : null;
 }
 
-// Get all biodata for a class
 export async function getClassBiodata(kelas) {
   const classRef = ref(db, `biodata/${kelas}`);
   const snapshot = await get(classRef);
   return snapshot.exists() ? snapshot.val() : {};
 }
 
-// Real-time listener for class biodata
 export function listenClassBiodata(kelas, callback) {
   const classRef = ref(db, `biodata/${kelas}`);
   return onValue(classRef, (snapshot) => {
@@ -71,28 +82,32 @@ export function listenClassBiodata(kelas, callback) {
   });
 }
 
-// Real-time listener for all angkatan biodata
 export function listenAllBiodata(callback) {
-  const allRef = ref(db, `biodata`);
+  const allRef = ref(db, "biodata");
   return onValue(allRef, (snapshot) => {
     callback(snapshot.exists() ? snapshot.val() : {});
   });
 }
 
-// Delete student biodata (admin function)
 export async function deleteStudentBiodata(kelas, absen) {
   const targetRef = ref(db, `biodata/${kelas}/${absen}`);
   await remove(targetRef);
 }
 
 export { 
-  app, 
+  authApp,
+  dbApp,
   db, 
   ref, 
+  set,
+  get,
+  remove,
+  onValue,
   auth, 
   googleProvider, 
   signInWithPopup, 
   signOut, 
-  onAuthStateChanged, 
-  firebaseConfig 
+  onAuthStateChanged,
+  bajaAuthConfig,
+  nevastraDbConfig
 };
