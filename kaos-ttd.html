@@ -977,20 +977,28 @@
 
                 // Update form state ke mode Edit
                 existingTtdData = payloadData;
-                editModeNotice.style.display = 'flex';
-                editNoticeDetail.textContent = `Data Anda tersimpan: Ukuran ${ukuran}, ${lengan}. Tanda tangan tersimpan rapi.`;
-                btnSubmitText.textContent = "Simpan Perubahan (Edit) Ukuran Kaos & TTD";
+                const editNotice = document.getElementById('editModeNotice');
+                if (editNotice) editNotice.style.display = 'flex';
+                if (btnSubmitText) btnSubmitText.textContent = "Simpan Perubahan (Edit) Ukuran Kaos & TTD";
 
                 // 4. Sukses! Tampilkan Modal
-                document.getElementById('succSiswa').textContent = `${currentStudentData.nama} (${normKelas} Absen ${normAbsen})`;
-                document.getElementById('succKaos').textContent = ukuran;
-                document.getElementById('succLengan').textContent = lengan;
-                document.getElementById('succDrive').innerHTML = driveUrl 
-                    ? `<a href="${driveUrl}" target="_blank" style="color: #059669; font-weight: 700; text-decoration: underline;">Buka Berkas di Drive (${targetFileName})</a>` 
-                    : `Tersimpan di Realtime Database & Folder tanda tangan/${normKelas}/`;
+                const elSuccSiswa = document.getElementById('succSiswa');
+                if (elSuccSiswa) elSuccSiswa.textContent = `${currentStudentData.nama} (${normKelas} Absen ${normAbsen})`;
+                const elSuccKaos = document.getElementById('succKaos');
+                if (elSuccKaos) elSuccKaos.textContent = ukuran;
+                const elSuccLengan = document.getElementById('succLengan');
+                if (elSuccLengan) elSuccLengan.textContent = lengan;
+                const elSuccDrive = document.getElementById('succDrive');
+                if (elSuccDrive) {
+                    elSuccDrive.innerHTML = driveUrl 
+                        ? `<a href="${driveUrl}" target="_blank" style="color: #059669; font-weight: 700; text-decoration: underline;">Buka Berkas di Drive (${targetFileName})</a>` 
+                        : `Tersimpan di Realtime Database & Folder tanda tangan/${normKelas}/`;
+                }
 
-                document.getElementById('btnSuccToBiodata').href = `${normKelas.toLowerCase()}.html?absen=${normAbsen}`;
-                document.getElementById('modalSuccess').style.display = 'flex';
+                const elBtnSuccBio = document.getElementById('btnSuccToBiodata');
+                if (elBtnSuccBio) elBtnSuccBio.href = `${normKelas.toLowerCase()}.html?absen=${normAbsen}`;
+                const elModalSuccess = document.getElementById('modalSuccess');
+                if (elModalSuccess) elModalSuccess.style.display = 'flex';
 
             } catch (err) {
                 console.error("Gagal simpan:", err);
