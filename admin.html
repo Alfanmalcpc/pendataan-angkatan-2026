@@ -344,6 +344,9 @@
                 <a href="rekap.html" class="btn btn-outline btn-sm">
                     Rekapitulasi
                 </a>
+                <a href="status-akun.html" class="btn btn-outline btn-sm" style="color: #6366f1; border-color: #6366f1; font-weight: 700;">
+                    <i class="fa-solid fa-id-badge"></i> Status Akun Siswa
+                </a>
                 <button id="btnAdminLogout" class="btn btn-outline btn-sm" style="color: #ef4444; border-color: #ef4444; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
                     <i class="fa-solid fa-right-from-bracket"></i> Keluar
                 </button>
@@ -376,6 +379,10 @@
             </button>
             <button id="btnSwitchPendataanTambahan" class="btn btn-outline" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md); border-color: #d97706; color: #d97706;">
                 Kelas & Pendataan Tambahan (Contoh Pengisian)
+            </button>
+            <button id="btnSwitchAjuBanding" class="btn btn-outline" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md); border-color: #e11d48; color: #e11d48; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-scale-balanced"></i> Aju Banding Akun
+                <span id="badgePendingAppeals" class="badge-status pending" style="background:#e11d48; color:white; font-size:0.75rem; padding:2px 8px; border-radius:10px; display:none;">0</span>
             </button>
         </div>
 
@@ -1223,6 +1230,37 @@
             </div>
         </div>
 
+        <!-- ======================================================== -->
+        <!-- PANEL KHUSUS MANAJEMEN AJU BANDING AKUN SISWA (ADMIN)    -->
+        <!-- ======================================================== -->
+        <div id="ajuBandingSectionAdmin" style="display: none; margin-bottom: 24px;">
+            <div class="card" style="margin-bottom: 20px; border-left: 5px solid #e11d48;">
+                <div class="card-header" style="flex-wrap: wrap; gap: 12px; align-items: flex-start;">
+                    <div>
+                        <span class="hero-badge" style="background: #ffe4e6; color: #be123c;">MANAJEMEN AJU BANDING & RESOLUSI AKUN</span>
+                        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--dark); margin: 6px 0 4px 0;">
+                            Daftar Pengajuan Banding Akun Siswa
+                        </h2>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">
+                            Daftar siswa yang mengajukan permohonan banding karena profil namanya keliru diklaim oleh akun lain. Admin dapat memverifikasi via WhatsApp, menyetujui pergantian tautan, atau menolak permohonan.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="status-akun.html" target="_blank" class="btn btn-outline btn-sm" style="border-color: #6366f1; color: #6366f1; font-weight: 700;">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Halaman Status Akun
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="appealsListContainer" style="display: grid; gap: 16px;">
+                <div class="card" style="text-align: center; padding: 32px; color: #64748b;">
+                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.8rem; margin-bottom: 8px; display: block;"></i>
+                    Memuat daftar aju banding dari database...
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Modal Kartu Siswa -->
@@ -1817,16 +1855,19 @@
         const btnSwitchKelompok = document.getElementById('btnSwitchKelompok');
         const btnSwitchKelas = document.getElementById('btnSwitchKelas');
         const btnSwitchPendataanTambahan = document.getElementById('btnSwitchPendataanTambahan');
+        const btnSwitchAjuBanding = document.getElementById('btnSwitchAjuBanding');
         const biodataWrapper = document.getElementById('biodataWrapper');
         const votingSectionAdmin = document.getElementById('votingSectionAdmin');
         const kelompokSectionAdmin = document.getElementById('kelompokSectionAdmin');
         const kelasSectionAdmin = document.getElementById('kelasSectionAdmin');
         const pendataanTambahanSectionAdmin = document.getElementById('pendataanTambahanSectionAdmin');
+        const ajuBandingSectionAdmin = document.getElementById('ajuBandingSectionAdmin');
 
         function switchAdminMode(mode) {
             currentAdminMode = mode;
             // Reset all buttons to outline
-            [btnSwitchBiodata, btnSwitchKelompok, btnSwitchVoting, btnSwitchKelas, btnSwitchPendataanTambahan].forEach(btn => {
+            [btnSwitchBiodata, btnSwitchKelompok, btnSwitchVoting, btnSwitchKelas, btnSwitchPendataanTambahan, btnSwitchAjuBanding].forEach(btn => {
+                if (!btn) return;
                 btn.className = 'btn btn-outline';
                 btn.style.background = '';
                 btn.style.color = '';
@@ -1842,6 +1883,10 @@
             btnSwitchKelas.style.color = '#2563eb';
             btnSwitchPendataanTambahan.style.borderColor = '#d97706';
             btnSwitchPendataanTambahan.style.color = '#d97706';
+            if (btnSwitchAjuBanding) {
+                btnSwitchAjuBanding.style.borderColor = '#e11d48';
+                btnSwitchAjuBanding.style.color = '#e11d48';
+            }
 
             // Hide all sections
             biodataWrapper.style.display = 'none';
@@ -1849,6 +1894,7 @@
             kelompokSectionAdmin.style.display = 'none';
             kelasSectionAdmin.style.display = 'none';
             pendataanTambahanSectionAdmin.style.display = 'none';
+            if (ajuBandingSectionAdmin) ajuBandingSectionAdmin.style.display = 'none';
 
             if (mode === 'biodata') {
                 btnSwitchBiodata.className = 'btn btn-primary';
@@ -1883,6 +1929,17 @@
                 pendataanTambahanSectionAdmin.style.display = 'block';
                 renderContohTable();
                 updateContohLivePreview();
+            } else if (mode === 'ajuBanding') {
+                if (btnSwitchAjuBanding) {
+                    btnSwitchAjuBanding.className = 'btn btn-primary';
+                    btnSwitchAjuBanding.style.background = '#e11d48';
+                    btnSwitchAjuBanding.style.borderColor = '#e11d48';
+                    btnSwitchAjuBanding.style.color = 'white';
+                }
+                if (ajuBandingSectionAdmin) {
+                    ajuBandingSectionAdmin.style.display = 'block';
+                }
+                syncAppealsData();
             }
         }
 
@@ -1891,6 +1948,7 @@
         btnSwitchKelompok.onclick = () => switchAdminMode('kelompok');
         btnSwitchKelas.onclick = () => switchAdminMode('kelas');
         btnSwitchPendataanTambahan.onclick = () => switchAdminMode('pendataanTambahan');
+        if (btnSwitchAjuBanding) btnSwitchAjuBanding.onclick = () => switchAdminMode('ajuBanding');
 
         // Check query param e.g. admin.html?tab=kelompok or admin.html?tab=voting
         const urlParamsAdmin = new URLSearchParams(window.location.search);
@@ -1903,6 +1961,8 @@
             switchAdminMode('kelas');
         } else if (tabParam === 'pendataan') {
             switchAdminMode('pendataanTambahan');
+        } else if (tabParam === 'banding' || tabParam === 'ajubanding') {
+            switchAdminMode('ajuBanding');
         }
 
         // Google Sheet Config Handlers
@@ -3188,6 +3248,188 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
 
         let isAdminAppStarted = false;
 
+        async function syncAppealsData() {
+            const container = document.getElementById('appealsListContainer');
+            const badge = document.getElementById('badgePendingAppeals');
+            try {
+                const res = await fetch(`${DB_BASE_URL}/appeals.json?t=${Date.now()}`);
+                if (!res.ok) return;
+                const appeals = await res.json() || {};
+                
+                const list = Object.entries(appeals).map(([id, val]) => ({ id, ...val }));
+                list.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+
+                const pendingCount = list.filter(a => a.status === 'pending').length;
+                if (badge) {
+                    badge.textContent = pendingCount;
+                    badge.style.display = pendingCount > 0 ? 'inline-block' : 'none';
+                }
+
+                if (!container) return;
+
+                if (list.length === 0) {
+                    container.innerHTML = `
+                        <div class="card" style="text-align: center; padding: 40px; color: #64748b;">
+                            <i class="fa-solid fa-circle-check" style="font-size: 2rem; color: #10b981; margin-bottom: 10px; display: block;"></i>
+                            <h4 style="color: #0f172a; margin-bottom: 4px;">Tidak Ada Pengajuan Banding</h4>
+                            <p style="margin: 0; font-size: 0.88rem;">Saat ini belum ada siswa yang mengajukan permohonan sanggah / banding akun.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let cardsHtml = '';
+                list.forEach(item => {
+                    const isPending = item.status === 'pending';
+                    const isApproved = item.status === 'approved';
+                    const isRejected = item.status === 'rejected';
+
+                    let statusBadge = '<span class="badge-status pending" style="background: #fef3c7; color: #b45309;">Menunggu Verifikasi</span>';
+                    if (isApproved) statusBadge = '<span class="badge-status success" style="background: #dcfce7; color: #15803d;">Disetujui Admin</span>';
+                    if (isRejected) statusBadge = '<span class="badge-status danger" style="background: #fee2e2; color: #b91c1c;">Ditolak Admin</span>';
+
+                    let rawWa = (item.noWa || '').replace(/[^0-9]/g, '');
+                    if (rawWa.startsWith('0')) rawWa = '62' + rawWa.slice(1);
+                    const waLink = rawWa ? `https://wa.me/${rawWa}?text=Halo%20${encodeURIComponent(item.namaSiswa || '')},%20terkait%20pengajuan%20banding%20akun%20di%20Web%20Pendataan%20Nevastra%202026:` : '#';
+
+                    cardsHtml += `
+                        <div class="card" style="border: 1.5px solid ${isPending ? '#fecaca' : '#e2e8f0'}; background: ${isPending ? '#fffafb' : '#ffffff'}; padding: 20px 24px; margin-bottom: 14px;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
+                                <div>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin: 0;">
+                                            ${item.namaSiswa || 'Siswa'} (${item.kelas} Absen ${item.absen})
+                                        </h3>
+                                        ${statusBadge}
+                                    </div>
+                                    <span style="font-size: 0.78rem; color: #64748b;">
+                                        Diajukan pada: ${item.createdAtFormatted || item.createdAt || '-'}
+                                    </span>
+                                </div>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    ${rawWa ? `
+                                        <a href="${waLink}" target="_blank" class="btn btn-outline btn-sm" style="border-color: #25D366; color: #128C7E; font-weight: 700;">
+                                            <i class="fa-brands fa-whatsapp"></i> Chat Siswa via WA
+                                        </a>
+                                    ` : ''}
+                                    ${isPending ? `
+                                        <button class="btn btn-primary btn-sm btn-approve-appeal" data-id="${item.id}" data-kelas="${item.kelas}" data-absen="${item.absen}" data-uid="${item.claimedByUid}" data-email="${item.claimedByEmail}" data-name="${item.claimedByName}" style="background: #10b981; font-weight: 700;">
+                                            Setujui & Lepas Tautan Lama
+                                        </button>
+                                        <button class="btn btn-outline btn-sm btn-reject-appeal" data-id="${item.id}" style="border-color: #ef4444; color: #dc2626; font-weight: 700;">
+                                            Tolak
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px;">
+                                <div>
+                                    <div style="font-size: 0.75rem; font-weight: 700; color: #ef4444; text-transform: uppercase;">Akun Tertaut Saat Ini</div>
+                                    <div style="font-size: 0.88rem; font-weight: 600; color: #1e293b;">${item.currentLinkedEmail || '-'}</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.75rem; font-weight: 700; color: #2563eb; text-transform: uppercase;">Akun Pemohon Asli (Claimant)</div>
+                                    <div style="font-size: 0.88rem; font-weight: 600; color: #1e293b;">${item.claimedByName || '-'} (${item.claimedByEmail || '-'})</div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 0.75rem; font-weight: 700; color: #0d9488; text-transform: uppercase;">Kontak WhatsApp Pemohon</div>
+                                    <div style="font-size: 0.88rem; font-weight: 600; color: #1e293b;">${item.noWa || '-'}</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <strong style="font-size: 0.82rem; color: #475569;">Alasan Pengajuan Banding:</strong>
+                                <p style="font-size: 0.88rem; color: #1e293b; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; margin: 6px 0 0 0;">
+                                    "${item.alasan || '-'}"
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = cardsHtml;
+
+                // Hook approve buttons
+                container.querySelectorAll('.btn-approve-appeal').forEach(btn => {
+                    btn.onclick = async () => {
+                        const id = btn.getAttribute('data-id');
+                        const k = btn.getAttribute('data-kelas');
+                        const a = btn.getAttribute('data-absen');
+                        const uid = btn.getAttribute('data-uid');
+                        const email = btn.getAttribute('data-email');
+                        const name = btn.getAttribute('data-name');
+
+                        const sure = confirm(`⚠️ Konfirmasi Persetujuan Banding:\nApakah Anda yakin ingin menyetujui permohonan banding ini?\n\nProfil ${k} Absen ${a} akan dialihkan dan ditautkan ke akun baru: ${email}.`);
+                        if (!sure) return;
+
+                        btn.disabled = true;
+                        btn.textContent = "Memproses...";
+                        try {
+                            const newBinding = {
+                                kelas: k,
+                                absen: parseInt(a, 10),
+                                nama: name || '',
+                                uid: uid,
+                                email: email,
+                                displayName: name || '',
+                                linkedAt: new Date().toISOString(),
+                                linkedAtFormatted: new Intl.DateTimeFormat('id-ID', { dateStyle: 'full', timeStyle: 'short' }).format(new Date())
+                            };
+                            await fetch(`${DB_BASE_URL}/auth_bindings/${k}_${a}.json`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(newBinding)
+                            });
+
+                            await fetch(`${DB_BASE_URL}/user_to_student/${uid}.json`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ kelas: k, absen: parseInt(a, 10), studentKey: `${k}_${a}`, email: email })
+                            });
+
+                            await fetch(`${DB_BASE_URL}/appeals/${id}.json`, {
+                                method: 'PATCH',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ status: 'approved', resolvedAt: new Date().toISOString() })
+                            });
+
+                            alert("✅ Aju banding berhasil disetujui dan profil telah ditautkan ke akun pemohon!");
+                            syncAppealsData();
+                        } catch (e) {
+                            alert("Gagal memproses persetujuan: " + e.message);
+                            btn.disabled = false;
+                        }
+                    };
+                });
+
+                // Hook reject buttons
+                container.querySelectorAll('.btn-reject-appeal').forEach(btn => {
+                    btn.onclick = async () => {
+                        const id = btn.getAttribute('data-id');
+                        const sure = confirm("Konfirmasi: Apakah Anda yakin ingin menolak pengajuan banding ini?");
+                        if (!sure) return;
+
+                        btn.disabled = true;
+                        try {
+                            await fetch(`${DB_BASE_URL}/appeals/${id}.json`, {
+                                method: 'PATCH',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ status: 'rejected', resolvedAt: new Date().toISOString() })
+                            });
+                            alert("Pengajuan banding telah ditandai ditolak.");
+                            syncAppealsData();
+                        } catch (e) {
+                            alert("Gagal menolak: " + e.message);
+                            btn.disabled = false;
+                        }
+                    };
+                });
+            } catch (err) {
+                console.warn("Gagal sinkron data appeals:", err);
+            }
+        }
+
         function startAdminApp() {
             if (isAdminAppStarted) return;
             isAdminAppStarted = true;
@@ -3198,11 +3440,13 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
             syncData();
             syncVotingData();
             syncKelompokData();
+            syncAppealsData();
             renderContohTable();
             updateContohLivePreview();
             setInterval(syncData, 15000);
             setInterval(syncVotingData, 15000);
             setInterval(syncKelompokData, 15000);
+            setInterval(syncAppealsData, 15000);
         }
 
         function checkAdminAuth() {

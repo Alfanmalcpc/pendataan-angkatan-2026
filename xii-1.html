@@ -316,6 +316,8 @@
     <script src="db.js"></script>
     <script>
         const CURRENT_CLASS = "XII-1";
+        window.CURRENT_CLASS = CURRENT_CLASS;
+        window.classRoster = classRoster;
         const classRoster = [{"absen": 1, "nama": "Achmad Al Fadli Azizul Hakim", "jk": "L"}, {"absen": 2, "nama": "Achmad Nabil Purniawan Al Alif", "jk": "L"}, {"absen": 3, "nama": "Adhy Dhamar Rahmadan", "jk": "L"}, {"absen": 4, "nama": "Adila Ibnu Azzam", "jk": "L"}, {"absen": 5, "nama": "Agus Bayu Fahredza", "jk": "L"}, {"absen": 6, "nama": "Aisyah Aryantani", "jk": "P"}, {"absen": 7, "nama": "Alansky Dafa Wijaya", "jk": "L"}, {"absen": 8, "nama": "Andhika Arya Pratama", "jk": "L"}, {"absen": 9, "nama": "Angelina Lola Adam", "jk": "P"}, {"absen": 10, "nama": "Aufa Naura Hana", "jk": "P"}, {"absen": 11, "nama": "Aulia Silfi Nur Haliza", "jk": "P"}, {"absen": 12, "nama": "Aulia Syiva Dwi Anggraeni", "jk": "P"}, {"absen": 13, "nama": "Bayu Arga Ardi Saputra", "jk": "L"}, {"absen": 14, "nama": "Biru Langit Satrawi", "jk": "P"}, {"absen": 15, "nama": "Feby Eka Yuliana", "jk": "P"}, {"absen": 16, "nama": "Ihsani Habibullah", "jk": "L"}, {"absen": 17, "nama": "Intan Nadya Fuzy Pratiwi", "jk": "P"}, {"absen": 18, "nama": "M. Afrizal Amirudin", "jk": "L"}, {"absen": 19, "nama": "M. Bilal Rizqi Salam", "jk": "L"}, {"absen": 20, "nama": "M. Zamzami Fajar Mauluddin", "jk": "L"}, {"absen": 21, "nama": "Moch. Achsan Arya Pratama", "jk": "L"}, {"absen": 22, "nama": "Mochamad Andhika Radityansyah", "jk": "L"}, {"absen": 23, "nama": "Muhammad Fahrezy Taufiqurrohman", "jk": "L"}, {"absen": 24, "nama": "Muhammad Mahfud Angga Ardiansyah", "jk": "L"}, {"absen": 25, "nama": "Muhammad Reyhan Al Iqbal", "jk": "L"}, {"absen": 26, "nama": "Muhammad Tamamun Ni'Am", "jk": "L"}, {"absen": 27, "nama": "Nur Azis", "jk": "L"}, {"absen": 28, "nama": "Nururridho Ahmad Setia", "jk": "L"}, {"absen": 29, "nama": "Putri Rahayu", "jk": "P"}, {"absen": 30, "nama": "Rahma Aulia Putri", "jk": "P"}, {"absen": 31, "nama": "Risky Adiansyah", "jk": "L"}, {"absen": 32, "nama": "Sella Marselina", "jk": "P"}, {"absen": 33, "nama": "Talita Luthfi Zayyana", "jk": "P"}, {"absen": 34, "nama": "Tyssa Aurora Lailaisya", "jk": "P"}, {"absen": 35, "nama": "Vano Tarangga Putra Prawoto", "jk": "L"}, {"absen": 36, "nama": "Velixia Nova Safira", "jk": "P"}];
 
         let currentClassData = {};
@@ -1027,5 +1029,21 @@
         initPage();
     </script>
 
+
+    <!-- SISTEM AUTENTIKASI SSO & PENAUTAN PROFIL SISWA NEVASTRA 2026 -->
+    <script type="module">
+        import { setupClassAuthBinding } from './auth-binding.js';
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setupClassAuthBinding({
+                kelas: window.CURRENT_CLASS,
+                selectAbsenNama: document.getElementById('selectAbsenNama'),
+                studentForm: document.getElementById('studentForm'),
+                btnSubmit: document.getElementById('btnSubmit'),
+                classRoster: window.classRoster
+            });
+        });
+    </script>
 </body>
+
 </html>

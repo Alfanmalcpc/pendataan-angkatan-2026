@@ -316,6 +316,8 @@
     <script src="db.js"></script>
     <script>
         const CURRENT_CLASS = "XII-3";
+        window.CURRENT_CLASS = CURRENT_CLASS;
+        window.classRoster = classRoster;
         const classRoster = [{"absen": 1, "nama": "Adinda Alifah Faiz Rasyidah", "jk": "P"}, {"absen": 2, "nama": "Afreza Ridho Ferdian", "jk": "L"}, {"absen": 3, "nama": "Ahmad Fachri Prima Wildana", "jk": "L"}, {"absen": 4, "nama": "Alyssa Fauziyah Ramadhani", "jk": "P"}, {"absen": 5, "nama": "Amelya Chindy Oktaviany", "jk": "P"}, {"absen": 6, "nama": "Anita Nurfaizah", "jk": "P"}, {"absen": 7, "nama": "Arzita Nesha Zahira", "jk": "P"}, {"absen": 8, "nama": "Cindy Oktavia Aida Safitri", "jk": "P"}, {"absen": 9, "nama": "Claudya Lucky Nur Faizah", "jk": "P"}, {"absen": 10, "nama": "Darin Tsabita Ar - Rihadatul Aisy", "jk": "P"}, {"absen": 11, "nama": "Destya Ester Fransysca", "jk": "P"}, {"absen": 12, "nama": "Ellena Alifia Magribi", "jk": "P"}, {"absen": 13, "nama": "Fahmi Rosyid", "jk": "L"}, {"absen": 14, "nama": "Ghaitsa Zahratul Faikha", "jk": "P"}, {"absen": 15, "nama": "Halena Cahyani Fatikhatul Fuadiyah", "jk": "P"}, {"absen": 16, "nama": "Intan Ayomi Bella Novelia", "jk": "P"}, {"absen": 17, "nama": "Intan Nurdiana Putri", "jk": "P"}, {"absen": 18, "nama": "Jordy Bagus Anggoro", "jk": "L"}, {"absen": 19, "nama": "Kinanti Renti Saputri", "jk": "P"}, {"absen": 20, "nama": "Lola Susmiasari", "jk": "P"}, {"absen": 21, "nama": "Luthfi Abraham Mahardika", "jk": "L"}, {"absen": 22, "nama": "Mabtuh Setyo Wasis Susilo", "jk": "L"}, {"absen": 23, "nama": "Mirza Faikar Nafis", "jk": "L"}, {"absen": 24, "nama": "Muhammad Hertanto Putra", "jk": "L"}, {"absen": 25, "nama": "Naishila Nasya Murtafiah", "jk": "P"}, {"absen": 26, "nama": "Patis Augusta Ramadani", "jk": "P"}, {"absen": 27, "nama": "Qurin'In Sukandi", "jk": "P"}, {"absen": 28, "nama": "Rahma Aqila Mufida", "jk": "P"}, {"absen": 29, "nama": "Sherly Nur Aristawati", "jk": "P"}, {"absen": 30, "nama": "Shireen Gadis Nayla", "jk": "P"}, {"absen": 31, "nama": "Siti Dwi Masyruhah", "jk": "P"}, {"absen": 32, "nama": "Sofie Nur Ajeng Ristiana", "jk": "P"}, {"absen": 33, "nama": "Talitha Zalfa Azalia", "jk": "P"}, {"absen": 34, "nama": "Zaneta Jacintya Ferisky", "jk": "P"}, {"absen": 35, "nama": "Zaskia Aulia Putri Masda", "jk": "P"}, {"absen": 36, "nama": "Zivanna Pramesty Lauladya", "jk": "P"}];
 
         let currentClassData = {};
@@ -1027,5 +1029,21 @@
         initPage();
     </script>
 
+
+    <!-- SISTEM AUTENTIKASI SSO & PENAUTAN PROFIL SISWA NEVASTRA 2026 -->
+    <script type="module">
+        import { setupClassAuthBinding } from './auth-binding.js';
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setupClassAuthBinding({
+                kelas: window.CURRENT_CLASS,
+                selectAbsenNama: document.getElementById('selectAbsenNama'),
+                studentForm: document.getElementById('studentForm'),
+                btnSubmit: document.getElementById('btnSubmit'),
+                classRoster: window.classRoster
+            });
+        });
+    </script>
 </body>
+
 </html>
