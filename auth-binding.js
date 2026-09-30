@@ -856,6 +856,7 @@ export function setupClassAuthBinding(options) {
     selectAbsenNama.addEventListener('change', async () => {
       const val = selectAbsenNama.value;
       if (!val) return;
+      if (!currentUser) return;
       await handleSelectionBinding(val);
     });
   }
