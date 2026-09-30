@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ukuran Kaos & Tanda Tangan Digital - NEVASTRA 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👕</text></svg>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .kaos-container {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 24px 16px 80px;
+        }
+        .section-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 26px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: all 0.25s ease;
+        }
+        .section-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 8px 26px rgba(0,0,0,0.06);
+        }
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        .section-desc {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+        /* Grid Ukuran Kaos */
+        .size-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .size-card {
+            position: relative;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 14px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+        .size-card:hover {
+            border-color: #94a3b8;
+            transform: translateY(-2px);
+            background: #f1f5f9;
+        }
+        .size-card.active {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+        }
+        .size-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+        .size-card.active .size-name {
+            color: #1d4ed8;
+        }
+        .size-dim {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+        .size-card.active .size-dim {
+            color: #2563eb;
+        }
+        .size-check {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 0.75rem;
+            color: #3b82f6;
+            display: none;
+        }
+        .size-card.active .size-check {
+            display: block;
+        }
+
+        /* Lengan Options */
+        .sleeve-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .sleeve-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 18px 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .sleeve-card:hover {
+            border-color: #94a3b8;
+            background: #f1f5f9;
+        }
+        .sleeve-card.active {
+            border-color: #8b5cf6;
+            background: #f5f3ff;
+            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.2);
+        }
+        .sleeve-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #475569;
+        }
+        .sleeve-card.active .sleeve-icon {
+            background: #8b5cf6;
+            color: #ffffff;
+        }
+        .sleeve-title {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 2px;
+        }
+        .sleeve-card.active .sleeve-title {
+            color: #6d28d9;
+        }
+        .sleeve-sub {
+            font-size: 0.76rem;
+            color: #64748b;
+        }
+
+        /* Canvas Signature Box */
+        .signature-wrapper {
+            background: #000000;
+            border: 2px solid #334155;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+        .signature-canvas {
+            display: block;
+            width: 100%;
+            height: 240px;
+            background: #000000;
+            cursor: crosshair;
+            touch-action: none;
+        }
+        .signature-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(255, 255, 255, 0.25);
+            font-size: 0.95rem;
+            font-weight: 600;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+        .signature-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .badge-black-bg {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #0f172a;
+            background: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Identity Locked Card */
+        .id-badge-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1.5px solid #cbd5e1;
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        /* Save Button */
+        .btn-save-main {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #ffffff;
+            background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #7c3aed 100%);
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .btn-save-main:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(79, 70, 229, 0.45);
+        }
+        .btn-save-main:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 640px) {
+            .sleeve-grid {
+                grid-template-columns: 1fr;
+            }
+            .signature-canvas {
+                height: 200px;
+            }
+            .section-card {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Minimalist Header -->
+    <header class="student-header">
+        <div class="student-header-inner">
+            <div class="student-brand">
+                <div class="brand-icon"><img src="logo.svg" alt="NEVASTRA 2026" class="brand-logo-img"></div>
+                <div>
+                    <h1 class="student-title">NEVASTRA 2026</h1>
+                    <p class="student-subtitle">SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <a href="index.html" style="text-decoration: none; color: #334155; background: #ffffff; border: 1.5px solid #cbd5e1; padding: 7px 14px; border-radius: 10px; font-size: 0.82rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); transition: all 0.2s;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    <span>Halaman Utama</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div class="kaos-container">
+
+        <!-- Hero Title -->
+        <div style="text-align: center; margin-bottom: 24px;">
+            <span class="hero-badge" style="background: #eef2ff; color: #4f46e5; border-color: #c7d2fe;">
+                ✨ FORMULIR UKURAN KAOS & TTD DIGITAL
+            </span>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: #0f172a; margin: 8px 0 6px;">
+                Pendataan Kaos & Tanda Tangan Angkatan
+            </h2>
+            <p style="font-size: 0.88rem; color: #64748b; max-width: 600px; margin: 0 auto;">
+                Data ukuran kaos akan direkap untuk pesanan konveksi angkatan, dan tanda tangan digital Anda akan otomatis tersimpan dalam format PNG background hitam pekat ke Google Drive.
+            </p>
+        </div>
+
+        <!-- Banner Jika Belum Login -->
+        <div id="authRequiredBanner" style="display: none; background: #fffbeb; border: 1.5px solid #fde68a; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 24px;">
+            <div style="font-size: 1.6rem; margin-bottom: 8px;">🔒</div>
+            <h4 style="margin: 0 0 6px 0; font-size: 1.1rem; font-weight: 800; color: #92400e;">
+                Silakan Masuk Akun Google Terlebih Dahulu
+            </h4>
+            <p style="font-size: 0.85rem; color: #b45309; margin: 0 0 16px 0;">
+                Untuk memastikan tanda tangan digital dan ukuran kaos tercatat resmi atas nama Anda, silakan masuk melalui portal utama.
+            </p>
+            <a href="index.html" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; border-radius: 12px; text-decoration: none; padding: 10px 22px;">
+                <span>Masuk Akun Google di Halaman Utama →</span>
+            </a>
+        </div>
+
+        <!-- Identitas Siswa Terkunci -->
+        <div class="id-badge-card" id="studentIdCard">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <div style="width: 44px; height: 44px; border-radius: 12px; background: #3b82f6; color: white; display: flex; align-items: center; justify-content: center; font-size: 1.25rem;">
+                    🎓
+                </div>
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <h4 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: #0f172a;" id="displayStudentNama">
+                            Memeriksa Akun...
+                        </h4>
+                        <span class="badge-status success" id="statusBadge" style="font-size: 0.7rem; padding: 2px 8px;">
+                            Akun Terverifikasi
+                        </span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #64748b; margin-top: 2px;">
+                        <span id="displayStudentKelas">-</span> • Absen <span id="displayStudentAbsen">-</span> • <em id="displayStudentEmail">-</em>
+                    </div>
+                </div>
+            </div>
+            <div id="btnToBiodataWrapper">
+                <a id="btnLinkToBiodata" href="#" class="btn btn-outline btn-sm" style="font-size: 0.8rem; font-weight: 700; border-radius: 8px; border-color: #cbd5e1; color: #334155; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                    📝 Buka Formulir Biodata
+                </a>
+            </div>
+        </div>
+
+        <form id="formKaosTtd">
+
+            <!-- BAGIAN 1: UKURAN KAOS -->
+            <div class="section-card">
+                <div class="section-title">
+                    <span>👕</span>
+                    <span>1. Pilih Ukuran Kaos</span>
+                </div>
+                <div class="section-desc">
+                    Silakan tentukan ukuran kaos yang paling pas dengan postur tubuh Anda. Ukuran di bawah ini mengacu pada standar konveksi lokal (Panjang x Lebar Dada).
+                </div>
+
+                <input type="hidden" id="inputUkuranKaos" name="ukuranKaos" required>
+
+                <div class="size-grid">
+                    <div class="size-card" data-size="S" onclick="selectSize('S')">
+                        <i class="fa-solid fa-circle-check size-check"></i>
+                        <div class="size-name">S</div>
+                        <div class="size-dim">L: 47 | P: 68</div>
+                    </div>
+                    <div class="size-card" data-size="M" onclick="selectSize('M')">
+                        <i class="fa-solid fa-circle-check size-check"></i>
+                        <div class="size-name">M</div>
+                        <div class="size-dim">L: 50 | P: 71</div>
+                    </div>
+                    <div class="size-card" data-size="L" onclick="selectSize('L')">
+                        <i class="fa-solid fa-circle-check size-check"></i>
+                        <div class="size-name">L</div>
+                        <div class="size-dim">L: 53 | P: 73</div>
+                    </div>
+                    <div class="size-card" data-size="XL" onclick="selectSize('XL')">
+                        <i class="fa-solid fa-circle-check size-check"></i>
+                        <div class="size-name">XL</div>
+                        <div class="size-dim">L: 56 | P: 76</div>
+                    </div>
+                    <div class="size-card" data-size="XXL" onclick="selectSize('XXL')">
+                        <i class="fa-solid fa-circle-check size-check"></i>
+                        <div class="size-name">XXL</div>
+                        <div class="size-dim">L: 59 | P: 78</div>
+                    </div>
+                    <div class="size-card" data-size="3XL" onclick="selectSize('3XL')">
+                        <i class="fa-solid fa-circle-check size-check"></i>
+                        <div class="size-name">3XL</div>
+                        <div class="size-dim">L: 62 | P: 80</div>
+                    </div>
+                    <div class="size-card" data-size="4XL" onclick="selectSize('4XL')">
+                        <i class="fa-solid fa-circle-check size-check"></i>
+                        <div class="size-name">4XL</div>
+                        <div class="size-dim">L: 65 | P: 82</div>
+                    </div>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 10px 14px; font-size: 0.78rem; color: #64748b; display: flex; align-items: center; gap: 8px;">
+                    <i class="fa-solid fa-circle-info" style="color: #3b82f6;"></i>
+                    <span>Ukuran kaos yang dipilih: <strong id="selectedSizeLabel" style="color: #1e293b;">Belum dipilih</strong>. Satuan ukuran dalam Centimeter (cm).</span>
+                </div>
+            </div>
+
+            <!-- BAGIAN 2: TIPE LENGAN -->
+            <div class="section-card">
+                <div class="section-title">
+                    <span>🧥</span>
+                    <span>2. Pilih Tipe Lengan Kaos</span>
+                </div>
+                <div class="section-desc">
+                    Tentukan variasi lengan kaos yang Anda inginkan (lengan pendek biasa atau lengan panjang).
+                </div>
+
+                <input type="hidden" id="inputTipeLengan" name="tipeLengan" required>
+
+                <div class="sleeve-grid">
+                    <div class="sleeve-card" id="cardLenganPendek" onclick="selectSleeve('Lengan Pendek')">
+                        <div class="sleeve-icon">
+                            <i class="fa-solid fa-shirt"></i>
+                        </div>
+                        <div>
+                            <div class="sleeve-title">Lengan Pendek</div>
+                            <div class="sleeve-sub">Model kaos standar santai & adem</div>
+                        </div>
+                    </div>
+                    <div class="sleeve-card" id="cardLenganPanjang" onclick="selectSleeve('Lengan Panjang')">
+                        <div class="sleeve-icon">
+                            <i class="fa-solid fa-vest-patches"></i>
+                        </div>
+                        <div>
+                            <div class="sleeve-title">Lengan Panjang</div>
+                            <div class="sleeve-sub">Cocok untuk hijab & gaya kasual sopan</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BAGIAN 3: TANDA TANGAN DIGITAL -->
+            <div class="section-card">
+                <div class="section-title">
+                    <span>✍️</span>
+                    <span>3. Tanda Tangan Digital Resmi</span>
+                </div>
+                <div class="section-desc">
+                    Gunakan jari (pada layar HP/Tablet) atau kursor mouse (pada PC) untuk membubuhkan tanda tangan Anda di dalam kotak hitam di bawah.
+                </div>
+
+                <!-- TTD Box Hitam Pekat Sesuai Permintaan -->
+                <div class="signature-wrapper">
+                    <canvas id="signatureCanvas" class="signature-canvas"></canvas>
+                    <div class="signature-hint" id="signatureHint">
+                        <i class="fa-solid fa-pencil"></i>
+                        <span>Bubuhkan Tanda Tangan Anda di Sini</span>
+                    </div>
+                </div>
+
+                <div class="signature-toolbar">
+                    <div class="badge-black-bg">
+                        <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #000000; border: 1px solid #94a3b8;"></span>
+                        <span>Format: <strong>PNG Hitam Pekat (#000000)</strong></span>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-outline btn-sm" id="btnClearSignature" style="font-size: 0.8rem; border-color: #cbd5e1; border-radius: 8px;">
+                            <i class="fa-solid fa-rotate-left"></i> Hapus / Ulangi
+                        </button>
+                        <button type="button" class="btn btn-outline btn-sm" id="btnPreviewSignature" style="font-size: 0.8rem; border-color: #cbd5e1; border-radius: 8px;">
+                            <i class="fa-solid fa-eye"></i> Pratinjau
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Preview Area Jika Sudah Pernah Simpan -->
+                <div id="existingSignatureBox" style="display: none; margin-top: 14px; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <img id="imgExistingTtdPreview" src="" alt="TTD Sebelumnya" style="width: 70px; height: 35px; object-fit: contain; background: #000; border-radius: 6px; border: 1px solid #334155;">
+                        <span style="font-size: 0.8rem; font-weight: 700; color: #1e293b;">
+                            Tanda tangan sebelumnya sudah tersimpan di sistem.
+                        </span>
+                    </div>
+                    <span style="font-size: 0.74rem; color: #64748b;">(Kamu dapat membuat ulang tanda tangan di atas jika ingin memperbarui)</span>
+                </div>
+            </div>
+
+            <!-- Pesan Peringatan & Status -->
+            <div id="formAlert" style="display: none; padding: 14px 18px; border-radius: 12px; margin-bottom: 20px; font-size: 0.88rem; font-weight: 600;"></div>
+
+            <!-- Tombol Simpan -->
+            <button type="submit" id="btnSubmitKaosTtd" class="btn-save-main">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span id="btnSubmitText">Simpan Ukuran Kaos & Unggah TTD ke Google Drive</span>
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- Modal Pratinjau TTD -->
+    <div id="modalPreviewTtd" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.75); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: #ffffff; border-radius: 20px; max-width: 480px; width: 100%; padding: 24px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+            <h4 style="font-size: 1.1rem; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
+                Pratinjau Hasil Berkas PNG (Background Hitam)
+            </h4>
+            <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 16px;">
+                Berkas ini yang akan diunggah ke Google Drive di folder <code>tandatangan/Kelas/Nama.png</code>:
+            </p>
+            <div style="background: #000000; border-radius: 14px; padding: 14px; margin-bottom: 16px; border: 1.5px solid #334155;">
+                <img id="imgModalPreview" src="" alt="Preview TTD Hitam" style="max-width: 100%; max-height: 180px; display: block; margin: 0 auto;">
+            </div>
+            <button type="button" id="btnClosePreviewTtd" class="btn btn-secondary btn-block" style="border-radius: 12px; font-weight: 700; width: 100%; padding: 10px;">
+                Tutup Pratinjau
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Sukses Pengiriman -->
+    <div id="modalSuccess" style="display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.8); backdrop-filter: blur(6px); z-index: 99999; align-items: center; justify-content: center; padding: 20px;">
+        <div style="background: #ffffff; border-radius: 24px; max-width: 500px; width: 100%; padding: 32px 24px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35);">
+            <div style="width: 68px; height: 68px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);">
+                ✓
+            </div>
+            <h3 style="font-size: 1.3rem; font-weight: 800; color: #0f172a; margin-bottom: 8px;">
+                Data Kaos & TTD Berhasil Disimpan!
+            </h3>
+            <p style="font-size: 0.85rem; color: #475569; margin-bottom: 18px; line-height: 1.5;" id="successDesc">
+                Ukuran kaos Anda dan tanda tangan digital berlatar hitam telah resmi tersimpan di sistem dan terkirim ke Google Drive panitia.
+            </p>
+
+            <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 14px; padding: 14px; margin-bottom: 20px; text-align: left; font-size: 0.82rem;">
+                <div style="margin-bottom: 6px;"><strong>Siswa:</strong> <span id="succSiswa">-</span></div>
+                <div style="margin-bottom: 6px;"><strong>Ukuran Kaos:</strong> <span id="succKaos" style="font-weight: 800; color: #2563eb;">-</span></div>
+                <div style="margin-bottom: 6px;"><strong>Tipe Lengan:</strong> <span id="succLengan" style="font-weight: 700; color: #7c3aed;">-</span></div>
+                <div><strong>Google Drive:</strong> <span id="succDrive" style="color: #059669;">Tersimpan di folder tandatangan</span></div>
+            </div>
+
+            <div style="display: flex; gap: 10px; flex-direction: column;">
+                <a id="btnSuccToBiodata" href="#" class="btn btn-primary" style="padding: 12px; font-weight: 700; border-radius: 12px; text-decoration: none; justify-content: center;">
+                    📝 Lanjut Isi / Periksa Biodata Siswa →
+                </a>
+                <a href="index.html" class="btn btn-outline" style="padding: 10px; font-weight: 700; border-radius: 12px; text-decoration: none; justify-content: center; border-color: #cbd5e1; color: #475569;">
+                    Kembali ke Halaman Utama
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="students-data.js"></script>
+    <script src="db.js"></script>
+
+    <script type="module">
+        import { 
+            auth, 
+            db, 
+            onAuthStateChanged,
+            ref, 
+            get 
+        } from './firebase-config.js';
+
+        let currentAuthUser = null;
+        let currentStudentData = null; // { kelas, absen, nama }
+        let existingTtdData = null;
+
+        // Elements
+        const displayStudentNama = document.getElementById('displayStudentNama');
+        const displayStudentKelas = document.getElementById('displayStudentKelas');
+        const displayStudentAbsen = document.getElementById('displayStudentAbsen');
+        const displayStudentEmail = document.getElementById('displayStudentEmail');
+        const btnLinkToBiodata = document.getElementById('btnLinkToBiodata');
+        const inputUkuranKaos = document.getElementById('inputUkuranKaos');
+        const inputTipeLengan = document.getElementById('inputTipeLengan');
+        const selectedSizeLabel = document.getElementById('selectedSizeLabel');
+        const formAlert = document.getElementById('formAlert');
+        const btnSubmitKaosTtd = document.getElementById('btnSubmitKaosTtd');
+        const btnSubmitText = document.getElementById('btnSubmitText');
+
+        // Existing TTD preview
+        const existingSignatureBox = document.getElementById('existingSignatureBox');
+        const imgExistingTtdPreview = document.getElementById('imgExistingTtdPreview');
+
+        // Signature Canvas Setup
+        const canvas = document.getElementById('signatureCanvas');
+        const ctx = canvas.getContext('2d');
+        const signatureHint = document.getElementById('signatureHint');
+        let isDrawing = false;
+        let hasDrawn = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 2;
+            
+            // Set internal resolution
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+
+            // Redraw black background
+            fillCanvasBlack();
+
+            // Restore existing if any
+            if (existingTtdData && existingTtdData.ttdBase64 && !hasDrawn) {
+                const img = new Image();
+                img.onload = () => {
+                    ctx.drawImage(img, 0, 0, rect.width, rect.height);
+                    signatureHint.style.display = 'none';
+                    hasDrawn = true;
+                };
+                img.src = existingTtdData.ttdBase64;
+            }
+        }
+
+        function fillCanvasBlack() {
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        window.addEventListener('resize', () => {
+            // Hanya resize jika lebar berubah untuk mencegah terhapus saat keyboard HP muncul
+            if (canvas.dataset.lastWidth !== String(canvas.clientWidth)) {
+                canvas.dataset.lastWidth = String(canvas.clientWidth);
+                resizeCanvas();
+            }
+        });
+
+        // Initialize Canvas
+        fillCanvasBlack();
+        setTimeout(resizeCanvas, 100);
+
+        // Canvas Drawing Helpers
+        function getCanvasPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            let clientX, clientY;
+            if (e.touches && e.touches.length > 0) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            return {
+                x: clientX - rect.left,
+                y: clientY - rect.top
+            };
+        }
+
+        function startDrawing(e) {
+            e.preventDefault();
+            isDrawing = true;
+            hasDrawn = true;
+            signatureHint.style.display = 'none';
+            const pos = getCanvasPos(e);
+            lastX = pos.x;
+            lastY = pos.y;
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 3.2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.lineTo(lastX + 0.1, lastY + 0.1);
+            ctx.stroke();
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            const pos = getCanvasPos(e);
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 3.2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+
+            lastX = pos.x;
+            lastY = pos.y;
+        }
+
+        function stopDrawing(e) {
+            if (!isDrawing) return;
+            e.preventDefault();
+            isDrawing = false;
+        }
+
+        // Pointer Events (Mouse, Touch, Stylus Pen)
+        canvas.addEventListener('pointerdown', startDrawing);
+        canvas.addEventListener('pointermove', draw);
+        canvas.addEventListener('pointerup', stopDrawing);
+        canvas.addEventListener('pointercancel', stopDrawing);
+        canvas.addEventListener('pointerleave', stopDrawing);
+
+        // Clear Canvas
+        document.getElementById('btnClearSignature').addEventListener('click', () => {
+            fillCanvasBlack();
+            hasDrawn = false;
+            signatureHint.style.display = 'flex';
+        });
+
+        // Preview Modal
+        const modalPreviewTtd = document.getElementById('modalPreviewTtd');
+        const imgModalPreview = document.getElementById('imgModalPreview');
+        document.getElementById('btnPreviewSignature').addEventListener('click', () => {
+            if (!hasDrawn) {
+                alert("Silakan bubuhkan tanda tangan Anda terlebih dahulu pada kanvas hitam!");
+                return;
+            }
+            const pngData = canvas.toDataURL('image/png');
+            imgModalPreview.src = pngData;
+            modalPreviewTtd.style.display = 'flex';
+        });
+        document.getElementById('btnClosePreviewTtd').addEventListener('click', () => {
+            modalPreviewTtd.style.display = 'none';
+        });
+
+        // Global functions for selection
+        window.selectSize = function(size) {
+            inputUkuranKaos.value = size;
+            document.querySelectorAll('.size-card').forEach(el => {
+                if (el.dataset.size === size) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+            selectedSizeLabel.textContent = size;
+        };
+
+        window.selectSleeve = function(type) {
+            inputTipeLengan.value = type;
+            const cardP = document.getElementById('cardLenganPendek');
+            const cardJ = document.getElementById('cardLenganPanjang');
+            if (type === 'Lengan Pendek') {
+                cardP.classList.add('active');
+                cardJ.classList.remove('active');
+            } else {
+                cardJ.classList.add('active');
+                cardP.classList.remove('active');
+            }
+        };
+
+        // Auth & Identity Resolution
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                // Belum login -> Tampilkan banner login tanpa popup alert
+                const authNotice = document.getElementById('authRequiredBanner');
+                if (authNotice) authNotice.style.display = 'block';
+                const formCard = document.getElementById('formKaosTtd');
+                if (formCard) formCard.style.opacity = '0.4';
+                return;
+            }
+
+            const authNotice = document.getElementById('authRequiredBanner');
+            if (authNotice) authNotice.style.display = 'none';
+            const formCard = document.getElementById('formKaosTtd');
+            if (formCard) formCard.style.opacity = '1';
+
+            currentAuthUser = user;
+            displayStudentEmail.textContent = user.email;
+
+            // Cek URL params jika ada ?kelas=XII-1&absen=1
+            const urlParams = new URLSearchParams(window.location.search);
+            const qKelas = urlParams.get('kelas');
+            const qAbsen = parseInt(urlParams.get('absen'), 10);
+
+            try {
+                // Cek penautan user di database
+                const snap = await get(ref(db, `user_to_student/${user.uid}`));
+                let targetKelas = qKelas;
+                let targetAbsen = qAbsen;
+                let targetNama = "";
+
+                if (snap.exists()) {
+                    const linkInfo = snap.val();
+                    targetKelas = linkInfo.kelas;
+                    targetAbsen = linkInfo.absen;
+                    targetNama = linkInfo.nama || user.displayName;
+                } else if (qKelas && qAbsen) {
+                    const roster = (window.studentRoster && window.studentRoster[qKelas]) || [];
+                    const stu = roster.find(s => s.absen == qAbsen);
+                    if (stu) targetNama = stu.nama;
+                }
+
+                if (!targetKelas || !targetAbsen) {
+                    alert("Akun Anda belum ditautkan ke profil siswa. Silakan pilih kelas dan nama Anda di portal utama.");
+                    window.location.href = "index.html";
+                    return;
+                }
+
+                // Cari nama resmi jika belum ada
+                if (!targetNama) {
+                    const roster = (window.studentRoster && window.studentRoster[targetKelas]) || [];
+                    const stu = roster.find(s => s.absen == targetAbsen);
+                    targetNama = stu ? stu.nama : (user.displayName || "Siswa");
+                }
+
+                currentStudentData = {
+                    kelas: targetKelas,
+                    absen: targetAbsen,
+                    nama: targetNama
+                };
+
+                displayStudentNama.textContent = targetNama;
+                displayStudentKelas.textContent = targetKelas;
+                displayStudentAbsen.textContent = targetAbsen;
+                btnLinkToBiodata.href = `${targetKelas.toLowerCase()}.html?absen=${targetAbsen}`;
+
+                // Muat Data Kaos & TTD Eksisting dari Database Nevastra
+                if (window.NevastraDB && window.NevastraDB.getKaosTtd) {
+                    const saved = await window.NevastraDB.getKaosTtd(targetKelas, targetAbsen);
+                    if (saved) {
+                        existingTtdData = saved;
+                        if (saved.ukuranKaos) {
+                            selectSize(saved.ukuranKaos);
+                        }
+                        if (saved.tipeLengan) {
+                            selectSleeve(saved.tipeLengan);
+                        }
+                        if (saved.ttdBase64) {
+                            existingSignatureBox.style.display = 'flex';
+                            imgExistingTtdPreview.src = saved.ttdBase64;
+                            hasDrawn = true;
+                            signatureHint.style.display = 'none';
+
+                            const img = new Image();
+                            img.onload = () => {
+                                const rect = canvas.getBoundingClientRect();
+                                ctx.drawImage(img, 0, 0, rect.width, rect.height);
+                            };
+                            img.src = saved.ttdBase64;
+                        }
+                    }
+                }
+
+            } catch (err) {
+                console.error("Gagal memuat status akun:", err);
+            }
+        });
+
+        // Form Submit Handler
+        document.getElementById('formKaosTtd').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!currentStudentData) {
+                alert("Identitas siswa belum siap. Silakan muat ulang halaman.");
+                return;
+            }
+
+            const ukuran = inputUkuranKaos.value;
+            const lengan = inputTipeLengan.value;
+
+            if (!ukuran) {
+                showAlert('danger', 'Harap pilih ukuran kaos (S, M, L, XL, XXL, 3XL, 4XL) terlebih dahulu!');
+                window.scrollTo({ top: 100, behavior: 'smooth' });
+                return;
+            }
+
+            if (!lengan) {
+                showAlert('danger', 'Harap tentukan tipe lengan kaos (Lengan Pendek atau Lengan Panjang)!');
+                window.scrollTo({ top: 300, behavior: 'smooth' });
+                return;
+            }
+
+            if (!hasDrawn && (!existingTtdData || !existingTtdData.ttdBase64)) {
+                showAlert('danger', 'Harap bubuhkan tanda tangan Anda pada kanvas hitam di atas!');
+                document.getElementById('signatureCanvas').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            hideAlert();
+            btnSubmitKaosTtd.disabled = true;
+            btnSubmitText.textContent = "⏳ Memproses berkas PNG tanda tangan...";
+
+            try {
+                // 1. Dapatkan Base64 PNG background hitam murni
+                const pngBase64 = canvas.toDataURL('image/png');
+                const cleanNama = currentStudentData.nama.replace(/[/\\?%*:|"<>]/g, '').trim();
+                const targetFileName = `${cleanNama}.png`;
+
+                let driveUrl = (existingTtdData && existingTtdData.ttdDriveUrl) || '';
+                let driveId = (existingTtdData && existingTtdData.ttdDriveId) || '';
+
+                // 2. Upload ke Google Drive via Google Apps Script (Folder: tandatangan/{kelas}/{Nama Siswa}.png)
+                if (window.NevastraDB && window.NevastraDB.getDriveConfig) {
+                    btnSubmitText.textContent = "☁️ Mengunggah TTD ke Google Drive (folder tandatangan)...";
+                    try {
+                        const driveConfig = await window.NevastraDB.getDriveConfig();
+                        if (driveConfig && driveConfig.scriptUrl) {
+                            const payloadDrive = {
+                                type: 'tandatangan',
+                                folderCategory: 'tandatangan',
+                                kelas: currentStudentData.kelas,
+                                absen: currentStudentData.absen,
+                                nama: cleanNama,
+                                fileName: targetFileName,
+                                mimeType: 'image/png',
+                                base64: pngBase64
+                            };
+
+                            const resDrive = await window.NevastraDB.uploadFotoToDrive(driveConfig.scriptUrl, payloadDrive);
+                            if (resDrive && resDrive.status === 'success') {
+                                driveUrl = resDrive.fileUrl || '';
+                                driveId = resDrive.fileId || '';
+                            }
+                        }
+                    } catch (driveErr) {
+                        console.warn("Upload Drive error (akan tetap disimpan ke database):", driveErr);
+                    }
+                }
+
+                // 3. Simpan ke Firebase Realtime Database Nevastra (/kaos_ttd/{kelas}/{absen})
+                btnSubmitText.textContent = "💾 Menyimpan data ke database Nevastra...";
+                const payloadData = {
+                    nama: currentStudentData.nama,
+                    kelas: currentStudentData.kelas,
+                    absen: currentStudentData.absen,
+                    email: currentAuthUser.email,
+                    uid: currentAuthUser.uid,
+                    ukuranKaos: ukuran,
+                    tipeLengan: lengan,
+                    ttdNamaFile: targetFileName,
+                    ttdDriveUrl: driveUrl,
+                    ttdDriveId: driveId,
+                    ttdBase64: pngBase64
+                };
+
+                if (window.NevastraDB && window.NevastraDB.saveKaosTtd) {
+                    await window.NevastraDB.saveKaosTtd(currentStudentData.kelas, currentStudentData.absen, payloadData);
+                }
+
+                // 4. Sukses! Tampilkan Modal
+                document.getElementById('succSiswa').textContent = `${currentStudentData.nama} (${currentStudentData.kelas} Absen ${currentStudentData.absen})`;
+                document.getElementById('succKaos').textContent = ukuran;
+                document.getElementById('succLengan').textContent = lengan;
+                document.getElementById('succDrive').innerHTML = driveUrl 
+                    ? `<a href="${driveUrl}" target="_blank" style="color: #2563eb; text-decoration: underline;">Buka Berkas di Drive (${targetFileName})</a>` 
+                    : `Tersimpan di database & folder tandatangan/${currentStudentData.kelas}/`;
+
+                document.getElementById('btnSuccToBiodata').href = `${currentStudentData.kelas.toLowerCase()}.html?absen=${currentStudentData.absen}`;
+                document.getElementById('modalSuccess').style.display = 'flex';
+
+            } catch (err) {
+                console.error("Gagal simpan:", err);
+                showAlert('danger', "Terjadi kesalahan saat menyimpan data: " + err.message);
+            } finally {
+                btnSubmitKaosTtd.disabled = false;
+                btnSubmitText.textContent = "Simpan Ukuran Kaos & Unggah TTD ke Google Drive";
+            }
+        });
+
+        function showAlert(type, msg) {
+            formAlert.style.display = 'block';
+            if (type === 'danger') {
+                formAlert.style.background = '#fef2f2';
+                formAlert.style.border = '1.5px solid #fecaca';
+                formAlert.style.color = '#991b1b';
+            } else {
+                formAlert.style.background = '#f0fdf4';
+                formAlert.style.border = '1.5px solid #bbf7d0';
+                formAlert.style.color = '#166534';
+            }
+            formAlert.textContent = msg;
+        }
+
+        function hideAlert() {
+            formAlert.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

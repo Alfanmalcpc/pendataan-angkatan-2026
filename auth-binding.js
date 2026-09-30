@@ -265,10 +265,14 @@ export function setupClassAuthBinding(options) {
   authBar.className = 'auth-gate-card';
   authBar.id = 'authGateCard';
   authBar.innerHTML = `
-    <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
       <a href="index.html" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px; background: #ffffff; color: #334155; border: 1.5px solid #cbd5e1; padding: 8px 14px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.04);" onmouseover="this.style.background='#f8fafc'; this.style.borderColor='#94a3b8';" onmouseout="this.style.background='#ffffff'; this.style.borderColor='#cbd5e1';">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         <span>Kembali ke Halaman Utama</span>
+      </a>
+      <a href="kaos-ttd.html" id="linkAuthKaosTtd" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; background: #eef2ff; color: #4338ca; border: 1.5px solid #c7d2fe; padding: 8px 14px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 2px 5px rgba(79,70,229,0.06);" onmouseover="this.style.background='#e0e7ff'" onmouseout="this.style.background='#eef2ff'">
+        <span>👕✍️</span>
+        <span>Ukuran Kaos & TTD</span>
       </a>
       <div class="auth-gate-info" id="authGateInfo">
         <div class="auth-avatar-placeholder">
@@ -621,6 +625,11 @@ export function setupClassAuthBinding(options) {
       if (btnSelf) {
         btnSelf.onclick = () => openSelfAppealModal(student, user);
       }
+    }
+
+    const linkKaos = document.getElementById('linkAuthKaosTtd');
+    if (linkKaos) {
+      linkKaos.href = `kaos-ttd.html?kelas=${kelas}&absen=${student.absen}`;
     }
   }
 

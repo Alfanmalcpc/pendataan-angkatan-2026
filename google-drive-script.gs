@@ -55,19 +55,28 @@ function doPost(e) {
       parentFolder = DriveApp.getRootFolder();
     }
 
-    // 2. Tentukan atau buat subfolder otomatis sesuai KELAS siswa (XII-1 s/d XII-9)
+    // 2. Tentukan atau buat subfolder otomatis sesuai kategori (Tanda Tangan vs Foto Profil)
     var className = (data.kelas || "Lainnya").trim();
-    var folderIter = parentFolder.getFoldersByName(className);
-    var classFolder;
-    if (folderIter.hasNext()) {
-      classFolder = folderIter.next();
+    var targetFolder;
+
+    var isTtd = (data.type === 'tandatangan' || data.folderCategory === 'tandatangan');
+
+    if (isTtd) {
+      // Buat / ambil folder utama "tandatangan" di Drive
+      var ttdFolderIter = parentFolder.getFoldersByName("tandatangan");
+      var ttdMainFolder = ttdFolderIter.hasNext() ? ttdFolderIter.next() : parentFolder.createFolder("tandatangan");
+
+      // Buat / ambil subfolder kelas (XII-1 s/d XII-9) di dalam folder "tandatangan"
+      var classFolderIter = ttdMainFolder.getFoldersByName(className);
+      targetFolder = classFolderIter.hasNext() ? classFolderIter.next() : ttdMainFolder.createFolder(className);
     } else {
-      // Buat folder kelas baru secara otomatis jika belum ada di Drive
-      classFolder = parentFolder.createFolder(className);
+      // Default: Foto profil langsung di subfolder kelas
+      var folderIter = parentFolder.getFoldersByName(className);
+      targetFolder = folderIter.hasNext() ? folderIter.next() : parentFolder.createFolder(className);
     }
 
     // 3. Format nama file: PERSIS SESUAI NAMA SISWA
-    var ext = "jpg";
+    var ext = isTtd ? "png" : "jpg";
     if (data.fileName && data.fileName.indexOf(".") !== -1) {
       ext = data.fileName.split(".").pop().toLowerCase();
     }
@@ -76,32 +85,35 @@ function doPost(e) {
     var cleanName = (data.nama || "Siswa").replace(/[/\\?%*:|"<>]/g, "").trim();
     var finalFileName = cleanName + "." + ext;
 
-    var contentType = data.mimeType || "image/jpeg";
+    var contentType = data.mimeType || (isTtd ? "image/png" : "image/jpeg");
     var rawBase64 = (data.base64 || "");
     var base64Data = rawBase64.replace(/^data:image\/[a-z]+;base64,/, "");
     
     if (!base64Data) {
       return ContentService.createTextOutput(JSON.stringify({
         status: "error",
-        message: "Data foto kosong atau tidak valid."
+        message: "Data berkas kosong atau tidak valid."
       })).setMimeType(ContentService.MimeType.JSON);
     }
 
     var bytes = Utilities.base64Decode(base64Data);
     var blob = Utilities.newBlob(bytes, contentType, finalFileName);
 
-    // 4. Hapus foto lama jika siswa mengunggah ulang dengan nama file yang sama di kelas tersebut
+    // 4. Hapus file lama jika siswa mengunggah ulang dengan nama file yang sama di kelas tersebut
     try {
-      var existingFiles = classFolder.getFilesByName(finalFileName);
+      var existingFiles = targetFolder.getFilesByName(finalFileName);
       while (existingFiles.hasNext()) {
         var oldFile = existingFiles.next();
         oldFile.setTrashed(true);
       }
     } catch (errCleanOld) {}
 
-    // 5. Buat file foto baru di dalam subfolder KELAS masing-masing
-    var file = classFolder.createFile(blob);
-    file.setDescription("Foto Profil Buku Tahunan: " + cleanName + " (" + className + " Absen " + (data.absen || "") + ")");
+    // 5. Buat file baru di dalam folder masing-masing
+    var file = targetFolder.createFile(blob);
+    var fileDesc = isTtd
+      ? ("Tanda Tangan Digital Background Hitam: " + cleanName + " (" + className + " Absen " + (data.absen || "") + ")")
+      : ("Foto Profil Buku Tahunan: " + cleanName + " (" + className + " Absen " + (data.absen || "") + ")");
+    file.setDescription(fileDesc);
     
     // Atur izin baca publik agar thumbnail bisa langsung tampil di web admin
     try {
@@ -118,10 +130,11 @@ function doPost(e) {
       fileUrl: fileUrl,
       directViewUrl: directViewUrl,
       fileName: finalFileName,
-      folderName: className,
+      folderName: isTtd ? ("tandatangan/" + className) : className,
       nama: cleanName,
       kelas: className,
-      absen: data.absen || ""
+      absen: data.absen || "",
+      type: isTtd ? "tandatangan" : "foto"
     })).setMimeType(ContentService.MimeType.JSON);
 
   } catch (error) {

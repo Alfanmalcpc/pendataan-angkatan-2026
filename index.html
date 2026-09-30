@@ -65,7 +65,11 @@
                     <br><span style="font-weight: 600; color: #059669;" id="alreadyLinkedMeta">-</span>
                 </p>
                 <button id="btnGoToAlreadyLinkedForm" type="button" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: 700; border-radius: 12px; background: #059669; justify-content: center;">
-                    Buka & Ambil Data Biodata Saya →
+                    📝 Buka & Ambil Data Biodata Saya →
+                </button>
+                <button id="btnGoToKaosTtdForm" type="button" class="btn" style="width: 100%; margin-top: 10px; padding: 12px; font-weight: 800; border-radius: 12px; background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%); color: white; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #6366f1; box-shadow: 0 4px 14px rgba(49,46,129,0.25); cursor: pointer;">
+                    <span style="font-size: 1.15rem;">👕✍️</span>
+                    <span>Isi Ukuran Kaos & Tanda Tangan Digital →</span>
                 </button>
                 <div style="margin-top: 14px; padding-top: 12px; border-top: 1px dashed #86efac;">
                     <button id="btnOpenSelfAppealBox" type="button" style="background: none; border: none; color: #dc2626; font-size: 0.82rem; font-weight: 700; cursor: pointer; text-decoration: underline;">
@@ -218,9 +222,12 @@
                     </p>
                 </div>
             </div>
-            <div>
-                <a id="btnDirectStudentForm" href="#" class="btn btn-primary" style="background: #059669; font-weight: 700; border-radius: 999px; padding: 10px 20px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-                    Buka Form Biodata Saya →
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <a id="btnDirectStudentForm" href="#" class="btn btn-primary" style="background: #059669; font-weight: 700; border-radius: 999px; padding: 10px 18px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                    📝 Buka Form Biodata →
+                </a>
+                <a id="btnDirectKaosTtd" href="#" class="btn" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%); color: white; font-weight: 800; border-radius: 999px; padding: 10px 18px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(49,46,129,0.25);">
+                    👕✍️ Ukuran Kaos & TTD →
                 </a>
             </div>
         </div>
@@ -757,6 +764,11 @@
                         bannerStudentClass.textContent = linkInfo.kelas;
                         bannerStudentAbsen.textContent = linkInfo.absen;
                         btnDirectStudentForm.href = `${linkInfo.kelas.toLowerCase()}.html?absen=${linkInfo.absen}`;
+                        
+                        const btnDirectKaosTtd = document.getElementById('btnDirectKaosTtd');
+                        if (btnDirectKaosTtd) {
+                            btnDirectKaosTtd.href = `kaos-ttd.html?kelas=${linkInfo.kelas}&absen=${linkInfo.absen}`;
+                        }
 
                         linkedStudentBanner.style.display = 'flex';
 
@@ -766,6 +778,13 @@
                         btnGoToAlreadyLinkedForm.onclick = () => {
                             window.location.href = `${linkInfo.kelas.toLowerCase()}.html?absen=${linkInfo.absen}`;
                         };
+
+                        const btnGoToKaosTtdForm = document.getElementById('btnGoToKaosTtdForm');
+                        if (btnGoToKaosTtdForm) {
+                            btnGoToKaosTtdForm.onclick = () => {
+                                window.location.href = `kaos-ttd.html?kelas=${linkInfo.kelas}&absen=${linkInfo.absen}`;
+                            };
+                        }
 
                         sectionAlreadyLinked.style.display = 'block';
                         sectionSelectProfile.style.display = 'none';

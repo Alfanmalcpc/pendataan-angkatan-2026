@@ -384,6 +384,9 @@
                 <i class="fa-solid fa-scale-balanced"></i> Aju Banding Akun
                 <span id="badgePendingAppeals" class="badge-status pending" style="background:#e11d48; color:white; font-size:0.75rem; padding:2px 8px; border-radius:10px; display:none;">0</span>
             </button>
+            <button id="btnSwitchKaosTtd" class="btn btn-outline" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md); border-color: #4f46e5; color: #4f46e5; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-shirt"></i> Data Kaos & TTD Digital
+            </button>
         </div>
 
         <!-- WRAPPER MODE BIODATA -->
@@ -1264,6 +1267,124 @@
             </div>
         </div>
 
+        <!-- ======================================================== -->
+        <!-- PANEL KHUSUS REKAP UKURAN KAOS & TTD DIGITAL (ADMIN)     -->
+        <!-- ======================================================== -->
+        <div id="kaosTtdSectionAdmin" style="display: none; margin-bottom: 24px;">
+            <div class="card" style="margin-bottom: 20px; border-left: 5px solid #4f46e5;">
+                <div class="card-header" style="flex-wrap: wrap; gap: 12px; align-items: flex-start;">
+                    <div>
+                        <span class="hero-badge" style="background: #eef2ff; color: #4338ca;">REKAP PESANAN KONVEKSI & TTD DIGITAL</span>
+                        <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--dark); margin: 6px 0 4px 0;">
+                            Data Ukuran Kaos & Tanda Tangan Angkatan 2026
+                        </h2>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0;">
+                            Rekapitulasi ukuran kaos angkatan (S s/d 4XL, Lengan Pendek vs Panjang) dan koleksi berkas tanda tangan digital format PNG background hitam yang tersimpan di Google Drive.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button id="btnExportKaosTtdExcel" type="button" class="btn btn-primary btn-sm" style="background: #059669; border-color: #059669; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-file-excel"></i> Unduh Excel (.xlsx)
+                        </button>
+                        <button id="btnRefreshKaosTtd" type="button" class="btn btn-outline btn-sm" style="font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                            <i class="fa-solid fa-rotate"></i> Muat Ulang
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid Kaos & TTD -->
+            <div class="class-stat-grid" style="margin-bottom: 20px;">
+                <div class="class-stat-box">
+                    <div class="class-stat-label">TOTAL SISWA MENGISI</div>
+                    <div class="class-stat-num" id="statKaosTotal" style="color: #4f46e5;">0</div>
+                    <div style="font-size: 0.76rem; color: var(--text-muted);" id="statKaosPct">0% dari 324 siswa</div>
+                </div>
+                <div class="class-stat-box">
+                    <div class="class-stat-label">LENGAN PENDEK</div>
+                    <div class="class-stat-num" id="statLenganPendek" style="color: #0d9488;">0</div>
+                    <div style="font-size: 0.76rem; color: var(--text-muted);">Kaos standar santai</div>
+                </div>
+                <div class="class-stat-box">
+                    <div class="class-stat-label">LENGAN PANJANG</div>
+                    <div class="class-stat-num" id="statLenganPanjang" style="color: #7c3aed;">0</div>
+                    <div style="font-size: 0.76rem; color: var(--text-muted);">Kaos lengan panjang / hijab</div>
+                </div>
+                <div class="class-stat-box" style="grid-column: span 1;">
+                    <div class="class-stat-label">RINCIAN UKURAN KAOS</div>
+                    <div style="font-size: 0.82rem; font-weight: 700; color: #1e293b; margin-top: 4px; line-height: 1.6;" id="statKaosBreakdown">
+                        S: 0 | M: 0 | L: 0 | XL: 0 | XXL: 0 | 3XL: 0 | 4XL: 0
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter & Search Bar -->
+            <div class="card" style="margin-bottom: 20px; padding: 14px 18px;">
+                <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 180px;">
+                        <input type="text" id="searchKaosStudent" class="form-control" placeholder="Cari nama siswa..." style="font-size: 0.85rem; padding: 8px 12px;">
+                    </div>
+                    <div>
+                        <select id="filterKaosKelas" class="form-control" style="font-size: 0.85rem; padding: 8px 12px;">
+                            <option value="ALL">Semua Kelas</option>
+                            <option value="XII-1">XII-1</option>
+                            <option value="XII-2">XII-2</option>
+                            <option value="XII-3">XII-3</option>
+                            <option value="XII-4">XII-4</option>
+                            <option value="XII-5">XII-5</option>
+                            <option value="XII-6">XII-6</option>
+                            <option value="XII-7">XII-7</option>
+                            <option value="XII-8">XII-8</option>
+                            <option value="XII-9">XII-9</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="filterKaosUkuran" class="form-control" style="font-size: 0.85rem; padding: 8px 12px;">
+                            <option value="ALL">Semua Ukuran</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                            <option value="3XL">3XL</option>
+                            <option value="4XL">4XL</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select id="filterKaosLengan" class="form-control" style="font-size: 0.85rem; padding: 8px 12px;">
+                            <option value="ALL">Semua Tipe Lengan</option>
+                            <option value="Lengan Pendek">Lengan Pendek</option>
+                            <option value="Lengan Panjang">Lengan Panjang</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Kaos & TTD -->
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">No</th>
+                                <th style="width: 80px;">Kelas</th>
+                                <th style="width: 65px;">Absen</th>
+                                <th>Nama Lengkap Siswa</th>
+                                <th style="text-align: center;">Ukuran Kaos</th>
+                                <th style="text-align: center;">Tipe Lengan</th>
+                                <th style="text-align: center; min-width: 130px;">Tanda Tangan (PNG Hitam)</th>
+                                <th>Status Google Drive</th>
+                                <th>Waktu Pengisian</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kaosTtdTableBody">
+                            <!-- Diisi oleh JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Modal Kartu Siswa -->
@@ -1350,6 +1471,25 @@
                 <a id="btnOpenFormDirect" href="#" target="_blank" class="btn btn-outline btn-sm">Buka Halaman Siswa</a>
                 <button id="btnDeleteStudentData" class="btn btn-sm" style="background: var(--danger); color: white;">Hapus Data Ini</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal Zoom TTD Admin -->
+    <div id="modalTtdZoomAdmin" class="modal-backdrop" style="display: none; align-items: center; justify-content: center; z-index: 999999;">
+        <div class="modal-box" style="max-width: 520px; text-align: center; background: #ffffff; border-radius: 20px; padding: 24px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h4 id="zoomTtdTitle" style="font-size: 1.05rem; font-weight: 800; color: #0f172a; margin: 0;">Pratinjau Tanda Tangan</h4>
+                <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('modalTtdZoomAdmin').style.display='none'" style="padding: 4px 10px;">✕</button>
+            </div>
+            <div style="background: #000000; border-radius: 14px; padding: 20px; margin-bottom: 14px; border: 2px solid #334155; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+                <img id="zoomTtdImg" src="" alt="Zoom TTD" style="max-width: 100%; max-height: 260px; display: block; margin: 0 auto; object-fit: contain;">
+            </div>
+            <div style="font-size: 0.76rem; color: #64748b; margin-bottom: 14px;">
+                Format resmi: PNG dengan latar belakang hitam pekat (#000000)
+            </div>
+            <button type="button" class="btn btn-secondary btn-block" onclick="document.getElementById('modalTtdZoomAdmin').style.display='none'" style="width: 100%; border-radius: 10px; font-weight: 700;">
+                Tutup
+            </button>
         </div>
     </div>
 
@@ -1905,12 +2045,14 @@
         const btnSwitchKelas = document.getElementById('btnSwitchKelas');
         const btnSwitchPendataanTambahan = document.getElementById('btnSwitchPendataanTambahan');
         const btnSwitchAjuBanding = document.getElementById('btnSwitchAjuBanding');
+        const btnSwitchKaosTtd = document.getElementById('btnSwitchKaosTtd');
         const biodataWrapper = document.getElementById('biodataWrapper');
         const votingSectionAdmin = document.getElementById('votingSectionAdmin');
         const kelompokSectionAdmin = document.getElementById('kelompokSectionAdmin');
         const kelasSectionAdmin = document.getElementById('kelasSectionAdmin');
         const pendataanTambahanSectionAdmin = document.getElementById('pendataanTambahanSectionAdmin');
         const ajuBandingSectionAdmin = document.getElementById('ajuBandingSectionAdmin');
+        const kaosTtdSectionAdmin = document.getElementById('kaosTtdSectionAdmin');
 
         function switchAdminMode(mode) {
             currentAdminMode = mode;
@@ -1936,6 +2078,12 @@
                 btnSwitchAjuBanding.style.borderColor = '#e11d48';
                 btnSwitchAjuBanding.style.color = '#e11d48';
             }
+            if (btnSwitchKaosTtd) {
+                btnSwitchKaosTtd.className = 'btn btn-outline';
+                btnSwitchKaosTtd.style.background = '';
+                btnSwitchKaosTtd.style.borderColor = '#4f46e5';
+                btnSwitchKaosTtd.style.color = '#4f46e5';
+            }
 
             // Hide all sections
             biodataWrapper.style.display = 'none';
@@ -1944,6 +2092,7 @@
             kelasSectionAdmin.style.display = 'none';
             pendataanTambahanSectionAdmin.style.display = 'none';
             if (ajuBandingSectionAdmin) ajuBandingSectionAdmin.style.display = 'none';
+            if (kaosTtdSectionAdmin) kaosTtdSectionAdmin.style.display = 'none';
 
             if (mode === 'biodata') {
                 btnSwitchBiodata.className = 'btn btn-primary';
@@ -1989,6 +2138,17 @@
                     ajuBandingSectionAdmin.style.display = 'block';
                 }
                 syncAppealsData();
+            } else if (mode === 'kaosTtd') {
+                if (btnSwitchKaosTtd) {
+                    btnSwitchKaosTtd.className = 'btn btn-primary';
+                    btnSwitchKaosTtd.style.background = '#4f46e5';
+                    btnSwitchKaosTtd.style.borderColor = '#4f46e5';
+                    btnSwitchKaosTtd.style.color = 'white';
+                }
+                if (kaosTtdSectionAdmin) {
+                    kaosTtdSectionAdmin.style.display = 'block';
+                }
+                syncKaosTtdData();
             }
         }
 
@@ -1998,6 +2158,7 @@
         btnSwitchKelas.onclick = () => switchAdminMode('kelas');
         btnSwitchPendataanTambahan.onclick = () => switchAdminMode('pendataanTambahan');
         if (btnSwitchAjuBanding) btnSwitchAjuBanding.onclick = () => switchAdminMode('ajuBanding');
+        if (btnSwitchKaosTtd) btnSwitchKaosTtd.onclick = () => switchAdminMode('kaosTtd');
 
         // Check query param e.g. admin.html?tab=kelompok or admin.html?tab=voting
         const urlParamsAdmin = new URLSearchParams(window.location.search);
@@ -2012,6 +2173,8 @@
             switchAdminMode('pendataanTambahan');
         } else if (tabParam === 'banding' || tabParam === 'ajubanding') {
             switchAdminMode('ajuBanding');
+        } else if (tabParam === 'kaos' || tabParam === 'ttd') {
+            switchAdminMode('kaosTtd');
         }
 
         // Google Sheet Config Handlers
@@ -3564,6 +3727,191 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
             }
         }
 
+        // ==================================================================
+        // SISTEM LOGIKA ADMIN: REKAP KAOS & TANDA TANGAN DIGITAL ANGKATAN
+        // ==================================================================
+        let allKaosTtdData = {};
+
+        async function syncKaosTtdData() {
+            try {
+                const res = await fetch(`${DB_BASE_URL}/kaos_ttd.json?t=${Date.now()}`);
+                if (res.ok) {
+                    allKaosTtdData = (await res.json()) || {};
+                }
+                renderKaosTtdTable();
+            } catch (err) {
+                console.warn("Gagal sinkron data Kaos & TTD:", err);
+            }
+        }
+
+        function renderKaosTtdTable() {
+            const tableBody = document.getElementById('kaosTtdTableBody');
+            if (!tableBody) return;
+
+            const filterKelas = document.getElementById('filterKaosKelas') ? document.getElementById('filterKaosKelas').value : 'ALL';
+            const filterUkuran = document.getElementById('filterKaosUkuran') ? document.getElementById('filterKaosUkuran').value : 'ALL';
+            const filterLengan = document.getElementById('filterKaosLengan') ? document.getElementById('filterKaosLengan').value : 'ALL';
+            const searchText = (document.getElementById('searchKaosStudent') ? document.getElementById('searchKaosStudent').value : '').toLowerCase().trim();
+
+            const items = [];
+            const sizeCounts = { S: 0, M: 0, L: 0, XL: 0, XXL: 0, '3XL': 0, '4XL': 0 };
+            let totalShort = 0;
+            let totalLong = 0;
+
+            Object.entries(allKaosTtdData).forEach(([cls, studentMap]) => {
+                if (typeof studentMap === 'object' && studentMap) {
+                    Object.entries(studentMap).forEach(([abs, record]) => {
+                        if (record && typeof record === 'object') {
+                            items.push({
+                                kelas: cls,
+                                absen: parseInt(abs, 10),
+                                ...record
+                            });
+
+                            if (record.ukuranKaos && sizeCounts.hasOwnProperty(record.ukuranKaos)) {
+                                sizeCounts[record.ukuranKaos]++;
+                            }
+                            if (record.tipeLengan === 'Lengan Pendek') totalShort++;
+                            if (record.tipeLengan === 'Lengan Panjang') totalLong++;
+                        }
+                    });
+                }
+            });
+
+            const totalFilled = items.length;
+            const pct = Math.round((totalFilled / 324) * 100);
+            if (document.getElementById('statKaosTotal')) document.getElementById('statKaosTotal').textContent = totalFilled;
+            if (document.getElementById('statKaosPct')) document.getElementById('statKaosPct').textContent = `${pct}% dari 324 siswa`;
+            if (document.getElementById('statLenganPendek')) document.getElementById('statLenganPendek').textContent = totalShort;
+            if (document.getElementById('statLenganPanjang')) document.getElementById('statLenganPanjang').textContent = totalLong;
+            if (document.getElementById('statKaosBreakdown')) {
+                document.getElementById('statKaosBreakdown').textContent = 
+                    `S: ${sizeCounts.S} | M: ${sizeCounts.M} | L: ${sizeCounts.L} | XL: ${sizeCounts.XL} | XXL: ${sizeCounts.XXL} | 3XL: ${sizeCounts['3XL']} | 4XL: ${sizeCounts['4XL']}`;
+            }
+
+            let filtered = items.filter(it => {
+                if (filterKelas !== 'ALL' && it.kelas !== filterKelas) return false;
+                if (filterUkuran !== 'ALL' && it.ukuranKaos !== filterUkuran) return false;
+                if (filterLengan !== 'ALL' && it.tipeLengan !== filterLengan) return false;
+                if (searchText && !(it.nama || '').toLowerCase().includes(searchText)) return false;
+                return true;
+            });
+
+            filtered.sort((a, b) => {
+                if (a.kelas !== b.kelas) return a.kelas.localeCompare(b.kelas);
+                return (a.absen || 0) - (b.absen || 0);
+            });
+
+            if (filtered.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" style="text-align: center; padding: 32px; color: #64748b;">
+                            Tidak ada data siswa yang cocok dengan filter.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let html = '';
+            filtered.forEach((it, idx) => {
+                const driveLink = it.ttdDriveUrl 
+                    ? `<a href="${it.ttdDriveUrl}" target="_blank" style="color: #059669; font-weight: 700; text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-brands fa-google-drive"></i> Buka File</a>`
+                    : `<span style="color: #64748b; font-size: 0.78rem;">Folder tandatangan/${it.kelas}/</span>`;
+
+                const thumbHtml = it.ttdBase64 
+                    ? `<img src="${it.ttdBase64}" alt="TTD" style="width: 80px; height: 38px; object-fit: contain; background: #000000; border-radius: 6px; border: 1px solid #334155; cursor: pointer;" onclick="openTtdZoom('${encodeURIComponent(it.nama)}', '${encodeURIComponent(it.kelas)}', '${it.absen}', this.src)" title="Klik untuk memperbesar">`
+                    : `<span style="color: #94a3b8; font-size: 0.78rem;">Tidak ada TTD</span>`;
+
+                const formattedTime = it.updatedAt ? new Intl.DateTimeFormat('id-ID', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(it.updatedAt)) : '-';
+
+                html += `
+                    <tr>
+                        <td><strong>${idx + 1}</strong></td>
+                        <td><span class="yb-badge" style="font-size: 0.76rem;">${it.kelas}</span></td>
+                        <td><strong>${String(it.absen).padStart(2, '0')}</strong></td>
+                        <td><strong>${it.nama}</strong><br><span style="font-size: 0.75rem; color: #64748b;">${it.email || '-'}</span></td>
+                        <td style="text-align: center;"><span class="badge-status" style="background: #eff6ff; color: #1d4ed8; font-weight: 800; padding: 4px 10px; border-radius: 8px;">${it.ukuranKaos || '-'}</span></td>
+                        <td style="text-align: center;"><span class="badge-status" style="background: #f5f3ff; color: #6d28d9; font-weight: 700; padding: 4px 10px; border-radius: 8px;">${it.tipeLengan || '-'}</span></td>
+                        <td style="text-align: center;">${thumbHtml}</td>
+                        <td>${driveLink}</td>
+                        <td style="font-size: 0.8rem; color: #64748b;">${formattedTime}</td>
+                    </tr>
+                `;
+            });
+            tableBody.innerHTML = html;
+        }
+
+        function exportKaosTtdToExcel() {
+            if (typeof XLSX === 'undefined') {
+                alert("Pustaka XLSX belum siap.");
+                return;
+            }
+
+            const rows = [
+                ["NO", "KELAS", "ABSEN", "NAMA SISWA", "AKUN GOOGLE", "UKURAN KAOS", "TIPE LENGAN", "LINK GOOGLE DRIVE", "NAMA FILE PNG TTD", "WAKTU SIMPAN"]
+            ];
+
+            let count = 0;
+            const sortedClasses = ["XII-1", "XII-2", "XII-3", "XII-4", "XII-5", "XII-6", "XII-7", "XII-8", "XII-9"];
+
+            sortedClasses.forEach(cls => {
+                const sMap = allKaosTtdData[cls] || {};
+                Object.keys(sMap).map(Number).sort((a,b)=>a-b).forEach(abs => {
+                    const r = sMap[abs];
+                    if (r) {
+                        count++;
+                        rows.push([
+                            count,
+                            cls,
+                            abs,
+                            r.nama || '',
+                            r.email || '',
+                            r.ukuranKaos || '',
+                            r.tipeLengan || '',
+                            r.ttdDriveUrl || '',
+                            r.ttdNamaFile || `${r.nama}.png`,
+                            r.updatedAt || ''
+                        ]);
+                    }
+                });
+            });
+
+            if (count === 0) {
+                alert("Belum ada data pengisian kaos & TTD untuk diekspor.");
+                return;
+            }
+
+            const wb = XLSX.utils.book_new();
+            const ws = XLSX.utils.aoa_to_sheet(rows);
+            XLSX.utils.book_append_sheet(wb, ws, "Rekap Kaos & TTD");
+            XLSX.writeFile(wb, "REKAP_UKURAN_KAOS_DAN_TTD_NEVASTRA_2026.xlsx");
+        }
+
+        window.openTtdZoom = function(encNama, encKelas, absen, src) {
+            const nama = decodeURIComponent(encNama);
+            const kelas = decodeURIComponent(encKelas);
+            const modal = document.getElementById('modalTtdZoomAdmin');
+            if (!modal) return;
+            document.getElementById('zoomTtdTitle').textContent = `Tanda Tangan: ${nama} (${kelas} Absen ${absen})`;
+            document.getElementById('zoomTtdImg').src = src;
+            modal.style.display = 'flex';
+        };
+
+        ['filterKaosKelas', 'filterKaosUkuran', 'filterKaosLengan', 'searchKaosStudent'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', renderKaosTtdTable);
+                el.addEventListener('change', renderKaosTtdTable);
+            }
+        });
+
+        const btnRefreshKaosTtd = document.getElementById('btnRefreshKaosTtd');
+        if (btnRefreshKaosTtd) btnRefreshKaosTtd.onclick = syncKaosTtdData;
+
+        const btnExportKaosTtdExcel = document.getElementById('btnExportKaosTtdExcel');
+        if (btnExportKaosTtdExcel) btnExportKaosTtdExcel.onclick = exportKaosTtdToExcel;
+
         function startAdminApp() {
             if (isAdminAppStarted) return;
             isAdminAppStarted = true;
@@ -3575,12 +3923,14 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
             syncVotingData();
             syncKelompokData();
             syncAppealsData();
+            syncKaosTtdData();
             renderContohTable();
             updateContohLivePreview();
             setInterval(syncData, 15000);
             setInterval(syncVotingData, 15000);
             setInterval(syncKelompokData, 15000);
             setInterval(syncAppealsData, 15000);
+            setInterval(syncKaosTtdData, 15000);
         }
 
         function checkAdminAuth() {

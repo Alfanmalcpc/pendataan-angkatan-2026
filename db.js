@@ -992,9 +992,55 @@ window.NevastraDB = {
 
         const json = await res.json();
         if (json.status !== 'success') {
-            throw new Error(json.message || "Gagal mengunggah foto ke Google Drive.");
+            throw new Error(json.message || "Gagal mengunggah berkas ke Google Drive.");
         }
         return json;
+    },
+
+    // --- Data Ukuran Kaos & Tanda Tangan Digital ---
+    async getKaosTtd(kelas, absen) {
+        try {
+            const url = `${DB_BASE_URL}/kaos_ttd/${kelas}/${absen}.json?t=${Date.now()}`;
+            const res = await fetch(url);
+            if (!res.ok) return null;
+            return await res.json();
+        } catch (e) {
+            console.warn("Error getting kaos & ttd:", e);
+            return null;
+        }
+    },
+
+    async getAllKaosTtd() {
+        try {
+            const url = `${DB_BASE_URL}/kaos_ttd.json?t=${Date.now()}`;
+            const res = await fetch(url);
+            if (!res.ok) return {};
+            const data = await res.json();
+            return data || {};
+        } catch (e) {
+            console.warn("Error getting all kaos & ttd:", e);
+            return {};
+        }
+    },
+
+    async saveKaosTtd(kelas, absen, data) {
+        try {
+            const url = `${DB_BASE_URL}/kaos_ttd/${kelas}/${absen}.json`;
+            const payload = {
+                ...data,
+                updatedAt: new Date().toISOString()
+            };
+            const res = await fetch(url, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
+            return await res.json();
+        } catch (e) {
+            console.error("Error saving kaos & ttd:", e);
+            throw e;
+        }
     },
 
     // --- Sistem Voting Angkatan 2026 ---
