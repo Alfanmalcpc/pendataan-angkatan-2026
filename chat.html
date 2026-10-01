@@ -757,6 +757,9 @@
             justify-content: center;
             padding: 20px;
         }
+        .modal-identity-overlay.active {
+            display: flex !important;
+        }
 
         .modal-identity-card {
             background: #0f172a;
@@ -961,9 +964,10 @@
 
     </main>
 
-    <!-- Modal Autentikasi Identitas Resmi Paten -->
+    <!-- Modal Autentikasi / Link Siswa (Hanya muncul jika belum tertaut) -->
     <div class="modal-identity-overlay" id="modalAuthRequired">
-        <div class="modal-identity-card">
+        <div class="modal-identity-card" style="position: relative;">
+            <button type="button" id="btnCloseAuthModal" style="position: absolute; top: 16px; right: 16px; background: rgba(255,255,255,0.06); border: none; color: #94a3b8; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;" title="Tutup">✕</button>
             <div style="width: 52px; height: 52px; border-radius: 16px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 14px;">
                 <i class="fa-solid fa-lock"></i>
             </div>
@@ -1102,16 +1106,22 @@
                 headerUserClass.textContent = currentUser.kelas ? `Kelas ${currentUser.kelas}` : 'Siswa Angkatan';
                 const initials = currentUser.name.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase();
                 headerUserAvatar.textContent = initials || '?';
+                userProfileBadge.style.cursor = 'default';
+                userProfileBadge.title = "Identitas Resmi Paten Siswa";
                 chatInput.disabled = false;
                 chatInput.placeholder = "Ketik pesan... gunakan @ untuk mention teman";
+                modalAuthRequired.classList.remove('active');
                 modalAuthRequired.style.display = 'none';
             } else {
                 headerUserName.textContent = 'Belum Masuk';
-                headerUserClass.textContent = 'Masuk dengan Google';
+                headerUserClass.textContent = 'Klik untuk Masuk Google';
                 headerUserAvatar.textContent = '?';
-                chatInput.disabled = true;
-                chatInput.placeholder = "Harap masuk dengan Google untuk mengirim pesan...";
-                modalAuthRequired.style.display = 'flex';
+                userProfileBadge.style.cursor = 'pointer';
+                userProfileBadge.title = "Klik untuk Masuk dengan Akun Google";
+                chatInput.disabled = false;
+                chatInput.placeholder = "Ketik pesan... (masuk dengan Google untuk mengirim)";
+                modalAuthRequired.classList.remove('active');
+                modalAuthRequired.style.display = 'none';
             }
         }
         updateHeaderProfile();
@@ -1133,11 +1143,13 @@
                         currentUser.name = link.studentName || link.nama || user.displayName || 'Siswa';
                         saveLocalUser();
                         updateHeaderProfile();
+                        modalAuthRequired.classList.remove('active');
                         modalAuthRequired.style.display = 'none';
                     } else {
                         // Belum tertaut ke data siswa, tampilkan pemilihan resmi sekali saja
                         boxGoogleLoginPrompt.style.display = 'none';
                         boxLinkStudentPrompt.style.display = 'block';
+                        modalAuthRequired.classList.add('active');
                         modalAuthRequired.style.display = 'flex';
                     }
                 } catch (e) {
@@ -1147,27 +1159,47 @@
                 // Tidak ada sesi Google yang aktif
                 currentUser.uid = '';
                 currentUser.email = '';
-                boxGoogleLoginPrompt.style.display = 'block';
-                boxLinkStudentPrompt.style.display = 'none';
-                modalAuthRequired.style.display = 'flex';
+                updateHeaderProfile();
             }
         });
 
-        // Handler Login Google
-        btnGoogleLoginChat.addEventListener('click', async () => {
+        // Helper Login Google Terpusat
+        async function loginWithGoogle() {
             try {
                 btnGoogleLoginChat.disabled = true;
                 btnGoogleLoginChat.textContent = "Menghubungkan ke Google...";
-                await signInWithPopup(auth, googleProvider);
+                const res = await signInWithPopup(auth, googleProvider);
+                return !!(res && res.user);
             } catch (err) {
-                alert("Login Google dibatalkan atau gagal: " + err.message);
+                if (err.code !== 'auth/popup-closed-by-user') {
+                    alert("Login Google diperlukan: " + err.message);
+                }
+                return false;
+            } finally {
                 btnGoogleLoginChat.disabled = false;
                 btnGoogleLoginChat.innerHTML = `
                     <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3.03h3.88c2.27-2.09 3.665-5.17 3.665-9.12z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.13C3.25 21.37 7.31 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.58H1.26C.46 8.16 0 9.94 0 12s.46 3.84 1.26 5.42l4.02-3.13z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.63 1.26 6.58l4.02 3.13c.95-2.83 3.6-4.96 6.72-4.96z"/></svg>
                     Masuk dengan Akun Google
                 `;
             }
+        }
+
+        // Handler Klik Tombol Login Modal & Header
+        btnGoogleLoginChat.addEventListener('click', loginWithGoogle);
+        userProfileBadge.addEventListener('click', async () => {
+            if (!currentUser.uid || !currentUser.name) {
+                await loginWithGoogle();
+            }
         });
+
+        // Tombol Tutup Modal Link Siswa
+        const btnCloseAuthModal = document.getElementById('btnCloseAuthModal');
+        if (btnCloseAuthModal) {
+            btnCloseAuthModal.addEventListener('click', () => {
+                modalAuthRequired.classList.remove('active');
+                modalAuthRequired.style.display = 'none';
+            });
+        }
 
         // Dropdown Kelas & Roster
         modalSelectClass.addEventListener('change', () => {
@@ -1429,9 +1461,9 @@
             const rawText = chatInput.value.trim();
             if (!rawText) return;
 
-            if (!currentUser.name) {
-                modalIdentity.style.display = 'flex';
-                return;
+            if (!currentUser.name || !currentUser.uid) {
+                const ok = await loginWithGoogle();
+                if (!ok) return;
             }
 
             btnSendMsg.disabled = true;
