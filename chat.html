@@ -890,25 +890,9 @@
         <div class="messages-stream" id="messagesStream">
             <div class="empty-chat-state" id="emptyStateNotice">
                 <div class="empty-icon"><i class="fa-solid fa-comments"></i></div>
-                <h3>Belum Ada Percakapan</h3>
-                <p>Jadilah yang pertama mengirimkan pesan atau mention teman seangkatan Anda dengan mengetikkan <strong>@Nama</strong>!</p>
+                <h3>Ruang Chat Kosong</h3>
+                <p>Belum ada percakapan. Ketik pesan di bawah untuk memulai.</p>
             </div>
-        </div>
-
-        <!-- Quick Mention Chips -->
-        <div class="quick-chips-bar" id="quickChipsBar">
-            <span style="font-size: 0.7rem; color: #64748b; font-weight: 700; white-space: nowrap;">
-                <i class="fa-solid fa-at" style="color: #38bdf8;"></i> Mention Cepat:
-            </span>
-            <button type="button" class="quick-chip" onclick="window.insertMention('@Semua ')">
-                📢 @Semua
-            </button>
-            <button type="button" class="quick-chip" onclick="window.insertMention('@Alfan ')">
-                👑 @Alfan
-            </button>
-            <button type="button" class="quick-chip" onclick="window.triggerMentionSearch()">
-                🔍 Cari Nama Siswa...
-            </button>
         </div>
 
         <!-- Input Area -->
@@ -983,7 +967,7 @@
 
             <div class="id-form-group">
                 <label>Atau Ketik Nama Panggilan / Alias:</label>
-                <input type="text" id="modalCustomName" class="id-input" placeholder="Contoh: Alfan / Zaki">
+                <input type="text" id="modalCustomName" class="id-input" placeholder="Ketik nama Anda...">
             </div>
 
             <button type="button" id="btnSaveIdentity" class="btn-id-submit">
