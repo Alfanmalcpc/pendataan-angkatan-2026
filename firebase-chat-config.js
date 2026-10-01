@@ -12,7 +12,7 @@ import {
   remove,
   serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
-import { auth, onAuthStateChanged, db as nevastraDb } from "./firebase-config.js";
+import { auth, onAuthStateChanged, db as nevastraDb, googleProvider, signInWithPopup } from "./firebase-config.js";
 
 const chatFirebaseConfig = {
   apiKey: "AIzaSyBd1o21D0cZlhWNXpOszQaGiRA7ofwQ_yQ",
@@ -43,5 +43,7 @@ export {
   serverTimestamp,
   auth,
   onAuthStateChanged,
-  nevastraDb
+  nevastraDb,
+  googleProvider,
+  signInWithPopup
 };

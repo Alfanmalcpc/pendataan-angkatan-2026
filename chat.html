@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
     <title>Live Chat Angkatan 2026 • NEVASTRA</title>
     <link rel="icon" type="image/svg+xml" href="logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,15 +34,26 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        html, body {
+            height: 100%;
+            height: 100dvh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100%;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: var(--bg-base);
             color: var(--text-main);
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            position: relative;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
 
         /* Cinematic Background Aurora */
@@ -76,7 +87,7 @@
         /* Top Bar */
         .chat-header {
             position: relative;
-            z-index: 10;
+            z-index: 20;
             background: rgba(11, 15, 25, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
@@ -87,6 +98,7 @@
             justify-content: space-between;
             gap: 14px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            flex-shrink: 0;
         }
 
         .header-brand {
@@ -180,12 +192,9 @@
             padding: 4px 12px 4px 6px;
             font-size: 0.8rem;
             color: #e2e8f0;
-            cursor: pointer;
+            cursor: default; /* Nama paten terkunci */
+            user-select: none;
             transition: all 0.2s ease;
-        }
-        .user-profile-badge:hover {
-            border-color: var(--border-glow);
-            background: rgba(30, 41, 59, 0.9);
         }
 
         .user-avatar-sm {
@@ -234,7 +243,8 @@
             max-width: 960px;
             width: 100%;
             margin: 0 auto;
-            height: calc(100vh - 67px);
+            min-height: 0;
+            height: 100%;
             overflow: hidden;
         }
 
@@ -248,6 +258,8 @@
             flex-direction: column;
             gap: 14px;
             scroll-behavior: smooth;
+            min-height: 0;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Custom Scrollbar */
@@ -624,11 +636,14 @@
         /* Input Controls Area */
         .chat-input-area {
             position: relative;
-            background: rgba(11, 15, 25, 0.95);
+            z-index: 50;
+            background: rgba(11, 15, 25, 0.98);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-top: 1px solid var(--border-glass);
-            padding: 12px 20px 16px;
+            padding: 10px 18px;
+            padding-bottom: max(12px, env(safe-area-inset-bottom, 12px));
+            flex-shrink: 0;
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -636,25 +651,27 @@
 
         .input-row {
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             gap: 10px;
         }
 
         .input-box-wrapper {
             flex: 1;
             position: relative;
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             border: 1.5px solid var(--border-glass);
             border-radius: 16px;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
+            min-height: 48px;
             padding: 4px 8px 4px 14px;
+            cursor: text;
         }
         .input-box-wrapper:focus-within {
             border-color: var(--accent-blue);
-            box-shadow: 0 0 16px rgba(56, 189, 248, 0.2);
-            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
+            background: rgba(15, 23, 42, 0.98);
         }
 
         .chat-textarea {
@@ -664,10 +681,10 @@
             outline: none;
             color: #ffffff;
             font-family: inherit;
-            font-size: 0.92rem;
+            font-size: 16px; /* 16px mencegah iOS auto-zoom */
             line-height: 1.4;
             max-height: 120px;
-            min-height: 24px;
+            min-height: 28px;
             resize: none;
             padding: 6px 0;
         }
@@ -698,8 +715,8 @@
         }
 
         .btn-send {
-            width: 46px;
-            height: 46px;
+            width: 48px;
+            height: 48px;
             border-radius: 14px;
             border: none;
             background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
@@ -840,10 +857,21 @@
                 max-width: 90%;
             }
             .chat-input-area {
-                padding: 10px 14px 14px;
+                padding: 8px 12px;
+                padding-bottom: max(10px, env(safe-area-inset-bottom, 10px));
             }
-            .quick-chips-bar {
-                padding: 6px 14px 2px;
+            .input-box-wrapper {
+                min-height: 44px;
+                padding: 4px 6px 4px 12px;
+            }
+            .chat-textarea {
+                font-size: 16px;
+                min-height: 28px;
+                padding: 4px 0;
+            }
+            .btn-send {
+                width: 44px;
+                height: 44px;
             }
         }
     </style>
@@ -866,14 +894,14 @@
         </a>
 
         <div class="header-actions">
-            <!-- User Status Pill -->
-            <div class="user-profile-badge" id="btnChangeProfile" title="Klik untuk mengubah nama/identitas Anda">
+            <!-- User Status Pill (Nama Paten Terkunci) -->
+            <div class="user-profile-badge" id="userProfileBadge" title="Identitas Resmi Paten Siswa">
                 <div class="user-avatar-sm" id="headerUserAvatar">?</div>
                 <div style="display: flex; flex-direction: column;">
                     <span style="font-weight: 800; font-size: 0.78rem; line-height: 1.1;" id="headerUserName">Memuat...</span>
                     <span style="font-size: 0.65rem; color: #38bdf8;" id="headerUserClass">-</span>
                 </div>
-                <i class="fa-solid fa-chevron-down" style="font-size: 0.65rem; color: #64748b; margin-left: 2px;"></i>
+                <i class="fa-solid fa-circle-check" style="font-size: 0.75rem; color: #10b981; margin-left: 2px;" title="Nama Resmi Paten"></i>
             </div>
 
             <a href="index.html" class="btn-header-back" title="Kembali ke Halaman Portal Utama">
@@ -933,46 +961,58 @@
 
     </main>
 
-    <!-- Modal Set Identitas Chat -->
-    <div class="modal-identity-overlay" id="modalIdentity">
+    <!-- Modal Autentikasi Identitas Resmi Paten -->
+    <div class="modal-identity-overlay" id="modalAuthRequired">
         <div class="modal-identity-card">
             <div style="width: 52px; height: 52px; border-radius: 16px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 14px;">
-                <i class="fa-solid fa-user-astronaut"></i>
+                <i class="fa-solid fa-lock"></i>
             </div>
-            <h3>Identitas Live Chat</h3>
-            <p>Pilih identitas Anda agar teman seangkatan tahu siapa yang sedang mengirim pesan:</p>
+            <h3>Identitas Resmi Angkatan</h3>
+            <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.5; margin-bottom: 16px;">
+                Ruang chat ini khusus siswa angkatan 2026 dengan nama paten resmi. Masuk menggunakan akun Google Anda:
+            </p>
 
-            <div class="id-form-group">
-                <label>Pilih Kelas Anda:</label>
-                <select id="modalSelectClass" class="id-select">
-                    <option value="">-- Pilih Kelas --</option>
-                    <option value="XII-1">Kelas XII-1</option>
-                    <option value="XII-2">Kelas XII-2</option>
-                    <option value="XII-3">Kelas XII-3</option>
-                    <option value="XII-4">Kelas XII-4</option>
-                    <option value="XII-5">Kelas XII-5</option>
-                    <option value="XII-6">Kelas XII-6</option>
-                    <option value="XII-7">Kelas XII-7</option>
-                    <option value="XII-8">Kelas XII-8</option>
-                    <option value="XII-9">Kelas XII-9</option>
-                </select>
+            <!-- State Belum Login Google -->
+            <div id="boxGoogleLoginPrompt">
+                <button type="button" id="btnGoogleLoginChat" class="btn-id-submit" style="display: flex; align-items: center; justify-content: center; gap: 10px; background: #ffffff; color: #0f172a; font-weight: 700; box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);">
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3.03h3.88c2.27-2.09 3.665-5.17 3.665-9.12z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.13C3.25 21.37 7.31 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.58H1.26C.46 8.16 0 9.94 0 12s.46 3.84 1.26 5.42l4.02-3.13z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.63 1.26 6.58l4.02 3.13c.95-2.83 3.6-4.96 6.72-4.96z"/></svg>
+                    Masuk dengan Akun Google
+                </button>
             </div>
 
-            <div class="id-form-group" id="modalGroupSelectStudent" style="display: none;">
-                <label>Pilih Nama Siswa:</label>
-                <select id="modalSelectStudent" class="id-select">
-                    <option value="">-- Pilih Nama dari Roster --</option>
-                </select>
-            </div>
+            <!-- State Sudah Login tapi Belum Taut Roster (Patenkan Sekali Saja) -->
+            <div id="boxLinkStudentPrompt" style="display: none; text-align: left; margin-top: 14px;">
+                <div style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 12px; padding: 10px 14px; margin-bottom: 14px; font-size: 0.8rem; color: #bae6fd;">
+                    <i class="fa-solid fa-circle-info"></i> Pilih identitas resmi Anda dari daftar presensi (nama akan paten terkunci):
+                </div>
 
-            <div class="id-form-group">
-                <label>Atau Ketik Nama Panggilan / Alias:</label>
-                <input type="text" id="modalCustomName" class="id-input" placeholder="Ketik nama Anda...">
-            </div>
+                <div class="id-form-group">
+                    <label>Pilih Kelas Anda:</label>
+                    <select id="modalSelectClass" class="id-select">
+                        <option value="">-- Pilih Kelas --</option>
+                        <option value="XII-1">Kelas XII-1</option>
+                        <option value="XII-2">Kelas XII-2</option>
+                        <option value="XII-3">Kelas XII-3</option>
+                        <option value="XII-4">Kelas XII-4</option>
+                        <option value="XII-5">Kelas XII-5</option>
+                        <option value="XII-6">Kelas XII-6</option>
+                        <option value="XII-7">Kelas XII-7</option>
+                        <option value="XII-8">Kelas XII-8</option>
+                        <option value="XII-9">Kelas XII-9</option>
+                    </select>
+                </div>
 
-            <button type="button" id="btnSaveIdentity" class="btn-id-submit">
-                Masuk ke Live Chat →
-            </button>
+                <div class="id-form-group" id="modalGroupSelectStudent" style="display: none;">
+                    <label>Pilih Nama Siswa (Resmi Roster):</label>
+                    <select id="modalSelectStudent" class="id-select">
+                        <option value="">-- Pilih Nama dari Roster --</option>
+                    </select>
+                </div>
+
+                <button type="button" id="btnSavePermanentIdentity" class="btn-id-submit" style="display: none;">
+                    Kunci Identitas Paten & Masuk Chat 🔒
+                </button>
+            </div>
         </div>
     </div>
 
@@ -992,7 +1032,9 @@
             remove,
             auth, 
             onAuthStateChanged,
-            nevastraDb
+            nevastraDb,
+            googleProvider,
+            signInWithPopup
         } from "./firebase-chat-config.js";
 
         // DOM Elements
@@ -1007,24 +1049,32 @@
         const headerUserName = document.getElementById('headerUserName');
         const headerUserClass = document.getElementById('headerUserClass');
         const headerUserAvatar = document.getElementById('headerUserAvatar');
-        const btnChangeProfile = document.getElementById('btnChangeProfile');
+        const userProfileBadge = document.getElementById('userProfileBadge');
 
-        // Modal Identity
-        const modalIdentity = document.getElementById('modalIdentity');
+        // Modal Elements (Auth & Paten Identitas)
+        const modalAuthRequired = document.getElementById('modalAuthRequired');
+        const boxGoogleLoginPrompt = document.getElementById('boxGoogleLoginPrompt');
+        const btnGoogleLoginChat = document.getElementById('btnGoogleLoginChat');
+        const boxLinkStudentPrompt = document.getElementById('boxLinkStudentPrompt');
         const modalSelectClass = document.getElementById('modalSelectClass');
         const modalGroupSelectStudent = document.getElementById('modalGroupSelectStudent');
         const modalSelectStudent = document.getElementById('modalSelectStudent');
-        const modalCustomName = document.getElementById('modalCustomName');
-        const btnSaveIdentity = document.getElementById('btnSaveIdentity');
+        const btnSavePermanentIdentity = document.getElementById('btnSavePermanentIdentity');
 
-        // State Pengguna Chat
+        // Safe Storage Helper (mencegah SecurityError di browser/webview ketat)
+        const safeStorage = {
+            get: (k) => { try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } },
+            set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} }
+        };
+
+        // State Pengguna Chat (Permanen & Paten)
         let currentUser = {
-            name: localStorage.getItem('nevastra_chat_name') || '',
-            kelas: localStorage.getItem('nevastra_chat_kelas') || '',
-            absen: localStorage.getItem('nevastra_chat_absen') || '',
-            uid: localStorage.getItem('nevastra_chat_uid') || '',
-            email: localStorage.getItem('nevastra_chat_email') || '',
-            avatar: localStorage.getItem('nevastra_chat_avatar') || ''
+            name: safeStorage.get('nevastra_chat_name') || '',
+            kelas: safeStorage.get('nevastra_chat_kelas') || '',
+            absen: safeStorage.get('nevastra_chat_absen') || '',
+            uid: safeStorage.get('nevastra_chat_uid') || '',
+            email: safeStorage.get('nevastra_chat_email') || '',
+            avatar: safeStorage.get('nevastra_chat_avatar') || ''
         };
 
         // Buat daftar lengkap seluruh 324 siswa untuk fitur mention
@@ -1045,70 +1095,87 @@
         // Simpan daftar nama unik untuk autocomplete cepat
         const uniqueNames = Array.from(new Set(allStudents.map(s => s.nama.trim())));
 
-        // Update Tampilan Profil di Header
+        // Update Tampilan Profil di Header (Paten, Tidak Ada Opsi Ubah)
         function updateHeaderProfile() {
             if (currentUser.name) {
                 headerUserName.textContent = currentUser.name;
-                headerUserClass.textContent = currentUser.kelas ? `Kelas ${currentUser.kelas}` : 'Anggota Angkatan';
+                headerUserClass.textContent = currentUser.kelas ? `Kelas ${currentUser.kelas}` : 'Siswa Angkatan';
                 const initials = currentUser.name.split(' ').map(w => w[0]).filter(Boolean).slice(0, 2).join('').toUpperCase();
                 headerUserAvatar.textContent = initials || '?';
+                chatInput.disabled = false;
+                chatInput.placeholder = "Ketik pesan... gunakan @ untuk mention teman";
+                modalAuthRequired.style.display = 'none';
             } else {
-                headerUserName.textContent = 'Pilih Nama';
-                headerUserClass.textContent = 'Klik untuk atur identitas';
+                headerUserName.textContent = 'Belum Masuk';
+                headerUserClass.textContent = 'Masuk dengan Google';
                 headerUserAvatar.textContent = '?';
+                chatInput.disabled = true;
+                chatInput.placeholder = "Harap masuk dengan Google untuk mengirim pesan...";
+                modalAuthRequired.style.display = 'flex';
             }
         }
         updateHeaderProfile();
 
-        // Autentikasi Google SSO jika siswa sudah login di portal
+        // Autentikasi Google SSO Siswa & Kunci Identitas Paten
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentUser.uid = user.uid;
                 currentUser.email = user.email || '';
                 currentUser.avatar = user.photoURL || '';
 
-                // Cek apakah akun tertaut dengan data siswa di database Nevastra
                 try {
+                    // Ambil relasi paten dari Realtime Database Nevastra
                     const snap = await get(ref(nevastraDb, `user_to_student/${user.uid}`));
                     if (snap.exists()) {
                         const link = snap.val();
                         currentUser.kelas = link.kelas;
                         currentUser.absen = link.absen;
-                        currentUser.name = link.nama || user.displayName || 'Siswa';
-                    } else if (!currentUser.name) {
-                        currentUser.name = user.displayName || user.email.split('@')[0];
+                        currentUser.name = link.studentName || link.nama || user.displayName || 'Siswa';
+                        saveLocalUser();
+                        updateHeaderProfile();
+                        modalAuthRequired.style.display = 'none';
+                    } else {
+                        // Belum tertaut ke data siswa, tampilkan pemilihan resmi sekali saja
+                        boxGoogleLoginPrompt.style.display = 'none';
+                        boxLinkStudentPrompt.style.display = 'block';
+                        modalAuthRequired.style.display = 'flex';
                     }
                 } catch (e) {
-                    if (!currentUser.name) currentUser.name = user.displayName || 'Siswa';
+                    console.error("Gagal memeriksa identitas:", e);
                 }
-
-                saveLocalUser();
-                updateHeaderProfile();
-            } else if (!currentUser.name) {
-                // Tampilkan modal identitas jika belum ada nama
-                modalIdentity.style.display = 'flex';
+            } else {
+                // Tidak ada sesi Google yang aktif
+                currentUser.uid = '';
+                currentUser.email = '';
+                boxGoogleLoginPrompt.style.display = 'block';
+                boxLinkStudentPrompt.style.display = 'none';
+                modalAuthRequired.style.display = 'flex';
             }
         });
 
-        function saveLocalUser() {
-            localStorage.setItem('nevastra_chat_name', currentUser.name || '');
-            localStorage.setItem('nevastra_chat_kelas', currentUser.kelas || '');
-            localStorage.setItem('nevastra_chat_absen', currentUser.absen || '');
-            localStorage.setItem('nevastra_chat_uid', currentUser.uid || '');
-            localStorage.setItem('nevastra_chat_email', currentUser.email || '');
-            localStorage.setItem('nevastra_chat_avatar', currentUser.avatar || '');
-        }
-
-        // Modal Identitas Event
-        btnChangeProfile.addEventListener('click', () => {
-            modalIdentity.style.display = 'flex';
+        // Handler Login Google
+        btnGoogleLoginChat.addEventListener('click', async () => {
+            try {
+                btnGoogleLoginChat.disabled = true;
+                btnGoogleLoginChat.textContent = "Menghubungkan ke Google...";
+                await signInWithPopup(auth, googleProvider);
+            } catch (err) {
+                alert("Login Google dibatalkan atau gagal: " + err.message);
+                btnGoogleLoginChat.disabled = false;
+                btnGoogleLoginChat.innerHTML = `
+                    <svg width="20" height="20" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3.03h3.88c2.27-2.09 3.665-5.17 3.665-9.12z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.13C3.25 21.37 7.31 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.58H1.26C.46 8.16 0 9.94 0 12s.46 3.84 1.26 5.42l4.02-3.13z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.63 1.26 6.58l4.02 3.13c.95-2.83 3.6-4.96 6.72-4.96z"/></svg>
+                    Masuk dengan Akun Google
+                `;
+            }
         });
 
+        // Dropdown Kelas & Roster
         modalSelectClass.addEventListener('change', () => {
             const cls = modalSelectClass.value;
             modalSelectStudent.innerHTML = '<option value="">-- Pilih Nama dari Roster --</option>';
             if (!cls) {
                 modalGroupSelectStudent.style.display = 'none';
+                btnSavePermanentIdentity.style.display = 'none';
                 return;
             }
             const list = (window.studentRoster && window.studentRoster[cls]) || [];
@@ -1123,27 +1190,72 @@
         });
 
         modalSelectStudent.addEventListener('change', () => {
-            if (modalSelectStudent.value) {
-                modalCustomName.value = modalSelectStudent.value;
+            btnSavePermanentIdentity.style.display = modalSelectStudent.value ? 'block' : 'none';
+        });
+
+        // Simpan Permanen (Patenkan Sekali Saja di Database Nevastra)
+        btnSavePermanentIdentity.addEventListener('click', async () => {
+            const chosenName = modalSelectStudent.value;
+            const chosenClass = modalSelectClass.value;
+            const selectedOpt = modalSelectStudent.selectedOptions[0];
+            const chosenAbsen = selectedOpt ? selectedOpt.dataset.absen : '';
+
+            if (!chosenName || !chosenClass || !currentUser.uid) {
+                alert("Harap lengkapi pemilihan kelas dan nama Anda!");
+                return;
+            }
+
+            try {
+                btnSavePermanentIdentity.disabled = true;
+                btnSavePermanentIdentity.textContent = "Mengunci identitas paten...";
+
+                // Tautkan akun ke database Nevastra
+                await set(ref(nevastraDb, `user_to_student/${currentUser.uid}`), {
+                    studentName: chosenName,
+                    kelas: chosenClass,
+                    absen: parseInt(chosenAbsen) || chosenAbsen,
+                    email: currentUser.email || ''
+                });
+
+                await set(ref(nevastraDb, `auth_bindings/${chosenClass}_${chosenAbsen}`), {
+                    uid: currentUser.uid,
+                    email: currentUser.email || '',
+                    studentName: chosenName,
+                    timestamp: new Date().toISOString()
+                });
+
+                currentUser.name = chosenName;
+                currentUser.kelas = chosenClass;
+                currentUser.absen = chosenAbsen;
+                saveLocalUser();
+                updateHeaderProfile();
+                modalAuthRequired.style.display = 'none';
+            } catch (err) {
+                alert("Gagal mengunci identitas: " + err.message);
+            } finally {
+                btnSavePermanentIdentity.disabled = false;
+                btnSavePermanentIdentity.textContent = "Kunci Identitas Paten & Masuk Chat 🔒";
             }
         });
 
-        btnSaveIdentity.addEventListener('click', () => {
-            const chosen = modalCustomName.value.trim() || modalSelectStudent.value;
-            if (!chosen) {
-                alert("Harap masukkan nama atau pilih dari roster siswa!");
-                return;
-            }
-            currentUser.name = chosen;
-            currentUser.kelas = modalSelectClass.value || currentUser.kelas || '';
-            const selectedOpt = modalSelectStudent.selectedOptions[0];
-            if (selectedOpt && selectedOpt.dataset.absen) {
-                currentUser.absen = selectedOpt.dataset.absen;
-            }
-            saveLocalUser();
-            updateHeaderProfile();
-            modalIdentity.style.display = 'none';
-        });
+        function saveLocalUser() {
+            safeStorage.set('nevastra_chat_name', currentUser.name || '');
+            safeStorage.set('nevastra_chat_kelas', currentUser.kelas || '');
+            safeStorage.set('nevastra_chat_absen', currentUser.absen || '');
+            safeStorage.set('nevastra_chat_uid', currentUser.uid || '');
+            safeStorage.set('nevastra_chat_email', currentUser.email || '');
+            safeStorage.set('nevastra_chat_avatar', currentUser.avatar || '');
+        }
+
+        // Responsive Input Tap Handling (Klik area wrapper langsung fokus textarea di HP)
+        const inputBoxWrapper = document.querySelector('.input-box-wrapper');
+        if (inputBoxWrapper) {
+            inputBoxWrapper.addEventListener('click', (e) => {
+                if (e.target !== btnMentionTrigger && !btnMentionTrigger.contains(e.target)) {
+                    chatInput.focus();
+                }
+            });
+        }
 
         // ==========================================
         // FITUR MENTION (@) CERDAS & AUTOCOMPLETE

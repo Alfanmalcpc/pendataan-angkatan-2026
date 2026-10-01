@@ -627,5 +627,29 @@
         loadData();
         setInterval(loadData, 15000);
     </script>
+    <!-- Floating Live Chat Button (Pojok Kanan Bawah - Icon Only) -->
+    <a href="chat.html" id="btnFloatingLiveChat" style="position: fixed; bottom: 26px; right: 26px; z-index: 99998; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #090d16 0%, #1e293b 100%); color: #38bdf8; text-decoration: none; border: 1.5px solid rgba(56, 189, 248, 0.4); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.25); transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;" title="Live Chat Angkatan">
+        <span style="position: relative; display: flex; align-items: center; justify-content: center;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #38bdf8;">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span style="position: absolute; top: -3px; right: -3px; width: 9px; height: 9px; background: #10b981; border: 2px solid #090d16; border-radius: 50%; box-shadow: 0 0 8px #10b981;"></span>
+        </span>
+    </a>
+    <style>
+        #btnFloatingLiveChat:hover {
+            transform: translateY(-4px) scale(1.08);
+            border-color: #38bdf8;
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 0 28px rgba(56, 189, 248, 0.45);
+        }
+        @media (max-width: 640px) {
+            #btnFloatingLiveChat {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
 </body>
 </html>
