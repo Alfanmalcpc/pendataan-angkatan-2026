@@ -1189,5 +1189,31 @@
             formAlert.style.display = 'none';
         }
     </script>
+
+    <!-- Floating Live Chat Button (Pojok Kanan Bawah) -->
+    <a href="chat.html" id="btnFloatingLiveChat" style="position: fixed; bottom: 26px; right: 26px; z-index: 99998; display: flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #090d16 0%, #1e293b 100%); color: #ffffff; text-decoration: none; padding: 12px 18px; border-radius: 999px; border: 1.5px solid rgba(56, 189, 248, 0.4); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(56, 189, 248, 0.25); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.88rem; font-weight: 800; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;" title="Buka Live Chat Angkatan NEVASTRA 2026">
+        <span style="position: relative; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: rgba(56, 189, 248, 0.2); border-radius: 50%; color: #38bdf8; font-size: 0.95rem;">
+            💬
+            <span style="position: absolute; top: -1px; right: -1px; width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981;"></span>
+        </span>
+        <span style="letter-spacing: 0.3px;">Live Chat Angkatan</span>
+        <span style="font-size: 0.65rem; background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); padding: 2px 6px; border-radius: 99px; font-weight: 800;">LIVE</span>
+    </a>
+    <style>
+        #btnFloatingLiveChat:hover {
+            transform: translateY(-3px) scale(1.03);
+            border-color: #38bdf8;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), 0 0 28px rgba(56, 189, 248, 0.4);
+            color: #38bdf8;
+        }
+        @media (max-width: 640px) {
+            #btnFloatingLiveChat {
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 14px;
+                font-size: 0.82rem;
+            }
+        }
+    </style>
 </body>
 </html>
