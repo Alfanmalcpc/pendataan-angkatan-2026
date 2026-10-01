@@ -759,7 +759,50 @@
             strokeList = [];
             currentStroke = null;
             signatureHint.style.display = 'flex';
+            if (existingTtdData) {
+                existingTtdData.ttdBase64 = null;
+            }
+            if (existingSignatureBox) {
+                existingSignatureBox.style.display = 'none';
+            }
         });
+
+        // Validasi fisik isi kanvas tanda tangan (mencegah kanvas putih kosong terkirim)
+        function isSignatureValid() {
+            if (!canvas) return false;
+
+            // 1. Jika pengguna menggambar goresan aktif
+            if (strokeList && strokeList.length > 0) {
+                const totalPoints = strokeList.reduce((acc, s) => acc + (s.points ? s.points.length : 0), 0);
+                if (totalPoints >= 3) return true;
+            }
+
+            // 2. Periksa piksel tinta hitam pada kanvas putih (mendukung data tersimpan dan gambar langsung)
+            try {
+                const w = canvas.width;
+                const h = canvas.height;
+                if (w > 0 && h > 0) {
+                    const imgData = ctx.getImageData(0, 0, w, h);
+                    const data = imgData.data;
+                    let darkPixelCount = 0;
+                    for (let i = 0; i < data.length; i += 16) {
+                        const a = data[i + 3];
+                        const r = data[i];
+                        const g = data[i + 1];
+                        const b = data[i + 2];
+                        if (a > 80 && (r < 180 || g < 180 || b < 180)) {
+                            darkPixelCount++;
+                            if (darkPixelCount >= 20) return true;
+                        }
+                    }
+                }
+            } catch (err) {
+                console.warn("Signature pixel check error:", err);
+            }
+
+            return false;
+        }
+        window.isSignatureValid = isSignatureValid;
 
         // Generate Ultra High-Res Signature (5000 px)
         function getHighResSignature5000() {
@@ -819,8 +862,8 @@
         const modalPreviewTtd = document.getElementById('modalPreviewTtd');
         const imgModalPreview = document.getElementById('imgModalPreview');
         document.getElementById('btnPreviewSignature').addEventListener('click', () => {
-            if (!hasDrawn && (!existingTtdData || !existingTtdData.ttdBase64)) {
-                alert("Silakan bubuhkan tanda tangan Anda terlebih dahulu pada area kanvas!");
+            if (!isSignatureValid()) {
+                alert("Silakan bubuhkan tanda tangan Anda terlebih dahulu pada area kanvas putih!");
                 return;
             }
             const pngData = getHighResSignature5000();
@@ -963,6 +1006,10 @@
         document.getElementById('formKaosTtd').addEventListener('submit', async (e) => {
             e.preventDefault();
 
+            if (!currentStudentData && window.currentStudentData) {
+                currentStudentData = window.currentStudentData;
+            }
+
             if (!currentStudentData) {
                 alert("Identitas siswa belum siap. Silakan muat ulang halaman.");
                 return;
@@ -983,26 +1030,26 @@
                 return;
             }
 
-            if (!hasDrawn && (!existingTtdData || !existingTtdData.ttdBase64)) {
-                showAlert('danger', 'Harap bubuhkan tanda tangan Anda pada kanvas di atas!');
+            // Validasi mutlak Tanda Tangan: Kanvas fisik TIDAK boleh kosong / putih polos!
+            if (!isSignatureValid()) {
+                showAlert('danger', '⚠️ Wajib tanda tangan! Harap bubuhkan tanda tangan Anda pada area kanvas putih sebelum menyimpan data.');
+                canvas.style.borderColor = '#ef4444';
+                canvas.style.boxShadow = '0 0 0 4px rgba(239, 68, 68, 0.35)';
+                setTimeout(() => {
+                    canvas.style.borderColor = '';
+                    canvas.style.boxShadow = '';
+                }, 3000);
                 document.getElementById('signatureCanvas').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
             hideAlert();
             btnSubmitKaosTtd.disabled = true;
-            btnSubmitText.textContent = "⏳ Memproses berkas PNG tanda tangan...";
+            btnSubmitText.textContent = "⏳ Memproses berkas PNG tanda tangan (5000 px)...";
 
             try {
                 // 1. Dapatkan Base64 PNG background putih & tinta hitam (Ultra HD 5000 px)
-                let pngBase64 = '';
-                if (hasDrawn) {
-                    pngBase64 = getHighResSignature5000();
-                } else if (existingTtdData && existingTtdData.ttdBase64) {
-                    pngBase64 = existingTtdData.ttdBase64;
-                } else {
-                    pngBase64 = getHighResSignature5000();
-                }
+                const pngBase64 = getHighResSignature5000();
 
                 const cleanNama = currentStudentData.nama.replace(/[/\\?%*:|"<>]/g, '').trim();
                 const targetFileName = `${cleanNama}.png`;
