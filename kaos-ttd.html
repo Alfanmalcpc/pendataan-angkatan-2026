@@ -73,6 +73,12 @@
             background: #eff6ff;
             box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
         }
+        /* Penanda Kartu Pilihan Sebelumnya (Berwarna Oranye/Amber) */
+        .size-card.history-previous {
+            border-color: #f59e0b;
+            background: #fffbeb;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.22);
+        }
         .size-name {
             font-size: 1.45rem;
             font-weight: 800;
@@ -82,6 +88,9 @@
         }
         .size-card.active .size-name {
             color: #1d4ed8;
+        }
+        .size-card.history-previous .size-name {
+            color: #b45309;
         }
         .size-check {
             position: absolute;
@@ -95,6 +104,54 @@
             display: block;
         }
 
+        /* Pill Badge Histori Pilihan */
+        .history-pill {
+            position: absolute;
+            bottom: -9px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.62rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 9999px;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 10;
+            letter-spacing: 0.02em;
+            pointer-events: none;
+        }
+        .sleeve-card .history-pill {
+            bottom: -9px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .history-pill.badge-saved {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #93c5fd;
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15);
+        }
+        .sleeve-card.active .history-pill.badge-saved {
+            background: #f5f3ff;
+            color: #6d28d9;
+            border: 1px solid #c4b5fd;
+            box-shadow: 0 2px 6px rgba(109, 40, 217, 0.15);
+        }
+        .history-pill.badge-was-saved {
+            background: #fffbeb;
+            color: #b45309;
+            border: 1px solid #fcd34d;
+            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+        }
+        .history-pill.badge-new {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15);
+        }
+
         /* Lengan Options */
         .sleeve-grid {
             display: grid;
@@ -102,6 +159,7 @@
             gap: 14px;
         }
         .sleeve-card {
+            position: relative;
             background: #f8fafc;
             border: 2px solid #e2e8f0;
             border-radius: 16px;
@@ -112,6 +170,7 @@
             cursor: pointer;
             transition: all 0.2s;
             user-select: none;
+            overflow: visible;
         }
         .sleeve-card:hover {
             border-color: #94a3b8;
@@ -121,6 +180,18 @@
             border-color: #8b5cf6;
             background: #f5f3ff;
             box-shadow: 0 4px 14px rgba(139, 92, 246, 0.2);
+        }
+        .sleeve-card.history-previous {
+            border-color: #f59e0b;
+            background: #fffbeb;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.22);
+        }
+        .sleeve-card.history-previous .sleeve-title {
+            color: #b45309;
+        }
+        .sleeve-card.history-previous .sleeve-icon {
+            background: #fef3c7;
+            color: #d97706;
         }
         .sleeve-icon {
             width: 48px;
@@ -369,7 +440,7 @@
             <div id="editModeNotice" style="display: none; background: #ecfdf5; border: 1.5px solid #10b981; border-radius: 14px; padding: 14px 18px; margin-bottom: 20px; font-size: 0.88rem; color: #065f46; font-weight: 700; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <span style="font-size: 1.25rem;">✓</span>
-                    <span>Data Anda sudah tersimpan sebelumnya. Anda saat ini dalam mode <strong>EDIT / PERBARUI</strong>.</span>
+                    <span>Pilihan sebelumnya sudah terisi otomatis. Anda dapat langsung mengubah bagian yang diinginkan saja (misal hanya ganti lengan) tanpa harus mengisi ulang semuanya.</span>
                 </div>
                 <span style="font-size: 0.78rem; background: #10b981; color: white; padding: 4px 10px; border-radius: 99px; font-weight: 800;">Mode Edit</span>
             </div>
@@ -487,13 +558,19 @@
                 </div>
 
                 <div class="signature-toolbar">
-                    <div class="badge-black-bg">
-                        <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ffffff; border: 2px solid #0f172a;"></span>
-                        <span>Format: <strong>PNG Background Putih (#FFFFFF) & Tinta Hitam</strong></span>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                        <div class="badge-black-bg">
+                            <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ffffff; border: 2px solid #0f172a;"></span>
+                            <span>Format: <strong>PNG Background Putih & Tinta Hitam</strong></span>
+                        </div>
+                        <div id="signatureHistoryBadge" style="display: none; align-items: center; gap: 6px; background: #ecfdf5; border: 1.5px solid #a7f3d0; border-radius: 8px; padding: 4px 10px; font-size: 0.78rem; font-weight: 700; color: #065f46;">
+                            <i class="fa-solid fa-circle-check" style="color: #10b981;"></i>
+                            <span>TTD Sebelumnya Tersimpan (Siap Digunakan)</span>
+                        </div>
                     </div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                         <button type="button" class="btn btn-outline btn-sm" id="btnClearSignature" style="font-size: 0.8rem; border-color: #cbd5e1; border-radius: 8px;">
-                            <i class="fa-solid fa-rotate-left"></i> Hapus / Ulangi
+                            <i class="fa-solid fa-rotate-left"></i> Hapus / Tanda Tangan Ulang
                         </button>
                         <button type="button" class="btn btn-outline btn-sm" id="btnPreviewSignature" style="font-size: 0.8rem; border-color: #cbd5e1; border-radius: 8px;">
                             <i class="fa-solid fa-eye"></i> Pratinjau
@@ -502,14 +579,14 @@
                 </div>
 
                 <!-- Preview Area Jika Sudah Pernah Simpan -->
-                <div id="existingSignatureBox" style="display: none; margin-top: 14px; padding: 12px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                <div id="existingSignatureBox" style="display: none; margin-top: 14px; padding: 12px 16px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <img id="imgExistingTtdPreview" src="" alt="TTD Sebelumnya" style="width: 80px; height: 40px; object-fit: contain; background: #ffffff; border-radius: 6px; border: 1.5px solid #cbd5e1;">
-                        <span style="font-size: 0.8rem; font-weight: 700; color: #1e293b;">
-                            Tanda tangan sebelumnya sudah tersimpan di sistem.
+                        <span style="font-size: 0.82rem; font-weight: 700; color: #1e293b;">
+                            Tanda tangan Anda sudah tersimpan dari pengisian sebelumnya.
                         </span>
                     </div>
-                    <span style="font-size: 0.74rem; color: #64748b;">(Kamu dapat membuat ulang tanda tangan di atas jika ingin memperbarui)</span>
+                    <span style="font-size: 0.76rem; color: #64748b;">(Jika hanya ingin mengubah kaos/lengan, Anda tidak perlu tanda tangan ulang)</span>
                 </div>
             </div>
 
@@ -641,13 +718,29 @@
             // Redraw white background
             fillCanvasWhite();
 
-            // Restore existing if any
-            if (existingTtdData && existingTtdData.ttdBase64 && !hasDrawn) {
+            // Restore existing strokes or existing saved image
+            if (strokeList && strokeList.length > 0) {
+                strokeList.forEach(stroke => {
+                    if (!stroke.points || stroke.points.length === 0) return;
+                    ctx.beginPath();
+                    const firstPt = stroke.points[0];
+                    ctx.moveTo(firstPt.x * rect.width, firstPt.y * rect.height);
+                    for (let i = 1; i < stroke.points.length; i++) {
+                        const pt = stroke.points[i];
+                        ctx.lineTo(pt.x * rect.width, pt.y * rect.height);
+                    }
+                    ctx.strokeStyle = '#000000';
+                    ctx.lineWidth = 3.6;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    ctx.stroke();
+                });
+                signatureHint.style.display = 'none';
+            } else if (existingTtdData && existingTtdData.ttdBase64) {
                 const img = new Image();
                 img.onload = () => {
                     ctx.drawImage(img, 0, 0, rect.width, rect.height);
                     signatureHint.style.display = 'none';
-                    hasDrawn = true;
                 };
                 img.src = existingTtdData.ttdBase64;
             }
@@ -768,6 +861,8 @@
             if (existingSignatureBox) {
                 existingSignatureBox.style.display = 'none';
             }
+            const sigHistoryBadge = document.getElementById('signatureHistoryBadge');
+            if (sigHistoryBadge) sigHistoryBadge.style.display = 'none';
         });
 
         // Validasi fisik isi kanvas tanda tangan (mencegah kanvas putih kosong terkirim)
@@ -780,7 +875,13 @@
                 if (totalPoints >= 3) return true;
             }
 
-            // 2. Periksa piksel tinta hitam pada kanvas putih (mendukung data tersimpan dan gambar langsung)
+            // 2. Jika ada tanda tangan sebelumnya yang sudah tersimpan dan belum dihapus
+            const hasSavedSig = (existingTtdData && existingTtdData.ttdBase64) || (window.existingTtdData && window.existingTtdData.ttdBase64);
+            if (hasSavedSig) {
+                return true;
+            }
+
+            // 3. Periksa piksel tinta hitam pada kanvas putih (mendukung data tersimpan dan gambar langsung)
             try {
                 const w = canvas.width;
                 const h = canvas.height;
@@ -801,6 +902,7 @@
                 }
             } catch (err) {
                 console.warn("Signature pixel check error:", err);
+                return hasDrawn || Boolean(existingTtdData && existingTtdData.ttdBase64);
             }
 
             return false;
@@ -809,25 +911,25 @@
 
         // Generate Ultra High-Res Signature (5000 px)
         function getHighResSignature5000() {
-            const targetWidth = 5000;
-            const aspect = (canvas.clientHeight > 0 && canvas.clientWidth > 0)
-                ? (canvas.clientHeight / canvas.clientWidth)
-                : (canvas.height / canvas.width);
-            const targetHeight = Math.max(1200, Math.round(targetWidth * aspect));
-
-            const hiCanvas = document.createElement('canvas');
-            hiCanvas.width = targetWidth;
-            hiCanvas.height = targetHeight;
-            const hctx = hiCanvas.getContext('2d');
-
-            // 1. Background putih pekat #FFFFFF
-            hctx.fillStyle = '#FFFFFF';
-            hctx.fillRect(0, 0, targetWidth, targetHeight);
-            hctx.imageSmoothingEnabled = true;
-            hctx.imageSmoothingQuality = 'high';
-
-            // 2. Render goresan vektor atau scaled canvas
+            // 1. Jika ada goresan baru yang dibuat pengguna
             if (strokeList && strokeList.length > 0) {
+                const targetWidth = 5000;
+                const aspect = (canvas.clientHeight > 0 && canvas.clientWidth > 0)
+                    ? (canvas.clientHeight / canvas.clientWidth)
+                    : (canvas.height / canvas.width);
+                const targetHeight = Math.max(1200, Math.round(targetWidth * aspect));
+
+                const hiCanvas = document.createElement('canvas');
+                hiCanvas.width = targetWidth;
+                hiCanvas.height = targetHeight;
+                const hctx = hiCanvas.getContext('2d');
+
+                // Background putih pekat #FFFFFF
+                hctx.fillStyle = '#FFFFFF';
+                hctx.fillRect(0, 0, targetWidth, targetHeight);
+                hctx.imageSmoothingEnabled = true;
+                hctx.imageSmoothingQuality = 'high';
+
                 const displayW = canvas.clientWidth || 800;
                 const scale = targetWidth / displayW;
                 const strokeW = Math.max(14, Math.round(3.8 * scale));
@@ -852,12 +954,33 @@
                     }
                     hctx.stroke();
                 });
-            } else {
-                // Fallback: draw directly from the existing canvas
-                hctx.drawImage(canvas, 0, 0, targetWidth, targetHeight);
+
+                return hiCanvas.toDataURL('image/png');
             }
 
-            return hiCanvas.toDataURL('image/png');
+            // 2. Jika tidak ada goresan baru dan tanda tangan sebelumnya sudah ada
+            if (existingTtdData && existingTtdData.ttdBase64) {
+                return existingTtdData.ttdBase64;
+            }
+
+            // 3. Fallback jika ada gambar di kanvas
+            try {
+                const targetWidth = 5000;
+                const aspect = (canvas.clientHeight > 0 && canvas.clientWidth > 0)
+                    ? (canvas.clientHeight / canvas.clientWidth)
+                    : (canvas.height / canvas.width);
+                const targetHeight = Math.max(1200, Math.round(targetWidth * aspect));
+                const hiCanvas = document.createElement('canvas');
+                hiCanvas.width = targetWidth;
+                hiCanvas.height = targetHeight;
+                const hctx = hiCanvas.getContext('2d');
+                hctx.fillStyle = '#FFFFFF';
+                hctx.fillRect(0, 0, targetWidth, targetHeight);
+                hctx.drawImage(canvas, 0, 0, targetWidth, targetHeight);
+                return hiCanvas.toDataURL('image/png');
+            } catch(e) {
+                return canvas.toDataURL('image/png');
+            }
         }
         window.getHighResSignature5000 = getHighResSignature5000;
 
@@ -877,14 +1000,39 @@
             modalPreviewTtd.style.display = 'none';
         });
 
+        // Histori Pilihan Sebelumnya
+        let initialSavedSize = null;
+        let initialSavedSleeve = null;
+
         // Global functions for selection
         window.selectSize = function(size) {
             inputUkuranKaos.value = size;
+            const savedSize = window.initialSavedSize || initialSavedSize;
             document.querySelectorAll('.size-card').forEach(el => {
-                if (el.dataset.size === size) {
+                const itemSize = el.dataset.size;
+                el.classList.remove('active', 'history-previous');
+                const oldBadge = el.querySelector('.history-pill');
+                if (oldBadge) oldBadge.remove();
+
+                if (itemSize === size) {
                     el.classList.add('active');
-                } else {
-                    el.classList.remove('active');
+                    if (savedSize && size === savedSize) {
+                        const badge = document.createElement('span');
+                        badge.className = 'history-pill badge-saved';
+                        badge.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Pilihan Sebelumnya';
+                        el.appendChild(badge);
+                    } else if (savedSize && size !== savedSize) {
+                        const badge = document.createElement('span');
+                        badge.className = 'history-pill badge-new';
+                        badge.innerHTML = '<i class="fa-solid fa-sparkles"></i> Pilihan Baru';
+                        el.appendChild(badge);
+                    }
+                } else if (savedSize && itemSize === savedSize) {
+                    el.classList.add('history-previous');
+                    const badge = document.createElement('span');
+                    badge.className = 'history-pill badge-was-saved';
+                    badge.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Pilihan Sebelumnya';
+                    el.appendChild(badge);
                 }
             });
             selectedSizeLabel.textContent = size;
@@ -892,15 +1040,41 @@
 
         window.selectSleeve = function(type) {
             inputTipeLengan.value = type;
+            const savedSleeve = window.initialSavedSleeve || initialSavedSleeve;
             const cardP = document.getElementById('cardLenganPendek');
             const cardJ = document.getElementById('cardLenganPanjang');
-            if (type === 'Lengan Pendek') {
-                cardP.classList.add('active');
-                cardJ.classList.remove('active');
-            } else {
-                cardJ.classList.add('active');
-                cardP.classList.remove('active');
-            }
+            const cards = [
+                { el: cardP, val: 'Lengan Pendek' },
+                { el: cardJ, val: 'Lengan Panjang' }
+            ];
+
+            cards.forEach(({ el, val }) => {
+                if (!el) return;
+                el.classList.remove('active', 'history-previous');
+                const oldBadge = el.querySelector('.history-pill');
+                if (oldBadge) oldBadge.remove();
+
+                if (val === type) {
+                    el.classList.add('active');
+                    if (savedSleeve && val === savedSleeve) {
+                        const badge = document.createElement('span');
+                        badge.className = 'history-pill badge-saved';
+                        badge.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Pilihan Sebelumnya';
+                        el.appendChild(badge);
+                    } else if (savedSleeve && val !== savedSleeve) {
+                        const badge = document.createElement('span');
+                        badge.className = 'history-pill badge-new';
+                        badge.innerHTML = '<i class="fa-solid fa-sparkles"></i> Pilihan Baru';
+                        el.appendChild(badge);
+                    }
+                } else if (savedSleeve && val === savedSleeve) {
+                    el.classList.add('history-previous');
+                    const badge = document.createElement('span');
+                    badge.className = 'history-pill badge-was-saved';
+                    badge.innerHTML = '<i class="fa-solid fa-clock-rotate-left"></i> Pilihan Sebelumnya';
+                    el.appendChild(badge);
+                }
+            });
         };
 
         // Auth & Identity Resolution
@@ -970,33 +1144,65 @@
                 btnLinkToBiodata.href = `${targetKelas.toLowerCase()}.html?absen=${targetAbsen}`;
 
                 // Muat Data Kaos & TTD Eksisting dari Database Nevastra
-                if (window.NevastraDB && window.NevastraDB.getKaosTtd) {
-                    const saved = await window.NevastraDB.getKaosTtd(targetKelas, targetAbsen);
-                    if (saved) {
-                        existingTtdData = saved;
-                        const editNotice = document.getElementById('editModeNotice');
-                        if (editNotice) editNotice.style.display = 'flex';
-                        const btnText = document.getElementById('btnSubmitText');
-                        if (btnText) btnText.textContent = "Simpan Perubahan (Edit) Ukuran Kaos & TTD";
-                        if (saved.ukuranKaos) {
-                            selectSize(saved.ukuranKaos);
-                        }
-                        if (saved.tipeLengan) {
-                            selectSleeve(saved.tipeLengan);
-                        }
-                        if (saved.ttdBase64) {
-                            existingSignatureBox.style.display = 'flex';
-                            imgExistingTtdPreview.src = saved.ttdBase64;
-                            hasDrawn = true;
-                            signatureHint.style.display = 'none';
+                const normK = String(targetKelas).trim().toUpperCase();
+                const normA = parseInt(targetAbsen, 10);
+                let saved = null;
 
-                            const img = new Image();
-                            img.onload = () => {
-                                const rect = canvas.getBoundingClientRect();
-                                ctx.drawImage(img, 0, 0, rect.width, rect.height);
-                            };
-                            img.src = saved.ttdBase64;
-                        }
+                // 1. Ambil langsung via SDK Firebase (Tercepat & Realtime)
+                try {
+                    const snapKaos = await get(ref(db, `kaos_ttd/${normK}/${normA}`));
+                    if (snapKaos.exists()) {
+                        saved = snapKaos.val();
+                    }
+                } catch (e) {
+                    console.warn("Gagal get kaos dari Firebase SDK:", e);
+                }
+
+                // 2. Fallback via REST API helper
+                if (!saved && window.NevastraDB && window.NevastraDB.getKaosTtd) {
+                    try {
+                        saved = await window.NevastraDB.getKaosTtd(normK, normA);
+                    } catch (e) {}
+                }
+
+                // 3. Fallback via LocalStorage
+                if (!saved) {
+                    try {
+                        const raw = localStorage.getItem(`nevastra_kaos_${normK}_${normA}`);
+                        if (raw) saved = JSON.parse(raw);
+                    } catch (e) {}
+                }
+
+                if (saved) {
+                    existingTtdData = saved;
+                    initialSavedSize = saved.ukuranKaos || null;
+                    initialSavedSleeve = saved.tipeLengan || null;
+
+                    const editNotice = document.getElementById('editModeNotice');
+                    if (editNotice) editNotice.style.display = 'flex';
+                    const btnText = document.getElementById('btnSubmitText');
+                    if (btnText) btnText.textContent = "Simpan Perubahan Ukuran Kaos & TTD";
+
+                    if (saved.ukuranKaos) {
+                        selectSize(saved.ukuranKaos);
+                    }
+                    if (saved.tipeLengan) {
+                        selectSleeve(saved.tipeLengan);
+                    }
+                    if (saved.ttdBase64) {
+                        existingSignatureBox.style.display = 'flex';
+                        imgExistingTtdPreview.src = saved.ttdBase64;
+                        signatureHint.style.display = 'none';
+
+                        const sigHistoryBadge = document.getElementById('signatureHistoryBadge');
+                        if (sigHistoryBadge) sigHistoryBadge.style.display = 'inline-flex';
+
+                        const img = new Image();
+                        img.onload = () => {
+                            const rect = canvas.getBoundingClientRect();
+                            ctx.drawImage(img, 0, 0, rect.width, rect.height);
+                        };
+                        img.src = saved.ttdBase64;
                     }
                 }
 
@@ -1092,10 +1298,10 @@
                     try { await window.NevastraDB.saveKaosTtd(normKelas, normAbsen, payloadData); } catch(e){}
                 }
 
-                // 3. Upload ke Google Drive via Google Apps Script (Folder: tanda tangan/{kelas}/{Nama Siswa}.png)
-                // Beri batas waktu maksimal 10 detik agar tidak menggantung jika Drive sedang lambat
-                if (hasDrawn && window.NevastraDB && window.NevastraDB.getDriveConfig) {
-                    btnSubmitText.textContent = "☁️ Mengunggah TTD ke Google Drive (folder tanda tangan)...";
+                // 3. Upload ke Google Drive via Google Apps Script (HANYA jika ada tanda tangan baru digambar)
+                const isNewSignatureDrawn = Boolean(strokeList && strokeList.length > 0);
+                if (isNewSignatureDrawn && window.NevastraDB && window.NevastraDB.getDriveConfig) {
+                    btnSubmitText.textContent = "☁️ Mengunggah TTD baru ke Google Drive (folder tanda tangan)...";
                     try {
                         const driveConfig = await window.NevastraDB.getDriveConfig();
                         if (driveConfig && driveConfig.scriptUrl) {
@@ -1130,11 +1336,27 @@
                     }
                 }
 
-                // Update form state ke mode Edit
+                // Update form state ke mode Edit & segarkan pilihan tersimpan
                 existingTtdData = payloadData;
+                initialSavedSize = payloadData.ukuranKaos;
+                initialSavedSleeve = payloadData.tipeLengan;
+                strokeList = [];
+
+                selectSize(payloadData.ukuranKaos);
+                selectSleeve(payloadData.tipeLengan);
+
                 const editNotice = document.getElementById('editModeNotice');
                 if (editNotice) editNotice.style.display = 'flex';
-                if (btnSubmitText) btnSubmitText.textContent = "Simpan Perubahan (Edit) Ukuran Kaos & TTD";
+                if (btnSubmitText) btnSubmitText.textContent = "Simpan Perubahan Ukuran Kaos & TTD";
+
+                const sigHistoryBadge = document.getElementById('signatureHistoryBadge');
+                if (sigHistoryBadge) {
+                    sigHistoryBadge.style.display = 'inline-flex';
+                    sigHistoryBadge.style.background = '#ecfdf5';
+                    sigHistoryBadge.style.borderColor = '#a7f3d0';
+                    sigHistoryBadge.style.color = '#065f46';
+                    sigHistoryBadge.innerHTML = '<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> <span>TTD Tersimpan (Siap Digunakan)</span>';
+                }
 
                 // 4. Sukses! Tampilkan Modal
                 const elSuccSiswa = document.getElementById('succSiswa');
