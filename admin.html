@@ -1434,7 +1434,12 @@
                         <div class="yb-info-icon"><i class="fa-brands fa-google" style="color: #4285F4; font-size: 15px;"></i></div>
                         <div class="yb-info-content">
                             <span class="yb-info-label">Akun Google Tertaut</span>
-                            <span id="mEmailGoogle" style="font-weight: 700; color: #1d4ed8;">-</span>
+                            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                                <span id="mEmailGoogle" style="font-weight: 700; color: #1d4ed8;">-</span>
+                                <button type="button" id="btnAdminUnlinkModal" class="btn btn-sm" style="display: none; background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; font-weight: 700; font-size: 0.75rem; padding: 3px 8px; border-radius: 6px; cursor: pointer;" title="Putuskan Tautan Akun Google dari Siswa Ini">
+                                    <i class="fa-solid fa-link-slash"></i> Putuskan Tautan
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -1800,7 +1805,10 @@
                 const bindKey = `${item.kelas}_${item.absen}`;
                 const binding = (typeof allAuthBindings === 'object' && allAuthBindings) ? allAuthBindings[bindKey] : null;
                 const emailGoogle = (binding && binding.email)
-                    ? `<span style="color: #2563eb; font-weight: 600; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px;" title="Tertaut akun Google: ${binding.email}"><i class="fa-brands fa-google"></i> ${binding.email}</span>`
+                    ? `<div style="display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap;">
+                        <span style="color: #2563eb; font-weight: 600; font-size: 0.8rem; display: inline-flex; align-items: center; gap: 4px;" title="Tertaut akun Google: ${binding.email}"><i class="fa-brands fa-google"></i> ${binding.email}</span>
+                        <button type="button" class="btn btn-sm btn-unlink-inline" data-kelas="${item.kelas}" data-absen="${item.absen}" data-nama="${encodeURIComponent(item.nama)}" data-email="${encodeURIComponent(binding.email)}" data-uid="${binding.uid || ''}" style="font-size:0.68rem; padding:2px 6px; border-radius:6px; color:#b91c1c; background:#fee2e2; border:1px solid #fecaca; font-weight:700; cursor:pointer;" title="Putuskan tautan akun Google siswa ini">🔗 Putus</button>
+                      </div>`
                     : `<span style="color: #94a3b8; font-style: italic; font-size: 0.78rem;">Belum Tertaut</span>`;
 
                 const kaosCell = item.isKaosFilled
@@ -1892,7 +1900,49 @@
                     }
                 };
             });
+
+            // Listener tombol Putus Tautan Akun inline
+            document.querySelectorAll('.btn-unlink-inline').forEach(btn => {
+                btn.onclick = async (e) => {
+                    e.stopPropagation();
+                    const k = btn.getAttribute('data-kelas');
+                    const a = btn.getAttribute('data-absen');
+                    const sName = decodeURIComponent(btn.getAttribute('data-nama') || 'Siswa');
+                    const email = decodeURIComponent(btn.getAttribute('data-email') || '');
+                    const uid = btn.getAttribute('data-uid') || '';
+                    await adminUnlinkStudentAccount(k, a, sName, email, uid);
+                };
+            });
         }
+
+        // Fungsi Admin Memutuskan Tautan Akun Google dari Data Siswa
+        async function adminUnlinkStudentAccount(k, a, sName, email, uid) {
+            const sure = confirm(`⚠️ Konfirmasi Putuskan Tautan Akun:\n\nApakah Anda yakin ingin memutuskan tautan akun Google:\n👉 ${email}\ndari profil siswa:\n👉 ${sName} (${k} Absen ${a})?\n\nSetelah tautan diputus:\n- Profil siswa ini akan kembali bebas (Belum Tertaut)\n- Akun Google siswa direset sehingga siswa dapat menautkan ulang ke nama yang benar.`);
+            if (!sure) return;
+
+            try {
+                // 1. Hapus auth_bindings/{kelas}_{absen}
+                await fetch(`${DB_BASE_URL}/auth_bindings/${k}_${a}.json`, { method: 'DELETE' });
+
+                // 2. Hapus user_to_student/{uid} jika ada
+                if (uid) {
+                    await fetch(`${DB_BASE_URL}/user_to_student/${uid}.json`, { method: 'DELETE' });
+                }
+
+                // 3. Update lokal cache
+                if (typeof allAuthBindings === 'object' && allAuthBindings) {
+                    delete allAuthBindings[`${k}_${a}`];
+                }
+
+                showToast(`✓ Tautan akun Google ${email} berhasil diputuskan dari ${sName}.`);
+                closeModal();
+                renderClassRecap();
+                if (typeof syncData === 'function') syncData();
+            } catch (err) {
+                alert("Gagal memutuskan tautan: " + err.message);
+            }
+        }
+        window.adminUnlinkStudentAccount = adminUnlinkStudentAccount;
 
         // Salin Siswa Belum Mengisi
         document.getElementById('btnCopyPendingList').onclick = () => {
@@ -2049,11 +2099,19 @@
             const bindKey = `${cls}_${abs}`;
             const binding = (typeof allAuthBindings === 'object' && allAuthBindings) ? allAuthBindings[bindKey] : null;
             const elEmail = document.getElementById('mEmailGoogle');
+            const btnUnlinkModal = document.getElementById('btnAdminUnlinkModal');
             if (elEmail) {
                 if (binding && binding.email) {
                     elEmail.innerHTML = `<span style="color:#1d4ed8;"><i class="fa-brands fa-google"></i> ${binding.email}</span>`;
+                    if (btnUnlinkModal) {
+                        btnUnlinkModal.style.display = 'inline-flex';
+                        btnUnlinkModal.onclick = () => {
+                            adminUnlinkStudentAccount(cls, abs, nama, binding.email, binding.uid);
+                        };
+                    }
                 } else {
                     elEmail.innerHTML = `<span style="color:#94a3b8; font-style:italic;">Belum Tertaut</span>`;
+                    if (btnUnlinkModal) btnUnlinkModal.style.display = 'none';
                 }
             }
 
@@ -3684,14 +3742,14 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                     const waLink = rawWa ? `https://wa.me/${rawWa}?text=${waMsg}` : '#';
 
                     cardsHtml += `
-                        <div class="card" style="border: 1.5px solid ${isPending ? (isSelfMistake ? '#fdba74' : '#fecaca') : '#e2e8f0'}; background: ${isPending ? (isSelfMistake ? '#fffbf7' : '#fffafb') : '#ffffff'}; padding: 20px 24px; margin-bottom: 14px;">
+                        <div class="card" style="border: 1.5px solid ${isPending ? '#fecaca' : '#e2e8f0'}; background: ${isPending ? '#fffafb' : '#ffffff'}; padding: 20px 24px; margin-bottom: 14px;">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
                                 <div>
                                     <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                                         <h3 style="font-size: 1.15rem; font-weight: 800; color: #0f172a; margin: 0;">
                                             ${sName} (${item.kelas} Absen ${item.absen})
                                         </h3>
-                                        ${typeBadge}
+                                        <span class="badge-status" style="background: #fee2e2; color: #b91c1c; font-weight: 800;">Permohonan Putus Tautan</span>
                                         ${statusBadge}
                                     </div>
                                     <span style="font-size: 0.78rem; color: #64748b;">
@@ -3699,54 +3757,38 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                                     </span>
                                 </div>
                                 <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                                    ${rawWa ? `
-                                        <a href="${waLink}" target="_blank" class="btn btn-outline btn-sm" style="border-color: #25D366; color: #128C7E; font-weight: 700;">
-                                            <i class="fa-brands fa-whatsapp"></i> Chat Siswa via WA
-                                        </a>
+                                    ${isPending ? `
+                                        <button class="btn btn-primary btn-sm btn-approve-unlink-appeal" data-id="${item.id}" data-kelas="${item.kelas}" data-absen="${item.absen}" data-uid="${studentUid}" data-email="${studentEmail}" data-nama="${sName}" style="background: #dc2626; font-weight: 700; border-color: #dc2626; display: inline-flex; align-items: center; gap: 6px;">
+                                            <i class="fa-solid fa-link-slash"></i> Putuskan Tautan Akun
+                                        </button>
+                                        <button class="btn btn-outline btn-sm btn-reject-appeal" data-id="${item.id}" style="border-color: #ef4444; color: #dc2626; font-weight: 700;">
+                                            Tolak
+                                        </button>
                                     ` : ''}
-                                    ${isPending ? (isSelfMistake ? `
-                                        <button class="btn btn-primary btn-sm btn-approve-self-appeal" data-id="${item.id}" data-kelas="${item.kelas}" data-absen="${item.absen}" data-uid="${studentUid}" data-email="${studentEmail}" data-nama="${sName}" data-realnama="${realName}" data-wa="${rawWa}" style="background: #ea580c; font-weight: 700; border-color: #ea580c;">
-                                            Setujui & Lepas Tautan
-                                        </button>
-                                        <button class="btn btn-outline btn-sm btn-reject-appeal" data-id="${item.id}" style="border-color: #ef4444; color: #dc2626; font-weight: 700;">
-                                            Tolak
-                                        </button>
-                                    ` : `
-                                        <button class="btn btn-primary btn-sm btn-approve-appeal" data-id="${item.id}" data-kelas="${item.kelas}" data-absen="${item.absen}" data-uid="${studentUid}" data-email="${studentEmail}" data-name="${sName}" style="background: #10b981; font-weight: 700;">
-                                            Setujui & Lepas Tautan Lama
-                                        </button>
-                                        <button class="btn btn-outline btn-sm btn-reject-appeal" data-id="${item.id}" style="border-color: #ef4444; color: #dc2626; font-weight: 700;">
-                                            Tolak
-                                        </button>
-                                    `) : ''}
                                 </div>
                             </div>
 
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px;">
                                 <div>
                                     <div style="font-size: 0.75rem; font-weight: 700; color: #ef4444; text-transform: uppercase;">
-                                        ${isSelfMistake ? 'Profil Yang Terlanjur Terpilih' : 'Akun Tertaut Saat Ini'}
+                                        Data Siswa Yang Tertaut
                                     </div>
                                     <div style="font-size: 0.88rem; font-weight: 600; color: #1e293b;">
-                                        ${isSelfMistake ? `${sName} (${item.kelas} Absen ${item.absen})` : (item.currentLinkedEmail || '-')}
+                                        ${sName} (${item.kelas} Absen ${item.absen})
                                     </div>
                                 </div>
                                 <div>
                                     <div style="font-size: 0.75rem; font-weight: 700; color: #2563eb; text-transform: uppercase;">
-                                        ${isSelfMistake ? 'Nama Asli Pemohon & Akun' : 'Akun Pemohon Asli (Claimant)'}
+                                        Akun Google Tertaut
                                     </div>
                                     <div style="font-size: 0.88rem; font-weight: 600; color: #1e293b;">
-                                        ${isSelfMistake ? `<strong style="color: #2563eb;">${realName || item.applicantName || '-'}</strong> (${studentEmail})` : `${item.claimedByName || item.applicantName || '-'} (${studentEmail})`}
+                                        ${studentEmail}
                                     </div>
-                                </div>
-                                <div>
-                                    <div style="font-size: 0.75rem; font-weight: 700; color: #0d9488; text-transform: uppercase;">Kontak WhatsApp Pemohon</div>
-                                    <div style="font-size: 0.88rem; font-weight: 600; color: #1e293b;">${rawWaVal || '-'}</div>
                                 </div>
                             </div>
 
                             <div>
-                                <strong style="font-size: 0.82rem; color: #475569;">Alasan Pengajuan:</strong>
+                                <strong style="font-size: 0.82rem; color: #475569;">Alasan Permohonan:</strong>
                                 <p style="font-size: 0.88rem; color: #1e293b; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; margin: 6px 0 0 0;">
                                     "${item.reason || item.alasan || '-'}"
                                 </p>
@@ -3757,62 +3799,8 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
 
                 container.innerHTML = cardsHtml;
 
-                // Hook approve buttons (Claim Appeal)
-                container.querySelectorAll('.btn-approve-appeal').forEach(btn => {
-                    btn.onclick = async () => {
-                        const id = btn.getAttribute('data-id');
-                        const k = btn.getAttribute('data-kelas');
-                        const a = btn.getAttribute('data-absen');
-                        const uid = btn.getAttribute('data-uid');
-                        const email = btn.getAttribute('data-email');
-                        const name = btn.getAttribute('data-name');
-
-                        const sure = confirm(`⚠️ Konfirmasi Persetujuan Banding:\nApakah Anda yakin ingin menyetujui permohonan banding ini?\n\nProfil ${k} Absen ${a} akan dialihkan dan ditautkan ke akun baru: ${email}.`);
-                        if (!sure) return;
-
-                        btn.disabled = true;
-                        btn.textContent = "Memproses...";
-                        try {
-                            const newBinding = {
-                                kelas: k,
-                                absen: parseInt(a, 10),
-                                nama: name || '',
-                                uid: uid,
-                                email: email,
-                                displayName: name || '',
-                                linkedAt: new Date().toISOString(),
-                                linkedAtFormatted: new Intl.DateTimeFormat('id-ID', { dateStyle: 'full', timeStyle: 'short' }).format(new Date())
-                            };
-                            await fetch(`${DB_BASE_URL}/auth_bindings/${k}_${a}.json`, {
-                                method: 'PUT',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(newBinding)
-                            });
-
-                            await fetch(`${DB_BASE_URL}/user_to_student/${uid}.json`, {
-                                method: 'PUT',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ kelas: k, absen: parseInt(a, 10), studentKey: `${k}_${a}`, email: email })
-                            });
-
-                            await fetch(`${DB_BASE_URL}/appeals/${id}.json`, {
-                                method: 'PATCH',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ status: 'approved', resolvedAt: new Date().toISOString() })
-                            });
-
-                            alert("✅ Aju banding berhasil disetujui dan profil telah ditautkan ke akun pemohon!");
-                            syncAppealsData();
-                            syncData();
-                        } catch (e) {
-                            alert("Gagal memproses persetujuan: " + e.message);
-                            btn.disabled = false;
-                        }
-                    };
-                });
-
-                // Hook approve buttons (Self Mistake Unbind)
-                container.querySelectorAll('.btn-approve-self-appeal').forEach(btn => {
+                // Hook approve buttons (Putuskan Tautan Akun dari Appeal)
+                container.querySelectorAll('.btn-approve-unlink-appeal').forEach(btn => {
                     btn.onclick = async () => {
                         const id = btn.getAttribute('data-id');
                         const k = btn.getAttribute('data-kelas');
@@ -3820,14 +3808,12 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                         const uid = btn.getAttribute('data-uid');
                         const email = btn.getAttribute('data-email');
                         const nama = btn.getAttribute('data-nama');
-                        const realNama = btn.getAttribute('data-realnama');
-                        const rawWa = btn.getAttribute('data-wa');
 
-                        const sure = confirm(`⚠️ Konfirmasi Lepas Tautan:\nApakah Anda yakin ingin melepas tautan akun ${email} dari profil ${nama} (${k} Absen ${a})?\n\nProfil siswa akan kembali bebas dan akun Google siswa direset agar dapat memilih nama aslinya.`);
+                        const sure = confirm(`⚠️ Konfirmasi Putuskan Tautan Akun:\n\nApakah Anda yakin ingin memutuskan tautan akun Google:\n👉 ${email}\ndari profil siswa:\n👉 ${nama} (${k} Absen ${a})?\n\nSetelah diputus:\n- Profil siswa ini kembali bebas (Belum Tertaut)\n- Akun Google siswa direset sehingga siswa bisa memilih ulang namanya.`);
                         if (!sure) return;
 
                         btn.disabled = true;
-                        btn.textContent = "Melepas Tautan...";
+                        btn.textContent = "Memproses...";
                         try {
                             // 1. Hapus binding profil siswa
                             await fetch(`${DB_BASE_URL}/auth_bindings/${k}_${a}.json`, {
@@ -3848,17 +3834,11 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                                 body: JSON.stringify({ status: 'approved', resolvedAt: new Date().toISOString() })
                             });
 
-                            alert(`✅ Sukses! Akun ${email} telah resmi dilepas dari profil ${nama}. Sekarang siswa dapat membuka kembali portal untuk memilih nama aslinya (${realNama || 'asli'}).`);
-
-                            if (rawWa) {
-                                const waUrl = `https://wa.me/${rawWa}?text=Halo%20${encodeURIComponent(realNama || 'Siswa')},%20permohonan%20lepas%20tautan%20akun%20kamu%20sudah%20disetujui%20Admin.%20Akun%20Google%20kamu%20telah%20kami%20reset,%20silakan%20buka%20kembali%20portal%20pendataan%20untuk%20memilih%20nama%20kamu%20yang%20sebenarnya%20ya!%20Terima%20kasih!`;
-                                window.open(waUrl, '_blank');
-                            }
-
+                            alert(`✅ Sukses! Tautan akun ${email} dengan profil ${nama} telah resmi diputuskan.`);
                             syncAppealsData();
                             syncData();
                         } catch (e) {
-                            alert("Gagal memproses lepas tautan: " + e.message);
+                            alert("Gagal memproses pemutusan tautan: " + e.message);
                             btn.disabled = false;
                         }
                     };

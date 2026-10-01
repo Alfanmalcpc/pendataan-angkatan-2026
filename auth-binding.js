@@ -359,23 +359,19 @@ export function setupClassAuthBinding(options) {
       </div>
       <div class="auth-modal-body">
         <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; font-size: 0.85rem; color: #991b1b;">
-          Profil <strong><span id="appealNamaSiswa">-</span></strong> saat ini telah tertaut ke email lain (<span id="appealCurrentEmail">-</span>). Jika Anda adalah pemilik asli profil ini, silakan ajukan banding ke Admin.
+          Profil <strong><span id="appealNamaSiswa">-</span></strong> saat ini tertaut ke <span id="appealCurrentEmail">-</span>. Ajukan permohonan ke Admin untuk memutuskan tautan data ini.
         </div>
         <div class="form-group" style="margin-bottom: 14px;">
-          <label style="font-size: 0.85rem; font-weight: 700;">Nomor WhatsApp Anda (Wajib) <span class="req">*</span></label>
-          <input type="tel" id="appealNoWa" class="form-control" placeholder="Contoh: 081234567890" required>
-        </div>
-        <div class="form-group" style="margin-bottom: 14px;">
-          <label style="font-size: 0.85rem; font-weight: 700;">Alasan Aju Banding <span class="req">*</span></label>
-          <textarea id="appealAlasan" class="form-control" rows="3" placeholder="Jelaskan secara singkat (contoh: Nama saya keliru dipilih oleh teman sekelas)..." required></textarea>
+          <label style="font-size: 0.85rem; font-weight: 700;">Alasan Permohonan Putus Tautan <span class="req">*</span></label>
+          <textarea id="appealAlasan" class="form-control" rows="3" placeholder="Jelaskan secara singkat (contoh: Keliru memilih nama teman saat login)..." required></textarea>
         </div>
         <div style="font-size: 0.78rem; color: #64748b;">
-          Pengajuan banding akan langsung masuk ke Dashboard Admin untuk ditinjau dan dikonfirmasi.
+          Permohonan pemutusan tautan akan langsung masuk ke Dashboard Admin untuk segera diputus.
         </div>
       </div>
       <div class="auth-modal-footer">
         <button type="button" class="btn btn-outline btn-sm" id="btnCancelAppeal">Tutup</button>
-        <button type="button" class="btn btn-sm" id="btnSubmitAppeal" style="background: #e11d48; color: white; font-weight: 700;">Kirim Aju Banding</button>
+        <button type="button" class="btn btn-sm" id="btnSubmitAppeal" style="background: #e11d48; color: white; font-weight: 700;">Kirim Permohonan ke Admin</button>
       </div>
     </div>
   `;
@@ -617,7 +613,7 @@ export function setupClassAuthBinding(options) {
           </div>
         </div>
         <button type="button" id="btnSelfAppealInForm" style="background: #dc2626; color: white; border: none; border-radius: 8px; padding: 6px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 6px rgba(220,38,38,0.25);">
-          <span>⚖️</span> Salah Nama? Aju Lepas
+          <span>⚖️</span> Salah Nama? Aju Putus Tautan ke Admin
         </button>
       `;
 
@@ -912,11 +908,10 @@ export function setupClassAuthBinding(options) {
 
   // Modal Appeal Buttons
   btnSubmitAppeal.onclick = async () => {
-    const noWa = document.getElementById('appealNoWa').value.trim();
     const alasan = document.getElementById('appealAlasan').value.trim();
 
-    if (!noWa || !alasan) {
-      alert("Mohon isi nomor WhatsApp dan alasan aju banding secara lengkap!");
+    if (!alasan) {
+      alert("Mohon isi alasan permohonan putus tautan!");
       return;
     }
 
@@ -933,23 +928,22 @@ export function setupClassAuthBinding(options) {
         applicantUid: currentUser.uid,
         applicantEmail: currentUser.email,
         applicantName: currentUser.displayName || '',
-        applicantWa: noWa,
         reason: alasan,
         type: isSelfMistake ? 'self_mistake' : 'claim_appeal'
       });
 
       alert(isSelfMistake 
-        ? "✅ Permohonan lepas tautan akun telah dikirim ke Admin! Admin akan meninjau dan mereset akun Anda."
-        : "✅ Pengajuan banding berhasil dikirim ke Admin. Admin akan meninjau dan membuka tautan jika valid."
+        ? "✅ Permohonan putus tautan akun telah dikirim ke Admin! Admin akan memutuskan tautan agar Anda dapat memilih nama yang benar."
+        : "✅ Permohonan putus tautan berhasil dikirim ke Admin. Admin akan segera meninjau dan memutuskan tautan."
       );
       modalAppeal.style.display = 'none';
       btnSubmitAppeal.disabled = false;
-      btnSubmitAppeal.textContent = "Kirim Aju Banding";
+      btnSubmitAppeal.textContent = "Kirim Permohonan ke Admin";
     } catch (err) {
       console.error("Gagal kirim banding:", err);
-      alert("Terjadi kesalahan saat mengirim formulir banding: " + err.message);
+      alert("Gagal mengirim permohonan: " + (err.message || err));
       btnSubmitAppeal.disabled = false;
-      btnSubmitAppeal.textContent = "Kirim Aju Banding";
+      btnSubmitAppeal.textContent = "Kirim Permohonan ke Admin";
     }
   };
 
