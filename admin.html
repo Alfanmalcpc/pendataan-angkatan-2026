@@ -1814,7 +1814,7 @@
                 const kaosCell = item.isKaosFilled
                     ? `<div style="display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap;">
                         <span class="badge-status" style="background:#ecfdf5; color:#047857; font-weight:800; padding:2px 7px; border-radius:6px; font-size:0.75rem;">✓ ${item.kaosData.ukuranKaos} (${item.kaosData.tipeLengan === 'Lengan Panjang' ? 'Pjg' : 'Pdk'})</span>
-                        ${item.kaosData.ttdBase64 ? `<img src="${item.kaosData.ttdBase64}" style="width:38px; height:18px; object-fit:contain; background:#ffffff; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer;" onclick="openTtdZoom('${encodeURIComponent(item.nama)}', '${encodeURIComponent(item.kelas)}', '${item.absen}', this.src)" title="Klik zoom TTD">` : ''}
+                        ${item.kaosData.ttdBase64 ? `<span class="badge-status" style="background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0; font-weight:700; padding:2px 6px; border-radius:4px; font-size:0.72rem; cursor:pointer;" onclick="openTtdZoom('${encodeURIComponent(item.nama)}', '${encodeURIComponent(item.kelas)}', '${item.absen}', allKaosTtdData['${item.kelas}']?.['${item.absen}']?.ttdBase64 || '')" title="Klik untuk melihat TTD">✓ Ada TTD</span>` : ''}
                         <a href="kaos-ttd.html?kelas=${item.kelas}&absen=${item.absen}&admin=1" target="_blank" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#047857; border-color:#10b981; font-weight:700;" title="Edit Ukuran Kaos & TTD Siswa Ini">✏️ Edit</a>
                         <button type="button" class="btn btn-sm btn-del-kaos-inline" data-kelas="${item.kelas}" data-absen="${item.absen}" data-nama="${encodeURIComponent(item.nama)}" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#b91c1c; background:#fee2e2; border:1px solid #fecaca; font-weight:700; cursor:pointer;" title="Hapus Data Kaos & TTD Siswa Ini">🗑️</button>
                       </div>`
@@ -2134,7 +2134,7 @@
                         ? `<a href="${kaosRecord.ttdDriveUrl}" target="_blank" style="color:#059669; font-weight:700; text-decoration:underline; display:inline-flex; align-items:center; gap:4px;"><i class="fa-brands fa-google-drive"></i> Buka Google Drive</a>`
                         : `<span style="color:#64748b; font-size:0.75rem;">Folder tanda tangan/${cls}/</span>`;
                     const ttdImg = kaosRecord.ttdBase64 
-                        ? `<img src="${kaosRecord.ttdBase64}" style="width:74px; height:34px; object-fit:contain; background:#ffffff; border:1px solid #cbd5e1; border-radius:6px; cursor:pointer;" onclick="openTtdZoom('${encodeURIComponent(nama)}', '${encodeURIComponent(cls)}', '${abs}', this.src)" title="Klik zoom TTD">`
+                        ? `<span class="badge-status" style="background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0; font-weight:700; padding:4px 8px; border-radius:6px; font-size:0.75rem; cursor:pointer;" onclick="openTtdZoom('${encodeURIComponent(nama)}', '${encodeURIComponent(cls)}', '${abs}', allKaosTtdData['${cls}']?.['${abs}']?.ttdBase64 || '')" title="Klik untuk melihat TTD">✓ Ada TTD (Lihat)</span>`
                         : `<span style="color:#94a3b8; font-size:0.75rem;">Tanpa TTD</span>`;
 
                     elKaosCont.innerHTML = `
@@ -3992,9 +3992,9 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                     ? `<a href="${it.ttdDriveUrl}" target="_blank" style="color: #059669; font-weight: 700; text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-brands fa-google-drive"></i> Buka File</a>`
                     : (it.isFilled ? `<span style="color: #64748b; font-size: 0.76rem;">Folder tanda tangan/${it.kelas}/</span>` : `<span style="color: #94a3b8; font-size: 0.76rem;">-</span>`);
 
-                const thumbHtml = it.ttdBase64 
-                    ? `<img src="${it.ttdBase64}" alt="TTD" style="width: 76px; height: 34px; object-fit: contain; background: #ffffff; border-radius: 6px; border: 1px solid #cbd5e1; cursor: pointer;" onclick="openTtdZoom('${encodeURIComponent(it.nama)}', '${encodeURIComponent(it.kelas)}', '${it.absen}', this.src)" title="Klik untuk memperbesar">`
-                    : `<span style="color: #94a3b8; font-size: 0.78rem;">-</span>`;
+                const thumbHtml = (it.ttdBase64 || (it.isFilled && it.ttdDriveUrl))
+                    ? `<span class="badge-status done" style="background: #ecfdf5; color: #047857; font-weight: 800; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" onclick="openTtdZoom('${encodeURIComponent(it.nama)}', '${encodeURIComponent(it.kelas)}', '${it.absen}', allKaosTtdData['${it.kelas}']?.['${it.absen}']?.ttdBase64 || '')" title="Klik untuk melihat TTD">✓ Sudah</span>`
+                    : (it.isFilled ? `<span style="color: #94a3b8; font-size: 0.78rem;">- Tanpa TTD</span>` : `<span style="color: #cbd5e1; font-size: 0.78rem;">-</span>`);
 
                 const formattedTime = it.updatedAt ? new Intl.DateTimeFormat('id-ID', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(it.updatedAt)) : '-';
 
