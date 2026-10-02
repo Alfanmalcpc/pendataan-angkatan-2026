@@ -1815,12 +1815,12 @@
                     ? `<div style="display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap;">
                         <span class="badge-status" style="background:#ecfdf5; color:#047857; font-weight:800; padding:2px 7px; border-radius:6px; font-size:0.75rem;">✓ ${item.kaosData.ukuranKaos} (${item.kaosData.tipeLengan === 'Lengan Panjang' ? 'Pjg' : 'Pdk'})</span>
                         ${item.kaosData.ttdBase64 ? `<img src="${item.kaosData.ttdBase64}" style="width:38px; height:18px; object-fit:contain; background:#ffffff; border:1px solid #cbd5e1; border-radius:4px; cursor:pointer;" onclick="openTtdZoom('${encodeURIComponent(item.nama)}', '${encodeURIComponent(item.kelas)}', '${item.absen}', this.src)" title="Klik zoom TTD">` : ''}
-                        <a href="kaos-ttd.html?kelas=${item.kelas}&absen=${item.absen}" target="_blank" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#047857; border-color:#10b981; font-weight:700;" title="Edit Ukuran Kaos & TTD Siswa Ini">✏️ Edit</a>
+                        <a href="kaos-ttd.html?kelas=${item.kelas}&absen=${item.absen}&admin=1" target="_blank" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#047857; border-color:#10b981; font-weight:700;" title="Edit Ukuran Kaos & TTD Siswa Ini">✏️ Edit</a>
                         <button type="button" class="btn btn-sm btn-del-kaos-inline" data-kelas="${item.kelas}" data-absen="${item.absen}" data-nama="${encodeURIComponent(item.nama)}" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#b91c1c; background:#fee2e2; border:1px solid #fecaca; font-weight:700; cursor:pointer;" title="Hapus Data Kaos & TTD Siswa Ini">🗑️</button>
                       </div>`
                     : `<div style="display:inline-flex; align-items:center; gap:6px;">
                         <span class="badge-status" style="background:#fef2f2; color:#b91c1c; font-size:0.75rem; padding:2px 6px; border-radius:6px;">✗ Belum</span>
-                        <a href="kaos-ttd.html?kelas=${item.kelas}&absen=${item.absen}" target="_blank" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#4f46e5; border-color:#c7d2fe; font-weight:700;" title="Isi Ukuran Kaos & TTD Siswa Ini">+ Isi</a>
+                        <a href="kaos-ttd.html?kelas=${item.kelas}&absen=${item.absen}&admin=1" target="_blank" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#4f46e5; border-color:#c7d2fe; font-weight:700;" title="Isi Ukuran Kaos & TTD Siswa Ini">+ Isi</a>
                       </div>`;
 
                 tr.innerHTML = `
@@ -2121,7 +2121,7 @@
             const elKaosCont = document.getElementById('mKaosTtdContainer');
             const btnKaosModal = document.getElementById('btnOpenKaosTtdDirect');
             if (btnKaosModal) {
-                btnKaosModal.href = `kaos-ttd.html?kelas=${cls}&absen=${abs}`;
+                btnKaosModal.href = `kaos-ttd.html?kelas=${cls}&absen=${abs}&admin=1`;
             }
             if (elKaosCont) {
                 if (kaosRecord && (kaosRecord.ukuranKaos || kaosRecord.tipeLengan || kaosRecord.ttdBase64)) {
@@ -4004,10 +4004,10 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
 
                 const actionBtn = it.isFilled 
                     ? `<div style="display:inline-flex; align-items:center; gap:4px; justify-content:center;">
-                        <a href="kaos-ttd.html?kelas=${it.kelas}&absen=${it.absen}" target="_blank" class="btn btn-outline btn-sm" style="border-color: #10b981; color: #047857; font-weight: 700; font-size: 0.78rem; padding: 3px 8px; border-radius: 6px;" title="Perbarui / Edit Data Kaos & TTD Siswa Ini">✏️ Edit</a>
+                        <a href="kaos-ttd.html?kelas=${it.kelas}&absen=${it.absen}&admin=1" target="_blank" class="btn btn-outline btn-sm" style="border-color: #10b981; color: #047857; font-weight: 700; font-size: 0.78rem; padding: 3px 8px; border-radius: 6px;" title="Perbarui / Edit Data Kaos & TTD Siswa Ini">✏️ Edit</a>
                         <button type="button" class="btn btn-sm btn-del-kaos-tab" data-kelas="${it.kelas}" data-absen="${it.absen}" data-nama="${encodeURIComponent(it.nama)}" style="background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; font-weight: 700; font-size: 0.76rem; padding: 3px 8px; border-radius: 6px; cursor: pointer;" title="Hapus Data Kaos & TTD">🗑️ Hapus</button>
                        </div>`
-                    : `<a href="kaos-ttd.html?kelas=${it.kelas}&absen=${it.absen}" target="_blank" class="btn btn-primary btn-sm" style="background: #4f46e5; border-color: #4f46e5; font-weight: 700; font-size: 0.78rem; padding: 3px 10px; border-radius: 6px;" title="Isi Ukuran Kaos & TTD Siswa Ini">+ Isi</a>`;
+                    : `<a href="kaos-ttd.html?kelas=${it.kelas}&absen=${it.absen}&admin=1" target="_blank" class="btn btn-primary btn-sm" style="background: #4f46e5; border-color: #4f46e5; font-weight: 700; font-size: 0.78rem; padding: 3px 10px; border-radius: 6px;" title="Isi Ukuran Kaos & TTD Siswa Ini">+ Isi</a>`;
 
                 html += `
                     <tr>
@@ -4188,9 +4188,10 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
 
         function checkAdminAuth() {
             const overlay = document.getElementById('adminAuthOverlay');
-            const isAuth = sessionStorage.getItem(ADMIN_AUTH_SESSION_KEY) === 'authenticated';
+            const isAuth = sessionStorage.getItem(ADMIN_AUTH_SESSION_KEY) === 'authenticated' || localStorage.getItem(ADMIN_AUTH_SESSION_KEY) === 'authenticated';
 
             if (isAuth) {
+                sessionStorage.setItem(ADMIN_AUTH_SESSION_KEY, 'authenticated');
                 document.body.classList.remove('auth-locked');
                 if (overlay) overlay.style.display = 'none';
                 startAdminApp();
@@ -4218,6 +4219,7 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
             if (enteredUser === REQUIRED_USERNAME && enteredPass === REQUIRED_PASSWORD) {
                 // Kredensial benar
                 sessionStorage.setItem(ADMIN_AUTH_SESSION_KEY, 'authenticated');
+                localStorage.setItem(ADMIN_AUTH_SESSION_KEY, 'authenticated');
                 if (alertBox) alertBox.style.display = 'none';
                 checkAdminAuth();
             } else {

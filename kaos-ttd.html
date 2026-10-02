@@ -399,9 +399,51 @@
             <p style="font-size: 0.85rem; color: #b45309; margin: 0 0 16px 0;">
                 Untuk memastikan tanda tangan digital dan ukuran kaos tercatat resmi atas nama Anda, silakan masuk melalui portal utama.
             </p>
-            <a href="index.html" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; border-radius: 12px; text-decoration: none; padding: 10px 22px;">
-                <span>Masuk Akun Google di Halaman Utama →</span>
-            </a>
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <a href="index.html" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; border-radius: 12px; text-decoration: none; padding: 10px 22px;">
+                    <span>Masuk Akun Google Siswa →</span>
+                </a>
+                <button type="button" id="btnUnlockAdminMode" class="btn" style="background: #1e1b4b; color: #fbbf24; border: 1px solid #4338ca; display: inline-flex; align-items: center; gap: 8px; font-weight: 700; border-radius: 12px; padding: 10px 20px; cursor: pointer;">
+                    <span>👑 Mode Admin / Panitia (Input Langsung)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bar Khusus Mode Admin / Panitia Pendataan -->
+        <div id="adminModeCard" style="display: none; background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); border: 1.5px solid #6366f1; border-radius: 16px; padding: 18px 20px; color: #ffffff; margin-bottom: 24px; box-shadow: 0 10px 25px rgba(49, 46, 129, 0.25);">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(251, 191, 36, 0.2); border: 1px solid #fbbf24; display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                        👑
+                    </div>
+                    <div>
+                        <div style="font-weight: 800; font-size: 1.05rem; color: #fbbf24; letter-spacing: 0.5px;">
+                            MODE ADMIN / PANITIA AKTIF
+                        </div>
+                        <div style="font-size: 0.82rem; color: #c7d2fe;">
+                            Input data kaos & tanda tangan digital langsung tanpa perlu tertaut ke akun Google siswa.
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <button type="button" id="btnAdminPrevStudent" class="btn btn-sm" style="background: rgba(255,255,255,0.1); color: #ffffff; border: 1px solid rgba(255,255,255,0.2); font-weight: 700; border-radius: 8px; padding: 6px 12px; cursor: pointer;">
+                        ← Siswa Sebelumnya
+                    </button>
+                    <button type="button" id="btnAdminNextStudent" class="btn btn-sm" style="background: #fbbf24; color: #1e1b4b; font-weight: 800; border-radius: 8px; padding: 6px 14px; cursor: pointer;">
+                        Siswa Berikutnya →
+                    </button>
+                    <a href="admin.html" class="btn btn-sm" style="background: rgba(255,255,255,0.15); color: #ffffff; border: 1px solid rgba(255,255,255,0.25); font-weight: 700; border-radius: 8px; padding: 6px 12px; text-decoration: none;">
+                        📊 Panel Admin
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Selector Siswa untuk Admin -->
+            <div style="margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.15); display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                <label style="font-size: 0.82rem; font-weight: 700; color: #e0e7ff; margin: 0;">Pilih Siswa yang Didata:</label>
+                <select id="adminSelectKelas" style="background: #0f172a; border: 1.5px solid #818cf8; color: #ffffff; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; outline: none; cursor: pointer;"></select>
+                <select id="adminSelectSiswa" style="background: #0f172a; border: 1.5px solid #818cf8; color: #ffffff; padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; outline: none; cursor: pointer; flex: 1; min-width: 220px;"></select>
+            </div>
         </div>
 
         <!-- Identitas Siswa Terkunci -->
@@ -642,7 +684,10 @@
             </div>
 
             <div style="display: flex; gap: 10px; flex-direction: column;">
-                <a href="index.html" class="btn btn-primary" style="padding: 12px; font-weight: 700; border-radius: 12px; text-decoration: none; justify-content: center; background: #059669; border-color: #059669; display: flex; align-items: center; gap: 8px;">
+                <button type="button" id="btnAdminSuccNext" class="btn btn-primary" style="display: none; padding: 12px; font-weight: 800; border-radius: 12px; justify-content: center; background: #4f46e5; border-color: #4f46e5; align-items: center; gap: 8px; cursor: pointer;">
+                    👑 Lanjut Input Siswa Berikutnya →
+                </button>
+                <a href="index.html" id="btnSuccHome" class="btn btn-primary" style="padding: 12px; font-weight: 700; border-radius: 12px; text-decoration: none; justify-content: center; background: #059669; border-color: #059669; display: flex; align-items: center; gap: 8px;">
                     🏠 Kembali ke Halaman Utama (Status Jadi Edit)
                 </a>
                 <a id="btnSuccToBiodata" href="#" class="btn btn-outline" style="padding: 11px; font-weight: 700; border-radius: 12px; text-decoration: none; justify-content: center; border-color: #4f46e5; color: #4f46e5; display: flex; align-items: center; gap: 8px;">
@@ -1077,8 +1122,272 @@
             });
         };
 
+        let isAdminMode = false;
+
+        function resetFormForStudent() {
+            clearCanvas();
+            inputUkuranKaos.value = '';
+            inputTipeLengan.value = '';
+            selectedSizeLabel.textContent = 'Belum dipilih';
+            document.querySelectorAll('.size-card').forEach(p => {
+                p.classList.remove('active', 'history-selected', 'history-previous');
+                const b = p.querySelector('.history-pill');
+                if (b) b.remove();
+            });
+            document.querySelectorAll('.sleeve-card').forEach(p => {
+                p.classList.remove('active', 'history-selected', 'history-previous');
+                const b = p.querySelector('.history-pill');
+                if (b) b.remove();
+            });
+            if (existingSignatureBox) existingSignatureBox.style.display = 'none';
+            const sigHistoryBadge = document.getElementById('signatureHistoryBadge');
+            if (sigHistoryBadge) sigHistoryBadge.style.display = 'none';
+            const editNotice = document.getElementById('editModeNotice');
+            if (editNotice) editNotice.style.display = 'none';
+            if (btnSubmitText) btnSubmitText.textContent = "Simpan Data Ukuran Kaos & TTD";
+            existingTtdData = null;
+            initialSavedSize = null;
+            initialSavedSleeve = null;
+            strokeList = [];
+            hideAlert();
+        }
+
+        async function loadExistingKaosData(normK, normA) {
+            let saved = null;
+            try {
+                const snapKaos = await get(ref(db, `kaos_ttd/${normK}/${normA}`));
+                if (snapKaos.exists()) {
+                    saved = snapKaos.val();
+                }
+            } catch (e) {
+                console.warn("Gagal get kaos via Firebase SDK:", e);
+            }
+
+            if (!saved && window.NevastraDB && window.NevastraDB.getKaosTtd) {
+                try {
+                    saved = await window.NevastraDB.getKaosTtd(normK, normA);
+                } catch (e) {}
+            }
+
+            if (!saved) {
+                try {
+                    const raw = localStorage.getItem(`nevastra_kaos_${normK}_${normA}`);
+                    if (raw) saved = JSON.parse(raw);
+                } catch (e) {}
+            }
+
+            if (saved) {
+                existingTtdData = saved;
+                initialSavedSize = saved.ukuranKaos || null;
+                initialSavedSleeve = saved.tipeLengan || null;
+
+                const editNotice = document.getElementById('editModeNotice');
+                if (editNotice) editNotice.style.display = 'flex';
+                if (btnSubmitText) btnSubmitText.textContent = "Simpan Perubahan Ukuran Kaos & TTD";
+
+                if (saved.ukuranKaos) {
+                    selectSize(saved.ukuranKaos);
+                }
+                if (saved.tipeLengan) {
+                    selectSleeve(saved.tipeLengan);
+                }
+                if (saved.ttdBase64) {
+                    if (existingSignatureBox) {
+                        existingSignatureBox.style.display = 'flex';
+                        imgExistingTtdPreview.src = saved.ttdBase64;
+                    }
+                    if (signatureHint) signatureHint.style.display = 'none';
+
+                    const sigHistoryBadge = document.getElementById('signatureHistoryBadge');
+                    if (sigHistoryBadge) sigHistoryBadge.style.display = 'inline-flex';
+
+                    const img = new Image();
+                    img.onload = () => {
+                        const rect = canvas.getBoundingClientRect();
+                        ctx.drawImage(img, 0, 0, rect.width, rect.height);
+                    };
+                    img.src = saved.ttdBase64;
+                }
+            }
+        }
+
+        function populateSiswaOptions(kelas, selectedAbsen) {
+            const selSiswa = document.getElementById('adminSelectSiswa');
+            if (!selSiswa) return;
+            selSiswa.innerHTML = '';
+            const roster = (window.studentRoster && window.studentRoster[kelas]) || [];
+            roster.forEach(stu => {
+                const opt = document.createElement('option');
+                opt.value = stu.absen;
+                opt.textContent = `${String(stu.absen).padStart(2, '0')}. ${stu.nama} (${stu.jk || '-'})`;
+                if (stu.absen === selectedAbsen) opt.selected = true;
+                selSiswa.appendChild(opt);
+            });
+        }
+
+        let adminSelectorsInitialized = false;
+        function initAdminSelectors() {
+            if (adminSelectorsInitialized) return;
+            adminSelectorsInitialized = true;
+
+            const selKelas = document.getElementById('adminSelectKelas');
+            const selSiswa = document.getElementById('adminSelectSiswa');
+            if (!selKelas || !selSiswa) return;
+
+            selKelas.innerHTML = '';
+            const classes = Object.keys(window.studentRoster || {
+                'XII-1':[], 'XII-2':[], 'XII-3':[], 'XII-4':[], 'XII-5':[],
+                'XII-6':[], 'XII-7':[], 'XII-8':[], 'XII-9':[]
+            });
+
+            classes.forEach(k => {
+                const opt = document.createElement('option');
+                opt.value = k;
+                opt.textContent = k;
+                selKelas.appendChild(opt);
+            });
+
+            selKelas.addEventListener('change', () => {
+                populateSiswaOptions(selKelas.value, 1);
+                setAdminStudent(selKelas.value, 1);
+            });
+
+            selSiswa.addEventListener('change', () => {
+                const abs = parseInt(selSiswa.value, 10);
+                setAdminStudent(selKelas.value, abs);
+            });
+
+            document.getElementById('btnAdminPrevStudent')?.addEventListener('click', () => {
+                if (!currentStudentData) return;
+                const currentA = parseInt(currentStudentData.absen, 10);
+                if (currentA > 1) {
+                    setAdminStudent(currentStudentData.kelas, currentA - 1);
+                } else {
+                    alert('Sudah berada di siswa pertama kelas ini.');
+                }
+            });
+
+            document.getElementById('btnAdminNextStudent')?.addEventListener('click', () => {
+                if (!currentStudentData) return;
+                const roster = (window.studentRoster && window.studentRoster[currentStudentData.kelas]) || [];
+                const currentA = parseInt(currentStudentData.absen, 10);
+                if (currentA < roster.length) {
+                    setAdminStudent(currentStudentData.kelas, currentA + 1);
+                } else {
+                    alert('Sudah mencapai siswa terakhir di kelas ini.');
+                }
+            });
+
+            document.getElementById('btnAdminSuccNext')?.addEventListener('click', () => {
+                document.getElementById('modalSuccess').style.display = 'none';
+                if (!currentStudentData) return;
+                const roster = (window.studentRoster && window.studentRoster[currentStudentData.kelas]) || [];
+                const curA = parseInt(currentStudentData.absen, 10);
+                if (curA < roster.length) {
+                    setAdminStudent(currentStudentData.kelas, curA + 1);
+                } else {
+                    alert('Semua siswa di kelas ini telah selesai didata!');
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        async function setAdminStudent(kelas, absen) {
+            initAdminSelectors();
+            const selKelas = document.getElementById('adminSelectKelas');
+            const selSiswa = document.getElementById('adminSelectSiswa');
+            if (selKelas && selKelas.value !== kelas) selKelas.value = kelas;
+            populateSiswaOptions(kelas, absen);
+            if (selSiswa) selSiswa.value = absen;
+
+            const roster = (window.studentRoster && window.studentRoster[kelas]) || [];
+            const stu = roster.find(s => s.absen == absen);
+            const targetNama = stu ? stu.nama : `Siswa Absen ${absen}`;
+
+            currentStudentData = {
+                kelas: kelas,
+                absen: absen,
+                nama: targetNama
+            };
+
+            displayStudentNama.textContent = targetNama;
+            displayStudentKelas.textContent = kelas;
+            displayStudentAbsen.textContent = absen;
+            if (btnLinkToBiodata) btnLinkToBiodata.href = `${kelas.toLowerCase()}.html?absen=${absen}`;
+
+            resetFormForStudent();
+            await loadExistingKaosData(kelas, absen);
+        }
+
+        async function activateAdminMode() {
+            isAdminMode = true;
+            sessionStorage.setItem('nevastra_admin_session_auth', 'authenticated');
+            localStorage.setItem('nevastra_admin_session_auth', 'authenticated');
+
+            const authNotice = document.getElementById('authRequiredBanner');
+            if (authNotice) authNotice.style.display = 'none';
+
+            const adminCard = document.getElementById('adminModeCard');
+            if (adminCard) adminCard.style.display = 'block';
+
+            const formCard = document.getElementById('formKaosTtd');
+            if (formCard) formCard.style.opacity = '1';
+
+            const statusBadge = document.getElementById('statusBadge');
+            if (statusBadge) {
+                statusBadge.textContent = 'Mode Admin Aktif';
+                statusBadge.className = 'badge-status warning';
+                statusBadge.style.background = '#fef3c7';
+                statusBadge.style.color = '#92400e';
+            }
+
+            displayStudentEmail.textContent = 'Input Panitia / Admin (Tanpa Akun Google)';
+
+            const btnAdminNext = document.getElementById('btnAdminSuccNext');
+            if (btnAdminNext) btnAdminNext.style.display = 'flex';
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const qKelas = urlParams.get('kelas') || 'XII-1';
+            const qAbsen = parseInt(urlParams.get('absen'), 10) || 1;
+
+            await setAdminStudent(qKelas, qAbsen);
+        }
+
+        // Cek URL params dan Session Admin
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasAdminParam = urlParams.get('admin') === '1' || urlParams.get('admin') === 'true';
+        const hasAdminStorage = sessionStorage.getItem('nevastra_admin_session_auth') === 'authenticated' || localStorage.getItem('nevastra_admin_session_auth') === 'authenticated';
+
+        if (hasAdminParam || hasAdminStorage) {
+            activateAdminMode();
+        }
+
+        document.getElementById('btnUnlockAdminMode')?.addEventListener('click', () => {
+            const savedAuth = sessionStorage.getItem('nevastra_admin_session_auth') || localStorage.getItem('nevastra_admin_session_auth');
+            if (savedAuth === 'authenticated') {
+                activateAdminMode();
+                return;
+            }
+            const entered = prompt('Masukkan Kata Sandi Admin Pendataan:');
+            if (entered === 'Nevastra44##*//') {
+                sessionStorage.setItem('nevastra_admin_session_auth', 'authenticated');
+                localStorage.setItem('nevastra_admin_session_auth', 'authenticated');
+                activateAdminMode();
+            } else if (entered !== null) {
+                alert('Kata sandi admin salah! Akses ditolak.');
+            }
+        });
+
         // Auth & Identity Resolution
         onAuthStateChanged(auth, async (user) => {
+            if (isAdminMode) {
+                if (user) {
+                    currentAuthUser = user;
+                    displayStudentEmail.textContent = `${user.email} (Admin)`;
+                }
+                return;
+            }
+
             if (!user) {
                 // Belum login -> Tampilkan banner login tanpa popup alert
                 const authNotice = document.getElementById('authRequiredBanner');
@@ -1097,7 +1406,6 @@
             displayStudentEmail.textContent = user.email;
 
             // Cek URL params jika ada ?kelas=XII-1&absen=1
-            const urlParams = new URLSearchParams(window.location.search);
             const qKelas = urlParams.get('kelas');
             const qAbsen = parseInt(urlParams.get('absen'), 10);
 
@@ -1143,68 +1451,7 @@
                 displayStudentAbsen.textContent = targetAbsen;
                 btnLinkToBiodata.href = `${targetKelas.toLowerCase()}.html?absen=${targetAbsen}`;
 
-                // Muat Data Kaos & TTD Eksisting dari Database Nevastra
-                const normK = String(targetKelas).trim().toUpperCase();
-                const normA = parseInt(targetAbsen, 10);
-                let saved = null;
-
-                // 1. Ambil langsung via SDK Firebase (Tercepat & Realtime)
-                try {
-                    const snapKaos = await get(ref(db, `kaos_ttd/${normK}/${normA}`));
-                    if (snapKaos.exists()) {
-                        saved = snapKaos.val();
-                    }
-                } catch (e) {
-                    console.warn("Gagal get kaos dari Firebase SDK:", e);
-                }
-
-                // 2. Fallback via REST API helper
-                if (!saved && window.NevastraDB && window.NevastraDB.getKaosTtd) {
-                    try {
-                        saved = await window.NevastraDB.getKaosTtd(normK, normA);
-                    } catch (e) {}
-                }
-
-                // 3. Fallback via LocalStorage
-                if (!saved) {
-                    try {
-                        const raw = localStorage.getItem(`nevastra_kaos_${normK}_${normA}`);
-                        if (raw) saved = JSON.parse(raw);
-                    } catch (e) {}
-                }
-
-                if (saved) {
-                    existingTtdData = saved;
-                    initialSavedSize = saved.ukuranKaos || null;
-                    initialSavedSleeve = saved.tipeLengan || null;
-
-                    const editNotice = document.getElementById('editModeNotice');
-                    if (editNotice) editNotice.style.display = 'flex';
-                    const btnText = document.getElementById('btnSubmitText');
-                    if (btnText) btnText.textContent = "Simpan Perubahan Ukuran Kaos & TTD";
-
-                    if (saved.ukuranKaos) {
-                        selectSize(saved.ukuranKaos);
-                    }
-                    if (saved.tipeLengan) {
-                        selectSleeve(saved.tipeLengan);
-                    }
-                    if (saved.ttdBase64) {
-                        existingSignatureBox.style.display = 'flex';
-                        imgExistingTtdPreview.src = saved.ttdBase64;
-                        signatureHint.style.display = 'none';
-
-                        const sigHistoryBadge = document.getElementById('signatureHistoryBadge');
-                        if (sigHistoryBadge) sigHistoryBadge.style.display = 'inline-flex';
-
-                        const img = new Image();
-                        img.onload = () => {
-                            const rect = canvas.getBoundingClientRect();
-                            ctx.drawImage(img, 0, 0, rect.width, rect.height);
-                        };
-                        img.src = saved.ttdBase64;
-                    }
-                }
+                await loadExistingKaosData(targetKelas, targetAbsen);
 
             } catch (err) {
                 console.error("Gagal memuat status akun:", err);
@@ -1274,15 +1521,16 @@
                     nama: currentStudentData.nama,
                     kelas: normKelas,
                     absen: normAbsen,
-                    email: (currentAuthUser && currentAuthUser.email) || '',
-                    uid: (currentAuthUser && currentAuthUser.uid) || '',
+                    email: (currentAuthUser && currentAuthUser.email) || (isAdminMode ? 'admin_direct@nevastra.local' : ''),
+                    uid: (currentAuthUser && currentAuthUser.uid) || (isAdminMode ? 'admin_direct' : ''),
                     ukuranKaos: ukuran,
                     tipeLengan: lengan,
                     ttdNamaFile: targetFileName,
                     ttdDriveUrl: driveUrl,
                     ttdDriveId: driveId,
                     ttdBase64: pngBase64,
-                    updatedAt: new Date().toISOString()
+                    updatedAt: new Date().toISOString(),
+                    inputMethod: isAdminMode ? 'admin_direct' : 'student_self'
                 };
 
                 // Tulis langsung ke Firebase SDK
