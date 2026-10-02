@@ -1536,6 +1536,28 @@
                 // Tulis langsung ke Firebase SDK
                 await set(ref(db, `kaos_ttd/${normKelas}/${normAbsen}`), payloadData);
 
+                // Tulis versi meta ultra-ringan untuk admin panel
+                try {
+                    const metaPayload = {
+                        nama: payloadData.nama,
+                        kelas: normKelas,
+                        absen: normAbsen,
+                        email: payloadData.email,
+                        uid: payloadData.uid,
+                        ukuranKaos: ukuran,
+                        tipeLengan: lengan,
+                        ttdNamaFile: targetFileName,
+                        ttdDriveUrl: driveUrl,
+                        ttdDriveId: driveId,
+                        hasTtd: !!(pngBase64 || driveUrl),
+                        updatedAt: payloadData.updatedAt,
+                        inputMethod: payloadData.inputMethod
+                    };
+                    await set(ref(db, `kaos_ttd_meta/${normKelas}/${normAbsen}`), metaPayload);
+                } catch(eMeta) {
+                    console.warn("Gagal simpan meta:", eMeta);
+                }
+
                 // Simpan cache lokal
                 try {
                     localStorage.setItem(`nevastra_kaos_${normKelas}_${normAbsen}`, JSON.stringify(payloadData));
@@ -1574,8 +1596,10 @@
                                 payloadData.ttdDriveUrl = driveUrl;
                                 payloadData.ttdDriveId = driveId;
                                 await set(ref(db, `kaos_ttd/${normKelas}/${normAbsen}/ttdDriveUrl`), driveUrl);
+                                try { await set(ref(db, `kaos_ttd_meta/${normKelas}/${normAbsen}/ttdDriveUrl`), driveUrl); } catch(e){}
                                 if (driveId) {
                                     await set(ref(db, `kaos_ttd/${normKelas}/${normAbsen}/ttdDriveId`), driveId);
+                                    try { await set(ref(db, `kaos_ttd_meta/${normKelas}/${normAbsen}/ttdDriveId`), driveId); } catch(e){}
                                 }
                             }
                         }

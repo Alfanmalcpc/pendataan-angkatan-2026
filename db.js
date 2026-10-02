@@ -1,5 +1,6 @@
 // Koneksi Database Firebase REST API & Google Drive Integration
-const DB_BASE_URL = "https://nevastra-default-rtdb.asia-southeast1.firebasedatabase.app";
+window.DB_BASE_URL = window.DB_BASE_URL || "https://nevastra-default-rtdb.asia-southeast1.firebasedatabase.app";
+const DB_BASE_URL = window.DB_BASE_URL;
 
 // Data Referensi Resmi Jenis Kelamin (Disinkronkan dari Absen Manual 2026 Ganjil SMAN 1 Sumberrejo)
 const OFFICIAL_GENDERS = {
@@ -1012,8 +1013,14 @@ window.NevastraDB = {
 
     async getAllKaosTtd() {
         try {
-            const url = `${DB_BASE_URL}/kaos_ttd.json?t=${Date.now()}`;
-            const res = await fetch(url);
+            let url = `${DB_BASE_URL}/kaos_ttd_meta.json?t=${Date.now()}`;
+            let res = await fetch(url);
+            if (res.ok) {
+                const data = await res.json();
+                if (data && Object.keys(data).length > 0) return data;
+            }
+            url = `${DB_BASE_URL}/kaos_ttd.json?t=${Date.now()}`;
+            res = await fetch(url);
             if (!res.ok) return {};
             const data = await res.json();
             return data || {};
@@ -1035,6 +1042,28 @@ window.NevastraDB = {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
+            try {
+                const metaPayload = {
+                    nama: payload.nama || '',
+                    kelas: payload.kelas || kelas,
+                    absen: payload.absen || absen,
+                    email: payload.email || '',
+                    uid: payload.uid || '',
+                    ukuranKaos: payload.ukuranKaos || '',
+                    tipeLengan: payload.tipeLengan || '',
+                    ttdNamaFile: payload.ttdNamaFile || '',
+                    ttdDriveUrl: payload.ttdDriveUrl || '',
+                    ttdDriveId: payload.ttdDriveId || '',
+                    hasTtd: !!(payload.ttdBase64 || payload.ttdDriveUrl),
+                    updatedAt: payload.updatedAt,
+                    inputMethod: payload.inputMethod || ''
+                };
+                await fetch(`${DB_BASE_URL}/kaos_ttd_meta/${kelas}/${absen}.json`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(metaPayload)
+                });
+            } catch(eMeta) {}
             if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
             return await res.json();
         } catch (e) {
@@ -1049,6 +1078,9 @@ window.NevastraDB = {
             const res = await fetch(url, {
                 method: 'DELETE'
             });
+            try {
+                await fetch(`${DB_BASE_URL}/kaos_ttd_meta/${kelas}/${absen}.json`, { method: 'DELETE' });
+            } catch(eMeta) {}
             if (!res.ok) throw new Error(`HTTP Error ${res.status}`);
             return true;
         } catch (e) {

@@ -1538,6 +1538,9 @@
     <script src="students-data.js"></script>
     <script src="db.js"></script>
     <script>
+        window.DB_BASE_URL = window.DB_BASE_URL || "https://nevastra-default-rtdb.asia-southeast1.firebasedatabase.app";
+        const DB_BASE_URL = window.DB_BASE_URL;
+
         const rosterAll = window.studentRoster || {};
         const classes = ['XII-1', 'XII-2', 'XII-3', 'XII-4', 'XII-5', 'XII-6', 'XII-7', 'XII-8', 'XII-9'];
 
@@ -1685,7 +1688,7 @@
                 roster.forEach(stu => {
                     const saved = classSaved[stu.absen];
                     const kaos = (classKaos && (classKaos[stu.absen] || classKaos[String(stu.absen)] || classKaos[parseInt(stu.absen, 10)])) || null;
-                    const isKaosFilled = !!(kaos && (kaos.ukuranKaos || kaos.tipeLengan || kaos.ttdBase64));
+                    const isKaosFilled = !!(kaos && (kaos.ukuranKaos || kaos.tipeLengan || kaos.ttdBase64 || kaos.hasTtd));
 
                     list.push({
                         kelas: cls,
@@ -1813,8 +1816,8 @@
 
                 const kaosCell = item.isKaosFilled
                     ? `<div style="display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap;">
-                        <span class="badge-status" style="background:#ecfdf5; color:#047857; font-weight:800; padding:2px 7px; border-radius:6px; font-size:0.75rem;">✓ ${item.kaosData.ukuranKaos} (${item.kaosData.tipeLengan === 'Lengan Panjang' ? 'Pjg' : 'Pdk'})</span>
-                        ${item.kaosData.ttdBase64 ? `<span class="badge-status" style="background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0; font-weight:700; padding:2px 6px; border-radius:4px; font-size:0.72rem; cursor:pointer;" onclick="openTtdZoom('${encodeURIComponent(item.nama)}', '${encodeURIComponent(item.kelas)}', '${item.absen}', allKaosTtdData['${item.kelas}']?.['${item.absen}']?.ttdBase64 || '')" title="Klik untuk melihat TTD">✓ Ada TTD</span>` : ''}
+                        <span class="badge-status" style="background:#ecfdf5; color:#047857; font-weight:800; padding:2px 7px; border-radius:6px; font-size:0.75rem;">✓ ${item.kaosData.ukuranKaos || '-'} (${item.kaosData.tipeLengan === 'Lengan Panjang' ? 'Pjg' : 'Pdk'})</span>
+                        ${(item.kaosData.ttdBase64 || item.kaosData.hasTtd || item.kaosData.ttdDriveUrl) ? `<span class="badge-status" style="background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0; font-weight:700; padding:2px 6px; border-radius:4px; font-size:0.72rem; cursor:pointer;" onclick="openTtdZoom('${encodeURIComponent(item.nama)}', '${encodeURIComponent(item.kelas)}', '${item.absen}', allKaosTtdData['${item.kelas}']?.['${item.absen}']?.ttdBase64 || '')" title="Klik untuk melihat TTD">✓ Ada TTD</span>` : ''}
                         <a href="kaos-ttd.html?kelas=${item.kelas}&absen=${item.absen}&admin=1" target="_blank" class="btn btn-outline btn-sm" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#047857; border-color:#10b981; font-weight:700;" title="Edit Ukuran Kaos & TTD Siswa Ini">✏️ Edit</a>
                         <button type="button" class="btn btn-sm btn-del-kaos-inline" data-kelas="${item.kelas}" data-absen="${item.absen}" data-nama="${encodeURIComponent(item.nama)}" style="font-size:0.7rem; padding:2px 6px; border-radius:6px; color:#b91c1c; background:#fee2e2; border:1px solid #fecaca; font-weight:700; cursor:pointer;" title="Hapus Data Kaos & TTD Siswa Ini">🗑️</button>
                       </div>`
@@ -2124,7 +2127,7 @@
                 btnKaosModal.href = `kaos-ttd.html?kelas=${cls}&absen=${abs}&admin=1`;
             }
             if (elKaosCont) {
-                if (kaosRecord && (kaosRecord.ukuranKaos || kaosRecord.tipeLengan || kaosRecord.ttdBase64)) {
+                if (kaosRecord && (kaosRecord.ukuranKaos || kaosRecord.tipeLengan || kaosRecord.ttdBase64 || kaosRecord.hasTtd)) {
                     if (btnKaosModal) {
                         btnKaosModal.innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Edit Kaos & TTD`;
                         btnKaosModal.style.background = '#059669';
@@ -2133,7 +2136,7 @@
                     const driveA = kaosRecord.ttdDriveUrl 
                         ? `<a href="${kaosRecord.ttdDriveUrl}" target="_blank" style="color:#059669; font-weight:700; text-decoration:underline; display:inline-flex; align-items:center; gap:4px;"><i class="fa-brands fa-google-drive"></i> Buka Google Drive</a>`
                         : `<span style="color:#64748b; font-size:0.75rem;">Folder tanda tangan/${cls}/</span>`;
-                    const ttdImg = kaosRecord.ttdBase64 
+                    const ttdImg = (kaosRecord.ttdBase64 || kaosRecord.hasTtd || kaosRecord.ttdDriveUrl)
                         ? `<span class="badge-status" style="background:#f0fdf4; color:#16a34a; border:1px solid #bbf7d0; font-weight:700; padding:4px 8px; border-radius:6px; font-size:0.75rem; cursor:pointer;" onclick="openTtdZoom('${encodeURIComponent(nama)}', '${encodeURIComponent(cls)}', '${abs}', allKaosTtdData['${cls}']?.['${abs}']?.ttdBase64 || '')" title="Klik untuk melihat TTD">✓ Ada TTD (Lihat)</span>`
                         : `<span style="color:#94a3b8; font-size:0.75rem;">Tanpa TTD</span>`;
 
@@ -2164,7 +2167,7 @@
 
             const btnDelKaosModal = document.getElementById('btnDeleteKaosTtdData');
             if (btnDelKaosModal) {
-                const hasKaos = !!(kaosRecord && (kaosRecord.ukuranKaos || kaosRecord.tipeLengan || kaosRecord.ttdBase64));
+                const hasKaos = !!(kaosRecord && (kaosRecord.ukuranKaos || kaosRecord.tipeLengan || kaosRecord.ttdBase64 || kaosRecord.hasTtd));
                 btnDelKaosModal.style.display = hasKaos ? 'inline-block' : 'none';
                 btnDelKaosModal.onclick = async () => {
                     const ok = confirm(`⚠️ Konfirmasi Hapus Data Kaos & TTD:\nApakah Anda yakin ingin menghapus data Ukuran Kaos & TTD untuk ${nama} (Kelas ${cls} Absen ${abs})?\n\nData di database Nevastra akan dikosongkan.`);
@@ -3878,9 +3881,27 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
 
         async function syncKaosTtdData() {
             try {
-                const res = await fetch(`${DB_BASE_URL}/kaos_ttd.json?t=${Date.now()}`);
-                if (res.ok) {
-                    allKaosTtdData = (await res.json()) || {};
+                let loaded = false;
+                try {
+                    const resMeta = await fetch(`${DB_BASE_URL}/kaos_ttd_meta.json?t=${Date.now()}`);
+                    if (resMeta.ok) {
+                        const metaJson = await resMeta.json();
+                        if (metaJson && Object.keys(metaJson).length > 0) {
+                            allKaosTtdData = metaJson;
+                            window.allKaosTtdData = allKaosTtdData;
+                            loaded = true;
+                        }
+                    }
+                } catch(eM) {
+                    console.warn("Gagal load kaos_ttd_meta:", eM);
+                }
+
+                if (!loaded) {
+                    const res = await fetch(`${DB_BASE_URL}/kaos_ttd.json?t=${Date.now()}`);
+                    if (res.ok) {
+                        allKaosTtdData = (await res.json()) || {};
+                        window.allKaosTtdData = allKaosTtdData;
+                    }
                 }
                 renderKaosTtdTable();
                 if (typeof renderClassRecap === 'function') {
@@ -3918,7 +3939,7 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                 roster.forEach(stu => {
                     grandTotalStudents++;
                     const record = (classKaos && (classKaos[stu.absen] || classKaos[String(stu.absen)] || classKaos[parseInt(stu.absen, 10)])) || null;
-                    const isFilled = !!(record && (record.ukuranKaos || record.tipeLengan || record.ttdBase64));
+                    const isFilled = !!(record && (record.ukuranKaos || record.tipeLengan || record.ttdBase64 || record.hasTtd));
 
                     if (isFilled) {
                         totalFilled++;
@@ -3992,7 +4013,7 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                     ? `<a href="${it.ttdDriveUrl}" target="_blank" style="color: #059669; font-weight: 700; text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;"><i class="fa-brands fa-google-drive"></i> Buka File</a>`
                     : (it.isFilled ? `<span style="color: #64748b; font-size: 0.76rem;">Folder tanda tangan/${it.kelas}/</span>` : `<span style="color: #94a3b8; font-size: 0.76rem;">-</span>`);
 
-                const thumbHtml = (it.ttdBase64 || (it.isFilled && it.ttdDriveUrl))
+                const thumbHtml = (it.ttdBase64 || it.hasTtd || (it.isFilled && it.ttdDriveUrl))
                     ? `<span class="badge-status done" style="background: #ecfdf5; color: #047857; font-weight: 800; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" onclick="openTtdZoom('${encodeURIComponent(it.nama)}', '${encodeURIComponent(it.kelas)}', '${it.absen}', allKaosTtdData['${it.kelas}']?.['${it.absen}']?.ttdBase64 || '')" title="Klik untuk melihat TTD">✓ Sudah</span>`
                     : (it.isFilled ? `<span style="color: #94a3b8; font-size: 0.78rem;">- Tanpa TTD</span>` : `<span style="color: #cbd5e1; font-size: 0.78rem;">-</span>`);
 
@@ -4081,16 +4102,16 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
 
                 roster.forEach(stu => {
                     count++;
-                    const r = sMap[stu.absen];
-                    const isFilled = !!(r && r.ukuranKaos);
+                    const r = (sMap && (sMap[stu.absen] || sMap[String(stu.absen)] || sMap[parseInt(stu.absen, 10)])) || null;
+                    const isFilled = !!(r && (r.ukuranKaos || r.hasTtd || r.ttdBase64));
                     rows.push([
                         count,
                         cls,
                         stu.absen,
                         (r && r.nama) || stu.nama,
                         isFilled ? "SUDAH TERISI" : "BELUM MENGISI",
-                        isFilled ? r.ukuranKaos : "-",
-                        isFilled ? r.tipeLengan : "-",
+                        isFilled ? (r.ukuranKaos || "-") : "-",
+                        isFilled ? (r.tipeLengan || "-") : "-",
                         (r && r.ttdDriveUrl) || "",
                         (r && r.updatedAt) || ""
                     ]);
@@ -4105,14 +4126,46 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
         }
 
         // Modal Zoom TTD
-        window.openTtdZoom = function(encNama, encKelas, absen, src) {
+        window.openTtdZoom = async function(encNama, encKelas, absen, src) {
             const nama = decodeURIComponent(encNama);
             const kelas = decodeURIComponent(encKelas);
             const modal = document.getElementById('modalTtdZoomAdmin');
             if (!modal) return;
             document.getElementById('zoomTtdTitle').textContent = `Tanda Tangan: ${nama} (${kelas} Absen ${absen})`;
-            document.getElementById('zoomTtdImg').src = src;
+            const img = document.getElementById('zoomTtdImg');
             modal.style.display = 'flex';
+
+            if (src && src.startsWith('data:image')) {
+                img.src = src;
+                img.style.display = 'block';
+            } else {
+                img.src = '';
+                img.alt = 'Memuat tanda tangan...';
+                try {
+                    const snap = await fetch(`${DB_BASE_URL}/kaos_ttd/${kelas}/${absen}/ttdBase64.json`);
+                    if (snap.ok) {
+                        const b64 = await snap.json();
+                        if (b64 && b64.startsWith('data:image')) {
+                            img.src = b64;
+                            img.style.display = 'block';
+                            if (allKaosTtdData && (allKaosTtdData[kelas] || allKaosTtdData[kelas.toUpperCase()])) {
+                                const target = allKaosTtdData[kelas] || allKaosTtdData[kelas.toUpperCase()];
+                                if (target[absen]) target[absen].ttdBase64 = b64;
+                            }
+                        } else {
+                            const rec = (allKaosTtdData && allKaosTtdData[kelas] && allKaosTtdData[kelas][absen]) || {};
+                            if (rec.ttdDriveUrl) {
+                                window.open(rec.ttdDriveUrl, '_blank');
+                            } else {
+                                img.alt = 'Tanda tangan belum tersedia atau kosong.';
+                            }
+                        }
+                    }
+                } catch(e) {
+                    console.error('Gagal mengambil zoom TTD:', e);
+                    img.alt = 'Gagal memuat tanda tangan.';
+                }
+            }
         };
 
         // Filter event listeners Kaos & TTD
