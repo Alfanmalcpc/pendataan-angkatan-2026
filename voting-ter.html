@@ -2,733 +2,925 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voting Ter- Angkatan NEVASTRA 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Voting Ter- Angkatan - NEVASTRA 2026</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg+xml" href="logo.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-dark: #07090e;
-            --card-bg: rgba(15, 23, 42, 0.75);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --card-hover-border: rgba(56, 189, 248, 0.45);
-            --primary-accent: #38bdf8;
-            --primary-gradient: linear-gradient(135deg, #0284c7 0%, #38bdf8 50%, #2dd4bf 100%);
-            --vote-btn-grad: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
-            --vote-btn-hover: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
-            --voted-grad: linear-gradient(135deg, #059669 0%, #10b981 100%);
-        }
-
+        /* Specific Styles for Voting Ter- matching style.css */
         body {
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.08) 0px, transparent 50%);
-            color: #f1f5f9;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            min-height: 100vh;
+            background-color: #f8fafc;
+            color: var(--text, #334155);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             padding: 0;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .main-ter-container {
-            max-width: 1000px;
+        .main-wrapper-voting {
+            max-width: 860px;
             margin: 0 auto;
-            padding: 24px 16px 80px;
+            padding: 20px 16px 80px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        .top-glass-bar {
-            background: rgba(15, 23, 42, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 16px 24px;
+        /* Category Horizontal Scroll Tab Bar */
+        .cat-tabs-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .cat-tabs-scroll {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin-bottom: 28px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .user-id-chip {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-avatar-chip {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            border: 2px solid #38bdf8;
-            object-fit: cover;
-            background: #1e293b;
-        }
-
-        .header-category-section {
-            text-align: center;
-            margin-bottom: 34px;
-        }
-
-        .badge-cat-pill {
-            display: inline-flex;
-            align-items: center;
             gap: 8px;
-            padding: 6px 16px;
-            background: rgba(56, 189, 248, 0.12);
-            border: 1px solid rgba(56, 189, 248, 0.28);
-            border-radius: 999px;
+            overflow-x: auto;
+            padding: 4px 2px 12px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+        }
+
+        .cat-tabs-scroll::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .cat-tabs-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .cat-tab-btn {
+            padding: 8px 14px;
             font-size: 0.8rem;
             font-weight: 700;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: #38bdf8;
-            margin-bottom: 12px;
-        }
-
-        .category-main-title {
-            font-size: 2.2rem;
-            font-weight: 900;
-            margin: 0 0 8px;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .category-sub-desc {
-            font-size: 0.95rem;
-            color: #94a3b8;
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.5;
-        }
-
-        /* 16 Category Navigation Bar */
-        .category-nav-scroll {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 10px 4px 18px;
-            margin-bottom: 24px;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(56, 189, 248, 0.3) transparent;
-        }
-
-        .category-nav-scroll::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .category-nav-scroll::-webkit-scrollbar-thumb {
-            background: rgba(56, 189, 248, 0.3);
             border-radius: 999px;
-        }
-
-        .cat-nav-btn {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--card-border);
-            color: #94a3b8;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 0.82rem;
-            font-weight: 700;
+            background: #ffffff;
+            color: var(--text-muted, #64748b);
+            border: 1.5px solid var(--border, #e2e8f0);
             cursor: pointer;
             white-space: nowrap;
             transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
 
-        .cat-nav-btn:hover {
+        .cat-tab-btn:hover {
+            border-color: var(--primary, #4361ee);
+            color: var(--primary, #4361ee);
+            background: #f1f5f9;
+        }
+
+        .cat-tab-btn.active {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
             color: #ffffff;
-            border-color: rgba(56, 189, 248, 0.4);
-            transform: translateY(-2px);
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
         }
 
-        .cat-nav-btn.active {
-            background: rgba(56, 189, 248, 0.15);
-            border-color: #38bdf8;
-            color: #38bdf8;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.25);
-        }
-
-        /* 2x2 Grid Wireframe Match */
-        .wireframe-2x2-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            max-width: 860px;
-            margin: 0 auto;
-        }
-
-        @media (max-width: 640px) {
-            .wireframe-2x2-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .category-main-title {
-                font-size: 1.7rem;
-            }
-        }
-
-        .profile-wireframe-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1.5px solid var(--card-border);
-            border-radius: 20px;
-            padding: 24px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
-        }
-
-        .profile-wireframe-card:hover {
-            border-color: var(--card-hover-border);
-            transform: translateY(-4px);
-            box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.15);
-        }
-
-        .profile-wireframe-card.selected {
-            border-color: #38bdf8;
-            background: rgba(14, 116, 144, 0.18);
-            box-shadow: 0 0 30px rgba(56, 189, 248, 0.28);
-        }
-
-        .avatar-wireframe-wrapper {
-            width: 140px;
-            height: 140px;
+        .cat-tab-btn .badge-voted {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: #0f172a;
-            border: 3px solid rgba(56, 189, 248, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
-            transition: border-color 0.2s ease;
-        }
-
-        .profile-wireframe-card:hover .avatar-wireframe-wrapper {
-            border-color: #38bdf8;
-        }
-
-        .avatar-wireframe-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .nominee-tag-kelas {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #38bdf8;
-            background: rgba(56, 189, 248, 0.1);
-            padding: 3px 10px;
-            border-radius: 999px;
-            margin-bottom: 6px;
+            background: #10b981;
             display: inline-block;
         }
 
-        .nominee-name {
-            font-size: 1.15rem;
+        /* Identity Bar */
+        .voter-identity-bar {
+            background: #ffffff;
+            border: 1.5px solid var(--border, #e2e8f0);
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .voter-identity-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .voter-icon-wrap {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #eef2ff;
+            color: #4361ee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+            border: 1px solid #c7d2fe;
+        }
+
+        .voter-name {
             font-weight: 800;
-            color: #ffffff;
-            margin: 0 0 4px;
+            font-size: 0.96rem;
+            color: #0f172a;
             line-height: 1.3;
         }
 
-        .nominee-tagline {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            margin: 0 0 18px;
-            min-height: 36px;
+        .voter-meta {
+            font-size: 0.78rem;
+            color: #64748b;
+            margin-top: 2px;
         }
 
-        /* [VOTE] Button matching wireframe */
-        .btn-wireframe-vote {
-            width: 100%;
-            max-width: 220px;
-            padding: 12px 18px;
-            background: var(--vote-btn-grad);
-            border: none;
-            border-radius: 12px;
-            color: #ffffff;
+        /* Category Card (Wireframe matching sketch) */
+        .category-stage-card {
+            background: #ffffff;
+            border: 1.5px solid var(--border, #e2e8f0);
+            border-radius: 20px;
+            padding: 24px 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+        }
+
+        .category-header-wrap {
+            text-align: center;
+            margin-bottom: 22px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .cat-pill-number {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 0.74rem;
             font-weight: 800;
-            font-size: 0.92rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
+            padding: 4px 14px;
+            border-radius: 999px;
+            margin-bottom: 10px;
+            letter-spacing: 0.8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .cat-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0 0 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .cat-desc {
+            font-size: 0.88rem;
+            color: #64748b;
+            line-height: 1.5;
+            max-width: 580px;
+            margin: 0 auto;
+        }
+
+        /* 2x2 Grid of Candidate Profiles (Wireframe matching sketch) */
+        .candidate-grid-2x2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .cand-card {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 16px 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
             cursor: pointer;
-            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+            box-sizing: border-box;
+        }
+
+        .cand-card:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 6px 18px rgba(59, 130, 246, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .cand-card.is-selected {
+            border-color: #10b981;
+            background: linear-gradient(180deg, #ecfdf5 0%, #ffffff 100%);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.18);
+        }
+
+        .cand-avatar-wrap {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: 2px solid #e2e8f0;
+            overflow: hidden;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .cand-card:hover .cand-avatar-wrap {
+            transform: scale(1.04);
+        }
+
+        .cand-card.is-selected .cand-avatar-wrap {
+            border-color: #10b981;
+        }
+
+        .cand-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .cand-name {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0 0 4px;
+            line-height: 1.3;
+            word-break: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .cand-tagline {
+            font-size: 0.74rem;
+            color: #64748b;
+            margin-bottom: 12px;
+            font-weight: 500;
+            line-height: 1.35;
+            min-height: 32px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .cand-btn-vote {
+            width: 100%;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            border: 1.5px solid #cbd5e1;
+            background: #f8fafc;
+            color: #1e293b;
+            cursor: pointer;
             transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .btn-wireframe-vote:hover:not(:disabled) {
-            background: var(--vote-btn-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+        .cand-card:hover .cand-btn-vote {
+            background: #e2e8f0;
+            border-color: #94a3b8;
         }
 
-        .btn-wireframe-vote:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
+        .cand-card.is-selected .cand-btn-vote {
+            background: #059669;
+            color: #ffffff;
+            border-color: #059669;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25);
         }
 
-        .btn-wireframe-vote.voted-btn {
-            background: var(--voted-grad);
-            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
-        }
-
-        .live-vote-pill {
-            margin-top: 10px;
-            font-size: 0.75rem;
-            color: #64748b;
-            font-weight: 600;
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(3, 7, 18, 0.8);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .modal-overlay.show {
+        /* Step Navigation Bar */
+        .step-nav-bar {
             display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 18px;
+            flex-wrap: wrap;
         }
 
-        .modal-box {
-            background: #0f172a;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 20px;
-            max-width: 440px;
-            width: 100%;
-            padding: 26px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
-            text-align: center;
-            animation: modalFade 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        .btn-nav-step {
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1.5px solid #e2e8f0;
+            background: #ffffff;
+            color: #0f172a;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
         }
 
-        @keyframes modalFade {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+        .btn-nav-step:hover:not(:disabled) {
+            border-color: #3b82f6;
+            color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .btn-nav-step:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-nav-step.btn-next {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-nav-step.btn-next:hover:not(:disabled) {
+            background: linear-gradient(135deg, #1d4ed8, #1e40af);
+            color: #ffffff;
+        }
+
+        /* Responsive Breakpoints for Mobile */
+        @media (max-width: 520px) {
+            .main-wrapper-voting {
+                padding: 14px 12px 60px;
+            }
+
+            .category-stage-card {
+                padding: 18px 12px;
+                border-radius: 16px;
+            }
+
+            .cat-title {
+                font-size: 1.22rem;
+            }
+
+            .cat-desc {
+                font-size: 0.8rem;
+            }
+
+            .candidate-grid-2x2 {
+                gap: 8px;
+            }
+
+            .cand-card {
+                padding: 12px 8px;
+                border-radius: 12px;
+            }
+
+            .cand-avatar-wrap {
+                width: 58px;
+                height: 58px;
+                margin-bottom: 8px;
+            }
+
+            .cand-name {
+                font-size: 0.84rem;
+            }
+
+            .cand-tagline {
+                font-size: 0.7rem;
+                min-height: 28px;
+                margin-bottom: 8px;
+            }
+
+            .cand-btn-vote {
+                padding: 7px 6px;
+                font-size: 0.78rem;
+            }
+
+            .step-nav-bar {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .step-nav-bar > * {
+                width: 100%;
+                justify-content: center;
+                box-sizing: border-box;
+            }
+
+            .voter-identity-bar {
+                padding: 12px 14px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- App Navigation -->
-    <nav class="app-navbar" style="background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,255,255,0.08);">
+    <!-- Top App Navigation Matching style.css -->
+    <nav class="app-navbar">
         <div class="nav-container">
-            <a href="index.html" class="nav-brand" style="text-decoration: none;">
+            <a href="index.html" class="nav-brand">
                 <div class="brand-icon"><img src="logo.svg" alt="NEVASTRA 2026" class="brand-logo-img"></div>
                 <div class="brand-text">
-                    <h1 style="color: #ffffff;">NEVASTRA 2026</h1>
-                    <p style="color: #94a3b8;">SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
+                    <h1>NEVASTRA 2026</h1>
+                    <p>SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
                 </div>
             </a>
             <div class="nav-links">
-                <a href="index.html" class="nav-btn" style="background: rgba(255,255,255,0.08); color: #fff; text-decoration: none;">
-                    🏠 Halaman Utama
+                <a href="index.html" class="nav-btn" style="text-decoration: none;">
+                    🏠 Beranda
                 </a>
+                <button type="button" id="btnOpenRecap" class="btn btn-primary btn-sm" style="border-radius: 999px; padding: 6px 14px; font-weight: 700; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
+                    📋 Rekap (<span id="recapBadgeCount">0</span>/16)
+                </button>
             </div>
         </div>
     </nav>
 
-    <div class="main-ter-container">
-        <!-- Top Verified Student Banner (Kunci Akses Terverifikasi dari Kaos/SSO) -->
-        <div class="top-glass-bar" id="studentVerifiedBar" style="display: none;">
-            <div class="user-id-chip">
-                <img id="userStudentAvatar" class="user-avatar-chip" src="assets/avatar_placeholder.png" alt="Avatar">
+    <!-- Main Wrapper -->
+    <main class="main-wrapper-voting">
+
+        <!-- Hero Banner Matching index.html style -->
+        <div class="hero-banner" style="margin-bottom: 20px; padding: 24px 20px;">
+            <div class="hero-content">
+                <span class="hero-badge">🗳️ SISTEM VOTING RESMI ANGKATAN 2026</span>
+                <h2 class="hero-title" style="font-size: 1.4rem; margin-bottom: 6px;">Voting Kategori Ter- Buku Tahunan</h2>
+                <p class="hero-subtitle" style="font-size: 0.85rem; line-height: 1.5; margin-bottom: 0;">
+                    Pilih teman terbaikmu untuk setiap kategori Ter- angkatan. Tata letak 2×2 profil card terstandarisasi, responsif di semua perangkat ponsel dan laptop.
+                </p>
+            </div>
+        </div>
+
+        <!-- Floating Alert / Toast -->
+        <div id="toastAlert" style="display: none; padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; font-size: 0.85rem; font-weight: 700; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.06);"></div>
+
+        <!-- Voter Identity Card (Kunci Akses Profil Siswa) -->
+        <div class="voter-identity-bar" id="voterIdentityBar">
+            <div class="voter-identity-left">
+                <div class="voter-icon-wrap" id="voterIconBox">🎓</div>
                 <div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-weight: 800; font-size: 1rem; color: #fff;" id="userStudentNama">Memeriksa Akses...</span>
-                        <span class="badge-status success" style="font-size: 0.7rem; background: #059669; color: #fff; padding: 2px 8px; border-radius: 999px;">✓ Terverifikasi</span>
-                    </div>
-                    <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 2px;">
-                        <span id="userStudentKelas">-</span> • Absen <span id="userStudentAbsen">-</span> • <span id="userStudentEmail">-</span>
-                    </div>
+                    <div class="voter-name" id="voterNameText">Mode Pemilih Angkatan 2026</div>
+                    <div class="voter-meta" id="voterMetaText">Masuk dengan Akun Google untuk sinkronisasi resmi data buku tahunan.</div>
                 </div>
             </div>
-            <div>
-                <a href="index.html" class="btn btn-outline btn-sm" style="font-size: 0.8rem; border-color: rgba(255,255,255,0.2); color: #cbd5e1; text-decoration: none;">
-                    Ganti Profil / Keluar
-                </a>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <button type="button" id="btnSignInGoogle" class="btn btn-sm btn-primary" style="border-radius: 999px; padding: 7px 16px; font-weight: 700; cursor: pointer; background: linear-gradient(135deg, #4361ee, #3a0ca3);">
+                    Masuk Akun Google →
+                </button>
+                <span id="badgeVerified" style="display: none; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; padding: 5px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 800;">
+                    ✓ Terverifikasi
+                </span>
             </div>
         </div>
 
-        <!-- Auth Required Notice Banner -->
-        <div id="authRequiredBanner" class="top-glass-bar" style="display: none; border-color: rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.08);">
-            <div style="display: flex; align-items: center; gap: 14px;">
-                <div style="font-size: 1.8rem;">🔒</div>
+        <!-- 16 Categories Horizontal Scroll Tabs -->
+        <div class="cat-tabs-container">
+            <div class="cat-tabs-scroll" id="catTabsScroll">
+                <!-- Dynamically populated 16 categories -->
+            </div>
+        </div>
+
+        <!-- Stage Card for Active Category (Wireframe matching sketch) -->
+        <div class="category-stage-card">
+            <!-- Header (ter- & keterangan ter) -->
+            <div class="category-header-wrap">
+                <div class="cat-pill-number" id="catPillNumber">KATEGORI 01 / 16</div>
+                <h2 class="cat-title" id="catTitle">TER-KOCAK 🎭</h2>
+                <p class="cat-desc" id="catDesc">
+                    Paling lucu, humoris, dan selalu jadi pencair suasana serta moodbooster di kelas maupun angkatan.
+                </p>
+            </div>
+
+            <!-- 2x2 Grid Candidate Profile Cards (Wireframe layout) -->
+            <div class="candidate-grid-2x2" id="candidateGrid">
+                <!-- 4 Candidate cards rendered dynamically -->
+            </div>
+        </div>
+
+        <!-- Step Navigation Controls -->
+        <div class="step-nav-bar">
+            <button type="button" id="btnPrev" class="btn-nav-step" disabled>
+                ← Kategori Sebelumnya
+            </button>
+            <div style="font-size: 0.82rem; font-weight: 700; color: #64748b; text-align: center;">
+                Tersimpan: <strong id="progressCount" style="color: #2563eb;">0</strong> dari 16 Kategori
+            </div>
+            <button type="button" id="btnNext" class="btn-nav-step btn-next">
+                Kategori Berikutnya →
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Modal Recap Suara Siswa -->
+    <div id="modalRecap" style="display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
+        <div style="background: #ffffff; border-radius: 20px; max-width: 540px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35);">
+            <div style="padding: 18px 20px; border-bottom: 1.5px solid #e2e8f0; display: flex; align-items: center; justify-content: space-between;">
                 <div>
-                    <h4 style="margin: 0; font-size: 0.98rem; font-weight: 800; color: #fca5a5;">Profil Siswa Belum Ditautkan</h4>
-                    <p style="margin: 2px 0 0; font-size: 0.82rem; color: #cbd5e1;">Silakan login akun Google dan pilih profil resmi kelas & nomor absen Anda di portal utama terlebih dahulu.</p>
+                    <h3 style="margin: 0; font-size: 1.15rem; font-weight: 800; color: #0f172a;">
+                        📋 Rekap Pilihan Voting Ter-
+                    </h3>
+                    <p style="margin: 3px 0 0; font-size: 0.78rem; color: #64748b;">
+                        Daftar kandidat yang telah Anda pilih di 16 kategori.
+                    </p>
                 </div>
+                <button type="button" id="btnCloseRecap" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #64748b; line-height: 1;">&times;</button>
             </div>
-            <a href="index.html" class="btn btn-primary btn-sm" style="background: #ef4444; color: #fff; text-decoration: none; font-weight: 700; border-radius: 8px;">
-                Tautkan Profil Sekarang →
-            </a>
-        </div>
-
-        <!-- 16 Category Navigation -->
-        <div class="category-nav-scroll" id="categoryNavContainer">
-            <!-- Dynamically populated 16 categories -->
-        </div>
-
-        <!-- Category Header (ter- & keterangan ter. matching sketch) -->
-        <div class="header-category-section">
-            <div class="badge-cat-pill" id="catBadgePill">KATEGORI NOMINASI #01</div>
-            <h2 class="category-main-title" id="catTitleText">TER-KOCAK</h2>
-            <p class="category-sub-desc" id="catDescText">
-                Paling lucu, humoris, dan selalu jadi pencair suasana serta moodbooster di kelas maupun angkatan.
-            </p>
-        </div>
-
-        <!-- 2x2 Candidate Profile Cards (Wireframe layout) -->
-        <div class="wireframe-2x2-grid" id="nominees2x2Grid">
-            <!-- 4 Candidate cards dynamically rendered -->
+            <div style="padding: 16px 20px; overflow-y: auto; flex: 1;" id="recapList">
+                <!-- Dynamically populated recap list -->
+            </div>
+            <div style="padding: 14px 20px; border-top: 1.5px solid #e2e8f0; background: #f8fafc; text-align: right;">
+                <button type="button" id="btnCloseRecapBottom" class="btn btn-secondary btn-sm" style="border-radius: 10px; font-weight: 700; padding: 8px 18px; cursor: pointer;">
+                    Tutup Rekap
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Confirmation Modal -->
-    <div class="modal-overlay" id="confirmVoteModal">
-        <div class="modal-box">
-            <div style="font-size: 2.4rem; margin-bottom: 12px;">🗳️</div>
-            <h3 style="margin: 0 0 6px; font-size: 1.25rem; font-weight: 800; color: #fff;">Konfirmasi Pilihan Voting</h3>
-            <p style="font-size: 0.85rem; color: #94a3b8; margin: 0 0 18px;">
-                Pastikan pilihan Anda sudah mantap. Setiap akun siswa hanya memiliki 1 kali kesempatan voting untuk setiap kategori nominasi.
-            </p>
-
-            <div style="background: #1e293b; border-radius: 14px; padding: 14px; margin-bottom: 20px; text-align: left; border: 1px solid rgba(255,255,255,0.08);">
-                <div style="font-size: 0.78rem; color: #38bdf8; font-weight: 700; margin-bottom: 2px;" id="modalCategoryLabel">KATEGORI TER-</div>
-                <div style="font-size: 1.05rem; font-weight: 800; color: #fff;" id="modalNomineeName">-</div>
-                <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 4px;" id="modalNomineeClass">-</div>
-            </div>
-
-            <div style="display: flex; gap: 10px;">
-                <button type="button" id="btnCancelModal" style="flex: 1; padding: 12px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; color: #cbd5e1; font-weight: 700; cursor: pointer;">
-                    Batal
-                </button>
-                <button type="button" id="btnFinalSubmitVote" style="flex: 1.3; padding: 12px; background: var(--vote-btn-grad); border: none; border-radius: 10px; color: #ffffff; font-weight: 800; cursor: pointer;">
-                    ✓ Kirim Vote
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
+    <!-- Student master data -->
     <script src="students-data.js"></script>
+
+    <!-- UI Logic Script (Direct execution, zero delay) -->
+    <script>
+        const CATEGORIES = [
+            { id: "ter_kocak", num: "01", title: "TER-KOCAK 🎭", desc: "Paling lucu, humoris, dan selalu jadi pencair suasana serta moodbooster di kelas maupun angkatan." },
+            { id: "ter_ambis", num: "02", title: "TER-AMBIS 📚", desc: "Paling rajin belajar, catatan paling rapi, dan langganan ranking juara kelas." },
+            { id: "ter_ramah", num: "03", title: "TER-RAMAH 😊", desc: "Super friendly, murah senyum, dan akrab ke semua orang dari kelas 1 sampai 9." },
+            { id: "ter_imut", num: "04", title: "TER-IMUT ✨", desc: "Memiliki wajah baby face, imut, dan tingkah laku yang paling menggemaskan." },
+            { id: "ter_alim", num: "05", title: "TER-ALIM 🤲", desc: "Tutur kata sopan, pembawaan teduh, dan selalu jadi pengingat ibadah bagi teman-teman." },
+            { id: "ter_calm", num: "06", title: "TER-CALM 🧘", desc: "Paling santai, cool, dan tenang menghadapi ujian serta deadline apapun." },
+            { id: "ter_organisasi", num: "07", title: "TER-ORGANISASI 👔", desc: "Paling aktif OSIS, Pramuka, panitia event sekolah, dan sibuk rapat tiap hari." },
+            { id: "ter_royal", num: "08", title: "TER-ROYAL 👑", desc: "Paling dermawan, berjiwa sultan, dan hobi traktir teman sekelas jajan." },
+            { id: "ter_jajan", num: "09", title: "TER-JAJAN 🍟", desc: "Mejanya selalu penuh cemilan, langganan kantin, dan gak bisa lepas dari ngemil." },
+            { id: "ter_lambat", num: "10", title: "TER-LAMBAT ⏰", desc: "Spesialis masuk gerbang di detik-detik terakhir sebelum pintu pagar dikunci." },
+            { id: "ter_atlit", num: "11", title: "TER-ATLIT ⚽", desc: "Jagoan olahraga di lapangan, berenergi tinggi, dan sering bawa piala kejuaraan." },
+            { id: "ter_kreatif", num: "12", title: "TER-KREATIF 🎨", desc: "Paling berseni, jago desain grafis, visual estetik, dan penuh ide kreatif." },
+            { id: "ter_tech", num: "13", title: "TER-TECH 💻", desc: "Paling melek teknologi, jago coding, ngulik software, dan tempat konsultasi IT." },
+            { id: "ter_tidur", num: "14", title: "TER-TIDUR 😴", desc: "Paling sakti tidur di mana saja dan kapan saja begitu jam kosong dimulai." },
+            { id: "ter_heboh", num: "15", title: "TER-HEBOH 📢", desc: "Paling ekspresif, suara paling melengking, dan paling ramai bikin kelas hidup." },
+            { id: "ter_couple", num: "16", title: "TER-COUPLE 👥", desc: "Pasangan atau duet teman paling serasi, kompak, dan ikonik sepanjang masa SMA." }
+        ];
+
+        // 4 Candidate Profiles per Category (Matching 2x2 wireframe sketch)
+        const NOMINEE_DATA = {};
+        CATEGORIES.forEach(cat => {
+            NOMINEE_DATA[cat.id] = [
+                { id: `${cat.id}_cand_1`, name: "Kandidat 1", info: "Nominasi Pilihan 1", photo: "assets/avatar_placeholder.png" },
+                { id: `${cat.id}_cand_2`, name: "Kandidat 2", info: "Nominasi Pilihan 2", photo: "assets/avatar_placeholder.png" },
+                { id: `${cat.id}_cand_3`, name: "Kandidat 3", info: "Nominasi Pilihan 3", photo: "assets/avatar_placeholder.png" },
+                { id: `${cat.id}_cand_4`, name: "Kandidat 4", info: "Nominasi Pilihan 4", photo: "assets/avatar_placeholder.png" }
+            ];
+        });
+
+        // State
+        window.activeCatIndex = 0;
+        window.userVotes = {};
+        window.activeStudent = null;
+
+        // Load cached votes from localStorage
+        try {
+            const saved = localStorage.getItem('nevastra_ter_votes');
+            if (saved) {
+                window.userVotes = JSON.parse(saved);
+            }
+        } catch (e) {}
+
+        // Parse URL params for student lock
+        try {
+            const params = new URLSearchParams(window.location.search);
+            const pKelas = params.get('kelas');
+            const pAbsen = parseInt(params.get('absen'), 10);
+            if (pKelas && pAbsen && window.studentRoster && window.studentRoster[pKelas]) {
+                const s = window.studentRoster[pKelas].find(item => item.absen === pAbsen);
+                if (s) {
+                    window.activeStudent = { kelas: pKelas, absen: pAbsen, nama: s.nama };
+                    const voterNameText = document.getElementById('voterNameText');
+                    const voterMetaText = document.getElementById('voterMetaText');
+                    if (voterNameText) voterNameText.textContent = `Pemilih: ${s.nama}`;
+                    if (voterMetaText) voterMetaText.textContent = `${pKelas} • Absen ${pAbsen} (Terkunci Sesuai Akun)`;
+                }
+            }
+        } catch (e) {}
+
+        // Toast Helper
+        function showNotification(msg, isSuccess = true) {
+            const toast = document.getElementById('toastAlert');
+            if (!toast) return;
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            if (isSuccess) {
+                toast.style.background = '#ecfdf5';
+                toast.style.color = '#065f46';
+                toast.style.border = '1.5px solid #10b981';
+            } else {
+                toast.style.background = '#fef2f2';
+                toast.style.color = '#991b1b';
+                toast.style.border = '1.5px solid #ef4444';
+            }
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        // Render Category Tabs
+        function renderCategoryTabs() {
+            const container = document.getElementById('catTabsScroll');
+            if (!container) return;
+            container.innerHTML = '';
+
+            CATEGORIES.forEach((cat, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `cat-tab-btn ${idx === window.activeCatIndex ? 'active' : ''}`;
+                const hasVoted = !!window.userVotes[cat.id];
+                btn.innerHTML = `
+                    <span>${cat.num}. ${cat.title.split(' ')[0]}</span>
+                    ${hasVoted ? '<span class="badge-voted" title="Sudah memilih"></span>' : ''}
+                `;
+                btn.addEventListener('click', () => {
+                    window.activeCatIndex = idx;
+                    renderStage();
+                });
+                container.appendChild(btn);
+            });
+
+            const activeBtn = container.querySelector('.cat-tab-btn.active');
+            if (activeBtn) {
+                activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+        }
+
+        // Render Active Category Stage & 2x2 Candidate Cards
+        function renderStage() {
+            const cat = CATEGORIES[window.activeCatIndex];
+            const pill = document.getElementById('catPillNumber');
+            const title = document.getElementById('catTitle');
+            const desc = document.getElementById('catDesc');
+            const grid = document.getElementById('candidateGrid');
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+
+            if (pill) pill.textContent = `KATEGORI ${cat.num} / 16`;
+            if (title) title.textContent = cat.title;
+            if (desc) desc.textContent = cat.desc;
+
+            if (btnPrev) btnPrev.disabled = window.activeCatIndex === 0;
+            if (btnNext) {
+                if (window.activeCatIndex === CATEGORIES.length - 1) {
+                    btnNext.textContent = '📋 Selesai & Buka Rekap';
+                } else {
+                    btnNext.textContent = 'Kategori Berikutnya →';
+                }
+            }
+
+            // Render 2x2 Grid Candidate Cards
+            if (grid) {
+                grid.innerHTML = '';
+                const candidates = NOMINEE_DATA[cat.id] || [];
+                const currentVotedCandId = window.userVotes[cat.id];
+
+                candidates.forEach(cand => {
+                    const isSelected = currentVotedCandId === cand.id;
+                    const card = document.createElement('div');
+                    card.className = `cand-card ${isSelected ? 'is-selected' : ''}`;
+                    card.innerHTML = `
+                        <div class="cand-avatar-wrap">
+                            <img src="${cand.photo}" alt="${cand.name}" class="cand-avatar-img" onerror="this.src='logo.svg'">
+                        </div>
+                        <div class="cand-name">${cand.name}</div>
+                        <div class="cand-tagline">${cand.info}</div>
+                        <button type="button" class="cand-btn-vote">
+                            ${isSelected ? '✓ Terpilih' : 'Pilih [Vote]'}
+                        </button>
+                    `;
+
+                    card.addEventListener('click', () => {
+                        castVote(cat.id, cand.id, cand.name);
+                    });
+
+                    grid.appendChild(card);
+                });
+            }
+
+            updateCounters();
+            renderCategoryTabs();
+        }
+
+        // Vote Action
+        function castVote(catId, candId, candName) {
+            window.userVotes[catId] = candId;
+            try {
+                localStorage.setItem('nevastra_ter_votes', JSON.stringify(window.userVotes));
+            } catch (e) {}
+
+            renderStage();
+            showNotification(`Suara Anda untuk ${candName} di ${CATEGORIES[window.activeCatIndex].title} berhasil disimpan!`);
+
+            if (window.syncToCloud) {
+                window.syncToCloud(catId, candId, candName);
+            }
+        }
+
+        // Counter Progress
+        function updateCounters() {
+            const count = Object.keys(window.userVotes).length;
+            const progress = document.getElementById('progressCount');
+            const badge = document.getElementById('recapBadgeCount');
+            if (progress) progress.textContent = count;
+            if (badge) badge.textContent = count;
+        }
+
+        // Modal Recap
+        function openRecap() {
+            const list = document.getElementById('recapList');
+            const modal = document.getElementById('modalRecap');
+            if (!list || !modal) return;
+            list.innerHTML = '';
+
+            CATEGORIES.forEach((cat) => {
+                const votedId = window.userVotes[cat.id];
+                const candidates = NOMINEE_DATA[cat.id] || [];
+                const cand = candidates.find(c => c.id === votedId);
+
+                const item = document.createElement('div');
+                item.style.padding = '10px 14px';
+                item.style.marginBottom = '8px';
+                item.style.borderRadius = '12px';
+                item.style.border = '1px solid #e2e8f0';
+                item.style.display = 'flex';
+                item.style.alignItems = 'center';
+                item.style.justifyContent = 'space-between';
+                item.style.background = cand ? '#f0fdf4' : '#f8fafc';
+
+                item.innerHTML = `
+                    <div>
+                        <div style="font-size: 0.82rem; font-weight: 800; color: #0f172a;">${cat.num}. ${cat.title}</div>
+                        <div style="font-size: 0.76rem; color: ${cand ? '#065f46' : '#64748b'}; font-weight: 600;">
+                            ${cand ? `✓ Dipilih: <strong>${cand.name}</strong>` : '⚠️ Belum memilih'}
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline" style="border-radius: 8px; font-size: 0.74rem; padding: 4px 10px; cursor: pointer;">
+                        Ubah
+                    </button>
+                `;
+
+                item.querySelector('button').addEventListener('click', () => {
+                    const idx = CATEGORIES.findIndex(c => c.id === cat.id);
+                    if (idx !== -1) {
+                        window.activeCatIndex = idx;
+                        renderStage();
+                        modal.style.display = 'none';
+                    }
+                });
+
+                list.appendChild(item);
+            });
+
+            modal.style.display = 'flex';
+        }
+
+        // Event Listeners for Navigation
+        document.getElementById('btnPrev').addEventListener('click', () => {
+            if (window.activeCatIndex > 0) {
+                window.activeCatIndex--;
+                renderStage();
+            }
+        });
+
+        document.getElementById('btnNext').addEventListener('click', () => {
+            if (window.activeCatIndex < CATEGORIES.length - 1) {
+                window.activeCatIndex++;
+                renderStage();
+            } else {
+                openRecap();
+            }
+        });
+
+        document.getElementById('btnOpenRecap').addEventListener('click', openRecap);
+        document.getElementById('btnCloseRecap').addEventListener('click', () => {
+            document.getElementById('modalRecap').style.display = 'none';
+        });
+        document.getElementById('btnCloseRecapBottom').addEventListener('click', () => {
+            document.getElementById('modalRecap').style.display = 'none';
+        });
+
+        // Initial Render
+        renderCategoryTabs();
+        renderStage();
+    </script>
+
+    <!-- Firebase Auth & Cloud Sync Module -->
     <script type="module">
         import { 
             auth, 
             db, 
+            googleProvider, 
+            signInWithPopup, 
             onAuthStateChanged,
             ref, 
-            set,
+            set, 
             get 
         } from './firebase-config.js';
 
-        // 16 Kategori Nominasi Resmi Nevastra 2026
-        const CATEGORIES = [
-            { id: "ter_kocak", num: "01", title: "TER-KOCAK", desc: "Paling lucu, humoris, dan selalu jadi pencair suasana serta moodbooster di kelas maupun angkatan." },
-            { id: "ter_ambis", num: "02", title: "TER-AMBIS", desc: "Paling rajin belajar, catatan paling rapi, dan langganan ranking juara kelas." },
-            { id: "ter_ramah", num: "03", title: "TER-RAMAH", desc: "Super friendly, murah senyum, dan akrab ke semua orang dari kelas 1 sampai 9." },
-            { id: "ter_imut", num: "04", title: "TER-IMUT", desc: "Memiliki wajah baby face, imut, dan tingkah laku yang paling menggemaskan." },
-            { id: "ter_alim", num: "05", title: "TER-ALIM", desc: "Tutur kata sopan, pembawaan teduh, dan selalu jadi pengingat ibadah bagi teman-teman." },
-            { id: "ter_calm", num: "06", title: "TER-CALM", desc: "Paling santai, cool, dan tenang menghadapi ujian serta deadline apapun." },
-            { id: "ter_organisasi", num: "07", title: "TER-ORGANISASI", desc: "Paling aktif OSIS, Pramuka, panitia event sekolah, dan sibuk rapat tiap hari." },
-            { id: "ter_royal", num: "08", title: "TER-ROYAL", desc: "Paling dermawan, berjiwa sultan, dan hobi traktir teman sekelas jajan." },
-            { id: "ter_jajan", num: "09", title: "TER-JAJAN", desc: "Mejanya selalu penuh cemilan, langganan kantin, dan gak bisa lepas dari ngemil." },
-            { id: "ter_lambat", num: "10", title: "TER-LAMBAT", desc: "Spesialis masuk gerbang di detik-detik terakhir sebelum pintu pagar dikunci." },
-            { id: "ter_atlit", num: "11", title: "TER-ATLIT", desc: "Jagoan olahraga di lapangan, berenergi tinggi, dan sering bawa piala kejuaraan." },
-            { id: "ter_kreatif", num: "12", title: "TER-KREATIF", desc: "Paling berseni, jago desain grafis, visual estetik, dan penuh ide kreatif." },
-            { id: "ter_tech", num: "13", title: "TER-TECH", desc: "Paling melek teknologi, jago coding, ngulik software, dan tempat konsultasi IT." },
-            { id: "ter_tidur", num: "14", title: "TER-TIDUR", desc: "Paling sakti tidur di mana saja dan kapan saja begitu jam kosong dimulai." },
-            { id: "ter_heboh", num: "15", title: "TER-HEBOH", desc: "Paling ekspresif, suara paling melengking, dan paling ramai bikin kelas hidup." },
-            { id: "ter_couple", num: "16", title: "TER-COUPLE", desc: "Pasangan atau duet paling serasi, kompak, dan ikonik sepanjang masa SMA." }
-        ];
+        const btnSignInGoogle = document.getElementById('btnSignInGoogle');
+        const badgeVerified = document.getElementById('badgeVerified');
+        const voterNameText = document.getElementById('voterNameText');
+        const voterMetaText = document.getElementById('voterMetaText');
 
-        // 4 Kandidat Wireframe per Kategori (Placeholder foto menyusul sesuai instruksi)
-        const NOMINEE_DATA = {
-            "ter_kocak": [
-                { id: "cand_1", name: "Kandidat 1", kelas: "Angkatan 2026", tagline: "Selalu punya punchline lucu di setiap obrolan", photo: "assets/avatar_placeholder.png" },
-                { id: "cand_2", name: "Kandidat 2", kelas: "Angkatan 2026", tagline: "Tingkah absurd yang bikin satu kelas ngakak", photo: "assets/avatar_placeholder.png" },
-                { id: "cand_3", name: "Kandidat 3", kelas: "Angkatan 2026", tagline: "Ekspresi wajah yang naturally lawak", photo: "assets/avatar_placeholder.png" },
-                { id: "cand_4", name: "Kandidat 4", kelas: "Angkatan 2026", tagline: "Moodbooster sejati di kala tugas menumpuk", photo: "assets/avatar_placeholder.png" }
-            ]
+        // Cloud sync function
+        window.syncToCloud = async function(catId, candId, candName) {
+            if (window.currentUser && db) {
+                try {
+                    const voterKey = window.activeStudent ? `${window.activeStudent.kelas}_${window.activeStudent.absen}` : window.currentUser.uid;
+                    const voteRef = ref(db, `voting_ter_records/${voterKey}/${catId}`);
+                    await set(voteRef, {
+                        candidateId: candId,
+                        candidateName: candName,
+                        timestamp: new Date().toISOString(),
+                        email: window.currentUser.email || '',
+                        studentName: window.activeStudent ? window.activeStudent.nama : ''
+                    });
+                } catch (e) {
+                    console.warn("Sinkronisasi cloud tertunda:", e);
+                }
+            }
         };
 
-        let currentActiveCat = CATEGORIES[0];
-        let currentAuthUser = null;
-        let currentStudentData = null; // { kelas, absen, nama }
-        let userVotesMap = {}; // { cat_id: nominee_id }
-        let pendingVotePayload = null;
-
-        // Elements
-        const studentVerifiedBar = document.getElementById('studentVerifiedBar');
-        const authRequiredBanner = document.getElementById('authRequiredBanner');
-        const userStudentAvatar = document.getElementById('userStudentAvatar');
-        const userStudentNama = document.getElementById('userStudentNama');
-        const userStudentKelas = document.getElementById('userStudentKelas');
-        const userStudentAbsen = document.getElementById('userStudentAbsen');
-        const userStudentEmail = document.getElementById('userStudentEmail');
-
-        const categoryNavContainer = document.getElementById('categoryNavContainer');
-        const catBadgePill = document.getElementById('catBadgePill');
-        const catTitleText = document.getElementById('catTitleText');
-        const catDescText = document.getElementById('catDescText');
-        const nominees2x2Grid = document.getElementById('nominees2x2Grid');
-
-        const confirmVoteModal = document.getElementById('confirmVoteModal');
-        const btnCancelModal = document.getElementById('btnCancelModal');
-        const btnFinalSubmitVote = document.getElementById('btnFinalSubmitVote');
-        const modalCategoryLabel = document.getElementById('modalCategoryLabel');
-        const modalNomineeName = document.getElementById('modalNomineeName');
-        const modalNomineeClass = document.getElementById('modalNomineeClass');
-
-        // Render Category Nav Tabs
-        function renderCategoryNav() {
-            categoryNavContainer.innerHTML = '';
-            CATEGORIES.forEach(cat => {
-                const btn = document.createElement('button');
-                btn.className = `cat-nav-btn ${cat.id === currentActiveCat.id ? 'active' : ''}`;
-                btn.innerHTML = `<span style="opacity: 0.7;">#${cat.num}</span> <strong>${cat.title}</strong>`;
-                btn.addEventListener('click', () => {
-                    currentActiveCat = cat;
-                    renderCategoryNav();
-                    renderCategoryContent();
-                });
-                categoryNavContainer.appendChild(btn);
-            });
-        }
-
-        // Render Main Category Content and 2x2 Grid
-        function renderCategoryContent() {
-            catBadgePill.textContent = `KATEGORI NOMINASI #${currentActiveCat.num}`;
-            catTitleText.textContent = currentActiveCat.title;
-            catDescText.textContent = currentActiveCat.desc;
-
-            const nominees = NOMINEE_DATA[currentActiveCat.id] || [
-                { id: `${currentActiveCat.id}_1`, name: "Kandidat 1", kelas: "Angkatan 2026", tagline: "Kandidat resmi buku tahunan", photo: "assets/avatar_placeholder.png" },
-                { id: `${currentActiveCat.id}_2`, name: "Kandidat 2", kelas: "Angkatan 2026", tagline: "Kandidat resmi buku tahunan", photo: "assets/avatar_placeholder.png" },
-                { id: `${currentActiveCat.id}_3`, name: "Kandidat 3", kelas: "Angkatan 2026", tagline: "Kandidat resmi buku tahunan", photo: "assets/avatar_placeholder.png" },
-                { id: `${currentActiveCat.id}_4`, name: "Kandidat 4", kelas: "Angkatan 2026", tagline: "Kandidat resmi buku tahunan", photo: "assets/avatar_placeholder.png" }
-            ];
-
-            const alreadyVotedNomineeId = userVotesMap[currentActiveCat.id];
-
-            nominees2x2Grid.innerHTML = '';
-            nominees.forEach((nom, idx) => {
-                const isSelected = alreadyVotedNomineeId === nom.id;
-                const card = document.createElement('div');
-                card.className = `profile-wireframe-card ${isSelected ? 'selected' : ''}`;
-                
-                card.innerHTML = `
-                    <div class="avatar-wireframe-wrapper">
-                        <img src="${nom.photo}" alt="${nom.name}" class="avatar-wireframe-img">
-                    </div>
-                    <span class="nominee-tag-kelas">${nom.kelas}</span>
-                    <h3 class="nominee-name">${nom.name}</h3>
-                    <p class="nominee-tagline">${nom.tagline}</p>
-                    <button class="btn-wireframe-vote ${isSelected ? 'voted-btn' : ''}" ${alreadyVotedNomineeId ? 'disabled' : ''} data-cand-id="${nom.id}" data-cand-name="${nom.name}">
-                        ${isSelected ? '✓ PILIHAN ANDA' : '[ VOTE ]'}
-                    </button>
-                    <div class="live-vote-pill" id="liveCount_${currentActiveCat.id}_${nom.id}">
-                        Kandidat #${idx+1}
-                    </div>
-                `;
-
-                const btnVote = card.querySelector('.btn-wireframe-vote');
-                if (btnVote && !alreadyVotedNomineeId) {
-                    btnVote.addEventListener('click', () => {
-                        triggerVoteModal(nom);
-                    });
-                }
-
-                nominees2x2Grid.appendChild(card);
-            });
-        }
-
-        function triggerVoteModal(nominee) {
-            if (!currentStudentData) {
-                alert('Akses Kunci Diperlukan: Profil siswa Anda belum ditautkan. Silakan kembali ke halaman utama untuk menautkan profil.');
-                window.location.href = 'index.html';
-                return;
-            }
-
-            pendingVotePayload = {
-                categoryId: currentActiveCat.id,
-                categoryTitle: currentActiveCat.title,
-                nomineeId: nominee.id,
-                nomineeName: nominee.name,
-                nomineeKelas: nominee.kelas
-            };
-
-            modalCategoryLabel.textContent = `KATEGORI: ${currentActiveCat.title}`;
-            modalNomineeName.textContent = nominee.name;
-            modalNomineeClass.textContent = nominee.kelas;
-            confirmVoteModal.classList.add('show');
-        }
-
-        btnCancelModal.addEventListener('click', () => {
-            confirmVoteModal.classList.remove('show');
-            pendingVotePayload = null;
-        });
-
-        btnFinalSubmitVote.addEventListener('click', async () => {
-            if (!pendingVotePayload || !currentStudentData || !currentAuthUser) return;
-
-            btnFinalSubmitVote.disabled = true;
-            btnFinalSubmitVote.textContent = "Menyimpan...";
-
-            try {
-                const studentKey = `${currentStudentData.kelas}_${currentStudentData.absen}`;
-                const votePath = `voting_ter/${pendingVotePayload.categoryId}/votes/${studentKey}`;
-                const payload = {
-                    studentKey: studentKey,
-                    namaPemilih: currentStudentData.nama,
-                    kelasPemilih: currentStudentData.kelas,
-                    absenPemilih: currentStudentData.absen,
-                    uid: currentAuthUser.uid,
-                    email: currentAuthUser.email,
-                    nomineeId: pendingVotePayload.nomineeId,
-                    nomineeName: pendingVotePayload.nomineeName,
-                    votedAt: new Date().toISOString()
-                };
-
-                await set(ref(db, votePath), payload);
-                // Also store user record in user_ter_votes
-                await set(ref(db, `user_ter_votes/${currentAuthUser.uid}/${pendingVotePayload.categoryId}`), payload);
-
-                userVotesMap[pendingVotePayload.categoryId] = pendingVotePayload.nomineeId;
-
-                confirmVoteModal.classList.remove('show');
-                renderCategoryContent();
-                alert(`🎉 Suara Anda untuk ${pendingVotePayload.nomineeName} (${currentActiveCat.title}) berhasil dicatat secara resmi!`);
-            } catch (err) {
-                console.error("Gagal simpan vote:", err);
-                alert("Terjadi kendala saat mengirim voting: " + err.message);
-            } finally {
-                btnFinalSubmitVote.disabled = false;
-                btnFinalSubmitVote.textContent = "✓ Kirim Vote";
-                pendingVotePayload = null;
-            }
-        });
-
-        // Initialize Auth & Binding Protection (Menggunakan Kunci Akses Kaos/SSO yang Sama)
-        const urlParams = new URLSearchParams(window.location.search);
-        const qKelas = urlParams.get('kelas');
-        const qAbsen = parseInt(urlParams.get('absen'), 10);
-
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                authRequiredBanner.style.display = 'flex';
-                studentVerifiedBar.style.display = 'none';
-                return;
-            }
-
-            currentAuthUser = user;
-            authRequiredBanner.style.display = 'none';
-
-            try {
-                // Ambil info binding dari user_to_student
-                const snap = await get(ref(db, `user_to_student/${user.uid}`));
-                let targetKelas = qKelas;
-                let targetAbsen = qAbsen;
-                let targetNama = "";
-
-                if (snap.exists()) {
-                    const linkInfo = snap.val();
-                    targetKelas = linkInfo.kelas;
-                    targetAbsen = linkInfo.absen;
-                    targetNama = linkInfo.nama || user.displayName;
-                } else if (qKelas && qAbsen) {
-                    const roster = (window.studentRoster && window.studentRoster[qKelas]) || [];
-                    const stu = roster.find(s => s.absen == qAbsen);
-                    if (stu) targetNama = stu.nama;
-                }
-
-                if (!targetKelas || !targetAbsen) {
-                    authRequiredBanner.style.display = 'flex';
-                    studentVerifiedBar.style.display = 'none';
-                    return;
-                }
-
-                if (!targetNama) {
-                    const roster = (window.studentRoster && window.studentRoster[targetKelas]) || [];
-                    const stu = roster.find(s => s.absen == targetAbsen);
-                    targetNama = stu ? stu.nama : (user.displayName || "Siswa");
-                }
-
-                currentStudentData = {
-                    kelas: targetKelas,
-                    absen: targetAbsen,
-                    nama: targetNama
-                };
-
-                // Update Visual Bar
-                userStudentNama.textContent = targetNama;
-                userStudentKelas.textContent = targetKelas;
-                userStudentAbsen.textContent = targetAbsen;
-                userStudentEmail.textContent = user.email || "-";
-                if (user.photoURL) {
-                    userStudentAvatar.src = user.photoURL;
-                }
-                studentVerifiedBar.style.display = 'flex';
-
-                // Load existing votes for this student
+        if (btnSignInGoogle) {
+            btnSignInGoogle.addEventListener('click', async () => {
                 try {
-                    const votesSnap = await get(ref(db, `user_ter_votes/${user.uid}`));
-                    if (votesSnap.exists()) {
-                        const allVotes = votesSnap.val();
-                        Object.keys(allVotes).forEach(catId => {
-                            userVotesMap[catId] = allVotes[catId].nomineeId;
-                        });
-                    }
-                } catch(e) {
-                    console.warn("Gagal load data voting sebelumnya:", e);
+                    btnSignInGoogle.disabled = true;
+                    btnSignInGoogle.textContent = 'Menghubungkan...';
+                    await signInWithPopup(auth, googleProvider);
+                } catch (err) {
+                    alert('Gagal login Google: ' + err.message);
+                    btnSignInGoogle.disabled = false;
+                    btnSignInGoogle.textContent = 'Masuk Akun Google →';
                 }
+            });
+        }
 
-                renderCategoryContent();
+        if (auth) {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    window.currentUser = user;
+                    if (btnSignInGoogle) btnSignInGoogle.style.display = 'none';
+                    if (badgeVerified) badgeVerified.style.display = 'inline-block';
 
-            } catch (err) {
-                console.error("Gagal memeriksa otentikasi siswa:", err);
-            }
-        });
+                    // Cek jika ada binding user_to_student
+                    if (!window.activeStudent && db) {
+                        try {
+                            const snap = await get(ref(db, `user_to_student/${user.uid}`));
+                            if (snap.exists()) {
+                                const val = snap.val();
+                                window.activeStudent = { kelas: val.kelas, absen: val.absen, nama: val.nama };
+                            }
+                        } catch (e) {
+                            console.warn("Gagal load student binding:", e);
+                        }
+                    }
 
-        // Initialize UI
-        renderCategoryNav();
-        renderCategoryContent();
+                    if (window.activeStudent) {
+                        if (voterNameText) voterNameText.textContent = `Pemilih: ${window.activeStudent.nama}`;
+                        if (voterMetaText) voterMetaText.textContent = `${window.activeStudent.kelas} • Absen ${window.activeStudent.absen} • ${user.email}`;
+                    } else {
+                        if (voterNameText) voterNameText.textContent = `Pemilih: ${user.displayName || 'Siswa Angkatan 2026'}`;
+                        if (voterMetaText) voterMetaText.textContent = `${user.email} (Akun Google Terverifikasi)`;
+                    }
+
+                    // Ambil rekam suara tersimpan di cloud
+                    if (db) {
+                        try {
+                            const voterKey = window.activeStudent ? `${window.activeStudent.kelas}_${window.activeStudent.absen}` : user.uid;
+                            const snapVotes = await get(ref(db, `voting_ter_records/${voterKey}`));
+                            if (snapVotes.exists()) {
+                                const cloudVotes = snapVotes.val();
+                                Object.keys(cloudVotes).forEach(catId => {
+                                    if (cloudVotes[catId] && cloudVotes[catId].candidateId) {
+                                        window.userVotes[catId] = cloudVotes[catId].candidateId;
+                                    }
+                                });
+                                localStorage.setItem('nevastra_ter_votes', JSON.stringify(window.userVotes));
+                                if (window.renderStage) window.renderStage();
+                            }
+                        } catch (e) {
+                            console.warn("Gagal fetch cloud votes:", e);
+                        }
+                    }
+                } else {
+                    window.currentUser = null;
+                    if (btnSignInGoogle) btnSignInGoogle.style.display = 'inline-flex';
+                    if (badgeVerified) badgeVerified.style.display = 'none';
+                }
+            });
+        }
     </script>
 </body>
 </html>
