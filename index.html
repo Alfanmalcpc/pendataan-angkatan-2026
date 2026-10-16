@@ -183,6 +183,9 @@
                     <span id="portalUserName" style="font-size: 0.82rem; font-weight: 700; color: #1e293b; max-width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</span>
                     <button id="btnPortalLogout" type="button" style="background: none; border: none; color: #ef4444; font-size: 0.78rem; font-weight: 700; cursor: pointer; padding: 2px 6px;">Keluar</button>
                 </div>
+                <a href="voting-ter.html" class="btn" style="font-size: 0.85rem; padding: 8px 16px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; text-decoration: none; background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color: #fff; box-shadow: 0 4px 12px rgba(37,99,235,0.25);">
+                    🗳️ Voting Ter-
+                </a>
                 <a href="kelompok.html" class="btn btn-secondary" style="font-size: 0.85rem; padding: 8px 16px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; text-decoration: none;">
                     Halaman Kelompok
                 </a>
@@ -221,7 +224,30 @@
                 <a id="btnDirectKaosTtd" href="#" class="btn" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%); color: white; font-weight: 800; border-radius: 999px; padding: 10px 18px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(49,46,129,0.25);">
                     👕✍️ Ukuran Kaos & TTD →
                 </a>
+                <a id="btnDirectVotingTer" href="voting-ter.html" class="btn" style="background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color: white; font-weight: 800; border-radius: 999px; padding: 10px 18px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(37,99,235,0.25);">
+                    🗳️⭐ Voting Ter- →
+                </a>
             </div>
+        </div>
+
+        <!-- Banner Halaman Voting Ter- Angkatan -->
+        <div style="background: linear-gradient(135deg, rgba(2, 132, 199, 0.08), rgba(99, 102, 241, 0.08)); border: 1.5px solid rgba(56, 189, 248, 0.3); border-radius: 16px; padding: 18px 22px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; box-shadow: var(--shadow-sm);">
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #0284c7, #38bdf8); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff; flex-shrink: 0; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.3);">
+                    🗳️
+                </div>
+                <div>
+                    <h3 style="margin: 0; font-size: 1.05rem; font-weight: 800; color: var(--dark);">
+                        Voting Kategori Ter- Angkatan 2026 (16 Kategori Resmi)
+                    </h3>
+                    <p style="margin: 4px 0 0; font-size: 0.82rem; color: #475569;">
+                        Pilih kandidat terbaikmu untuk Ter-Kocak, Ter-Ambis, Ter-Ramah, hingga Ter-Couple buku tahunan resmi.
+                    </p>
+                </div>
+            </div>
+            <a href="voting-ter.html" class="btn" style="background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%); color: #fff; padding: 10px 20px; font-weight: 700; text-decoration: none; border-radius: 10px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(37,99,235,0.25);">
+                Buka Voting Ter- →
+            </a>
         </div>
 
 
@@ -784,6 +810,11 @@
                                 btnDirectKaosTtd.innerHTML = `👕✍️ Isi Ukuran Kaos & TTD → <span style="background: #fef08a; color: #854d0e; padding: 2px 7px; border-radius: 99px; font-size: 0.72rem; margin-left: 4px; font-weight:800;">Belum</span>`;
                                 btnDirectKaosTtd.style.background = 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%)';
                             }
+                        }
+
+                        const btnDirectVotingTer = document.getElementById('btnDirectVotingTer');
+                        if (btnDirectVotingTer) {
+                            btnDirectVotingTer.href = `voting-ter.html?kelas=${normKelas}&absen=${normAbsen}`;
                         }
 
                         linkedStudentBanner.style.display = 'flex';
