@@ -920,18 +920,30 @@
                 if (!res.ok) throw new Error("Gagal mengirim data: " + res.statusText);
 
                 alert("Pendaftaran nominasi karakter berhasil dikirim! Data kamu sudah berhasil tersimpan.");
+                
+                // Tetap di halaman ini & reset form dengan aman
                 formKandidat.reset();
-                selectedKategoriInput.value = '';
-                categoryBtnTrigger.innerHTML = '<span><i class="fa-solid fa-shapes"></i> Pilih Kategori Nominasi</span><i class="fa-solid fa-chevron-down caret-icon"></i>';
-                categoryBtnTrigger.classList.remove('has-value');
-                document.querySelectorAll('.kategori-item').forEach(el => el.classList.remove('active'));
-                photoBase64 = null;
-                photoPreview.src = '';
-                photoPreview.style.display = 'none';
-                photoPlaceholder.style.display = 'flex';
-                photoPreviewBox.classList.remove('has-image');
+                selectAbsen.innerHTML = '<option value="">-- Pilih Kelas Terlebih Dahulu --</option>';
+                selectAbsen.disabled = true;
+
+                inputCategoryId.value = '';
+                inputCategoryTitle.value = '';
+                selectorDisplay.innerHTML = '<span>Pilih kategori nominasi karakter...</span>';
+                activeCategoryBox.style.display = 'none';
+                categoryDropdownPanel.classList.remove('open');
+                renderCategoryOptions();
+
+                base64PhotoData = "";
+                imgPreview.src = '';
+                imgPreview.style.display = 'none';
+                camIcon.style.display = 'block';
+                ratioHint.style.display = 'block';
+                fileFoto.value = '';
+
                 btnSubmit.disabled = false;
                 btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran Karakter';
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } catch (err) {
                 console.error("Submit Error:", err);
                 alert("Terjadi kendala saat mengirim data: " + err.message);
