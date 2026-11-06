@@ -6,205 +6,73 @@
     <title>Pendaftaran Kandidat Ter- Angkatan - NEVASTRA 2026</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg+xml" href="logo.svg">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root {
-            --bg-dark: #07090e;
-            --card-dark: #0e131f;
-            --card-border: rgba(255, 255, 255, 0.08);
-            --card-glow: rgba(57, 183, 187, 0.15);
-            --accent-cyan: #39b7bb;
-            --accent-purple: #8b5cf6;
-            --accent-amber: #f59e0b;
-            --text-light: #f8fafc;
-            --text-dim: #94a3b8;
-        }
-
         body {
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            color: var(--text, #334155);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             padding: 0;
-            min-height: 100vh;
-            background-image: 
-                radial-gradient(ellipse 80% 50% at 50% -20%, rgba(57, 183, 187, 0.15), transparent 70%),
-                radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139, 92, 246, 0.1), transparent 60%),
-                radial-gradient(ellipse 50% 30% at 20% 60%, rgba(245, 158, 11, 0.08), transparent 50%);
-            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Navbar */
-        .app-navbar {
-            background: rgba(14, 19, 31, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--card-border);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-container {
-            max-width: 900px;
+        .main-wrapper-kandidat {
+            max-width: 860px;
             margin: 0 auto;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            padding: 24px 16px 80px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .brand-logo-img {
-            width: 38px;
-            height: 38px;
-            filter: drop-shadow(0 0 10px rgba(57, 183, 187, 0.5));
-        }
-
-        .brand-text h1 {
-            font-size: 1.05rem;
-            font-weight: 800;
-            letter-spacing: 0.05em;
-            margin: 0;
-            background: linear-gradient(135deg, #fff 40%, var(--accent-cyan) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .brand-text p {
-            font-size: 0.7rem;
-            color: var(--text-dim);
-            margin: 0;
-            letter-spacing: 0.08em;
-        }
-
-        .nav-actions {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .nav-btn {
-            padding: 8px 16px;
-            border-radius: 999px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s ease;
-        }
-
-        .nav-btn-outline {
-            color: var(--text-dim);
-            border: 1px solid var(--card-border);
-            background: rgba(255, 255, 255, 0.03);
-        }
-
-        .nav-btn-outline:hover {
-            color: #fff;
-            border-color: var(--accent-cyan);
-            background: rgba(57, 183, 187, 0.1);
-        }
-
-        /* Container */
-        .reg-container {
-            max-width: 820px;
-            margin: 32px auto 60px auto;
-            padding: 0 20px;
-        }
-
-        /* Hero Banner */
-        .reg-hero {
+        .page-header {
+            background: #ffffff;
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: var(--radius-lg, 16px);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.05));
             text-align: center;
-            margin-bottom: 32px;
-            position: relative;
         }
 
-        .badge-pill {
+        .page-header .badge-pill {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 16px;
-            background: rgba(57, 183, 187, 0.12);
-            border: 1px solid rgba(57, 183, 187, 0.35);
+            padding: 4px 12px;
             border-radius: 999px;
-            color: var(--accent-cyan);
+            background: rgba(57, 183, 187, 0.1);
+            color: #0f766e;
             font-size: 0.78rem;
             font-weight: 700;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
             margin-bottom: 12px;
+            border: 1px solid rgba(57, 183, 187, 0.25);
         }
 
-        .reg-hero h2 {
-            font-size: 2rem;
+        .page-header h2 {
+            font-size: 1.6rem;
             font-weight: 800;
-            margin: 0 0 10px 0;
+            color: #0f172a;
+            margin: 0 0 8px;
             letter-spacing: -0.02em;
-            background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 70%, var(--accent-cyan) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
-        .reg-hero p {
-            color: var(--text-dim);
-            font-size: 0.95rem;
-            max-width: 580px;
+        .page-header p {
+            font-size: 0.92rem;
+            color: #64748b;
             margin: 0 auto;
-            line-height: 1.6;
+            max-width: 620px;
+            line-height: 1.5;
         }
 
-        /* Form Card */
-        .glass-card {
-            background: rgba(14, 19, 31, 0.75);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 32px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-purple), transparent);
-        }
-
-        /* Form Groups */
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        @media (max-width: 640px) {
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .glass-card {
-                padding: 22px 18px;
-            }
-            .reg-hero h2 {
-                font-size: 1.6rem;
-            }
+        .form-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color, #e2e8f0);
+            border-radius: var(--radius-lg, 16px);
+            padding: 28px;
+            box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.04));
         }
 
         .form-group {
@@ -217,7 +85,7 @@
             justify-content: space-between;
             font-size: 0.88rem;
             font-weight: 700;
-            color: #e2e8f0;
+            color: #1e293b;
             margin-bottom: 8px;
         }
 
@@ -228,88 +96,80 @@
         }
 
         .form-label-title span.req {
-            color: #f43f5e;
+            color: #ef4444;
             font-weight: 800;
         }
 
         .form-label small {
-            font-weight: 400;
-            font-size: 0.75rem;
-            color: var(--text-dim);
-        }
-
-        .form-input, .form-select, .form-textarea {
-            width: 100%;
-            background: rgba(7, 9, 14, 0.65);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-size: 0.92rem;
-            color: #fff;
-            box-sizing: border-box;
-            outline: none;
-            transition: all 0.2s ease;
-            font-family: inherit;
-        }
-
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
-            border-color: var(--accent-cyan);
-            background: rgba(14, 19, 31, 0.9);
-            box-shadow: 0 0 0 3px rgba(57, 183, 187, 0.2);
-        }
-
-        .form-input::placeholder, .form-textarea::placeholder {
+            font-weight: 500;
+            font-size: 0.76rem;
             color: #64748b;
         }
 
-        .form-select {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 40px;
+        .form-control, .form-select {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 0.92rem;
+            font-family: inherit;
+            color: #0f172a;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: var(--radius-md, 10px);
+            outline: none;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
         }
 
-        .form-select option {
-            background: #0e131f;
-            color: #fff;
-            padding: 8px;
+        .form-control:focus, .form-select:focus {
+            border-color: #39b7bb;
+            box-shadow: 0 0 0 3px rgba(57, 183, 187, 0.15);
         }
 
-        /* Upload Area */
-        .photo-upload-wrap {
-            display: flex;
-            gap: 20px;
-            align-items: center;
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
 
-        @media (max-width: 520px) {
-            .photo-upload-wrap {
-                flex-direction: column;
-                text-align: center;
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .form-card {
+                padding: 20px 16px;
             }
         }
 
-        .photo-preview-box {
-            width: 110px;
-            height: 110px;
-            border-radius: 16px;
-            background: rgba(7, 9, 14, 0.8);
-            border: 2px dashed rgba(57, 183, 187, 0.4);
+        /* Photo Upload 3:4 Box */
+        .photo-upload-wrapper {
             display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 18px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md, 12px);
+        }
+
+        .photo-preview-box {
+            width: 105px;
+            height: 140px; /* 3:4 aspect ratio */
+            border-radius: 8px;
+            border: 2px dashed #94a3b8;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            position: relative;
             flex-shrink: 0;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+            transition: border-color 0.2s;
         }
 
-        .photo-preview-box.has-image {
-            border-style: solid;
-            border-color: var(--accent-cyan);
+        .photo-preview-box:hover {
+            border-color: #39b7bb;
         }
 
         .photo-preview-box img {
@@ -318,502 +178,380 @@
             object-fit: cover;
         }
 
-        .photo-preview-box i {
-            font-size: 2.2rem;
-            color: #475569;
+        .photo-preview-box .placeholder-icon {
+            color: #94a3b8;
+            font-size: 1.8rem;
+            margin-bottom: 4px;
         }
 
-        .upload-controls {
+        .photo-preview-box .ratio-tag {
+            font-size: 0.68rem;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .photo-actions {
             flex-grow: 1;
         }
 
-        .btn-upload-file {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 18px;
-            background: rgba(57, 183, 187, 0.15);
-            color: var(--accent-cyan);
-            border: 1px solid rgba(57, 183, 187, 0.3);
-            border-radius: 10px;
-            font-size: 0.86rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-upload-file:hover {
-            background: rgba(57, 183, 187, 0.25);
-            border-color: var(--accent-cyan);
-        }
-
-        .file-hint {
-            margin-top: 8px;
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            line-height: 1.4;
-        }
-
-        /* Auto Student Name Badge */
-        .student-detected-badge {
-            margin-top: 8px;
-            font-size: 0.8rem;
-            color: #38bdf8;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* Category Cards Grid Selection */
-        .cat-select-grid {
+        .category-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 10px;
-            margin-top: 8px;
-            max-height: 280px;
-            overflow-y: auto;
-            padding-right: 6px;
         }
 
-        .cat-select-grid::-webkit-scrollbar {
-            width: 6px;
-        }
-        .cat-select-grid::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-        }
-        .cat-select-grid::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 8px;
-        }
-
-        .cat-option-card {
-            background: rgba(7, 9, 14, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 10px 12px;
-            cursor: pointer;
+        .category-item {
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #ffffff;
+            cursor: pointer;
             transition: all 0.2s ease;
+            user-select: none;
         }
 
-        .cat-option-card:hover {
-            border-color: rgba(57, 183, 187, 0.4);
-            background: rgba(14, 19, 31, 0.9);
+        .category-item:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+        }
+
+        .category-item.active {
+            border-color: #39b7bb;
+            background: rgba(57, 183, 187, 0.08);
+            box-shadow: 0 0 0 1px #39b7bb;
+        }
+
+        .category-item .cat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #f1f5f9;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.88rem;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .category-item.active .cat-icon {
+            background: #39b7bb;
+            color: #ffffff;
+        }
+
+        .category-item .cat-name {
+            font-size: 0.84rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .category-item.active .cat-name {
+            color: #0f766e;
+        }
+
+        .btn-submit-kandidat {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+            background: #39b7bb;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 6px rgba(57, 183, 187, 0.35);
+        }
+
+        .btn-submit-kandidat:hover {
+            background: #2ea0a4;
             transform: translateY(-1px);
         }
 
-        .cat-option-card.selected {
-            background: rgba(57, 183, 187, 0.15);
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 12px rgba(57, 183, 187, 0.25);
-        }
-
-        .cat-option-icon {
-            font-size: 1.3rem;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
-            flex-shrink: 0;
-        }
-
-        .cat-option-text {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: #e2e8f0;
-            line-height: 1.2;
-        }
-
-        .cat-option-card.selected .cat-option-text {
-            color: #fff;
-        }
-
-        /* Submit Button */
-        .btn-submit-reg {
-            width: 100%;
-            padding: 14px 24px;
-            background: linear-gradient(135deg, #0ea5e9, #39b7bb);
-            color: #fff;
-            border: none;
-            border-radius: 14px;
-            font-size: 1rem;
-            font-weight: 800;
-            letter-spacing: 0.02em;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(57, 183, 187, 0.35);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.25s ease;
-            margin-top: 10px;
-        }
-
-        .btn-submit-reg:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 14px 30px rgba(57, 183, 187, 0.5);
-            background: linear-gradient(135deg, #38bdf8, #2dd4bf);
-        }
-
-        .btn-submit-reg:disabled {
+        .btn-submit-kandidat:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
-        }
-
-        /* Success & Alert States */
-        .toast-box {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            padding: 14px 20px;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .toast-box.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast-success {
-            background: #064e3b;
-            color: #6ee7b7;
-            border: 1px solid #059669;
-        }
-
-        .toast-error {
-            background: #4c0519;
-            color: #fda4af;
-            border: 1px solid #e11d48;
+            transform: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Navigation -->
+    <!-- NAVBAR IDENTIK NEVASTRA -->
     <nav class="app-navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-brand">
                 <div class="brand-icon"><img src="logo.svg" alt="NEVASTRA 2026" class="brand-logo-img"></div>
                 <div class="brand-text">
                     <h1>NEVASTRA 2026</h1>
-                    <p>PENDAFTARAN KANDIDAT TER-</p>
+                    <p>SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
                 </div>
             </a>
-            <div class="nav-actions">
-                <a href="voting-ter.html" class="nav-btn nav-btn-outline">
+            <div class="nav-links">
+                <a href="voting-ter.html" class="nav-btn" style="text-decoration: none; background: #ffffff; border: 1px solid #cbd5e1; color: #475569; font-weight: 600;">
                     <i class="fa-solid fa-square-poll-vertical"></i> Halaman Voting
                 </a>
-                <a href="index.html" class="nav-btn nav-btn-outline">
+                <a href="index.html" class="nav-btn" style="text-decoration: none;">
                     <i class="fa-solid fa-house"></i> Beranda
                 </a>
             </div>
         </div>
     </nav>
 
-    <!-- Main Container -->
-    <div class="reg-container">
-        <!-- Hero Header -->
-        <div class="reg-hero">
+    <div class="main-wrapper-kandidat">
+        <!-- HEADER KONTEN -->
+        <div class="page-header">
             <div class="badge-pill">
-                <i class="fa-solid fa-sparkles"></i> Open Registration Nominasi
+                <i class="fa-solid fa-id-card"></i> Pendaftaran Resmi Kandidat
             </div>
             <h2>Pendaftaran Kandidat Ter- Angkatan</h2>
-            <p>
-                Daftarkan dirimu atau rekomendasikan teman sekelasmu untuk masuk ke dalam nominasi 16 kategori Ter- Angkatan NEVASTRA 2026.
-            </p>
+            <p>Daftarkan diri atau rekomendasikan teman sekelasmu untuk masuk nominasi 16 kategori Ter- Angkatan NEVASTRA 2026.</p>
         </div>
 
-        <!-- Registration Form Card -->
-        <div class="glass-card">
-            <form id="candidateRegForm" autocomplete="off" onsubmit="return false;">
-                
-                <!-- 1. Upload Foto Kandidat -->
+        <!-- FORM CARD -->
+        <div class="form-card">
+            <form id="formKandidat" novalidate>
+                <!-- FOTO KANDIDAT (3:4) -->
                 <div class="form-group">
                     <label class="form-label">
                         <span class="form-label-title">Foto Kandidat <span class="req">*</span></span>
-                        <small>Format JPG/PNG/WebP, Rasio 1:1 disarankan</small>
+                        <small>Format disarankan Rasio 3:4 (Pas Foto / Potret)</small>
                     </label>
-                    <div class="photo-upload-wrap">
-                        <div class="photo-preview-box" id="photoPreviewBox">
-                            <i class="fa-solid fa-image" id="previewPlaceholderIcon"></i>
-                            <img id="candidatePhotoPreview" src="" style="display: none;" alt="Preview Foto">
+                    <div class="photo-upload-wrapper">
+                        <div class="photo-preview-box" id="previewBox" onclick="document.getElementById('fileFoto').click()">
+                            <i class="fa-solid fa-camera placeholder-icon" id="previewPlaceholder"></i>
+                            <span class="ratio-tag" id="previewTag">3 : 4</span>
+                            <img id="imgPreview" src="" alt="Preview Foto" style="display: none;">
                         </div>
-                        <div class="upload-controls">
-                            <input type="file" id="candidatePhotoInput" accept="image/*" style="display: none;">
-                            <button type="button" class="btn-upload-file" onclick="document.getElementById('candidatePhotoInput').click()">
-                                <i class="fa-solid fa-cloud-arrow-up"></i> Pilih Foto dari Perangkat
+                        <div class="photo-actions">
+                            <input type="file" id="fileFoto" accept="image/jpeg,image/png,image/webp" style="display: none;">
+                            <button type="button" class="btn btn-outline" onclick="document.getElementById('fileFoto').click()" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 600; padding: 9px 16px; border-radius: 8px;">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Unggah Foto
                             </button>
-                            <div class="file-hint">
-                                Foto akan dikompres otomatis secara cerdas agar jernih dan ringan saat ditampilkan di halaman voting.
-                            </div>
+                            <p style="margin: 8px 0 0; font-size: 0.78rem; color: #64748b; line-height: 1.4;">
+                                Foto dikompres otomatis agar proporsional dan ringan saat dibuka di halaman voting.
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- 2. Pilih Kelas & Absen -->
+                <!-- KELAS & ABSEN -->
                 <div class="form-row">
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label for="selectKelas" class="form-label"><span class="form-label-title">Kelas <span class="req">*</span></span></label>
+                    <div class="form-group">
+                        <label for="selectKelas" class="form-label">
+                            <span class="form-label-title">Kelas <span class="req">*</span></span>
+                        </label>
                         <select id="selectKelas" class="form-select" required>
                             <option value="">-- Pilih Kelas --</option>
-                            <option value="XII-1">XII-1</option>
-                            <option value="XII-2">XII-2</option>
-                            <option value="XII-3">XII-3</option>
-                            <option value="XII-4">XII-4</option>
-                            <option value="XII-5">XII-5</option>
-                            <option value="XII-6">XII-6</option>
-                            <option value="XII-7">XII-7</option>
-                            <option value="XII-8">XII-8</option>
-                            <option value="XII-9">XII-9</option>
                         </select>
                     </div>
-
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label for="selectAbsen" class="form-label"><span class="form-label-title">Nomor Absen <span class="req">*</span></span></label>
-                        <select id="selectAbsen" class="form-select" required disabled>
-                            <option value="">-- Pilih Kelas Dahulu --</option>
+                    <div class="form-group">
+                        <label for="selectAbsen" class="form-label">
+                            <span class="form-label-title">Nomor Absen <span class="req">*</span></span>
+                        </label>
+                        <select id="selectAbsen" class="form-select" disabled required>
+                            <option value="">-- Pilih Kelas Terlebih Dahulu --</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- 3. Tulis Nama Kandidat & Jenis Kelamin -->
-                <div class="form-row" style="margin-top: 18px;">
-                    <div class="form-group" style="margin-bottom: 0;">
+                <!-- NAMA & JENIS KELAMIN -->
+                <div class="form-row">
+                    <div class="form-group">
                         <label for="inputNama" class="form-label">
                             <span class="form-label-title">Nama Lengkap Siswa <span class="req">*</span></span>
                         </label>
-                        <input type="text" id="inputNama" class="form-input" placeholder="Masukkan nama siswa kandidat..." required>
-                        <div id="studentDetectNote" class="student-detected-badge" style="display: none;">
-                            <i class="fa-solid fa-circle-check"></i> <span id="studentDetectName">Terdeteksi dari roster</span>
-                        </div>
+                        <input type="text" id="inputNama" class="form-control" placeholder="Nama kandidat akan terisi otomatis atau ketik manual..." required>
                     </div>
-
-                    <div class="form-group" style="margin-bottom: 0;">
+                    <div class="form-group">
                         <label for="selectGender" class="form-label">
                             <span class="form-label-title">Jenis Kelamin <span class="req">*</span></span>
                         </label>
                         <select id="selectGender" class="form-select" required>
                             <option value="">-- Pilih Jenis Kelamin --</option>
-                            <option value="L">Laki-laki (Cowok)</option>
-                            <option value="P">Perempuan (Cewek)</option>
+                            <option value="L">Laki-laki</option>
+                            <option value="P">Perempuan</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- 4. Pilih Kategori Ter- -->
-                <div class="form-group" style="margin-top: 20px;">
+                <!-- KATEGORI SELECTION (TANPA STIKER/EMOJI) -->
+                <div class="form-group">
                     <label class="form-label">
                         <span class="form-label-title">Kategori Nominasi <span class="req">*</span></span>
                         <small>Pilih salah satu dari 16 kategori Ter-</small>
                     </label>
-                    <input type="hidden" id="selectedCategory" required>
-                    <div class="cat-select-grid" id="catSelectGrid">
-                        <!-- Rendered by JS -->
+                    <input type="hidden" id="inputCategoryId" value="" required>
+                    <input type="hidden" id="inputCategoryTitle" value="">
+                    <div class="category-grid" id="categoryGrid">
+                        <!-- Rendered by JS without any emojis -->
                     </div>
                 </div>
 
-                <!-- 5. Keterangan / Alasan Nominasi -->
+                <!-- KETERANGAN / ALASAN -->
                 <div class="form-group">
                     <label for="inputKeterangan" class="form-label">
                         <span class="form-label-title">Keterangan / Alasan Nominasi <span class="req">*</span></span>
-                        <small>Ceritakan hal unik atau alasan mengapa pantas masuk nominasi ini</small>
+                        <small>Tulis alasan mengapa layak masuk kategori ini</small>
                     </label>
-                    <textarea id="inputKeterangan" rows="3" class="form-textarea" placeholder="Contoh: Selalu bawa tawa di kelas dan jago niruin suara guru saat jam kosong..." required></textarea>
+                    <textarea id="inputKeterangan" class="form-control" rows="3" placeholder="Contoh: Selalu mencairkan suasana di kelas dengan lawakan spontan setiap hari..." required></textarea>
                 </div>
 
-                <!-- Submit Button -->
-                <button type="submit" id="btnSubmitForm" class="btn-submit-reg">
+                <!-- TOMBOL SUBMIT -->
+                <button type="submit" class="btn-submit-kandidat" id="btnSubmit">
                     <i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran Kandidat
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toastBox" class="toast-box">
-        <i class="fa-solid fa-circle-check" id="toastIcon"></i>
-        <span id="toastMsg">Pendaftaran berhasil dikirim!</span>
-    </div>
-
-    <!-- Scripts -->
+    <!-- SCRIPT LOGIC -->
     <script src="students-data.js"></script>
-    <script src="db.js"></script>
+    <script src="firebase-config.js"></script>
     <script>
-        // 16 Kategori Resmi
-        const CATEGORIES_LIST = [
-            { id: "ter_kocak", title: "TER-KOCAK 🎭", icon: "🎭" },
-            { id: "ter_ambis", title: "TER-AMBIS 📚", icon: "📚" },
-            { id: "ter_ramah", title: "TER-RAMAH 😊", icon: "😊" },
-            { id: "ter_imut", title: "TER-IMUT ✨", icon: "✨" },
-            { id: "ter_alim", title: "TER-ALIM 🤲", icon: "🤲" },
-            { id: "ter_calm", title: "TER-CALM 🧘", icon: "🧘" },
-            { id: "ter_organisasi", title: "TER-ORGANISASI 👔", icon: "👔" },
-            { id: "ter_royal", title: "TER-ROYAL 👑", icon: "👑" },
-            { id: "ter_jajan", title: "TER-JAJAN 🍟", icon: "🍟" },
-            { id: "ter_lambat", title: "TER-LAMBAT ⏰", icon: "⏰" },
-            { id: "ter_atlit", title: "TER-ATLIT ⚽", icon: "⚽" },
-            { id: "ter_kreatif", title: "TER-KREATIF 🎨", icon: "🎨" },
-            { id: "ter_tech", title: "SI ANAK IT 💻", icon: "💻" },
-            { id: "ter_tidur", title: "TER-TIDUR 😴", icon: "😴" },
-            { id: "ter_heboh", title: "TER-HEBOH 📢", icon: "📢" },
-            { id: "ter_couple", title: "TER-COUPLE 👥", icon: "👥" }
+        // 16 Kategori Resmi Tanpa Stiker / Emoji
+        const CATEGORIES_DATA = [
+            { id: "ter_kocak", title: "TER-KOCAK", icon: "fa-masks-theater" },
+            { id: "ter_ambis", title: "TER-AMBIS", icon: "fa-book-open" },
+            { id: "ter_ramah", title: "TER-RAMAH", icon: "fa-handshake-angle" },
+            { id: "ter_imut", title: "TER-IMUT", icon: "fa-sparkles" },
+            { id: "ter_alim", title: "TER-ALIM", icon: "fa-mosque" },
+            { id: "ter_calm", title: "TER-CALM", icon: "fa-feather" },
+            { id: "ter_organisasi", title: "TER-ORGANISASI", icon: "fa-user-tie" },
+            { id: "ter_royal", title: "TER-ROYAL", icon: "fa-crown" },
+            { id: "ter_jajan", title: "TER-JAJAN", icon: "fa-utensils" },
+            { id: "ter_lambat", title: "TER-LAMBAT", icon: "fa-clock" },
+            { id: "ter_atlit", title: "TER-ATLIT", icon: "fa-medal" },
+            { id: "ter_kreatif", title: "TER-KREATIF", icon: "fa-palette" },
+            { id: "ter_tech", title: "SI ANAK IT", icon: "fa-laptop-code" },
+            { id: "ter_tidur", title: "TER-TIDUR", icon: "fa-bed" },
+            { id: "ter_heboh", title: "TER-HEBOH", icon: "fa-bullhorn" },
+            { id: "ter_couple", title: "TER-COUPLE", icon: "fa-user-group" }
         ];
 
         let base64PhotoData = "";
 
-        // Elements
+        // Render Category Grid Clean
+        const categoryGrid = document.getElementById('categoryGrid');
+        const inputCategoryId = document.getElementById('inputCategoryId');
+        const inputCategoryTitle = document.getElementById('inputCategoryTitle');
+
+        CATEGORIES_DATA.forEach(cat => {
+            const card = document.createElement('div');
+            card.className = 'category-item';
+            card.innerHTML = `
+                <div class="cat-icon"><i class="fa-solid ${cat.icon || 'fa-tag'}"></i></div>
+                <div class="cat-name">${cat.title}</div>
+            `;
+            card.onclick = () => {
+                document.querySelectorAll('.category-item').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                inputCategoryId.value = cat.id;
+                inputCategoryTitle.value = cat.title;
+            };
+            categoryGrid.appendChild(card);
+        });
+
+        // Initialize Classes
         const selectKelas = document.getElementById('selectKelas');
         const selectAbsen = document.getElementById('selectAbsen');
         const inputNama = document.getElementById('inputNama');
         const selectGender = document.getElementById('selectGender');
-        const selectedCategory = document.getElementById('selectedCategory');
-        const catSelectGrid = document.getElementById('catSelectGrid');
-        const inputKeterangan = document.getElementById('inputKeterangan');
-        const photoInput = document.getElementById('candidatePhotoInput');
-        const photoPreview = document.getElementById('candidatePhotoPreview');
-        const photoPreviewBox = document.getElementById('photoPreviewBox');
-        const previewPlaceholderIcon = document.getElementById('previewPlaceholderIcon');
-        const studentDetectNote = document.getElementById('studentDetectNote');
-        const studentDetectName = document.getElementById('studentDetectName');
-        const btnSubmit = document.getElementById('btnSubmitForm');
-        const toastBox = document.getElementById('toastBox');
-        const toastMsg = document.getElementById('toastMsg');
-        const toastIcon = document.getElementById('toastIcon');
 
-        // Toast Helper
-        function showToast(text, type = "success") {
-            toastMsg.textContent = text;
-            toastBox.className = "toast-box " + (type === "success" ? "toast-success" : "toast-error");
-            toastIcon.className = "fa-solid " + (type === "success" ? "fa-circle-check" : "fa-triangle-exclamation");
-            toastBox.classList.add("show");
-            setTimeout(() => {
-                toastBox.classList.remove("show");
-            }, 3500);
-        }
+        const KELAS_LIST = ["XII-1", "XII-2", "XII-3", "XII-4", "XII-5", "XII-6", "XII-7", "XII-8", "XII-9"];
+        KELAS_LIST.forEach(k => {
+            const opt = document.createElement('option');
+            opt.value = k;
+            opt.textContent = k;
+            selectKelas.appendChild(opt);
+        });
 
-        // Render Category Grid
-        function renderCategories() {
-            catSelectGrid.innerHTML = '';
-            CATEGORIES_LIST.forEach(cat => {
-                const card = document.createElement('div');
-                card.className = 'cat-option-card';
-                card.dataset.id = cat.id;
-                card.innerHTML = `
-                    <div class="cat-option-icon">${cat.icon}</div>
-                    <div class="cat-option-text">${cat.title}</div>
-                `;
-                card.addEventListener('click', () => {
-                    document.querySelectorAll('.cat-option-card').forEach(c => c.classList.remove('selected'));
-                    card.classList.add('selected');
-                    selectedCategory.value = cat.id;
-                });
-                catSelectGrid.appendChild(card);
-            });
-        }
-        renderCategories();
-
-        // Populate Absen on Kelas Change
         selectKelas.addEventListener('change', () => {
-            const kelas = selectKelas.value;
-            selectAbsen.innerHTML = '<option value="">-- Pilih Absen --</option>';
-            selectAbsen.disabled = !kelas;
-            inputNama.value = '';
-            studentDetectNote.style.display = 'none';
+            const selectedClass = selectKelas.value;
+            selectAbsen.innerHTML = '<option value="">-- Pilih Nomor Absen --</option>';
+            if (!selectedClass) {
+                selectAbsen.disabled = true;
+                return;
+            }
 
-            if (!kelas) return;
+            selectAbsen.disabled = false;
+            const studentsInClass = (window.STUDENTS_DATA && window.STUDENTS_DATA[selectedClass]) || [];
 
-            const roster = (window.studentRoster && window.studentRoster[kelas]) ? window.studentRoster[kelas] : [];
-            const maxAbsen = roster.length > 0 ? roster.length : 36;
-
-            for (let i = 1; i <= maxAbsen; i++) {
+            for (let i = 1; i <= 36; i++) {
                 const opt = document.createElement('option');
                 opt.value = i;
-                const found = roster.find(s => s.absen === i);
-                opt.textContent = `Absen ${i}` + (found ? ` - ${found.nama}` : '');
+                const student = studentsInClass.find(s => s.absen === i);
+                opt.textContent = student ? `Absen ${i} - ${student.nama}` : `Absen ${i}`;
                 selectAbsen.appendChild(opt);
             }
         });
 
-        // Auto fill Nama & Gender on Absen Change
         selectAbsen.addEventListener('change', () => {
-            const kelas = selectKelas.value;
-            const absen = parseInt(selectAbsen.value, 10);
-            if (!kelas || !absen) return;
+            const selectedClass = selectKelas.value;
+            const absenVal = parseInt(selectAbsen.value, 10);
+            if (!selectedClass || isNaN(absenVal)) return;
 
-            const roster = (window.studentRoster && window.studentRoster[kelas]) ? window.studentRoster[kelas] : [];
-            const found = roster.find(s => s.absen === absen);
-            if (found) {
-                inputNama.value = found.nama;
-                if (found.jk) {
-                    selectGender.value = found.jk;
-                }
-                studentDetectName.textContent = `Terverifikasi: ${found.nama} (${found.jk === 'L' ? 'Cowok' : 'Cewek'})`;
-                studentDetectNote.style.display = 'flex';
-            } else {
-                studentDetectNote.style.display = 'none';
+            const studentsInClass = (window.STUDENTS_DATA && window.STUDENTS_DATA[selectedClass]) || [];
+            const student = studentsInClass.find(s => s.absen === absenVal);
+            if (student) {
+                inputNama.value = student.nama || '';
+                if (student.gender) selectGender.value = student.gender;
             }
         });
 
-        // Photo Upload & Resizing to optimized Base64
-        photoInput.addEventListener('change', (e) => {
+        // Photo Upload & 3:4 Auto Compression
+        const fileFoto = document.getElementById('fileFoto');
+        const imgPreview = document.getElementById('imgPreview');
+        const previewPlaceholder = document.getElementById('previewPlaceholder');
+        const previewTag = document.getElementById('previewTag');
+
+        fileFoto.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
-
-            if (!file.type.startsWith('image/')) {
-                showToast("Berkas yang dipilih harus berupa gambar!", "error");
-                return;
-            }
 
             const reader = new FileReader();
             reader.onload = (event) => {
                 const img = new Image();
                 img.onload = () => {
-                    // Compress to max 400x400 for super snappy loading & optimal DB storage
                     const canvas = document.createElement('canvas');
-                    const maxDim = 400;
-                    let width = img.width;
-                    let height = img.height;
+                    const targetWidth = 480;
+                    const targetHeight = 640; // Rasio 3:4
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
+                    const ctx = canvas.getContext('2d');
 
-                    if (width > height) {
-                        if (width > maxDim) {
-                            height = Math.round((height * maxDim) / width);
-                            width = maxDim;
-                        }
+                    // Center crop to 3:4
+                    const srcAspect = img.width / img.height;
+                    const targetAspect = targetWidth / targetHeight;
+                    let renderW, renderH, offsetX, offsetY;
+
+                    if (srcAspect > targetAspect) {
+                        renderH = img.height;
+                        renderW = img.height * targetAspect;
+                        offsetX = (img.width - renderW) / 2;
+                        offsetY = 0;
                     } else {
-                        if (height > maxDim) {
-                            width = Math.round((width * maxDim) / height);
-                            height = maxDim;
-                        }
+                        renderW = img.width;
+                        renderH = img.width / targetAspect;
+                        offsetX = 0;
+                        offsetY = (img.height - renderH) / 2;
                     }
 
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-
+                    ctx.drawImage(img, offsetX, offsetY, renderW, renderH, 0, 0, targetWidth, targetHeight);
                     base64PhotoData = canvas.toDataURL('image/jpeg', 0.82);
-                    photoPreview.src = base64PhotoData;
-                    photoPreview.style.display = 'block';
-                    previewPlaceholderIcon.style.display = 'none';
-                    photoPreviewBox.classList.add('has-image');
+
+                    imgPreview.src = base64PhotoData;
+                    imgPreview.style.display = 'block';
+                    previewPlaceholder.style.display = 'none';
+                    previewTag.style.display = 'none';
                 };
                 img.src = event.target.result;
             };
@@ -821,30 +559,38 @@
         });
 
         // Form Submit
-        document.getElementById('candidateRegForm').addEventListener('submit', async (e) => {
+        const formKandidat = document.getElementById('formKandidat');
+        const btnSubmit = document.getElementById('btnSubmit');
+
+        formKandidat.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const kelas = selectKelas.value.trim();
-            const absen = selectAbsen.value.trim();
-            const nama = inputNama.value.trim();
-            const gender = selectGender.value;
-            const categoryId = selectedCategory.value;
-            const keterangan = inputKeterangan.value.trim();
-
             if (!base64PhotoData) {
-                showToast("Harap unggah foto kandidat!", "error");
+                alert("Harap unggah foto kandidat terlebih dahulu!");
                 return;
             }
-            if (!kelas || !absen || !nama || !gender) {
-                showToast("Lengkapi data kelas, absen, nama, dan jenis kelamin!", "error");
+            if (!selectKelas.value) {
+                alert("Harap pilih kelas kandidat!");
                 return;
             }
-            if (!categoryId) {
-                showToast("Pilih salah satu kategori Ter- yang ingin didaftarkan!", "error");
+            if (!selectAbsen.value) {
+                alert("Harap pilih nomor absen!");
                 return;
             }
-            if (!keterangan) {
-                showToast("Harap isi keterangan/alasan nominasi!", "error");
+            if (!inputNama.value.trim()) {
+                alert("Harap isi nama lengkap siswa!");
+                return;
+            }
+            if (!selectGender.value) {
+                alert("Harap pilih jenis kelamin!");
+                return;
+            }
+            if (!inputCategoryId.value) {
+                alert("Harap pilih salah satu kategori nominasi Ter-!");
+                return;
+            }
+            if (!document.getElementById('inputKeterangan').value.trim()) {
+                alert("Harap isi keterangan/alasan nominasi!");
                 return;
             }
 
@@ -852,54 +598,33 @@
             btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan Pendaftaran...';
 
             const payload = {
-                id: 'cand_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
-                kelas: kelas,
-                absen: parseInt(absen, 10),
-                nama: nama,
-                gender: gender,
-                genderLabel: gender === 'L' ? 'Cowok' : 'Cewek',
-                categoryId: categoryId,
-                categoryTitle: (CATEGORIES_LIST.find(c => c.id === categoryId) || {}).title || categoryId,
-                keterangan: keterangan,
+                nama: inputNama.value.trim(),
+                kelas: selectKelas.value,
+                absen: parseInt(selectAbsen.value, 10),
+                gender: selectGender.value,
+                categoryId: inputCategoryId.value,
+                categoryTitle: inputCategoryTitle.value,
+                keterangan: document.getElementById('inputKeterangan').value.trim(),
                 photo: base64PhotoData,
-                status: 'pending',
-                registeredAt: new Date().toISOString(),
-                registeredAtFormatted: new Intl.DateTimeFormat("id-ID", {
-                    dateStyle: "full",
-                    timeStyle: "short"
-                }).format(new Date())
+                registeredAt: Date.now(),
+                registeredAtFormatted: new Date().toLocaleString('id-ID')
             };
 
             try {
-                const regKey = `${kelas}_${absen}_${categoryId}`;
-                const url = `${window.DB_BASE_URL}/kandidat_ter_registrations/${regKey}.json`;
-                
+                const url = `${window.DB_BASE_URL}/kandidat_ter_registrations.json`;
                 const res = await fetch(url, {
-                    method: 'PUT',
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                if (res.ok) {
-                    showToast("Pendaftaran kandidat berhasil dikirim! Menunggu verifikasi admin.", "success");
-                    // Reset Form
-                    document.getElementById('candidateRegForm').reset();
-                    base64PhotoData = "";
-                    photoPreview.style.display = 'none';
-                    previewPlaceholderIcon.style.display = 'block';
-                    photoPreviewBox.classList.remove('has-image');
-                    studentDetectNote.style.display = 'none';
-                    document.querySelectorAll('.cat-option-card').forEach(c => c.classList.remove('selected'));
-                    selectedCategory.value = "";
-                    selectAbsen.disabled = true;
-                    selectAbsen.innerHTML = '<option value="">-- Pilih Kelas Dahulu --</option>';
-                } else {
-                    throw new Error("Gagal menyimpan ke server: " + res.statusText);
-                }
+                if (!res.ok) throw new Error("Gagal mengirim data: " + res.statusText);
+
+                alert("Pendaftaran kandidat berhasil dikirim! Terima kasih.");
+                window.location.href = 'voting-ter.html';
             } catch (err) {
-                console.error(err);
-                showToast("Terjadi kesalahan: " + err.message, "error");
-            } finally {
+                console.error("Submit Error:", err);
+                alert("Terjadi kendala saat mengirim data: " + err.message);
                 btnSubmit.disabled = false;
                 btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran Kandidat';
             }
