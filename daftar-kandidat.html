@@ -3,76 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pendaftaran Kandidat Ter- Angkatan - NEVASTRA 2026</title>
+    <title>Pendaftaran Karakter Angkatan - NEVASTRA 2026</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg+xml" href="logo.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
+        :root {
+            --bg-deep: #070d18;
+            --card-surface: #0f172a;
+            --card-surface-hover: #1e293b;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-accent: rgba(57, 183, 187, 0.4);
+            --teal-accent: #39b7bb;
+            --teal-glow: rgba(57, 183, 187, 0.25);
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+            --text-muted: #64748b;
+        }
+
         body {
-            background-color: #f8fafc;
-            color: var(--text, #334155);
+            background-color: var(--bg-deep);
+            background-image: 
+                radial-gradient(at 15% 15%, rgba(57, 183, 187, 0.12) 0px, transparent 45%),
+                radial-gradient(at 85% 85%, rgba(30, 58, 138, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             padding: 0;
             -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* Navbar Dark Metallic Overwrite */
+        .app-navbar {
+            background: rgba(11, 17, 32, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .nav-brand .brand-text h1 {
+            color: #ffffff;
+        }
+
+        .nav-brand .brand-text p {
+            color: var(--text-muted);
         }
 
         .main-wrapper-kandidat {
-            max-width: 860px;
+            max-width: 780px;
             margin: 0 auto;
-            padding: 24px 16px 80px;
+            padding: 32px 16px 90px;
             width: 100%;
             box-sizing: border-box;
         }
 
-        .page-header {
-            background: #ffffff;
-            border: 1px solid var(--border-color, #e2e8f0);
-            border-radius: var(--radius-lg, 16px);
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.05));
+        .header-panel {
             text-align: center;
+            margin-bottom: 28px;
         }
 
-        .page-header .badge-pill {
+        .header-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 4px 12px;
+            padding: 5px 14px;
             border-radius: 999px;
-            background: rgba(57, 183, 187, 0.1);
-            color: #0f766e;
+            background: rgba(57, 183, 187, 0.12);
+            border: 1px solid rgba(57, 183, 187, 0.3);
+            color: var(--teal-accent);
             font-size: 0.78rem;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
-            margin-bottom: 12px;
-            border: 1px solid rgba(57, 183, 187, 0.25);
+            margin-bottom: 14px;
         }
 
-        .page-header h2 {
-            font-size: 1.6rem;
+        .header-title {
+            font-size: 1.85rem;
             font-weight: 800;
-            color: #0f172a;
-            margin: 0 0 8px;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.025em;
+            color: #ffffff;
+            margin: 0 0 10px;
         }
 
-        .page-header p {
-            font-size: 0.92rem;
-            color: #64748b;
+        .header-desc {
+            font-size: 0.94rem;
+            color: var(--text-sub);
             margin: 0 auto;
-            max-width: 620px;
-            line-height: 1.5;
+            max-width: 580px;
+            line-height: 1.55;
         }
 
-        .form-card {
-            background: #ffffff;
-            border: 1px solid var(--border-color, #e2e8f0);
-            border-radius: var(--radius-lg, 16px);
-            padding: 28px;
-            box-shadow: var(--shadow-md, 0 4px 12px rgba(0,0,0,0.04));
+        /* Glassmorphism Form Card */
+        .registration-card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-top: 1px solid rgba(57, 183, 187, 0.5);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), 0 0 30px rgba(57, 183, 187, 0.05);
+        }
+
+        @media (max-width: 640px) {
+            .registration-card {
+                padding: 22px 18px;
+            }
+            .header-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        .form-section-title {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--teal-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .form-group {
@@ -83,9 +135,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.88rem;
+            font-size: 0.86rem;
             font-weight: 700;
-            color: #1e293b;
+            color: #e2e8f0;
             margin-bottom: 8px;
         }
 
@@ -96,14 +148,14 @@
         }
 
         .form-label-title span.req {
-            color: #ef4444;
+            color: #f43f5e;
             font-weight: 800;
         }
 
         .form-label small {
-            font-weight: 500;
-            font-size: 0.76rem;
-            color: #64748b;
+            font-weight: 400;
+            font-size: 0.74rem;
+            color: var(--text-muted);
         }
 
         .form-control, .form-select {
@@ -111,18 +163,24 @@
             padding: 12px 14px;
             font-size: 0.92rem;
             font-family: inherit;
-            color: #0f172a;
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: var(--radius-md, 10px);
+            color: #f8fafc;
+            background: rgba(11, 17, 32, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
             outline: none;
             transition: all 0.2s ease;
             box-sizing: border-box;
         }
 
         .form-control:focus, .form-select:focus {
-            border-color: #39b7bb;
-            box-shadow: 0 0 0 3px rgba(57, 183, 187, 0.15);
+            border-color: var(--teal-accent);
+            box-shadow: 0 0 0 3px rgba(57, 183, 187, 0.2);
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .form-select option {
+            background-color: #0f172a;
+            color: #f8fafc;
         }
 
         .form-row {
@@ -131,32 +189,29 @@
             gap: 16px;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 600px) {
             .form-row {
                 grid-template-columns: 1fr;
             }
-            .form-card {
-                padding: 20px 16px;
-            }
         }
 
-        /* Photo Upload 3:4 Box */
-        .photo-upload-wrapper {
+        /* 3:4 Portrait Photo Box */
+        .photo-upload-box {
             display: flex;
             align-items: center;
             gap: 20px;
-            padding: 18px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: var(--radius-md, 12px);
+            padding: 16px;
+            background: rgba(11, 17, 32, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
         }
 
-        .photo-preview-box {
+        .photo-preview-slot {
             width: 105px;
-            height: 140px; /* 3:4 aspect ratio */
-            border-radius: 8px;
-            border: 2px dashed #94a3b8;
-            background: #ffffff;
+            height: 140px; /* 3:4 Aspect Ratio */
+            border-radius: 10px;
+            border: 2px dashed rgba(57, 183, 187, 0.5);
+            background: rgba(15, 23, 42, 0.9);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -165,127 +220,248 @@
             flex-shrink: 0;
             position: relative;
             cursor: pointer;
-            transition: border-color 0.2s;
+            transition: all 0.2s ease;
         }
 
-        .photo-preview-box:hover {
-            border-color: #39b7bb;
+        .photo-preview-slot:hover {
+            border-color: var(--teal-accent);
+            box-shadow: 0 0 15px var(--teal-glow);
         }
 
-        .photo-preview-box img {
+        .photo-preview-slot img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .photo-preview-box .placeholder-icon {
-            color: #94a3b8;
-            font-size: 1.8rem;
+        .photo-preview-slot .icon-cam {
+            color: var(--teal-accent);
+            font-size: 1.6rem;
             margin-bottom: 4px;
         }
 
-        .photo-preview-box .ratio-tag {
+        .photo-preview-slot .ratio-hint {
             font-size: 0.68rem;
-            color: #64748b;
+            color: var(--text-muted);
             font-weight: 700;
         }
 
-        .photo-actions {
-            flex-grow: 1;
+        /* COMPACT CATEGORY SELECTOR (No space-wasting gigantic grid) */
+        .category-select-wrapper {
+            position: relative;
         }
 
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 10px;
+        .category-selector-btn {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(11, 17, 32, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            text-align: left;
         }
 
-        .category-item {
+        .category-selector-btn:hover {
+            border-color: var(--teal-accent);
+            background: rgba(15, 23, 42, 0.95);
+        }
+
+        .category-selector-btn .selected-val {
             display: flex;
             align-items: center;
             gap: 10px;
+            font-weight: 600;
+            font-size: 0.92rem;
+        }
+
+        /* Category Modal / Drawer */
+        .category-dropdown-panel {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: 0;
+            background: #0f172a;
+            border: 1px solid rgba(57, 183, 187, 0.3);
+            border-radius: 14px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(57, 183, 187, 0.15);
+            z-index: 100;
+            overflow: hidden;
+            max-height: 380px;
+            flex-direction: column;
+        }
+
+        .category-dropdown-panel.open {
+            display: flex;
+        }
+
+        .cat-search-box {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(11, 17, 32, 0.9);
+        }
+
+        .cat-search-box input {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .cat-list-scroll {
+            overflow-y: auto;
+            max-height: 300px;
+            padding: 6px;
+        }
+
+        .cat-list-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .cat-list-scroll::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        .cat-item-option {
             padding: 12px 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            background: #ffffff;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+            margin-bottom: 4px;
         }
 
-        .category-item:hover {
-            border-color: #cbd5e1;
-            background: #f8fafc;
+        .cat-item-option:hover {
+            background: rgba(57, 183, 187, 0.1);
+            border-color: rgba(57, 183, 187, 0.25);
         }
 
-        .category-item.active {
-            border-color: #39b7bb;
-            background: rgba(57, 183, 187, 0.08);
-            box-shadow: 0 0 0 1px #39b7bb;
+        .cat-item-option.active {
+            background: rgba(57, 183, 187, 0.18);
+            border-color: var(--teal-accent);
         }
 
-        .category-item .cat-icon {
+        .cat-item-icon {
             width: 32px;
             height: 32px;
             border-radius: 8px;
-            background: #f1f5f9;
-            color: #475569;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--teal-accent);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             flex-shrink: 0;
-            transition: all 0.2s;
+            margin-top: 2px;
         }
 
-        .category-item.active .cat-icon {
-            background: #39b7bb;
-            color: #ffffff;
+        .cat-item-info {
+            flex-grow: 1;
         }
 
-        .category-item .cat-name {
-            font-size: 0.84rem;
+        .cat-item-title {
+            font-size: 0.88rem;
             font-weight: 700;
-            color: #1e293b;
+            color: #ffffff;
+            margin-bottom: 2px;
         }
 
-        .category-item.active .cat-name {
-            color: #0f766e;
+        .cat-item-desc {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            line-height: 1.35;
         }
 
-        .btn-submit-kandidat {
-            width: 100%;
-            padding: 14px 20px;
+        /* Callout Active Category Display */
+        .active-category-card {
+            margin-top: 10px;
+            padding: 14px 16px;
+            background: rgba(57, 183, 187, 0.08);
+            border: 1px solid rgba(57, 183, 187, 0.25);
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .active-category-card .acc-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: var(--teal-accent);
+            color: #070d18;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .active-category-card .acc-title {
+            font-size: 0.92rem;
             font-weight: 700;
             color: #ffffff;
-            background: #39b7bb;
+            margin-bottom: 2px;
+        }
+
+        .active-category-card .acc-desc {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            line-height: 1.4;
+        }
+
+        /* Submit Button */
+        .btn-submit-action {
+            width: 100%;
+            padding: 15px 24px;
+            font-size: 0.96rem;
+            font-weight: 700;
+            color: #070d18;
+            background: linear-gradient(135deg, #39b7bb 0%, #22d3ee 100%);
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 2px 6px rgba(57, 183, 187, 0.35);
+            gap: 10px;
+            box-shadow: 0 4px 16px rgba(57, 183, 187, 0.35);
+            margin-top: 10px;
         }
 
-        .btn-submit-kandidat:hover {
-            background: #2ea0a4;
-            transform: translateY(-1px);
+        .btn-submit-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(57, 183, 187, 0.5);
+            filter: brightness(1.05);
         }
 
-        .btn-submit-kandidat:disabled {
-            opacity: 0.6;
+        .btn-submit-action:disabled {
+            opacity: 0.5;
             cursor: not-allowed;
             transform: none;
+            filter: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR IDENTIK NEVASTRA -->
+    <!-- NAVBAR RESMI NEVASTRA -->
     <nav class="app-navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-brand">
@@ -296,10 +472,10 @@
                 </div>
             </a>
             <div class="nav-links">
-                <a href="voting-ter.html" class="nav-btn" style="text-decoration: none; background: #ffffff; border: 1px solid #cbd5e1; color: #475569; font-weight: 600;">
+                <a href="voting-ter.html" class="nav-btn" style="text-decoration: none; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #cbd5e1; font-weight: 600;">
                     <i class="fa-solid fa-square-poll-vertical"></i> Halaman Voting
                 </a>
-                <a href="index.html" class="nav-btn" style="text-decoration: none;">
+                <a href="index.html" class="nav-btn" style="text-decoration: none; color: #94a3b8;">
                     <i class="fa-solid fa-house"></i> Beranda
                 </a>
             </div>
@@ -308,42 +484,43 @@
 
     <div class="main-wrapper-kandidat">
         <!-- HEADER KONTEN -->
-        <div class="page-header">
-            <div class="badge-pill">
-                <i class="fa-solid fa-id-card"></i> Pendaftaran Resmi Kandidat
+        <div class="header-panel">
+            <div class="header-badge">
+                <i class="fa-solid fa-id-badge"></i> Nominasi Karakter Angkatan
             </div>
-            <h2>Pendaftaran Kandidat Ter- Angkatan</h2>
-            <p>Daftarkan diri atau rekomendasikan teman sekelasmu untuk masuk nominasi 16 kategori Ter- Angkatan NEVASTRA 2026.</p>
+            <h2 class="header-title">Pendaftaran Nominasi Karakter</h2>
+            <p class="header-desc">Daftarkan dirimu atau rekomendasikan teman seangkatan untuk meraih predikat ikonik dalam buku kenangan NEVASTRA 2026.</p>
         </div>
 
-        <!-- FORM CARD -->
-        <div class="form-card">
+        <!-- FORM CARD BERGAYA DARK METALLIC / GLASS -->
+        <div class="registration-card">
             <form id="formKandidat" novalidate>
-                <!-- FOTO KANDIDAT (3:4) -->
+                
+                <!-- BAGIAN 1: FOTO KANDIDAT (3:4) -->
                 <div class="form-group">
                     <label class="form-label">
                         <span class="form-label-title">Foto Kandidat <span class="req">*</span></span>
-                        <small>Format disarankan Rasio 3:4 (Pas Foto / Potret)</small>
+                        <small>Pas Foto / Potret Rasio 3:4</small>
                     </label>
-                    <div class="photo-upload-wrapper">
-                        <div class="photo-preview-box" id="previewBox" onclick="document.getElementById('fileFoto').click()">
-                            <i class="fa-solid fa-camera placeholder-icon" id="previewPlaceholder"></i>
-                            <span class="ratio-tag" id="previewTag">3 : 4</span>
-                            <img id="imgPreview" src="" alt="Preview Foto" style="display: none;">
+                    <div class="photo-upload-box">
+                        <div class="photo-preview-slot" id="previewSlot" onclick="document.getElementById('fileFoto').click()">
+                            <i class="fa-solid fa-camera icon-cam" id="camIcon"></i>
+                            <span class="ratio-hint" id="ratioHint">3 : 4</span>
+                            <img id="imgPreview" src="" alt="Pratinjau Foto" style="display: none;">
                         </div>
-                        <div class="photo-actions">
+                        <div style="flex-grow: 1;">
                             <input type="file" id="fileFoto" accept="image/jpeg,image/png,image/webp" style="display: none;">
-                            <button type="button" class="btn btn-outline" onclick="document.getElementById('fileFoto').click()" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 600; padding: 9px 16px; border-radius: 8px;">
-                                <i class="fa-solid fa-cloud-arrow-up"></i> Unggah Foto
+                            <button type="button" class="btn" onclick="document.getElementById('fileFoto').click()" style="background: rgba(57, 183, 187, 0.15); border: 1px solid rgba(57, 183, 187, 0.35); color: #39b7bb; font-weight: 600; padding: 10px 18px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Pilih Foto dari Perangkat
                             </button>
-                            <p style="margin: 8px 0 0; font-size: 0.78rem; color: #64748b; line-height: 1.4;">
-                                Foto dikompres otomatis agar proporsional dan ringan saat dibuka di halaman voting.
+                            <p style="margin: 8px 0 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.45;">
+                                Foto otomatis disesuaikan secara proporsional ke format potret 3:4 tanpa distorsi dan berukuran ringan.
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- KELAS & ABSEN -->
+                <!-- BAGIAN 2: KELAS & ABSEN -->
                 <div class="form-row">
                     <div class="form-group">
                         <label for="selectKelas" class="form-label">
@@ -363,13 +540,13 @@
                     </div>
                 </div>
 
-                <!-- NAMA & JENIS KELAMIN -->
+                <!-- BAGIAN 3: NAMA & GENDER -->
                 <div class="form-row">
                     <div class="form-group">
                         <label for="inputNama" class="form-label">
                             <span class="form-label-title">Nama Lengkap Siswa <span class="req">*</span></span>
                         </label>
-                        <input type="text" id="inputNama" class="form-control" placeholder="Nama kandidat akan terisi otomatis atau ketik manual..." required>
+                        <input type="text" id="inputNama" class="form-control" placeholder="Nama kandidat otomatis muncul atau ketik di sini..." required>
                     </div>
                     <div class="form-group">
                         <label for="selectGender" class="form-label">
@@ -383,31 +560,58 @@
                     </div>
                 </div>
 
-                <!-- KATEGORI SELECTION (TANPA STIKER/EMOJI) -->
+                <!-- BAGIAN 4: PEMILIHAN KATEGORI RINGKAS (COMPACT SELECTOR + DESKRIPSI) -->
                 <div class="form-group">
                     <label class="form-label">
-                        <span class="form-label-title">Kategori Nominasi <span class="req">*</span></span>
-                        <small>Pilih salah satu dari 16 kategori Ter-</small>
+                        <span class="form-label-title">Kategori Karakter <span class="req">*</span></span>
+                        <small>Klik untuk memilih dari 16 kategori unik</small>
                     </label>
                     <input type="hidden" id="inputCategoryId" value="" required>
                     <input type="hidden" id="inputCategoryTitle" value="">
-                    <div class="category-grid" id="categoryGrid">
-                        <!-- Rendered by JS without any emojis -->
+                    
+                    <div class="category-select-wrapper">
+                        <!-- Selector Trigger -->
+                        <div class="category-selector-btn" id="categoryBtnTrigger">
+                            <div class="selected-val" id="selectorDisplay">
+                                <i class="fa-solid fa-list-check" style="color: var(--teal-accent);"></i>
+                                <span style="color: var(--text-muted);">-- Klik untuk Memilih Karakter Nominasi --</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-down" style="color: var(--text-muted); font-size: 0.85rem;"></i>
+                        </div>
+
+                        <!-- Dropdown Panel with Search & Descriptions -->
+                        <div class="category-dropdown-panel" id="categoryDropdownPanel">
+                            <div class="cat-search-box">
+                                <input type="text" id="catSearchInput" placeholder="Cari nama julukan atau kata kunci karakter..." autocomplete="off">
+                            </div>
+                            <div class="cat-list-scroll" id="catOptionsContainer">
+                                <!-- Generated by JS with Titles & Descriptions -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Callout Deskripsi Kategori Terpilih -->
+                    <div class="active-category-card" id="activeCategoryBox" style="display: none;">
+                        <div class="acc-icon" id="accIcon"><i class="fa-solid fa-star"></i></div>
+                        <div>
+                            <div class="acc-title" id="accTitle">Judul Kategori</div>
+                            <div class="acc-desc" id="accDesc">Deskripsi kategori karakter akan tampil di sini.</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- KETERANGAN / ALASAN -->
+                <!-- BAGIAN 5: KETERANGAN / ALASAN -->
                 <div class="form-group">
                     <label for="inputKeterangan" class="form-label">
                         <span class="form-label-title">Keterangan / Alasan Nominasi <span class="req">*</span></span>
-                        <small>Tulis alasan mengapa layak masuk kategori ini</small>
+                        <small>Ceritakan momen atau alasan mengapa kandidat pantas menyandang gelar ini</small>
                     </label>
-                    <textarea id="inputKeterangan" class="form-control" rows="3" placeholder="Contoh: Selalu mencairkan suasana di kelas dengan lawakan spontan setiap hari..." required></textarea>
+                    <textarea id="inputKeterangan" class="form-control" rows="3" placeholder="Contoh: Setiap ada tugas kelompok atau praktikum selalu jadi andalan menyelesaikan troubleshooting coding dan setup proyektor..." required></textarea>
                 </div>
 
-                <!-- TOMBOL SUBMIT -->
-                <button type="submit" class="btn-submit-kandidat" id="btnSubmit">
-                    <i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran Kandidat
+                <!-- SUBMIT BUTTON -->
+                <button type="submit" class="btn-submit-action" id="btnSubmit">
+                    <i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran Karakter
                 </button>
             </form>
         </div>
@@ -417,50 +621,205 @@
     <script src="students-data.js"></script>
     <script src="firebase-config.js"></script>
     <script>
-        // 16 Kategori Resmi Tanpa Stiker / Emoji
-        const CATEGORIES_DATA = [
-            { id: "ter_kocak", title: "TER-KOCAK", icon: "fa-masks-theater" },
-            { id: "ter_ambis", title: "TER-AMBIS", icon: "fa-book-open" },
-            { id: "ter_ramah", title: "TER-RAMAH", icon: "fa-handshake-angle" },
-            { id: "ter_imut", title: "TER-IMUT", icon: "fa-sparkles" },
-            { id: "ter_alim", title: "TER-ALIM", icon: "fa-mosque" },
-            { id: "ter_calm", title: "TER-CALM", icon: "fa-feather" },
-            { id: "ter_organisasi", title: "TER-ORGANISASI", icon: "fa-user-tie" },
-            { id: "ter_royal", title: "TER-ROYAL", icon: "fa-crown" },
-            { id: "ter_jajan", title: "TER-JAJAN", icon: "fa-utensils" },
-            { id: "ter_lambat", title: "TER-LAMBAT", icon: "fa-clock" },
-            { id: "ter_atlit", title: "TER-ATLIT", icon: "fa-medal" },
-            { id: "ter_kreatif", title: "TER-KREATIF", icon: "fa-palette" },
-            { id: "ter_tech", title: "SI ANAK IT", icon: "fa-laptop-code" },
-            { id: "ter_tidur", title: "TER-TIDUR", icon: "fa-bed" },
-            { id: "ter_heboh", title: "TER-HEBOH", icon: "fa-bullhorn" },
-            { id: "ter_couple", title: "TER-COUPLE", icon: "fa-user-group" }
-        ];
+        // 16 Kategori Karakter Ikonik + Deskripsi Lengkap (Tanpa Stiker / Emoji)
+        const KARAKTER_DATA = [
+            {
+                        "id": "ter_kocak",
+                        "title": "Ter-Kocak",
+                        "desc": "Paling lucu, humoris, pencair suasana dan moodbooster sejati di kelas maupun angkatan.",
+                        "icon": "fa-masks-theater"
+            },
+            {
+                        "id": "ter_ambis",
+                        "title": "Si Ambis",
+                        "desc": "Paling rajin belajar, catatan teratur super rapi, dan langganan ranking juara kelas.",
+                        "icon": "fa-book-open-reader"
+            },
+            {
+                        "id": "ter_ramah",
+                        "title": "Si Humble",
+                        "desc": "Super friendly, murah senyum, tutur kata lembut, dan akrab ke semua orang dari kelas 1 sampai 9.",
+                        "icon": "fa-handshake-angle"
+            },
+            {
+                        "id": "ter_imut",
+                        "title": "Ter-Imut",
+                        "desc": "Memiliki pesona baby face, ekspresi gemas, dan tingkah laku yang paling menggemaskan.",
+                        "icon": "fa-sparkles"
+            },
+            {
+                        "id": "ter_alim",
+                        "title": "Ter-Alim",
+                        "desc": "Tutur kata sopan santun, pembawaan teduh menenangkan, dan selalu jadi pengingat ibadah.",
+                        "icon": "fa-mosque"
+            },
+            {
+                        "id": "ter_calm",
+                        "title": "Paling Santuy",
+                        "desc": "Paling santai, cool, kepala dingin, dan tenang tak tergoyahkan menghadapi ujian dan deadline.",
+                        "icon": "fa-feather-pointed"
+            },
+            {
+                        "id": "ter_organisasi",
+                        "title": "Ter-Organisasi",
+                        "desc": "Paling aktif OSIS, Pramuka, panitia event sekolah, berjiwa pemimpin dan sibuk rapat tiap hari.",
+                        "icon": "fa-user-tie"
+            },
+            {
+                        "id": "ter_royal",
+                        "title": "Ter-Royal",
+                        "desc": "Paling dermawan, berjiwa sultan, loyal tanpa pamrih, dan hobi mentraktir teman sekelas jajan.",
+                        "icon": "fa-crown"
+            },
+            {
+                        "id": "ter_jajan",
+                        "title": "Ter-Jajan",
+                        "desc": "Meja belajar selalu penuh aneka cemilan, pelanggan setia kantin, dan tidak pernah kehabisan stok snack.",
+                        "icon": "fa-utensils"
+            },
+            {
+                        "id": "ter_lambat",
+                        "title": "Paling Lambat",
+                        "desc": "Spesialis masuk gerbang sekolah detik-detik terakhir pas pintu pagar mau dikunci satpam.",
+                        "icon": "fa-clock"
+            },
+            {
+                        "id": "ter_atlit",
+                        "title": "Ter-Atlit",
+                        "desc": "Jagoan tangguh di lapangan olahraga, berstamina baja, dan langganan menyumbang piala kejuaraan.",
+                        "icon": "fa-medal"
+            },
+            {
+                        "id": "ter_kreatif",
+                        "title": "Ter-Kreatif",
+                        "desc": "Paling berseni, jago visual, ilustrasi, estetik, dan otaknya selalu melahirkan ide-ide unik out of the box.",
+                        "icon": "fa-palette"
+            },
+            {
+                        "id": "ter_tech",
+                        "title": "Si Anak IT",
+                        "desc": "Paling melek teknologi, jago komputer dan software, dan jadi tempat konsultasi IT sekelas.",
+                        "icon": "fa-laptop-code"
+            },
+            {
+                        "id": "ter_tidur",
+                        "title": "Ter-Tidur",
+                        "desc": "Paling sakti tidur di mana saja dan posisi apa saja begitu jam kosong atau waktu istirahat tiba.",
+                        "icon": "fa-bed"
+            },
+            {
+                        "id": "ter_heboh",
+                        "title": "Ter-Heboh",
+                        "desc": "Paling ekspresif, suara melengking penuh semangat, dan paling sukses bikin suasana kelas jadi hidup.",
+                        "icon": "fa-bullhorn"
+            },
+            {
+                        "id": "ter_couple",
+                        "title": "Pasangan Favorit",
+                        "desc": "Dua sejoli atau duet sahabat paling kompak, serasi, dan ikonik yang tak terpisahkan sepanjang masa SMA.",
+                        "icon": "fa-user-group"
+            }
+];
 
         let base64PhotoData = "";
 
-        // Render Category Grid Clean
-        const categoryGrid = document.getElementById('categoryGrid');
+        // Elements
+        const categoryBtnTrigger = document.getElementById('categoryBtnTrigger');
+        const categoryDropdownPanel = document.getElementById('categoryDropdownPanel');
+        const catSearchInput = document.getElementById('catSearchInput');
+        const catOptionsContainer = document.getElementById('catOptionsContainer');
+        const selectorDisplay = document.getElementById('selectorDisplay');
         const inputCategoryId = document.getElementById('inputCategoryId');
         const inputCategoryTitle = document.getElementById('inputCategoryTitle');
+        const activeCategoryBox = document.getElementById('activeCategoryBox');
+        const accIcon = document.getElementById('accIcon');
+        const accTitle = document.getElementById('accTitle');
+        const accDesc = document.getElementById('accDesc');
 
-        CATEGORIES_DATA.forEach(cat => {
-            const card = document.createElement('div');
-            card.className = 'category-item';
-            card.innerHTML = `
-                <div class="cat-icon"><i class="fa-solid ${cat.icon || 'fa-tag'}"></i></div>
-                <div class="cat-name">${cat.title}</div>
+        // Render Category Dropdown Items
+        function renderCategoryOptions(filterText = '') {
+            catOptionsContainer.innerHTML = '';
+            const q = filterText.toLowerCase().trim();
+
+            const matched = KARAKTER_DATA.filter(c => 
+                c.title.toLowerCase().includes(q) || 
+                c.desc.toLowerCase().includes(q)
+            );
+
+            if (matched.length === 0) {
+                catOptionsContainer.innerHTML = `
+                    <div style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 0.82rem;">
+                        Tidak ada kategori yang cocok dengan pencarian "${filterText}".
+                    </div>
+                `;
+                return;
+            }
+
+            matched.forEach(cat => {
+                const item = document.createElement('div');
+                item.className = 'cat-item-option' + (inputCategoryId.value === cat.id ? ' active' : '');
+                item.innerHTML = `
+                    <div class="cat-item-icon"><i class="fa-solid ${cat.icon}"></i></div>
+                    <div class="cat-item-info">
+                        <div class="cat-item-title">${cat.title}</div>
+                        <div class="cat-item-desc">${cat.desc}</div>
+                    </div>
+                `;
+                item.onclick = (e) => {
+                    e.stopPropagation();
+                    selectCategory(cat);
+                };
+                catOptionsContainer.appendChild(item);
+            });
+        }
+
+        function selectCategory(cat) {
+            inputCategoryId.value = cat.id;
+            inputCategoryTitle.value = cat.title;
+
+            selectorDisplay.innerHTML = `
+                <i class="fa-solid ${cat.icon}" style="color: var(--teal-accent);"></i>
+                <span style="color: #ffffff; font-weight: 700;">${cat.title}</span>
             `;
-            card.onclick = () => {
-                document.querySelectorAll('.category-item').forEach(c => c.classList.remove('active'));
-                card.classList.add('active');
-                inputCategoryId.value = cat.id;
-                inputCategoryTitle.value = cat.title;
-            };
-            categoryGrid.appendChild(card);
+
+            // Update callout box
+            accIcon.innerHTML = `<i class="fa-solid ${cat.icon}"></i>`;
+            accTitle.textContent = cat.title;
+            accDesc.textContent = cat.desc;
+            activeCategoryBox.style.display = 'flex';
+
+            categoryDropdownPanel.classList.remove('open');
+            renderCategoryOptions(catSearchInput.value);
+        }
+
+        // Toggle Dropdown
+        categoryBtnTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = categoryDropdownPanel.classList.contains('open');
+            if (!isOpen) {
+                categoryDropdownPanel.classList.add('open');
+                catSearchInput.value = '';
+                renderCategoryOptions();
+                setTimeout(() => catSearchInput.focus(), 50);
+            } else {
+                categoryDropdownPanel.classList.remove('open');
+            }
         });
 
-        // Initialize Classes
+        catSearchInput.addEventListener('input', () => {
+            renderCategoryOptions(catSearchInput.value);
+        });
+
+        // Close on outside click
+        document.addEventListener('click', (e) => {
+            if (!categoryDropdownPanel.contains(e.target) && !categoryBtnTrigger.contains(e.target)) {
+                categoryDropdownPanel.classList.remove('open');
+            }
+        });
+
+        renderCategoryOptions();
+
+        // Class & Absen Dependency
         const selectKelas = document.getElementById('selectKelas');
         const selectAbsen = document.getElementById('selectAbsen');
         const inputNama = document.getElementById('inputNama');
@@ -507,11 +866,11 @@
             }
         });
 
-        // Photo Upload & 3:4 Auto Compression
+        // Photo Upload & 3:4 Aspect Ratio Auto-Crop
         const fileFoto = document.getElementById('fileFoto');
         const imgPreview = document.getElementById('imgPreview');
-        const previewPlaceholder = document.getElementById('previewPlaceholder');
-        const previewTag = document.getElementById('previewTag');
+        const camIcon = document.getElementById('camIcon');
+        const ratioHint = document.getElementById('ratioHint');
 
         fileFoto.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -550,15 +909,15 @@
 
                     imgPreview.src = base64PhotoData;
                     imgPreview.style.display = 'block';
-                    previewPlaceholder.style.display = 'none';
-                    previewTag.style.display = 'none';
+                    camIcon.style.display = 'none';
+                    ratioHint.style.display = 'none';
                 };
                 img.src = event.target.result;
             };
             reader.readAsDataURL(file);
         });
 
-        // Form Submit
+        // Form Submission
         const formKandidat = document.getElementById('formKandidat');
         const btnSubmit = document.getElementById('btnSubmit');
 
@@ -566,7 +925,7 @@
             e.preventDefault();
 
             if (!base64PhotoData) {
-                alert("Harap unggah foto kandidat terlebih dahulu!");
+                alert("Harap unggah foto kandidat (rasio 3:4) terlebih dahulu!");
                 return;
             }
             if (!selectKelas.value) {
@@ -586,7 +945,7 @@
                 return;
             }
             if (!inputCategoryId.value) {
-                alert("Harap pilih salah satu kategori nominasi Ter-!");
+                alert("Harap pilih salah satu kategori karakter nominasi!");
                 return;
             }
             if (!document.getElementById('inputKeterangan').value.trim()) {
@@ -595,7 +954,7 @@
             }
 
             btnSubmit.disabled = true;
-            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan Pendaftaran...';
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan Nominasi...';
 
             const payload = {
                 nama: inputNama.value.trim(),
@@ -620,13 +979,13 @@
 
                 if (!res.ok) throw new Error("Gagal mengirim data: " + res.statusText);
 
-                alert("Pendaftaran kandidat berhasil dikirim! Terima kasih.");
+                alert("Pendaftaran nominasi karakter berhasil dikirim! Terima kasih.");
                 window.location.href = 'voting-ter.html';
             } catch (err) {
                 console.error("Submit Error:", err);
                 alert("Terjadi kendala saat mengirim data: " + err.message);
                 btnSubmit.disabled = false;
-                btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran Kandidat';
+                btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran Karakter';
             }
         });
     </script>
