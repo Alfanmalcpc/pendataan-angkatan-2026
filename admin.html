@@ -2379,6 +2379,7 @@
         const btnSwitchPendataanTambahan = document.getElementById('btnSwitchPendataanTambahan');
         const btnSwitchAjuBanding = document.getElementById('btnSwitchAjuBanding');
         const btnSwitchKaosTtd = document.getElementById('btnSwitchKaosTtd');
+        const btnSwitchKandidatTer = document.getElementById('btnSwitchKandidatTer');
         const biodataWrapper = document.getElementById('biodataWrapper');
         const votingSectionAdmin = document.getElementById('votingSectionAdmin');
         const kelompokSectionAdmin = document.getElementById('kelompokSectionAdmin');
@@ -2386,6 +2387,7 @@
         const pendataanTambahanSectionAdmin = document.getElementById('pendataanTambahanSectionAdmin');
         const ajuBandingSectionAdmin = document.getElementById('ajuBandingSectionAdmin');
         const kaosTtdSectionAdmin = document.getElementById('kaosTtdSectionAdmin');
+        const kandidatTerSectionAdmin = document.getElementById('kandidatTerSectionAdmin');
 
         function switchAdminMode(mode) {
             currentAdminMode = mode;
@@ -2510,6 +2512,7 @@
         btnSwitchPendataanTambahan.onclick = () => switchAdminMode('pendataanTambahan');
         if (btnSwitchAjuBanding) btnSwitchAjuBanding.onclick = () => switchAdminMode('ajuBanding');
         if (btnSwitchKaosTtd) btnSwitchKaosTtd.onclick = () => switchAdminMode('kaosTtd');
+        if (btnSwitchKandidatTer) btnSwitchKandidatTer.onclick = () => switchAdminMode('kandidatTer');
 
         // Check query param e.g. admin.html?tab=kelompok or admin.html?tab=voting
         const urlParamsAdmin = new URLSearchParams(window.location.search);
@@ -2526,6 +2529,8 @@
             switchAdminMode('ajuBanding');
         } else if (tabParam === 'kaos' || tabParam === 'ttd') {
             switchAdminMode('kaosTtd');
+        } else if (tabParam === 'kandidat' || tabParam === 'kandidatter' || tabParam === 'kandidatTer') {
+            switchAdminMode('kandidatTer');
         }
 
         // Google Sheet Config Handlers
@@ -4356,6 +4361,7 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
             syncKelompokData();
             syncAppealsData();
             syncKaosTtdData();
+            syncKandidatTerData();
             renderContohTable();
             updateContohLivePreview();
             setInterval(syncData, 15000);
@@ -4363,6 +4369,7 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
             setInterval(syncKelompokData, 15000);
             setInterval(syncAppealsData, 15000);
             setInterval(syncKaosTtdData, 15000);
+            setInterval(syncKandidatTerData, 15000);
         }
 
         function checkAdminAuth() {
@@ -4463,8 +4470,7 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
         // ========================================================
         // MODUL ADMIN PENDAFTARAN KANDIDAT TER-
         // ========================================================
-        const btnSwitchKandidatTer = document.getElementById('btnSwitchKandidatTer');
-        const kandidatTerSectionAdmin = document.getElementById('kandidatTerSectionAdmin');
+        // Note: btnSwitchKandidatTer and kandidatTerSectionAdmin declared at top scope
         const kandidatTerTableBody = document.getElementById('kandidatTerTableBody');
         const badgePendingKandidat = document.getElementById('badgePendingKandidat');
         const btnRefreshKandidatTer = document.getElementById('btnRefreshKandidatTer');
@@ -4476,22 +4482,22 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
 
         // Categories List for Filter
         const ADMIN_CATEGORIES_TER = [
-            { id: "ter_kocak", title: "TER-KOCAK" },
-            { id: "ter_ambis", title: "TER-AMBIS" },
-            { id: "ter_ramah", title: "TER-RAMAH" },
-            { id: "ter_imut", title: "TER-IMUT" },
-            { id: "ter_alim", title: "TER-ALIM" },
-            { id: "ter_calm", title: "TER-CALM" },
-            { id: "ter_organisasi", title: "TER-ORGANISASI" },
-            { id: "ter_royal", title: "TER-ROYAL" },
-            { id: "ter_jajan", title: "TER-JAJAN" },
-            { id: "ter_lambat", title: "TER-LAMBAT" },
-            { id: "ter_atlit", title: "TER-ATLIT" },
-            { id: "ter_kreatif", title: "TER-KREATIF" },
-            { id: "ter_tech", title: "SI ANAK IT" },
-            { id: "ter_tidur", title: "TER-TIDUR" },
-            { id: "ter_heboh", title: "TER-HEBOH" },
-            { id: "ter_couple", title: "TER-COUPLE" }
+            { id: "ter_kocak", title: "Ter-Kocak" },
+            { id: "ter_ambis", title: "Si Ambis" },
+            { id: "ter_ramah", title: "Si Humble" },
+            { id: "ter_imut", title: "Ter-Imut" },
+            { id: "ter_alim", title: "Ter-Alim" },
+            { id: "ter_calm", title: "Paling Santuy" },
+            { id: "ter_organisasi", title: "Ter-Organisasi" },
+            { id: "ter_royal", title: "Ter-Royal" },
+            { id: "ter_jajan", title: "Ter-Jajan" },
+            { id: "ter_lambat", title: "Paling Lambat" },
+            { id: "ter_atlit", title: "Ter-Atlit" },
+            { id: "ter_kreatif", title: "Ter-Kreatif" },
+            { id: "ter_tech", title: "Si Anak IT" },
+            { id: "ter_tidur", title: "Ter-Tidur" },
+            { id: "ter_heboh", title: "Ter-Heboh" },
+            { id: "ter_couple", title: "Pasangan Favorit" }
         ];
 
         // Populate Category Filter
@@ -4583,7 +4589,7 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
                 kandidatTerTableBody.innerHTML = `
                     <tr>
                         <td colspan="10" style="text-align: center; padding: 32px; color: var(--text-muted);">
-                            <div style="font-size: 1.8rem; margin-bottom: 8px;">📭</div>
+                            <i class="fa-solid fa-folder-open" style="font-size: 2rem; color: #cbd5e1; margin-bottom: 8px; display: block;"></i>
                             Belum ada siswa yang mendaftar atau cocok dengan kriteria filter saat ini.
                         </td>
                     </tr>
