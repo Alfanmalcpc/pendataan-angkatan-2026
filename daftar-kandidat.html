@@ -412,9 +412,6 @@
                 </div>
             </a>
             <div class="nav-links">
-                <a href="voting-ter.html" class="nav-btn" style="text-decoration: none;">
-                    <i class="fa-solid fa-square-poll-vertical"></i> Halaman Voting
-                </a>
                 <a href="index.html" class="nav-btn" style="text-decoration: none;">
                     <i class="fa-solid fa-house"></i> Beranda
                 </a>
@@ -922,8 +919,19 @@
 
                 if (!res.ok) throw new Error("Gagal mengirim data: " + res.statusText);
 
-                alert("Pendaftaran nominasi karakter berhasil dikirim! Terima kasih.");
-                window.location.href = 'voting-ter.html';
+                alert("Pendaftaran nominasi karakter berhasil dikirim! Data kamu sudah berhasil tersimpan.");
+                formKandidat.reset();
+                selectedKategoriInput.value = '';
+                categoryBtnTrigger.innerHTML = '<span><i class="fa-solid fa-shapes"></i> Pilih Kategori Nominasi</span><i class="fa-solid fa-chevron-down caret-icon"></i>';
+                categoryBtnTrigger.classList.remove('has-value');
+                document.querySelectorAll('.kategori-item').forEach(el => el.classList.remove('active'));
+                photoBase64 = null;
+                photoPreview.src = '';
+                photoPreview.style.display = 'none';
+                photoPlaceholder.style.display = 'flex';
+                photoPreviewBox.classList.remove('has-image');
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran Karakter';
             } catch (err) {
                 console.error("Submit Error:", err);
                 alert("Terjadi kendala saat mengirim data: " + err.message);
