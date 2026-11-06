@@ -338,6 +338,9 @@
                 <a href="voting.html" target="_blank" class="btn btn-outline btn-sm" style="color: var(--primary); font-weight: 700; border-color: var(--primary);">
                     Buka Voting
                 </a>
+                <a href="daftar-kandidat.html" target="_blank" class="btn btn-outline btn-sm" style="color: #39b7bb; border-color: #39b7bb; font-weight: 700;">
+                    <i class="fa-solid fa-sparkles"></i> Form Pendaftaran Ter-
+                </a>
                 <a href="links.html" class="btn btn-outline btn-sm">
                     Link Kelas
                 </a>
@@ -386,6 +389,10 @@
             </button>
             <button id="btnSwitchKaosTtd" class="btn btn-outline" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md); border-color: #4f46e5; color: #4f46e5; display: inline-flex; align-items: center; gap: 8px;">
                 <i class="fa-solid fa-shirt"></i> Data Kaos & TTD Digital
+            </button>
+            <button id="btnSwitchKandidatTer" class="btn btn-outline" style="padding: 10px 20px; font-weight: 700; border-radius: var(--radius-md); border-color: #39b7bb; color: #39b7bb; display: inline-flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-star"></i> Pendaftar Kandidat Ter-
+                <span id="badgePendingKandidat" class="badge-status pending" style="background:#39b7bb; color:white; font-size:0.75rem; padding:2px 8px; border-radius:10px; display:none;">0</span>
             </button>
         </div>
 
@@ -1401,6 +1408,108 @@
                 </div>
             </div>
         </div>
+        <!-- ======================================================== -->
+        <!-- PANEL KHUSUS PENDAFTARAN KANDIDAT TER- (ADMIN)           -->
+        <!-- ======================================================== -->
+        <div id="kandidatTerSectionAdmin" style="display: none; margin-bottom: 24px;">
+            <div class="card" style="margin-bottom: 20px; border-left: 5px solid #39b7bb;">
+                <div class="card-header" style="flex-wrap: wrap; gap: 12px; align-items: flex-start;">
+                    <div>
+                        <div class="card-title" style="display: flex; align-items: center; gap: 10px;">
+                            <span style="display: inline-flex; width: 34px; height: 34px; background: rgba(57,183,187,0.12); color: #39b7bb; border-radius: 8px; align-items: center; justify-content: center; font-size: 1.15rem;">
+                                <i class="fa-solid fa-star"></i>
+                            </span>
+                            <span style="font-size: 1.18rem; font-weight: 800; color: var(--text);">Daftar Pendaftar Kandidat Ter- Angkatan</span>
+                        </div>
+                        <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">
+                            Rekap data siswa yang mendaftar nominasi 16 kategori Ter- Angkatan NEVASTRA 2026. Lengkap dengan foto, kelas, absen, dan alasan.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <a href="daftar-kandidat.html" target="_blank" class="btn btn-outline btn-sm" style="color: #39b7bb; border-color: #39b7bb; font-weight: 700;">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka Form Pendaftaran
+                        </a>
+                        <button type="button" id="btnRefreshKandidatTer" class="btn btn-outline btn-sm" style="color: #39b7bb; border-color: #39b7bb; font-weight: 700;">
+                            <i class="fa-solid fa-arrows-rotate"></i> Muat Ulang Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats Counters -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 16px 0;">
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px;">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">TOTAL PENDAFTAR</span>
+                        <h4 id="statTotalKandidat" style="font-size: 1.6rem; font-weight: 800; color: #39b7bb; margin: 4px 0 0 0;">0</h4>
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px;">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">KANDIDAT PUTRA (L)</span>
+                        <h4 id="statCowokKandidat" style="font-size: 1.6rem; font-weight: 800; color: #0284c7; margin: 4px 0 0 0;">0</h4>
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px;">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">KANDIDAT PUTRI (P)</span>
+                        <h4 id="statCewekKandidat" style="font-size: 1.6rem; font-weight: 800; color: #ec4899; margin: 4px 0 0 0;">0</h4>
+                    </div>
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px 16px;">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">KATEGORI AKTIF</span>
+                        <h4 id="statKategoriAktif" style="font-size: 1.6rem; font-weight: 800; color: #8b5cf6; margin: 4px 0 0 0;">0</h4>
+                    </div>
+                </div>
+
+                <!-- Filter Controls -->
+                <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <input type="text" id="searchKandidatInput" class="form-control" style="font-size: 0.85rem;" placeholder="Cari nama kandidat, kelas, absen, atau keterangan...">
+                    </div>
+                    <div style="min-width: 140px;">
+                        <select id="filterKandidatKelas" class="form-control" style="font-size: 0.85rem;">
+                            <option value="ALL">Semua Kelas</option>
+                            <option value="XII-1">XII-1</option>
+                            <option value="XII-2">XII-2</option>
+                            <option value="XII-3">XII-3</option>
+                            <option value="XII-4">XII-4</option>
+                            <option value="XII-5">XII-5</option>
+                            <option value="XII-6">XII-6</option>
+                            <option value="XII-7">XII-7</option>
+                            <option value="XII-8">XII-8</option>
+                            <option value="XII-9">XII-9</option>
+                        </select>
+                    </div>
+                    <div style="min-width: 180px;">
+                        <select id="filterKandidatKategori" class="form-control" style="font-size: 0.85rem;">
+                            <option value="ALL">Semua Kategori</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Table Data Pendaftar -->
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 45px; text-align: center;">No</th>
+                                <th style="width: 75px; text-align: center;">Foto</th>
+                                <th>Nama Lengkap</th>
+                                <th style="width: 80px; text-align: center;">Kelas</th>
+                                <th style="width: 60px; text-align: center;">Absen</th>
+                                <th style="width: 70px; text-align: center;">JK</th>
+                                <th style="min-width: 160px;">Kategori Ter-</th>
+                                <th style="min-width: 200px;">Keterangan / Alasan</th>
+                                <th style="min-width: 130px;">Waktu Daftar</th>
+                                <th style="width: 70px; text-align: center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kandidatTerTableBody">
+                            <tr>
+                                <td colspan="10" style="text-align: center; padding: 24px; color: var(--text-muted);">
+                                    <i class="fa-solid fa-spinner fa-spin"></i> Memuat data pendaftar kandidat...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
 
     </main>
 
@@ -2308,6 +2417,12 @@
                 btnSwitchKaosTtd.style.borderColor = '#4f46e5';
                 btnSwitchKaosTtd.style.color = '#4f46e5';
             }
+            if (btnSwitchKandidatTer) {
+                btnSwitchKandidatTer.className = 'btn btn-outline';
+                btnSwitchKandidatTer.style.background = '';
+                btnSwitchKandidatTer.style.borderColor = '#39b7bb';
+                btnSwitchKandidatTer.style.color = '#39b7bb';
+            }
 
             // Hide all sections
             biodataWrapper.style.display = 'none';
@@ -2317,6 +2432,7 @@
             pendataanTambahanSectionAdmin.style.display = 'none';
             if (ajuBandingSectionAdmin) ajuBandingSectionAdmin.style.display = 'none';
             if (kaosTtdSectionAdmin) kaosTtdSectionAdmin.style.display = 'none';
+            if (kandidatTerSectionAdmin) kandidatTerSectionAdmin.style.display = 'none';
 
             if (mode === 'biodata') {
                 btnSwitchBiodata.className = 'btn btn-primary';
@@ -2373,6 +2489,17 @@
                     kaosTtdSectionAdmin.style.display = 'block';
                 }
                 syncKaosTtdData();
+            } else if (mode === 'kandidatTer') {
+                if (btnSwitchKandidatTer) {
+                    btnSwitchKandidatTer.className = 'btn btn-primary';
+                    btnSwitchKandidatTer.style.background = '#39b7bb';
+                    btnSwitchKandidatTer.style.borderColor = '#39b7bb';
+                    btnSwitchKandidatTer.style.color = 'white';
+                }
+                if (kandidatTerSectionAdmin) {
+                    kandidatTerSectionAdmin.style.display = 'block';
+                }
+                syncKandidatTerData();
             }
         }
 
@@ -4332,7 +4459,216 @@ Silakan klik link kelas masing-masing untuk mengisi formulir yaa! Terima kasih! 
 
         // Jalankan pengecekan autentikasi
         checkAdminAuth();
-    </script>
+    
+        // ========================================================
+        // MODUL ADMIN PENDAFTARAN KANDIDAT TER-
+        // ========================================================
+        const btnSwitchKandidatTer = document.getElementById('btnSwitchKandidatTer');
+        const kandidatTerSectionAdmin = document.getElementById('kandidatTerSectionAdmin');
+        const kandidatTerTableBody = document.getElementById('kandidatTerTableBody');
+        const badgePendingKandidat = document.getElementById('badgePendingKandidat');
+        const btnRefreshKandidatTer = document.getElementById('btnRefreshKandidatTer');
+        const searchKandidatInput = document.getElementById('searchKandidatInput');
+        const filterKandidatKelas = document.getElementById('filterKandidatKelas');
+        const filterKandidatKategori = document.getElementById('filterKandidatKategori');
+
+        let rawKandidatTerData = [];
+
+        // Categories List for Filter
+        const ADMIN_CATEGORIES_TER = [
+            { id: "ter_kocak", title: "TER-KOCAK 🎭" },
+            { id: "ter_ambis", title: "TER-AMBIS 📚" },
+            { id: "ter_ramah", title: "TER-RAMAH 😊" },
+            { id: "ter_imut", title: "TER-IMUT ✨" },
+            { id: "ter_alim", title: "TER-ALIM 🤲" },
+            { id: "ter_calm", title: "TER-CALM 🧘" },
+            { id: "ter_organisasi", title: "TER-ORGANISASI 👔" },
+            { id: "ter_royal", title: "TER-ROYAL 👑" },
+            { id: "ter_jajan", title: "TER-JAJAN 🍟" },
+            { id: "ter_lambat", title: "TER-LAMBAT ⏰" },
+            { id: "ter_atlit", title: "TER-ATLIT ⚽" },
+            { id: "ter_kreatif", title: "TER-KREATIF 🎨" },
+            { id: "ter_tech", title: "SI ANAK IT 💻" },
+            { id: "ter_tidur", title: "TER-TIDUR 😴" },
+            { id: "ter_heboh", title: "TER-HEBOH 📢" },
+            { id: "ter_couple", title: "TER-COUPLE 👥" }
+        ];
+
+        // Populate Category Filter
+        if (filterKandidatKategori) {
+            ADMIN_CATEGORIES_TER.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat.id;
+                opt.textContent = cat.title;
+                filterKandidatKategori.appendChild(opt);
+            });
+        }
+
+        async function syncKandidatTerData() {
+            if (!kandidatTerTableBody) return;
+            kandidatTerTableBody.innerHTML = `
+                <tr>
+                    <td colspan="10" style="text-align: center; padding: 24px; color: var(--text-muted);">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Memuat data pendaftar kandidat dari cloud...
+                    </td>
+                </tr>
+            `;
+
+            try {
+                const url = `${window.DB_BASE_URL}/kandidat_ter_registrations.json?t=${Date.now()}`;
+                const res = await fetch(url);
+                if (!res.ok) throw new Error("Gagal mengambil data: " + res.statusText);
+                const data = await res.json() || {};
+
+                rawKandidatTerData = Object.keys(data).map(k => ({
+                    _firebaseKey: k,
+                    ...data[k]
+                }));
+
+                // Update badge
+                if (badgePendingKandidat) {
+                    badgePendingKandidat.textContent = rawKandidatTerData.length;
+                    badgePendingKandidat.style.display = rawKandidatTerData.length > 0 ? 'inline-block' : 'none';
+                }
+
+                renderKandidatTerTable();
+            } catch (err) {
+                console.error("Error syncKandidatTerData:", err);
+                kandidatTerTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="10" style="text-align: center; padding: 24px; color: #ef4444;">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Gagal memuat data pendaftar kandidat: ${err.message}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        function renderKandidatTerTable() {
+            if (!kandidatTerTableBody) return;
+
+            const q = (searchKandidatInput?.value || '').toLowerCase().trim();
+            const fKelas = filterKandidatKelas?.value || 'ALL';
+            const fKat = filterKandidatKategori?.value || 'ALL';
+
+            const filtered = rawKandidatTerData.filter(item => {
+                if (fKelas !== 'ALL' && item.kelas !== fKelas) return false;
+                if (fKat !== 'ALL' && item.categoryId !== fKat) return false;
+                if (q) {
+                    const matchNama = (item.nama || '').toLowerCase().includes(q);
+                    const matchKelas = (item.kelas || '').toLowerCase().includes(q);
+                    const matchAbsen = String(item.absen || '').includes(q);
+                    const matchKet = (item.keterangan || '').toLowerCase().includes(q);
+                    const matchKat = (item.categoryTitle || '').toLowerCase().includes(q);
+                    if (!matchNama && !matchKelas && !matchAbsen && !matchKet && !matchKat) return false;
+                }
+                return true;
+            });
+
+            // Update stats
+            const statTotal = document.getElementById('statTotalKandidat');
+            const statCowok = document.getElementById('statCowokKandidat');
+            const statCewek = document.getElementById('statCewekKandidat');
+            const statKat = document.getElementById('statKategoriAktif');
+
+            if (statTotal) statTotal.textContent = filtered.length;
+            if (statCowok) statCowok.textContent = filtered.filter(i => i.gender === 'L').length;
+            if (statCewek) statCewek.textContent = filtered.filter(i => i.gender === 'P').length;
+            if (statKat) {
+                const uniqueKat = new Set(filtered.map(i => i.categoryId));
+                statKat.textContent = uniqueKat.size;
+            }
+
+            if (filtered.length === 0) {
+                kandidatTerTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="10" style="text-align: center; padding: 32px; color: var(--text-muted);">
+                            <div style="font-size: 1.8rem; margin-bottom: 8px;">📭</div>
+                            Belum ada siswa yang mendaftar atau cocok dengan kriteria filter saat ini.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            kandidatTerTableBody.innerHTML = '';
+            filtered.forEach((item, idx) => {
+                const tr = document.createElement('tr');
+                const photoSrc = item.photo || 'assets/avatar_placeholder.png';
+                const jkBadge = item.gender === 'L' 
+                    ? '<span class="yb-badge" style="background: rgba(2, 132, 199, 0.12); color: #0284c7; border: 1px solid rgba(2, 132, 199, 0.3);">Cowok</span>' 
+                    : '<span class="yb-badge" style="background: rgba(236, 72, 153, 0.12); color: #ec4899; border: 1px solid rgba(236, 72, 153, 0.3);">Cewek</span>';
+
+                tr.innerHTML = `
+                    <td style="text-align: center; font-weight: 700; color: var(--text-muted);">${idx + 1}</td>
+                    <td style="text-align: center;">
+                        <img src="${photoSrc}" alt="${item.nama || 'Foto'}" style="width: 44px; height: 44px; border-radius: 8px; object-fit: cover; border: 1px solid #cbd5e1; box-shadow: 0 2px 6px rgba(0,0,0,0.08); cursor: pointer;" onclick="window.open('${photoSrc}')" title="Klik untuk perbesar">
+                    </td>
+                    <td>
+                        <strong style="color: var(--text); font-size: 0.92rem;">${item.nama || '-'}</strong>
+                    </td>
+                    <td style="text-align: center;">
+                        <span class="yb-badge" style="background: #f1f5f9; color: var(--text);">${item.kelas || '-'}</span>
+                    </td>
+                    <td style="text-align: center; font-weight: 700;">${item.absen || '-'}</td>
+                    <td style="text-align: center;">${jkBadge}</td>
+                    <td>
+                        <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 6px; background: rgba(57, 183, 187, 0.1); color: #0f766e; font-weight: 700; font-size: 0.82rem; border: 1px solid rgba(57, 183, 187, 0.3);">
+                            ${item.categoryTitle || item.categoryId || '-'}
+                        </span>
+                    </td>
+                    <td>
+                        <div style="font-size: 0.82rem; color: #475569; max-width: 280px; line-height: 1.4;">
+                            ${item.keterangan || '-'}
+                        </div>
+                    </td>
+                    <td style="font-size: 0.78rem; color: var(--text-muted); white-space: nowrap;">
+                        ${item.registeredAtFormatted || item.registeredAt ? new Date(item.registeredAt).toLocaleDateString('id-ID') : '-'}
+                    </td>
+                    <td style="text-align: center;">
+                        <button type="button" class="btn btn-outline btn-sm btn-delete-kandidat" data-key="${item._firebaseKey}" style="color: #ef4444; border-color: #fca5a5; padding: 4px 8px;" title="Hapus Pendaftar">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                kandidatTerTableBody.appendChild(tr);
+            });
+
+            // Bind Delete Buttons
+            document.querySelectorAll('.btn-delete-kandidat').forEach(btn => {
+                btn.addEventListener('click', async (e) => {
+                    const key = btn.dataset.key;
+                    if (!confirm("Apakah Anda yakin ingin menghapus data pendaftar kandidat ini?")) return;
+
+                    btn.disabled = true;
+                    try {
+                        const url = `${window.DB_BASE_URL}/kandidat_ter_registrations/${key}.json`;
+                        const res = await fetch(url, { method: 'DELETE' });
+                        if (res.ok) {
+                            rawKandidatTerData = rawKandidatTerData.filter(i => i._firebaseKey !== key);
+                            renderKandidatTerTable();
+                            if (badgePendingKandidat) {
+                                badgePendingKandidat.textContent = rawKandidatTerData.length;
+                                badgePendingKandidat.style.display = rawKandidatTerData.length > 0 ? 'inline-block' : 'none';
+                            }
+                        } else {
+                            alert("Gagal menghapus: " + res.statusText);
+                            btn.disabled = false;
+                        }
+                    } catch (err) {
+                        alert("Error saat menghapus: " + err.message);
+                        btn.disabled = false;
+                    }
+                });
+            });
+        }
+
+        // Filter & Search Events
+        if (searchKandidatInput) searchKandidatInput.addEventListener('input', renderKandidatTerTable);
+        if (filterKandidatKelas) filterKandidatKelas.addEventListener('change', renderKandidatTerTable);
+        if (filterKandidatKategori) filterKandidatKategori.addEventListener('change', renderKandidatTerTable);
+        if (btnRefreshKandidatTer) btnRefreshKandidatTer.addEventListener('click', syncKandidatTerData);
+</script>
     <!-- Floating Live Chat Button (Pojok Kanan Bawah - Icon Only) -->
     <a href="chat.html" id="btnFloatingLiveChat" style="position: fixed; bottom: 26px; right: 26px; z-index: 99998; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #090d16 0%, #1e293b 100%); color: #38bdf8; text-decoration: none; border: 1.5px solid rgba(56, 189, 248, 0.4); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.25); transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer;" title="Live Chat Angkatan">
         <span style="position: relative; display: flex; align-items: center; justify-content: center;">

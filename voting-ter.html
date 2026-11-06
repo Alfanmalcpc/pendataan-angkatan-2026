@@ -138,12 +138,15 @@
 
         /* Category Card (Wireframe matching sketch) */
         .category-stage-card {
-            background: #ffffff;
-            border: 1.5px solid var(--border, #e2e8f0);
-            border-radius: 20px;
-            padding: 24px 20px;
+            background: var(--stage-bg, rgba(255, 255, 255, 0.88));
+            border: 2px solid var(--theme-border, #e2e8f0);
+            border-radius: 24px;
+            padding: 26px 22px;
             margin-bottom: 24px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+            box-shadow: 0 16px 40px var(--theme-glow, rgba(0,0,0,0.06));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .category-header-wrap {
@@ -192,19 +195,27 @@
         }
 
         .cand-card {
-            background: #ffffff;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 16px;
+            background: var(--card-inner-bg, rgba(255, 255, 255, 0.78));
+            border: 1.5px solid var(--theme-border, #e2e8f0);
+            border-radius: 18px;
             padding: 16px 12px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             cursor: pointer;
             box-sizing: border-box;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .cand-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--theme-accent, #3b82f6);
+            box-shadow: 0 10px 25px var(--theme-glow, rgba(59, 130, 246, 0.2));
         }
 
         .cand-card:hover {
@@ -422,9 +433,377 @@
                 padding: 12px 14px;
             }
         }
+
+        /* Dynamic Theme System & Gender Sub-Sections */
+        .category-stage-card {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gender-section {
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1.5px dashed rgba(226, 232, 240, 0.8);
+        }
+
+        .gender-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .gender-title-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            padding: 6px 14px;
+            border-radius: 999px;
+            letter-spacing: 0.02em;
+        }
+
+        .gender-badge-cowok {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1.5px solid #bfdbfe;
+        }
+
+        .gender-badge-cewek {
+            background: #fdf2f8;
+            color: #db2777;
+            border: 1.5px solid #fbcfe8;
+        }
+
+        .gender-status-pill {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .status-voted {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .status-waiting {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .cand-card.is-selected-cowok {
+            border-color: #2563eb !important;
+            background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%) !important;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.18) !important;
+        }
+
+        .cand-card.is-selected-cowok .cand-btn-vote {
+            background: #2563eb !important;
+            color: #ffffff !important;
+            border-color: #2563eb !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25) !important;
+        }
+
+        .cand-card.is-selected-cewek {
+            border-color: #db2777 !important;
+            background: linear-gradient(180deg, #fdf2f8 0%, #ffffff 100%) !important;
+            box-shadow: 0 6px 20px rgba(219, 39, 119, 0.18) !important;
+        }
+
+        .cand-card.is-selected-cewek .cand-btn-vote {
+            background: #db2777 !important;
+            color: #ffffff !important;
+            border-color: #db2777 !important;
+            box-shadow: 0 4px 12px rgba(219, 39, 119, 0.25) !important;
+        }
+
+
+        /* Full Page Dynamic Theming & Ambient Animation */
+        body {
+            transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        #themeAnimCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.85;
+            transition: opacity 0.5s ease;
+        }
+
+        .main-wrapper-voting {
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-navbar {
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: background 0.5s ease, border-color 0.5s ease;
+        }
+
+        .hero-banner {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::after {
+            content: attr(data-anim-icon);
+            position: absolute;
+            right: 15px;
+            bottom: -15px;
+            font-size: 5.5rem;
+            opacity: 0.16;
+            pointer-events: none;
+            transition: all 0.5s ease;
+            transform: rotate(-10deg);
+        }
+
+        .cat-tab-btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .category-stage-card {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Pulse aura on active category card */
+        @keyframes themePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.008); }
+            100% { transform: scale(1); }
+        }
+
+        .category-stage-card.anim-enter {
+            animation: themePulse 0.45s ease-out;
+        }
+
+
+        /* Ultra-Clean Cinematic Dark Unified System */
+        :root {
+            --bg-void: #07090e;
+            --surface-card: rgba(15, 23, 42, 0.75);
+            --surface-inner: rgba(30, 41, 59, 0.65);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --theme-accent: #38bdf8;
+            --theme-border: rgba(56, 189, 248, 0.35);
+            --theme-glow: rgba(56, 189, 248, 0.25);
+        }
+
+        body {
+            background-color: var(--bg-void) !important;
+            color: var(--text-primary) !important;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background 0.6s ease;
+        }
+
+        .app-navbar {
+            background: rgba(7, 9, 14, 0.85) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+        }
+
+        .brand-text h1 {
+            color: #ffffff !important;
+        }
+        .brand-text p {
+            color: #94a3b8 !important;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.06) !important;
+            color: #f1f5f9 !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        }
+
+        .hero-banner {
+            background: rgba(15, 23, 42, 0.6) !important;
+            border: 1px solid var(--theme-border) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4) !important;
+            backdrop-filter: blur(12px) !important;
+            border-radius: 20px;
+        }
+
+        .hero-title {
+            color: #ffffff !important;
+        }
+        .hero-subtitle {
+            color: #94a3b8 !important;
+        }
+        .hero-badge {
+            background: rgba(255, 255, 255, 0.08) !important;
+            color: var(--theme-accent) !important;
+            border: 1px solid var(--theme-border) !important;
+        }
+
+        .voter-identity-bar {
+            background: rgba(15, 23, 42, 0.6) !important;
+            border: 1px solid var(--theme-border) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+            backdrop-filter: blur(12px) !important;
+            border-radius: 18px;
+        }
+        .voter-name {
+            color: #ffffff !important;
+        }
+        .voter-meta {
+            color: #94a3b8 !important;
+        }
+        .voter-icon-wrap {
+            background: rgba(255, 255, 255, 0.06) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            color: var(--theme-accent) !important;
+        }
+
+        .cat-tabs-scroll {
+            scrollbar-width: none;
+        }
+        .cat-tab-btn {
+            background: rgba(15, 23, 42, 0.65) !important;
+            color: #94a3b8 !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(8px) !important;
+        }
+        .cat-tab-btn:hover {
+            background: rgba(30, 41, 59, 0.8) !important;
+            color: #ffffff !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        .cat-tab-btn.active {
+            background: linear-gradient(135deg, var(--theme-accent), rgba(255, 255, 255, 0.1)) !important;
+            color: #ffffff !important;
+            border-color: var(--theme-accent) !important;
+            box-shadow: 0 4px 16px var(--theme-glow) !important;
+        }
+
+        .category-stage-card {
+            background: var(--surface-card) !important;
+            border: 1.5px solid var(--theme-border) !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px var(--theme-glow) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border-radius: 24px;
+        }
+
+        .cat-title {
+            color: #ffffff !important;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .cat-desc {
+            color: #94a3b8 !important;
+        }
+        .cat-pill-number {
+            background: rgba(255, 255, 255, 0.06) !important;
+            color: var(--theme-accent) !important;
+            border: 1px solid var(--theme-border) !important;
+        }
+
+        .gender-badge-cowok {
+            background: rgba(59, 130, 246, 0.12) !important;
+            color: #60a5fa !important;
+            border: 1px solid rgba(59, 130, 246, 0.3) !important;
+        }
+        .gender-badge-cewek {
+            background: rgba(244, 63, 94, 0.12) !important;
+            color: #fb7185 !important;
+            border: 1px solid rgba(244, 63, 94, 0.3) !important;
+        }
+        .gender-status-pill.status-waiting {
+            background: rgba(255, 255, 255, 0.05) !important;
+            color: #94a3b8 !important;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .gender-status-pill.status-voted {
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: #34d399 !important;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .cand-card {
+            background: var(--surface-inner) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 18px;
+            backdrop-filter: blur(10px) !important;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2) !important;
+        }
+        .cand-card:hover {
+            border-color: var(--theme-accent) !important;
+            box-shadow: 0 8px 24px var(--theme-glow) !important;
+            transform: translateY(-3px) !important;
+        }
+        .cand-name {
+            color: #ffffff !important;
+        }
+        .cand-tagline {
+            color: #94a3b8 !important;
+        }
+        .cand-avatar-wrap {
+            background: rgba(15, 23, 42, 0.8) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        .cand-btn-vote {
+            background: rgba(255, 255, 255, 0.06) !important;
+            color: #f1f5f9 !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        }
+        .cand-card:hover .cand-btn-vote {
+            background: rgba(255, 255, 255, 0.12) !important;
+            color: #ffffff !important;
+        }
+        .cand-card.is-selected-cowok {
+            border-color: #3b82f6 !important;
+            background: linear-gradient(180deg, rgba(37, 99, 235, 0.22) 0%, rgba(15, 23, 42, 0.8) 100%) !important;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.3) !important;
+        }
+        .cand-card.is-selected-cowok .cand-btn-vote {
+            background: #2563eb !important;
+            border-color: #3b82f6 !important;
+            color: #ffffff !important;
+        }
+        .cand-card.is-selected-cewek {
+            border-color: #ec4899 !important;
+            background: linear-gradient(180deg, rgba(236, 72, 153, 0.22) 0%, rgba(15, 23, 42, 0.8) 100%) !important;
+            box-shadow: 0 0 25px rgba(236, 72, 153, 0.3) !important;
+        }
+        .cand-card.is-selected-cewek .cand-btn-vote {
+            background: #db2777 !important;
+            border-color: #ec4899 !important;
+            color: #ffffff !important;
+        }
+
+        .btn-nav-step {
+            background: rgba(15, 23, 42, 0.7) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        .btn-nav-step:hover:not(:disabled) {
+            border-color: var(--theme-accent) !important;
+            color: var(--theme-accent) !important;
+        }
+
     </style>
 </head>
 <body>
+    <!-- Dynamic Theme Canvas for Ambient Animations -->
+    <canvas id="themeAnimCanvas"></canvas>
 
     <!-- Top App Navigation Matching style.css -->
     <nav class="app-navbar">
@@ -439,6 +818,9 @@
             <div class="nav-links">
                 <a href="index.html" class="nav-btn" style="text-decoration: none;">
                     🏠 Beranda
+                </a>
+                <a href="daftar-kandidat.html" class="nav-btn" style="text-decoration: none; background: rgba(57, 183, 187, 0.15); border: 1px solid rgba(57, 183, 187, 0.4); color: #39b7bb; font-weight: 700; border-radius: 999px; padding: 6px 14px; display: inline-flex; align-items: center; gap: 6px;">
+                    ✨ Daftar Kandidat
                 </a>
                 <button type="button" id="btnOpenRecap" class="btn btn-primary btn-sm" style="border-radius: 999px; padding: 6px 14px; font-weight: 700; background: linear-gradient(135deg, #2563eb, #1d4ed8); display: inline-flex; align-items: center; gap: 6px; cursor: pointer;">
                     📋 Rekap (<span id="recapBadgeCount">0</span>/16)
@@ -501,9 +883,30 @@
                 </p>
             </div>
 
-            <!-- 2x2 Grid Candidate Profile Cards (Wireframe layout) -->
-            <div class="candidate-grid-2x2" id="candidateGrid">
-                <!-- 4 Candidate cards rendered dynamically -->
+            <!-- Section 1: Nominasi Cowok -->
+            <div class="gender-section" style="margin-top: 14px; border-top: none;">
+                <div class="gender-section-header">
+                    <span class="gender-title-badge gender-badge-cowok">
+                        👦 PILIH KANDIDAT COWOK (PUTRA)
+                    </span>
+                    <span id="statusCowokPill" class="gender-status-pill status-waiting">Belum Memilih</span>
+                </div>
+                <div class="candidate-grid-2x2" id="candidateGridCowok">
+                    <!-- Cards Cowok -->
+                </div>
+            </div>
+
+            <!-- Section 2: Nominasi Cewek -->
+            <div class="gender-section">
+                <div class="gender-section-header">
+                    <span class="gender-title-badge gender-badge-cewek">
+                        👧 PILIH KANDIDAT CEWEK (PUTRI)
+                    </span>
+                    <span id="statusCewekPill" class="gender-status-pill status-waiting">Belum Memilih</span>
+                </div>
+                <div class="candidate-grid-2x2" id="candidateGridCewek">
+                    <!-- Cards Cewek -->
+                </div>
             </div>
         </div>
 
@@ -552,44 +955,245 @@
 
     <!-- UI Logic Script (Direct execution, zero delay) -->
     <script>
+        // 16 Kategori dengan Skema Warna Harmonis & Spotlight Dinamis
         const CATEGORIES = [
-            { id: "ter_kocak", num: "01", title: "TER-KOCAK 🎭", desc: "Paling lucu, humoris, dan selalu jadi pencair suasana serta moodbooster di kelas maupun angkatan." },
-            { id: "ter_ambis", num: "02", title: "TER-AMBIS 📚", desc: "Paling rajin belajar, catatan paling rapi, dan langganan ranking juara kelas." },
-            { id: "ter_ramah", num: "03", title: "TER-RAMAH 😊", desc: "Super friendly, murah senyum, dan akrab ke semua orang dari kelas 1 sampai 9." },
-            { id: "ter_imut", num: "04", title: "TER-IMUT ✨", desc: "Memiliki wajah baby face, imut, dan tingkah laku yang paling menggemaskan." },
-            { id: "ter_alim", num: "05", title: "TER-ALIM 🤲", desc: "Tutur kata sopan, pembawaan teduh, dan selalu jadi pengingat ibadah bagi teman-teman." },
-            { id: "ter_calm", num: "06", title: "TER-CALM 🧘", desc: "Paling santai, cool, dan tenang menghadapi ujian serta deadline apapun." },
-            { id: "ter_organisasi", num: "07", title: "TER-ORGANISASI 👔", desc: "Paling aktif OSIS, Pramuka, panitia event sekolah, dan sibuk rapat tiap hari." },
-            { id: "ter_royal", num: "08", title: "TER-ROYAL 👑", desc: "Paling dermawan, berjiwa sultan, dan hobi traktir teman sekelas jajan." },
-            { id: "ter_jajan", num: "09", title: "TER-JAJAN 🍟", desc: "Mejanya selalu penuh cemilan, langganan kantin, dan gak bisa lepas dari ngemil." },
-            { id: "ter_lambat", num: "10", title: "TER-LAMBAT ⏰", desc: "Spesialis masuk gerbang di detik-detik terakhir sebelum pintu pagar dikunci." },
-            { id: "ter_atlit", num: "11", title: "TER-ATLIT ⚽", desc: "Jagoan olahraga di lapangan, berenergi tinggi, dan sering bawa piala kejuaraan." },
-            { id: "ter_kreatif", num: "12", title: "TER-KREATIF 🎨", desc: "Paling berseni, jago desain grafis, visual estetik, dan penuh ide kreatif." },
-            { id: "ter_tech", num: "13", title: "TER-TECH 💻", desc: "Paling melek teknologi, jago coding, ngulik software, dan tempat konsultasi IT." },
-            { id: "ter_tidur", num: "14", title: "TER-TIDUR 😴", desc: "Paling sakti tidur di mana saja dan kapan saja begitu jam kosong dimulai." },
-            { id: "ter_heboh", num: "15", title: "TER-HEBOH 📢", desc: "Paling ekspresif, suara paling melengking, dan paling ramai bikin kelas hidup." },
-            { id: "ter_couple", num: "16", title: "TER-COUPLE 👥", desc: "Pasangan atau duet teman paling serasi, kompak, dan ikonik sepanjang masa SMA." }
+            { 
+                id: "ter_kocak", 
+                num: "01", 
+                title: "TER-KOCAK 🎭", 
+                desc: "Paling lucu, humoris, pencair suasana & moodbooster sejati di kelas maupun angkatan.",
+                icon: "🎭",
+                animType: "confetti_fireworks",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(245, 158, 11, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#f59e0b",
+                border: "rgba(245, 158, 11, 0.4)",
+                glow: "rgba(245, 158, 11, 0.25)",
+                colors: ["#fbbf24", "#f59e0b", "#d97706", "#fef08a", "#ffffff"]
+            },
+            { 
+                id: "ter_ambis", 
+                num: "02", 
+                title: "TER-AMBIS 📚", 
+                desc: "Paling rajin belajar, catatan teratur super rapi, dan langganan ranking juara kelas.",
+                icon: "📚",
+                animType: "geometry_sparks",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(59, 130, 246, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#3b82f6",
+                border: "rgba(59, 130, 246, 0.4)",
+                glow: "rgba(59, 130, 246, 0.25)",
+                colors: ["#60a5fa", "#3b82f6", "#93c5fd", "#2563eb", "#ffffff"]
+            },
+            { 
+                id: "ter_ramah", 
+                num: "03", 
+                title: "TER-RAMAH 😊", 
+                desc: "Super friendly, murah senyum, tutur kata lembut, dan akrab ke semua orang dari kelas 1 sampai 9.",
+                icon: "😊",
+                animType: "nature_ripples",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(16, 185, 129, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#10b981",
+                border: "rgba(16, 185, 129, 0.4)",
+                glow: "rgba(16, 185, 129, 0.25)",
+                colors: ["#34d399", "#10b981", "#6ee7b7", "#059669", "#ffffff"]
+            },
+            { 
+                id: "ter_imut", 
+                num: "04", 
+                title: "TER-IMUT ✨", 
+                desc: "Memiliki pesona baby face, ekspresi gemas, dan tingkah laku yang paling menggemaskan.",
+                icon: "✨",
+                animType: "stardust_bubbles",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(244, 63, 94, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#f43f5e",
+                border: "rgba(244, 63, 94, 0.4)",
+                glow: "rgba(244, 63, 94, 0.25)",
+                colors: ["#fb7185", "#f43f5e", "#fda4af", "#e11d48", "#ffffff"]
+            },
+            { 
+                id: "ter_alim", 
+                num: "05", 
+                title: "TER-ALIM 🤲", 
+                desc: "Tutur kata sopan santun, pembawaan teduh menenangkan, dan selalu jadi pengingat ibadah.",
+                icon: "🤲",
+                animType: "sacred_halos",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(34, 197, 94, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#22c55e",
+                border: "rgba(34, 197, 94, 0.4)",
+                glow: "rgba(34, 197, 94, 0.25)",
+                colors: ["#4ade80", "#22c55e", "#86efac", "#16a34a", "#ffffff"]
+            },
+            { 
+                id: "ter_calm", 
+                num: "06", 
+                title: "TER-CALM 🧘", 
+                desc: "Paling santai, cool, kepala dingin, dan tenang tak tergoyahkan menghadapi ujian & deadline.",
+                icon: "🧘",
+                animType: "fluid_waves",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(20, 184, 166, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#14b8a6",
+                border: "rgba(20, 184, 166, 0.4)",
+                glow: "rgba(20, 184, 166, 0.25)",
+                colors: ["#2dd4bf", "#14b8a6", "#5eead4", "#0d9488", "#ffffff"]
+            },
+            { 
+                id: "ter_organisasi", 
+                num: "07", 
+                title: "TER-ORGANISASI 👔", 
+                desc: "Paling aktif OSIS, Pramuka, panitia event sekolah, berjiwa pemimpin dan sibuk rapat tiap hari.",
+                icon: "👔",
+                animType: "constellation_nodes",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(148, 163, 184, 0.22) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#94a3b8",
+                border: "rgba(148, 163, 184, 0.4)",
+                glow: "rgba(148, 163, 184, 0.22)",
+                colors: ["#cbd5e1", "#94a3b8", "#64748b", "#475569", "#ffffff"]
+            },
+            { 
+                id: "ter_royal", 
+                num: "08", 
+                title: "TER-ROYAL 👑", 
+                desc: "Paling dermawan, berjiwa sultan, loyal tanpa pamrih, dan hobi mentraktir teman sekelas jajan.",
+                icon: "👑",
+                animType: "gold_gems",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(234, 179, 8, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#eab308",
+                border: "rgba(234, 179, 8, 0.4)",
+                glow: "rgba(234, 179, 8, 0.25)",
+                colors: ["#facc15", "#eab308", "#ca8a04", "#fef08a", "#ffffff"]
+            },
+            { 
+                id: "ter_jajan", 
+                num: "09", 
+                title: "TER-JAJAN 🍟", 
+                desc: "Meja belajar selalu penuh aneka cemilan, pelanggan setia kantin, dan gak pernah kehabisan stok snack.",
+                icon: "🍟",
+                animType: "candy_bubbles",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(249, 115, 22, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#f97316",
+                border: "rgba(249, 115, 22, 0.4)",
+                glow: "rgba(249, 115, 22, 0.25)",
+                colors: ["#fb923c", "#f97316", "#ea580c", "#fed7aa", "#ffffff"]
+            },
+            { 
+                id: "ter_lambat", 
+                num: "10", 
+                title: "TER-LAMBAT ⏰", 
+                desc: "Spesialis masuk gerbang sekolah detik-detik terakhir pas pintu pagar mau dikunci satpam.",
+                icon: "⏰",
+                animType: "clock_lasers",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(239, 68, 68, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#ef4444",
+                border: "rgba(239, 68, 68, 0.4)",
+                glow: "rgba(239, 68, 68, 0.25)",
+                colors: ["#f87171", "#ef4444", "#dc2626", "#fca5a5", "#ffffff"]
+            },
+            { 
+                id: "ter_atlit", 
+                num: "11", 
+                title: "TER-ATLIT ⚽", 
+                desc: "Jagoan tangguh di lapangan olahraga, berstamina baja, dan langganan menyumbang piala kejuaraan.",
+                icon: "⚽",
+                animType: "energy_lightning",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(6, 182, 212, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#06b6d4",
+                border: "rgba(6, 182, 212, 0.4)",
+                glow: "rgba(6, 182, 212, 0.25)",
+                colors: ["#22d3ee", "#06b6d4", "#0891b2", "#a5f3fc", "#ffffff"]
+            },
+            { 
+                id: "ter_kreatif", 
+                num: "12", 
+                title: "TER-KREATIF 🎨", 
+                desc: "Paling berseni, jago visual, ilustrasi, estetik, dan otaknya selalu melahirkan ide-ide unik out of the box.",
+                icon: "🎨",
+                animType: "chromatic_splashes",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(168, 85, 247, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#a855f7",
+                border: "rgba(168, 85, 247, 0.4)",
+                glow: "rgba(168, 85, 247, 0.25)",
+                colors: ["#c084fc", "#a855f7", "#9333ea", "#e9d5ff", "#ffffff"]
+            },
+            { 
+                id: "ter_tech", 
+                num: "13", 
+                title: "SI ANAK IT 💻", 
+                desc: "Paling melek teknologi, jago komputer & software, dan jadi tempat konsultasi IT sekelas.",
+                icon: "💻",
+                animType: "cyber_matrix",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(14, 165, 233, 0.28) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#38bdf8",
+                border: "rgba(56, 189, 248, 0.4)",
+                glow: "rgba(56, 189, 248, 0.3)",
+                colors: ["#38bdf8", "#0ea5e9", "#0284c7", "#7dd3fc", "#ffffff"]
+            },
+            { 
+                id: "ter_tidur", 
+                num: "14", 
+                title: "TER-TIDUR 😴", 
+                desc: "Paling sakti tidur di mana saja dan posisi apa saja begitu jam kosong atau waktu istirahat tiba.",
+                icon: "😴",
+                animType: "twilight_nebula",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(99, 102, 241, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#6366f1",
+                border: "rgba(99, 102, 241, 0.4)",
+                glow: "rgba(99, 102, 241, 0.25)",
+                colors: ["#818cf8", "#6366f1", "#4f46e5", "#c7d2fe", "#ffffff"]
+            },
+            { 
+                id: "ter_heboh", 
+                num: "15", 
+                title: "TER-HEBOH 📢", 
+                desc: "Paling ekspresif, suara melengking penuh semangat, dan paling sukses bikin suasana kelas jadi hidup.",
+                icon: "📢",
+                animType: "sonic_shockwaves",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(217, 70, 239, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#d946ef",
+                border: "rgba(217, 70, 239, 0.4)",
+                glow: "rgba(217, 70, 239, 0.25)",
+                colors: ["#e879f9", "#d946ef", "#c026d3", "#f5d0fe", "#ffffff"]
+            },
+            { 
+                id: "ter_couple", 
+                num: "16", 
+                title: "TER-COUPLE 👥", 
+                desc: "Dua sejoli atau duet sahabat paling kompak, serasi, dan ikonik yang tak terpisahkan sepanjang masa SMA.",
+                icon: "👥",
+                animType: "orbital_rings",
+                spotlight: "radial-gradient(ellipse 90% 60% at 50% 0%, rgba(244, 63, 94, 0.25) 0%, rgba(7, 9, 14, 1) 100%)",
+                accent: "#f43f5e",
+                border: "rgba(244, 63, 94, 0.4)",
+                glow: "rgba(244, 63, 94, 0.25)",
+                colors: ["#fb7185", "#f43f5e", "#fda4af", "#e11d48", "#ffffff"]
+            }
         ];
 
-        // 4 Candidate Profiles per Category (Matching 2x2 wireframe sketch)
+        // 4 Kandidat Cowok dan 4 Kandidat Cewek per Kategori
         const NOMINEE_DATA = {};
         CATEGORIES.forEach(cat => {
-            NOMINEE_DATA[cat.id] = [
-                { id: `${cat.id}_cand_1`, name: "Kandidat 1", info: "Nominasi Pilihan 1", photo: "assets/avatar_placeholder.png" },
-                { id: `${cat.id}_cand_2`, name: "Kandidat 2", info: "Nominasi Pilihan 2", photo: "assets/avatar_placeholder.png" },
-                { id: `${cat.id}_cand_3`, name: "Kandidat 3", info: "Nominasi Pilihan 3", photo: "assets/avatar_placeholder.png" },
-                { id: `${cat.id}_cand_4`, name: "Kandidat 4", info: "Nominasi Pilihan 4", photo: "assets/avatar_placeholder.png" }
-            ];
+            NOMINEE_DATA[cat.id] = {
+                cowok: [
+                    { id: `${cat.id}_cowok_1`, name: "Kandidat Cowok 1", info: "Nominasi Putra Pilihan 1", photo: "assets/avatar_placeholder.png" },
+                    { id: `${cat.id}_cowok_2`, name: "Kandidat Cowok 2", info: "Nominasi Putra Pilihan 2", photo: "assets/avatar_placeholder.png" },
+                    { id: `${cat.id}_cowok_3`, name: "Kandidat Cowok 3", info: "Nominasi Putra Pilihan 3", photo: "assets/avatar_placeholder.png" },
+                    { id: `${cat.id}_cowok_4`, name: "Kandidat Cowok 4", info: "Nominasi Putra Pilihan 4", photo: "assets/avatar_placeholder.png" }
+                ],
+                cewek: [
+                    { id: `${cat.id}_cewek_1`, name: "Kandidat Cewek 1", info: "Nominasi Putri Pilihan 1", photo: "assets/avatar_placeholder.png" },
+                    { id: `${cat.id}_cewek_2`, name: "Kandidat Cewek 2", info: "Nominasi Putri Pilihan 2", photo: "assets/avatar_placeholder.png" },
+                    { id: `${cat.id}_cewek_3`, name: "Kandidat Cewek 3", info: "Nominasi Putri Pilihan 3", photo: "assets/avatar_placeholder.png" },
+                    { id: `${cat.id}_cewek_4`, name: "Kandidat Cewek 4", info: "Nominasi Putri Pilihan 4", photo: "assets/avatar_placeholder.png" }
+                ]
+            };
         });
 
         // State
         window.activeCatIndex = 0;
-        window.userVotes = {};
+        window.userVotes = {}; // Key: catId -> { cowok: candId, cowokName: '', cewek: candId, cewekName: '' }
         window.activeStudent = null;
 
         // Load cached votes from localStorage
         try {
-            const saved = localStorage.getItem('nevastra_ter_votes');
+            const saved = localStorage.getItem('nevastra_ter_votes_v2');
             if (saved) {
                 window.userVotes = JSON.parse(saved);
             }
@@ -632,7 +1236,7 @@
             }, 3000);
         }
 
-        // Render Category Tabs
+        // Render Category Tabs with Badges
         function renderCategoryTabs() {
             const container = document.getElementById('catTabsScroll');
             if (!container) return;
@@ -642,10 +1246,21 @@
                 const btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = `cat-tab-btn ${idx === window.activeCatIndex ? 'active' : ''}`;
-                const hasVoted = !!window.userVotes[cat.id];
+                
+                const catVote = window.userVotes[cat.id] || {};
+                const isComplete = catVote.cowok && catVote.cewek;
+                const isHalf = (catVote.cowok || catVote.cewek) && !isComplete;
+
+                let badgeHtml = '';
+                if (isComplete) {
+                    badgeHtml = '<span class="badge-voted" title="Lengkap (Cowok & Cewek)" style="background: #10b981;"></span>';
+                } else if (isHalf) {
+                    badgeHtml = '<span class="badge-voted" title="Baru memilih satu" style="background: #f59e0b;"></span>';
+                }
+
                 btn.innerHTML = `
                     <span>${cat.num}. ${cat.title.split(' ')[0]}</span>
-                    ${hasVoted ? '<span class="badge-voted" title="Sudah memilih"></span>' : ''}
+                    ${badgeHtml}
                 `;
                 btn.addEventListener('click', () => {
                     window.activeCatIndex = idx;
@@ -660,19 +1275,160 @@
             }
         }
 
-        // Render Active Category Stage & 2x2 Candidate Cards
+
+        // ==========================================
+        // AMBIENT THEMATIC ANIMATION ENGINE (CANVAS)
+        // ==========================================
+        const themeCanvas = document.getElementById('themeAnimCanvas');
+        const tCtx = themeCanvas ? themeCanvas.getContext('2d') : null;
+        let animParticles = [];
+        let curAnimType = "kocak";
+        let curAnimColor = "#d97706";
+        let animationFrameId = null;
+
+        function resizeThemeCanvas() {
+            if (!themeCanvas) return;
+            themeCanvas.width = window.innerWidth;
+            themeCanvas.height = window.innerHeight;
+            initAnimParticles(curAnimType, curAnimColor);
+        }
+        window.addEventListener('resize', resizeThemeCanvas);
+
+        function initAnimParticles(type, color) {
+            curAnimType = type;
+            curAnimColor = color;
+            animParticles = [];
+            const W = window.innerWidth;
+            const H = window.innerHeight;
+            const count = Math.min(26, Math.floor(W / 45));
+
+            for (let i = 0; i < count; i++) {
+                animParticles.push({
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    vx: (Math.random() - 0.5) * 1.2,
+                    vy: (Math.random() - 0.5) * 1.2 - 0.5,
+                    size: Math.random() * 18 + 10,
+                    alpha: Math.random() * 0.45 + 0.2,
+                    rot: Math.random() * Math.PI * 2,
+                    vRot: (Math.random() - 0.5) * 0.04,
+                    char: getCharForType(type)
+                });
+            }
+        }
+
+        function getCharForType(type) {
+            const map = {
+                kocak: ["😂", "🤣", "✨", "🎭", "🎉"],
+                ambis: ["📚", "✍️", "📖", "A+", "💯", "✏️"],
+                ramah: ["😊", "👋", "🌸", "✨", "💚"],
+                imut: ["✨", "🎀", "💖", "🌸", "⭐"],
+                alim: ["🤲", "🕊️", "✨", "🌙", "🌿"],
+                calm: ["🧘", "🍃", "☁️", "🌊", "🫧"],
+                organisasi: ["👔", "📋", "📌", "🏛️", "💼"],
+                royal: ["👑", "💎", "💰", "✨", "🪙"],
+                jajan: ["🍟", "🧋", "🍕", "🍿", "🍩"],
+                lambat: ["⏰", "⏳", "🏃‍♂️", "💨", "🛑"],
+                atlit: ["⚽", "🏀", "🏆", "🥇", "⚡"],
+                kreatif: ["🎨", "🖌️", "✨", "💡", "🌈"],
+                tech: ["01", "10", "</>", "{ }", "💻", "⚡"],
+                tidur: ["💤", "😴", "☁️", "🌙", "🧸"],
+                heboh: ["📢", "📣", "💥", "🔥", "⚡"],
+                couple: ["❤️", "👥", "💫", "✨", "💍"]
+            };
+            const list = map[type] || ["✨", "🌟"];
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
+        function runThemeAnimation() {
+            if (!tCtx || !themeCanvas) return;
+            const W = themeCanvas.width;
+            const H = themeCanvas.height;
+            tCtx.clearRect(0, 0, W, H);
+
+            animParticles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.rot += p.vRot;
+
+                if (p.x < -40) p.x = W + 40;
+                if (p.x > W + 40) p.x = -40;
+                if (p.y < -40) p.y = H + 40;
+                if (p.y > H + 40) p.y = -40;
+
+                tCtx.save();
+                tCtx.translate(p.x, p.y);
+                tCtx.rotate(p.rot);
+                tCtx.globalAlpha = p.alpha;
+
+                if (curAnimType === "tech") {
+                    tCtx.font = `bold ${p.size}px monospace`;
+                    tCtx.fillStyle = curAnimColor;
+                    tCtx.shadowColor = curAnimColor;
+                    tCtx.shadowBlur = 8;
+                    tCtx.fillText(p.char, 0, 0);
+                } else {
+                    tCtx.font = `${p.size}px sans-serif`;
+                    tCtx.fillText(p.char, 0, 0);
+                }
+
+                tCtx.restore();
+            });
+
+            animationFrameId = requestAnimationFrame(runThemeAnimation);
+        }
+
+        // Apply Full-Page Dark Cinematic Dynamic Theme & Trigger VFX
+        function applyDynamicTheme(cat) {
+            const body = document.body;
+            const hero = document.querySelector('.hero-banner');
+            const stageCard = document.querySelector('.category-stage-card');
+            const pill = document.getElementById('catPillNumber');
+            const root = document.documentElement;
+
+            if (!stageCard) return;
+
+            // 1. Inject Theme Variables to Root for Instant Unified Accents
+            root.style.setProperty('--theme-accent', cat.accent);
+            root.style.setProperty('--theme-border', cat.border);
+            root.style.setProperty('--theme-glow', cat.glow);
+
+            // 2. Set Cinematic Dynamic Radial Spotlight on Background
+            body.style.background = cat.spotlight;
+
+            // 3. Adapt Hero Banner
+            if (hero) {
+                hero.setAttribute('data-anim-icon', cat.icon || '🗳️');
+            }
+
+            // 4. Stage Card Trigger Reflow
+            stageCard.classList.remove('anim-enter');
+            void stageCard.offsetWidth;
+            stageCard.classList.add('anim-enter');
+
+            // 5. Fire Procedural Canvas Visual Effects
+            initVfx(cat.animType, cat.colors, cat.accent);
+        }
+
+        // Render Active Category Stage
         function renderStage() {
             const cat = CATEGORIES[window.activeCatIndex];
             const pill = document.getElementById('catPillNumber');
             const title = document.getElementById('catTitle');
             const desc = document.getElementById('catDesc');
-            const grid = document.getElementById('candidateGrid');
+            const gridCowok = document.getElementById('candidateGridCowok');
+            const gridCewek = document.getElementById('candidateGridCewek');
+            const statusCowokPill = document.getElementById('statusCowokPill');
+            const statusCewekPill = document.getElementById('statusCewekPill');
             const btnPrev = document.getElementById('btnPrev');
             const btnNext = document.getElementById('btnNext');
 
             if (pill) pill.textContent = `KATEGORI ${cat.num} / 16`;
             if (title) title.textContent = cat.title;
             if (desc) desc.textContent = cat.desc;
+
+            // Apply Dynamic Category Aesthetic Theme
+            applyDynamicTheme(cat);
 
             if (btnPrev) btnPrev.disabled = window.activeCatIndex === 0;
             if (btnNext) {
@@ -683,16 +1439,38 @@
                 }
             }
 
-            // Render 2x2 Grid Candidate Cards
-            if (grid) {
-                grid.innerHTML = '';
-                const candidates = NOMINEE_DATA[cat.id] || [];
-                const currentVotedCandId = window.userVotes[cat.id];
+            const currentCatVote = window.userVotes[cat.id] || {};
 
-                candidates.forEach(cand => {
-                    const isSelected = currentVotedCandId === cand.id;
+            // Render Status Pills
+            if (statusCowokPill) {
+                if (currentCatVote.cowok) {
+                    statusCowokPill.className = 'gender-status-pill status-voted';
+                    statusCowokPill.textContent = '✓ Cowok Terpilih';
+                } else {
+                    statusCowokPill.className = 'gender-status-pill status-waiting';
+                    statusCowokPill.textContent = 'Pilih 1 Kandidat Cowok';
+                }
+            }
+            if (statusCewekPill) {
+                if (currentCatVote.cewek) {
+                    statusCewekPill.className = 'gender-status-pill status-voted';
+                    statusCewekPill.textContent = '✓ Cewek Terpilih';
+                } else {
+                    statusCewekPill.className = 'gender-status-pill status-waiting';
+                    statusCewekPill.textContent = 'Pilih 1 Kandidat Cewek';
+                }
+            }
+
+            // Render Cards Helper
+            const renderCardList = (container, list, gender) => {
+                if (!container) return;
+                container.innerHTML = '';
+                const selectedCandId = gender === 'cowok' ? currentCatVote.cowok : currentCatVote.cewek;
+
+                list.forEach(cand => {
+                    const isSelected = selectedCandId === cand.id;
                     const card = document.createElement('div');
-                    card.className = `cand-card ${isSelected ? 'is-selected' : ''}`;
+                    card.className = `cand-card ${isSelected ? (gender === 'cowok' ? 'is-selected-cowok' : 'is-selected-cewek') : ''}`;
                     card.innerHTML = `
                         <div class="cand-avatar-wrap">
                             <img src="${cand.photo}" alt="${cand.name}" class="cand-avatar-img" onerror="this.src='logo.svg'">
@@ -700,44 +1478,60 @@
                         <div class="cand-name">${cand.name}</div>
                         <div class="cand-tagline">${cand.info}</div>
                         <button type="button" class="cand-btn-vote">
-                            ${isSelected ? '✓ Terpilih' : 'Pilih [Vote]'}
+                            ${isSelected ? '✓ Terpilih' : `Vote ${gender === 'cowok' ? 'Putra' : 'Putri'}`}
                         </button>
                     `;
 
                     card.addEventListener('click', () => {
-                        castVote(cat.id, cand.id, cand.name);
+                        castVoteGender(cat.id, gender, cand.id, cand.name);
                     });
 
-                    grid.appendChild(card);
+                    container.appendChild(card);
                 });
-            }
+            };
+
+            const candidates = NOMINEE_DATA[cat.id] || { cowok: [], cewek: [] };
+            renderCardList(gridCowok, candidates.cowok, 'cowok');
+            renderCardList(gridCewek, candidates.cewek, 'cewek');
 
             updateCounters();
             renderCategoryTabs();
         }
 
-        // Vote Action
-        function castVote(catId, candId, candName) {
-            window.userVotes[catId] = candId;
+        // Vote Action for Specific Gender
+        function castVoteGender(catId, gender, candId, candName) {
+            if (!window.userVotes[catId]) {
+                window.userVotes[catId] = {};
+            }
+            window.userVotes[catId][gender] = candId;
+            window.userVotes[catId][gender + 'Name'] = candName;
+
             try {
-                localStorage.setItem('nevastra_ter_votes', JSON.stringify(window.userVotes));
+                localStorage.setItem('nevastra_ter_votes_v2', JSON.stringify(window.userVotes));
             } catch (e) {}
 
             renderStage();
-            showNotification(`Suara Anda untuk ${candName} di ${CATEGORIES[window.activeCatIndex].title} berhasil disimpan!`);
+            showNotification(`Suara Anda untuk ${candName} (${gender === 'cowok' ? 'Cowok' : 'Cewek'}) berhasil disimpan!`);
 
             if (window.syncToCloud) {
-                window.syncToCloud(catId, candId, candName);
+                window.syncToCloud(catId, gender, candId, candName);
             }
         }
 
         // Counter Progress
         function updateCounters() {
-            const count = Object.keys(window.userVotes).length;
+            let completeCount = 0;
+            CATEGORIES.forEach(c => {
+                const v = window.userVotes[c.id];
+                if (v && v.cowok && v.cewek) {
+                    completeCount++;
+                }
+            });
+
             const progress = document.getElementById('progressCount');
             const badge = document.getElementById('recapBadgeCount');
-            if (progress) progress.textContent = count;
-            if (badge) badge.textContent = count;
+            if (progress) progress.textContent = completeCount;
+            if (badge) badge.textContent = completeCount;
         }
 
         // Modal Recap
@@ -748,28 +1542,33 @@
             list.innerHTML = '';
 
             CATEGORIES.forEach((cat) => {
-                const votedId = window.userVotes[cat.id];
-                const candidates = NOMINEE_DATA[cat.id] || [];
-                const cand = candidates.find(c => c.id === votedId);
+                const v = window.userVotes[cat.id] || {};
+                const cowokName = v.cowokName || null;
+                const cewekName = v.cewekName || null;
+                const isComplete = cowokName && cewekName;
 
                 const item = document.createElement('div');
-                item.style.padding = '10px 14px';
-                item.style.marginBottom = '8px';
-                item.style.borderRadius = '12px';
-                item.style.border = '1px solid #e2e8f0';
+                item.style.padding = '12px 14px';
+                item.style.marginBottom = '10px';
+                item.style.borderRadius = '14px';
+                item.style.border = isComplete ? '1.5px solid #a7f3d0' : '1.5px solid #e2e8f0';
+                item.style.background = isComplete ? '#f0fdf4' : '#f8fafc';
                 item.style.display = 'flex';
                 item.style.alignItems = 'center';
                 item.style.justifyContent = 'space-between';
-                item.style.background = cand ? '#f0fdf4' : '#f8fafc';
+                item.style.gap = '10px';
 
                 item.innerHTML = `
-                    <div>
-                        <div style="font-size: 0.82rem; font-weight: 800; color: #0f172a;">${cat.num}. ${cat.title}</div>
-                        <div style="font-size: 0.76rem; color: ${cand ? '#065f46' : '#64748b'}; font-weight: 600;">
-                            ${cand ? `✓ Dipilih: <strong>${cand.name}</strong>` : '⚠️ Belum memilih'}
+                    <div style="flex: 1;">
+                        <div style="font-size: 0.85rem; font-weight: 800; color: #0f172a; margin-bottom: 4px;">
+                            ${cat.num}. ${cat.title}
+                        </div>
+                        <div style="font-size: 0.76rem; color: #334155; line-height: 1.4;">
+                            👦 Cowok: <strong>${cowokName || '<span style="color:#ef4444;">Belum Memilih</span>'}</strong><br>
+                            👧 Cewek: <strong>${cewekName || '<span style="color:#ef4444;">Belum Memilih</span>'}</strong>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-sm btn-outline" style="border-radius: 8px; font-size: 0.74rem; padding: 4px 10px; cursor: pointer;">
+                    <button type="button" class="btn btn-sm btn-outline" style="border-radius: 8px; font-size: 0.74rem; padding: 5px 12px; cursor: pointer; white-space: nowrap;">
                         Ubah
                     </button>
                 `;
@@ -789,32 +1588,9 @@
             modal.style.display = 'flex';
         }
 
-        // Event Listeners for Navigation
-        document.getElementById('btnPrev').addEventListener('click', () => {
-            if (window.activeCatIndex > 0) {
-                window.activeCatIndex--;
-                renderStage();
-            }
-        });
-
-        document.getElementById('btnNext').addEventListener('click', () => {
-            if (window.activeCatIndex < CATEGORIES.length - 1) {
-                window.activeCatIndex++;
-                renderStage();
-            } else {
-                openRecap();
-            }
-        });
-
-        document.getElementById('btnOpenRecap').addEventListener('click', openRecap);
-        document.getElementById('btnCloseRecap').addEventListener('click', () => {
-            document.getElementById('modalRecap').style.display = 'none';
-        });
-        document.getElementById('btnCloseRecapBottom').addEventListener('click', () => {
-            document.getElementById('modalRecap').style.display = 'none';
-        });
-
-        // Initial Render
+                // Initial Render
+        resizeThemeCanvas();
+        runThemeAnimation();
         renderCategoryTabs();
         renderStage();
     </script>
@@ -837,12 +1613,12 @@
         const voterNameText = document.getElementById('voterNameText');
         const voterMetaText = document.getElementById('voterMetaText');
 
-        // Cloud sync function
-        window.syncToCloud = async function(catId, candId, candName) {
+        // Cloud sync function (Dual Cowok & Cewek Support)
+        window.syncToCloud = async function(catId, gender, candId, candName) {
             if (window.currentUser && db) {
                 try {
                     const voterKey = window.activeStudent ? `${window.activeStudent.kelas}_${window.activeStudent.absen}` : window.currentUser.uid;
-                    const voteRef = ref(db, `voting_ter_records/${voterKey}/${catId}`);
+                    const voteRef = ref(db, `voting_ter_records/${voterKey}/${catId}/${gender}`);
                     await set(voteRef, {
                         candidateId: candId,
                         candidateName: candName,
@@ -906,11 +1682,20 @@
                             if (snapVotes.exists()) {
                                 const cloudVotes = snapVotes.val();
                                 Object.keys(cloudVotes).forEach(catId => {
-                                    if (cloudVotes[catId] && cloudVotes[catId].candidateId) {
-                                        window.userVotes[catId] = cloudVotes[catId].candidateId;
+                                    const entry = cloudVotes[catId];
+                                    if (entry && (entry.cowok || entry.cewek)) {
+                                        if (!window.userVotes[catId]) window.userVotes[catId] = {};
+                                        if (entry.cowok) {
+                                            window.userVotes[catId].cowok = entry.cowok.candidateId;
+                                            window.userVotes[catId].cowokName = entry.cowok.candidateName;
+                                        }
+                                        if (entry.cewek) {
+                                            window.userVotes[catId].cewek = entry.cewek.candidateId;
+                                            window.userVotes[catId].cewekName = entry.cewek.candidateName;
+                                        }
                                     }
                                 });
-                                localStorage.setItem('nevastra_ter_votes', JSON.stringify(window.userVotes));
+                                localStorage.setItem('nevastra_ter_votes_v2', JSON.stringify(window.userVotes));
                                 if (window.renderStage) window.renderStage();
                             }
                         } catch (e) {
