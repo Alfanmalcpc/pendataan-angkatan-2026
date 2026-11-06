@@ -559,8 +559,11 @@
 
     <!-- SCRIPT LOGIC -->
     <script src="students-data.js"></script>
-    <script src="firebase-config.js"></script>
+    
     <script>
+        const DB_BASE_URL = "https://nevastra-default-rtdb.asia-southeast1.firebasedatabase.app";
+        window.DB_BASE_URL = DB_BASE_URL;
+
         // 16 Kategori Karakter (5 spesifik yang diganti sesuai permintaan Alfan + 11 Ter- lainnya)
         const KARAKTER_DATA = [
             {
@@ -910,7 +913,7 @@
             };
 
             try {
-                const url = `${window.DB_BASE_URL}/kandidat_ter_registrations.json`;
+                const url = `${DB_BASE_URL}/kandidat_ter_registrations.json`;
                 const res = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
