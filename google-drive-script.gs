@@ -60,6 +60,7 @@ function doPost(e) {
     var targetFolder;
 
     var isTtd = (data.type === 'tandatangan' || data.folderCategory === 'tandatangan');
+    var isNominasi = (data.type === 'nominasi-ter' || data.folderCategory === 'nominasi-ter');
 
     if (isTtd) {
       // 1. Buat / ambil folder utama "tanda tangan" di Drive
@@ -79,6 +80,10 @@ function doPost(e) {
       // 2. Buat / ambil subfolder kelas (XII-1 s/d XII-9) di dalam folder "tanda tangan"
       var classFolderIter = ttdMainFolder.getFoldersByName(className);
       targetFolder = classFolderIter.hasNext() ? classFolderIter.next() : ttdMainFolder.createFolder(className);
+    } else if (isNominasi) {
+      // Folder khusus foto kandidat nominasi Ter-
+      var nominasiIter = parentFolder.getFoldersByName("nominasi-ter");
+      targetFolder = nominasiIter.hasNext() ? nominasiIter.next() : parentFolder.createFolder("nominasi-ter");
     } else {
       // Default: Foto profil langsung di subfolder kelas
       var folderIter = parentFolder.getFoldersByName(className);
