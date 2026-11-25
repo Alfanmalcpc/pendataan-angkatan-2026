@@ -571,8 +571,9 @@
             { id: "ter_couple", num: "16", title: "TER-COUPLE 👥", desc: "Pasangan atau duet teman paling serasi, kompak, dan ikonik sepanjang masa SMA." }
         ];
 
-        // 4 Candidate Profiles per Category (Matching 2x2 wireframe sketch)
+        // 4 Candidate Profiles per Category — load dari Firebase realtime
         const NOMINEE_DATA = {};
+        // Inisialisasi default dulu (placeholder) sebelum Firebase load
         CATEGORIES.forEach(cat => {
             NOMINEE_DATA[cat.id] = [
                 { id: `${cat.id}_cand_1`, name: "Kandidat 1", info: "Nominasi Pilihan 1", photo: "assets/avatar_placeholder.png" },
@@ -581,6 +582,9 @@
                 { id: `${cat.id}_cand_4`, name: "Kandidat 4", info: "Nominasi Pilihan 4", photo: "assets/avatar_placeholder.png" }
             ];
         });
+        // Flag agar Firebase module bisa update NOMINEE_DATA lalu re-render
+        window.NOMINEE_DATA = NOMINEE_DATA;
+        window.CATEGORIES = CATEGORIES;
 
         // State
         window.activeCatIndex = 0;
@@ -819,7 +823,7 @@
         renderStage();
     </script>
 
-    <!-- Firebase Auth & Cloud Sync Module -->
+    <!-- Firebase Auth, Cloud Sync & Load Kandidat Realtime -->
     <script type="module">
         import { 
             auth, 
@@ -829,8 +833,45 @@
             onAuthStateChanged,
             ref, 
             set, 
-            get 
+            get,
+            onValue
         } from './firebase-config.js';
+
+        // === LOAD KANDIDAT NOMINASI DARI FIREBASE REALTIME ===
+        if (db) {
+            const kandidatRef = ref(db, 'kandidat_nominasi');
+            onValue(kandidatRef, (snapshot) => {
+                if (!snapshot.exists()) return;
+                const allKandidat = snapshot.val();
+                // Reset NOMINEE_DATA ke placeholder dulu per kategori
+                if (window.CATEGORIES) {
+                    window.CATEGORIES.forEach(cat => {
+                        window.NOMINEE_DATA[cat.id] = [
+                            { id: `${cat.id}_cand_1`, name: "Kandidat 1", info: "Nominasi Pilihan 1", photo: "assets/avatar_placeholder.png" },
+                            { id: `${cat.id}_cand_2`, name: "Kandidat 2", info: "Nominasi Pilihan 2", photo: "assets/avatar_placeholder.png" },
+                            { id: `${cat.id}_cand_3`, name: "Kandidat 3", info: "Nominasi Pilihan 3", photo: "assets/avatar_placeholder.png" },
+                            { id: `${cat.id}_cand_4`, name: "Kandidat 4", info: "Nominasi Pilihan 4", photo: "assets/avatar_placeholder.png" }
+                        ];
+                    });
+                }
+                // Isi NOMINEE_DATA dari Firebase per kategori
+                Object.keys(allKandidat).forEach(catId => {
+                    if (!window.NOMINEE_DATA[catId]) return;
+                    const list = Object.values(allKandidat[catId]);
+                    list.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+                    list.slice(0, 4).forEach((k, idx) => {
+                        window.NOMINEE_DATA[catId][idx] = {
+                            id: k.uid || `${catId}_cand_${idx+1}`,
+                            name: k.nama || `Kandidat ${idx+1}`,
+                            info: (k.kelas || '') + (k.absen ? ' • Absen ' + k.absen : ''),
+                            photo: k.photoUrl || "assets/avatar_placeholder.png"
+                        };
+                    });
+                });
+                // Re-render kartu kandidat
+                if (window.renderStage) window.renderStage();
+            }, (err) => { console.warn('Gagal load kandidat:', err); });
+        }
 
         const btnSignInGoogle = document.getElementById('btnSignInGoogle');
         const badgeVerified = document.getElementById('badgeVerified');

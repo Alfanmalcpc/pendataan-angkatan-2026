@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Daftar Kandidat Ter- - NEVASTRA 2026</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <style>
+        body { background: #f8fafc; color: #334155; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
+        .form-card {
+            max-width: 480px; margin: 24px auto; padding: 28px 24px;
+            background: #fff; border-radius: 20px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        }
+        .form-title { font-size: 1.2rem; font-weight: 800; color: #0f172a; margin-bottom: 4px; }
+        .form-sub { font-size: 0.82rem; color: #64748b; margin-bottom: 20px; }
+        label { display: block; font-size: 0.82rem; font-weight: 700; color: #374151; margin-bottom: 4px; margin-top: 14px; }
+        select, input[type=text], input[type=number] {
+            width: 100%; padding: 10px 12px; border: 1.5px solid #e2e8f0;
+            border-radius: 10px; font-size: 0.9rem; color: #0f172a;
+            background: #f8fafc; box-sizing: border-box; outline: none;
+        }
+        select:focus, input:focus { border-color: #3b82f6; background: #fff; }
+        .photo-preview-wrap {
+            margin-top: 10px; border: 2px dashed #cbd5e1; border-radius: 14px;
+            aspect-ratio: 3/4; max-width: 160px; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            background: #f1f5f9; cursor: pointer; position: relative;
+        }
+        .photo-preview-wrap img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-placeholder { color: #94a3b8; font-size: 0.78rem; text-align: center; padding: 12px; }
+        input[type=file] { display: none; }
+        .btn-daftar {
+            margin-top: 22px; width: 100%; padding: 13px;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: #fff; font-weight: 800; font-size: 1rem;
+            border: none; border-radius: 12px; cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .btn-daftar:disabled { opacity: 0.5; cursor: not-allowed; }
+        .status-msg { margin-top: 14px; padding: 12px 14px; border-radius: 10px; font-size: 0.84rem; font-weight: 700; display: none; }
+        .status-msg.success { background: #ecfdf5; color: #065f46; border: 1.5px solid #10b981; display: block; }
+        .status-msg.error { background: #fef2f2; color: #991b1b; border: 1.5px solid #ef4444; display: block; }
+        .auth-barrier {
+            text-align: center; padding: 32px 20px;
+        }
+        .auth-barrier p { color: #64748b; font-size: 0.88rem; margin-bottom: 16px; }
+        .btn-google {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 20px; border: 1.5px solid #e2e8f0;
+            border-radius: 999px; font-weight: 700; font-size: 0.88rem;
+            background: #fff; cursor: pointer; color: #0f172a;
+        }
+        .kategori-tags {
+            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
+        }
+        .ktag {
+            padding: 5px 12px; border-radius: 999px; border: 1.5px solid #e2e8f0;
+            font-size: 0.74rem; font-weight: 700; cursor: pointer;
+            background: #f8fafc; color: #64748b; transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .ktag.active {
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: #fff; border-color: transparent;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="app-navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-brand">
+                <div class="brand-icon"><img src="logo.svg" alt="NEVASTRA 2026" class="brand-logo-img"></div>
+                <div class="brand-text">
+                    <h1>NEVASTRA 2026</h1>
+                    <p>SMAN 1 SUMBERREJO • BUKU TAHUNAN</p>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="voting-ter.html" class="nav-btn" style="text-decoration:none;">🗳️ Voting Ter-</a>
+                <a href="index.html" class="nav-btn" style="text-decoration:none;">🏠 Beranda</a>
+            </div>
+        </div>
+    </nav>
+
+    <main style="padding: 16px 12px 60px;">
+        <div class="form-card" id="mainCard">
+            <div class="form-title">📋 Daftar Kandidat Ter-</div>
+            <div class="form-sub">Daftarkan dirimu sebagai kandidat salah satu kategori Ter- buku tahunan NEVASTRA 2026. Upload foto pas foto terbaikmu!</div>
+
+            <!-- Auth Barrier -->
+            <div id="authBarrier" class="auth-barrier">
+                <p>Masuk dengan akun Google yang terdaftar di NEVASTRA 2026 untuk mendaftar sebagai kandidat.</p>
+                <button class="btn-google" id="btnLogin">
+                    <img src="https://www.google.com/favicon.ico" width="18" height="18" alt="G">
+                    Masuk dengan Google
+                </button>
+            </div>
+
+            <!-- Form Pendaftaran (tampil setelah login) -->
+            <div id="formPendaftaran" style="display:none;">
+                <div id="identitasBar" style="padding: 10px 14px; background: #f0f9ff; border-radius: 10px; border: 1.5px solid #bae6fd; font-size: 0.82rem; color: #0369a1; font-weight: 700; margin-bottom: 8px;"></div>
+
+                <label>Pilih Kategori Ter-</label>
+                <div class="kategori-tags" id="kategoriTags"></div>
+                <input type="hidden" id="selectedKategori">
+
+                <label>Upload Foto Pas Foto (JPG/PNG, maks 2MB)</label>
+                <div class="photo-preview-wrap" id="photoWrap" onclick="document.getElementById('fotoInput').click()">
+                    <div class="photo-placeholder" id="photoPlaceholder">Ketuk untuk<br>upload foto</div>
+                    <img id="photoPreview" src="" alt="Preview" style="display:none;">
+                </div>
+                <input type="file" id="fotoInput" accept="image/jpeg,image/png,image/webp">
+
+                <button class="btn-daftar" id="btnDaftar" disabled>Daftar Sebagai Kandidat</button>
+                <div class="status-msg" id="statusMsg"></div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Ganti dengan URL deployment Google Apps Script google-drive-kandidat.gs
+        const KANDIDAT_SCRIPT_URL = "GANTI_DENGAN_URL_GOOGLE_APPS_SCRIPT_KANDIDAT";
+
+        const CATEGORIES = [
+            { id: "ter_kocak", title: "TER-KOCAK 🎭" },
+            { id: "ter_ambis", title: "TER-AMBIS 📚" },
+            { id: "ter_ramah", title: "TER-RAMAH 😊" },
+            { id: "ter_imut", title: "TER-IMUT ✨" },
+            { id: "ter_alim", title: "TER-ALIM 🤲" },
+            { id: "ter_calm", title: "TER-CALM 🧘" },
+            { id: "ter_organisasi", title: "TER-ORGANISASI 👔" },
+            { id: "ter_royal", title: "TER-ROYAL 👑" },
+            { id: "ter_jajan", title: "TER-JAJAN 🍟" },
+            { id: "ter_lambat", title: "TER-LAMBAT ⏰" },
+            { id: "ter_atlit", title: "TER-ATLIT ⚽" },
+            { id: "ter_kreatif", title: "TER-KREATIF 🎨" },
+            { id: "ter_tech", title: "TER-TECH 💻" },
+            { id: "ter_tidur", title: "TER-TIDUR 😴" },
+            { id: "ter_heboh", title: "TER-HEBOH 📢" },
+            { id: "ter_couple", title: "TER-COUPLE 👥" }
+        ];
+
+        let selectedKategori = null;
+        let fotoBase64 = null;
+        let fotoMime = null;
+
+        // Render kategori tags
+        const tagsContainer = document.getElementById('kategoriTags');
+        CATEGORIES.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = 'ktag';
+            btn.textContent = cat.title;
+            btn.type = 'button';
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.ktag').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedKategori = cat.id;
+                document.getElementById('selectedKategori').value = cat.id;
+                validateForm();
+            });
+            tagsContainer.appendChild(btn);
+        });
+
+        // Preview foto
+        document.getElementById('fotoInput').addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) {
+                showStatus('Ukuran foto maksimal 2MB.', false); return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                fotoBase64 = e.target.result;
+                fotoMime = file.type;
+                document.getElementById('photoPreview').src = fotoBase64;
+                document.getElementById('photoPreview').style.display = 'block';
+                document.getElementById('photoPlaceholder').style.display = 'none';
+                validateForm();
+            };
+            reader.readAsDataURL(file);
+        });
+
+        function validateForm() {
+            const ok = selectedKategori && fotoBase64;
+            document.getElementById('btnDaftar').disabled = !ok;
+        }
+
+        function showStatus(msg, success) {
+            const el = document.getElementById('statusMsg');
+            el.textContent = msg;
+            el.className = 'status-msg ' + (success ? 'success' : 'error');
+        }
+    </script>
+
+    <script type="module">
+        import {
+            auth, db, googleProvider,
+            signInWithPopup, onAuthStateChanged,
+            ref, set, get
+        } from './firebase-config.js';
+
+        const btnLogin = document.getElementById('btnLogin');
+        const authBarrier = document.getElementById('authBarrier');
+        const formPendaftaran = document.getElementById('formPendaftaran');
+        const identitasBar = document.getElementById('identitasBar');
+        const btnDaftar = document.getElementById('btnDaftar');
+
+        let currentUser = null;
+        let studentData = null;
+
+        btnLogin.addEventListener('click', async () => {
+            try {
+                btnLogin.disabled = true;
+                btnLogin.textContent = 'Menghubungkan...';
+                await signInWithPopup(auth, googleProvider);
+            } catch(err) {
+                btnLogin.disabled = false;
+                btnLogin.textContent = 'Masuk dengan Google';
+            }
+        });
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                authBarrier.style.display = 'block';
+                formPendaftaran.style.display = 'none';
+                currentUser = null; studentData = null;
+                return;
+            }
+            currentUser = user;
+            authBarrier.style.display = 'none';
+
+            // Load binding siswa
+            if (db) {
+                try {
+                    const snap = await get(ref(db, `user_to_student/${user.uid}`));
+                    if (snap.exists()) {
+                        studentData = snap.val();
+                        identitasBar.textContent = `Terdaftar sebagai: ${studentData.nama} | ${studentData.kelas} • Absen ${studentData.absen}`;
+                    } else {
+                        identitasBar.textContent = `Login: ${user.displayName || user.email}`;
+                    }
+                } catch(e) {
+                    identitasBar.textContent = `Login: ${user.displayName || user.email}`;
+                }
+            }
+            formPendaftaran.style.display = 'block';
+        });
+
+        btnDaftar.addEventListener('click', async () => {
+            if (!currentUser || !window.selectedKategori || !window.fotoBase64) return;
+            const kategoriId = document.getElementById('selectedKategori').value;
+            if (!kategoriId) { showStatus('Pilih kategori terlebih dahulu.', false); return; }
+
+            btnDaftar.disabled = true;
+            btnDaftar.textContent = 'Mendaftar...';
+
+            const nama = studentData ? studentData.nama : (currentUser.displayName || 'Siswa');
+            const kelas = studentData ? studentData.kelas : '';
+            const absen = studentData ? studentData.absen : '';
+
+            try {
+                // 1. Upload foto ke Google Drive
+                const payload = {
+                    nama, kelas, absen,
+                    kategori: kategoriId,
+                    base64: window.fotoBase64,
+                    mimeType: window.fotoMime || 'image/jpeg',
+                    fileName: nama + '.jpg'
+                };
+
+                const resp = await fetch(window.KANDIDAT_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+                const result = await resp.json();
+
+                if (result.status !== 'success') throw new Error(result.message || 'Gagal upload foto.');
+
+                const photoUrl = result.directViewUrl;
+
+                // 2. Simpan ke Firebase: kandidat_nominasi/{kategoriId}/{uid}
+                if (db) {
+                    await set(ref(db, `kandidat_nominasi/${kategoriId}/${currentUser.uid}`), {
+                        uid: currentUser.uid,
+                        nama, kelas, absen,
+                        photoUrl,
+                        driveFileId: result.fileId,
+                        timestamp: Date.now()
+                    });
+                }
+
+                showStatus(`Berhasil! Kamu terdaftar sebagai kandidat ${kategoriId.replace('ter_','TER-').toUpperCase()}. Foto tersimpan di Google Drive dan kartu kandidatmu akan muncul di halaman voting!`, true);
+                btnDaftar.textContent = 'Sudah Terdaftar ✓';
+
+            } catch(err) {
+                showStatus('Gagal mendaftar: ' + err.message, false);
+                btnDaftar.disabled = false;
+                btnDaftar.textContent = 'Daftar Sebagai Kandidat';
+            }
+        });
+
+        // Expose ke window agar script non-module bisa akses
+        window.KANDIDAT_SCRIPT_URL = document.querySelector('script:not([type])')
+            ? 'GANTI_DENGAN_URL_GOOGLE_APPS_SCRIPT_KANDIDAT' : '';
+    </script>
+</body>
+</html>
