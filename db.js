@@ -954,7 +954,7 @@ window.NevastraDB = {
         } catch(e) {}
 
         return { 
-            scriptUrl: 'https://script.google.com/macros/s/AKfycbwVA2crgxUQf63XoxKxI_gpvUtiXDdGtq5_CQVF-i-DOb8EOmdndAEbIkQavGCRYuH1/exec', 
+            scriptUrl: 'https://script.google.com/macros/s/AKfycbxRoF9g-V8L1B95VXh_MyAx4jcA8Eh2767M0w3C78cvuaNRBu4mnTRTIdz2iK72AjqI/exec', 
             folderId: '', 
             folderUrl: '' 
         };
