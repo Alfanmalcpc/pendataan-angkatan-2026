@@ -3,72 +3,405 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Daftar Kandidat Ter- - NEVASTRA 2026</title>
+    <title>Pendaftaran Karakter Angkatan - NEVASTRA 2026</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { background: #f8fafc; color: #334155; font-family: 'Inter', sans-serif; margin: 0; padding: 0; }
-        .form-card {
-            max-width: 480px; margin: 24px auto; padding: 28px 24px;
-            background: #fff; border-radius: 20px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+        .main-wrapper-kandidat {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 24px 16px 80px;
+            width: 100%;
+            box-sizing: border-box;
         }
-        .form-title { font-size: 1.2rem; font-weight: 800; color: #0f172a; margin-bottom: 4px; }
-        .form-sub { font-size: 0.82rem; color: #64748b; margin-bottom: 20px; }
-        label { display: block; font-size: 0.82rem; font-weight: 700; color: #374151; margin-bottom: 4px; margin-top: 14px; }
-        select, input[type=text], input[type=number] {
-            width: 100%; padding: 10px 12px; border: 1.5px solid #e2e8f0;
-            border-radius: 10px; font-size: 0.9rem; color: #0f172a;
-            background: #f8fafc; box-sizing: border-box; outline: none;
+
+        .header-panel {
+            text-align: center;
+            margin-bottom: 24px;
         }
-        select:focus, input:focus { border-color: #3b82f6; background: #fff; }
-        .photo-preview-wrap {
-            margin-top: 10px; border: 2px dashed #cbd5e1; border-radius: 14px;
-            aspect-ratio: 3/4; max-width: 160px; overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
-            background: #f1f5f9; cursor: pointer; position: relative;
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 999px;
+            background: #e5f6f7;
+            border: 1px solid rgba(57, 183, 187, 0.35);
+            color: #1f7d81;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
         }
-        .photo-preview-wrap img { width: 100%; height: 100%; object-fit: cover; }
-        .photo-placeholder { color: #94a3b8; font-size: 0.78rem; text-align: center; padding: 12px; }
-        input[type=file] { display: none; }
-        .btn-daftar {
-            margin-top: 22px; width: 100%; padding: 13px;
-            background: linear-gradient(135deg, #2563eb, #3b82f6);
-            color: #fff; font-weight: 800; font-size: 1rem;
-            border: none; border-radius: 12px; cursor: pointer;
-            transition: opacity 0.2s;
+
+        .header-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #0f172a;
+            margin: 0 0 8px;
         }
-        .btn-daftar:disabled { opacity: 0.5; cursor: not-allowed; }
-        .status-msg { margin-top: 14px; padding: 12px 14px; border-radius: 10px; font-size: 0.84rem; font-weight: 700; display: none; }
-        .status-msg.success { background: #ecfdf5; color: #065f46; border: 1.5px solid #10b981; display: block; }
-        .status-msg.error { background: #fef2f2; color: #991b1b; border: 1.5px solid #ef4444; display: block; }
-        .auth-barrier {
-            text-align: center; padding: 32px 20px;
+
+        .header-desc {
+            font-size: 0.92rem;
+            color: #64748b;
+            margin: 0 auto;
+            max-width: 560px;
+            line-height: 1.5;
         }
-        .auth-barrier p { color: #64748b; font-size: 0.88rem; margin-bottom: 16px; }
-        .btn-google {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 10px 20px; border: 1.5px solid #e2e8f0;
-            border-radius: 999px; font-weight: 700; font-size: 0.88rem;
-            background: #fff; cursor: pointer; color: #0f172a;
+
+        /* Nevastra Standard Form Card */
+        .registration-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
         }
-        .kategori-tags {
-            display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
+
+        @media (max-width: 640px) {
+            .registration-card {
+                padding: 20px 16px;
+            }
+            .header-title {
+                font-size: 1.45rem;
+            }
         }
-        .ktag {
-            padding: 5px 12px; border-radius: 999px; border: 1.5px solid #e2e8f0;
-            font-size: 0.74rem; font-weight: 700; cursor: pointer;
-            background: #f8fafc; color: #64748b; transition: all 0.15s;
-            white-space: nowrap;
+
+        .form-group {
+            margin-bottom: 20px;
         }
-        .ktag.active {
-            background: linear-gradient(135deg, #2563eb, #3b82f6);
-            color: #fff; border-color: transparent;
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.86rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .form-label-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .form-label-title span.req {
+            color: #ef4444;
+            font-weight: 800;
+        }
+
+        .form-label small {
+            font-weight: 500;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .form-control, .form-select {
+            width: 100%;
+            padding: 11px 14px;
+            font-size: 0.92rem;
+            font-family: inherit;
+            color: #1e293b;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #39b7bb;
+            box-shadow: 0 0 0 3px rgba(57, 183, 187, 0.18);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 3:4 Portrait Photo Box */
+        .photo-upload-box {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+        }
+
+        .photo-preview-slot {
+            width: 105px;
+            height: 140px; /* 3:4 Aspect Ratio */
+            border-radius: 8px;
+            border: 2px dashed #39b7bb;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .photo-preview-slot:hover {
+            border-color: #2b8b8f;
+            background: #e5f6f7;
+        }
+
+        .photo-preview-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-preview-slot .icon-cam {
+            color: #39b7bb;
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+        }
+
+        .photo-preview-slot .ratio-hint {
+            font-size: 0.7rem;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        /* COMPACT CATEGORY SELECTOR (Space-Saving) */
+        .category-select-wrapper {
+            position: relative;
+        }
+
+        .category-selector-btn {
+            width: 100%;
+            padding: 12px 14px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        .category-selector-btn:hover {
+            border-color: #39b7bb;
+            background: #f8fafc;
+        }
+
+        .category-selector-btn .selected-val {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Dropdown Panel */
+        .category-dropdown-panel {
+            display: none;
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12), 0 4px 10px rgba(15, 23, 42, 0.04);
+            z-index: 100;
+            overflow: hidden;
+            max-height: 360px;
+            flex-direction: column;
+        }
+
+        .category-dropdown-panel.open {
+            display: flex;
+        }
+
+        .cat-search-box {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+
+        .cat-search-box input {
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 0.85rem;
+            color: #1e293b;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .cat-search-box input:focus {
+            border-color: #39b7bb;
+        }
+
+        .cat-list-scroll {
+            overflow-y: auto;
+            max-height: 280px;
+            padding: 6px;
+        }
+
+        .cat-list-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .cat-list-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .cat-item-option {
+            padding: 10px 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: 1px solid transparent;
+            margin-bottom: 3px;
+        }
+
+        .cat-item-option:hover {
+            background: #f1f5f9;
+        }
+
+        .cat-item-option.active {
+            background: #e5f6f7;
+            border-color: rgba(57, 183, 187, 0.4);
+        }
+
+        .cat-item-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #e5f6f7;
+            color: #39b7bb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .cat-item-info {
+            flex-grow: 1;
+        }
+
+        .cat-item-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 2px;
+        }
+
+        .cat-item-desc {
+            font-size: 0.76rem;
+            color: #64748b;
+            line-height: 1.35;
+        }
+
+        /* Callout Active Category Display */
+        .active-category-card {
+            margin-top: 10px;
+            padding: 12px 14px;
+            background: #e5f6f7;
+            border: 1px solid rgba(57, 183, 187, 0.35);
+            border-radius: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .active-category-card .acc-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #39b7bb;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .active-category-card .acc-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 2px;
+        }
+
+        .active-category-card .acc-desc {
+            font-size: 0.78rem;
+            color: #334155;
+            line-height: 1.4;
+        }
+
+        /* Submit Button */
+        .btn-submit-action {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+            background: #39b7bb;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(57, 183, 187, 0.25);
+            margin-top: 10px;
+        }
+
+        .btn-submit-action:hover {
+            background: #2b8b8f;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(57, 183, 187, 0.35);
+        }
+
+        .btn-submit-action:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
     </style>
 </head>
 <body>
 
+    <!-- NAVBAR RESMI NEVASTRA (Light Theme Standar) -->
     <nav class="app-navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-brand">
@@ -79,234 +412,575 @@
                 </div>
             </a>
             <div class="nav-links">
-                <a href="voting-ter.html" class="nav-btn" style="text-decoration:none;">🗳️ Voting Ter-</a>
-                <a href="index.html" class="nav-btn" style="text-decoration:none;">🏠 Beranda</a>
+                <a href="index.html" class="nav-btn" style="text-decoration: none;">
+                    <i class="fa-solid fa-house"></i> Beranda
+                </a>
             </div>
         </div>
     </nav>
 
-    <main style="padding: 16px 12px 60px;">
-        <div class="form-card" id="mainCard">
-            <div class="form-title">📋 Daftar Kandidat Ter-</div>
-            <div class="form-sub">Daftarkan dirimu sebagai kandidat salah satu kategori Ter- buku tahunan NEVASTRA 2026. Upload foto pas foto terbaikmu!</div>
-
-            <!-- Auth Barrier -->
-            <div id="authBarrier" class="auth-barrier">
-                <p>Masuk dengan akun Google yang terdaftar di NEVASTRA 2026 untuk mendaftar sebagai kandidat.</p>
-                <button class="btn-google" id="btnLogin">
-                    <img src="https://www.google.com/favicon.ico" width="18" height="18" alt="G">
-                    Masuk dengan Google
-                </button>
+    <div class="main-wrapper-kandidat">
+        <!-- HEADER KONTEN -->
+        <div class="header-panel">
+            <div class="header-badge">
+                <i class="fa-solid fa-id-badge"></i> Nominasi Karakter Angkatan
             </div>
-
-            <!-- Form Pendaftaran (tampil setelah login) -->
-            <div id="formPendaftaran" style="display:none;">
-                <div id="identitasBar" style="padding: 10px 14px; background: #f0f9ff; border-radius: 10px; border: 1.5px solid #bae6fd; font-size: 0.82rem; color: #0369a1; font-weight: 700; margin-bottom: 8px;"></div>
-
-                <label>Pilih Kategori Ter-</label>
-                <div class="kategori-tags" id="kategoriTags"></div>
-                <input type="hidden" id="selectedKategori">
-
-                <label>Upload Foto Pas Foto (JPG/PNG, maks 2MB)</label>
-                <div class="photo-preview-wrap" id="photoWrap" onclick="document.getElementById('fotoInput').click()">
-                    <div class="photo-placeholder" id="photoPlaceholder">Ketuk untuk<br>upload foto</div>
-                    <img id="photoPreview" src="" alt="Preview" style="display:none;">
-                </div>
-                <input type="file" id="fotoInput" accept="image/jpeg,image/png,image/webp">
-
-                <button class="btn-daftar" id="btnDaftar" disabled>Daftar Sebagai Kandidat</button>
-                <div class="status-msg" id="statusMsg"></div>
-            </div>
+            <h2 class="header-title">Pendaftaran Nominasi Karakter</h2>
+            <p class="header-desc">Daftarkan dirimu atau rekomendasikan teman seangkatan untuk meraih predikat ikonik dalam buku kenangan NEVASTRA 2026.</p>
         </div>
-    </main>
 
+        <!-- FORM CARD (Standar Tema Nevastra) -->
+        <div class="registration-card">
+            <form id="formKandidat" novalidate>
+                
+                <!-- BAGIAN 1: FOTO KANDIDAT (3:4) -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="form-label-title">Foto Kandidat <span class="req">*</span></span>
+                        <small>Pas Foto / Potret Rasio 3:4</small>
+                    </label>
+                    <div class="photo-upload-box">
+                        <div class="photo-preview-slot" id="previewSlot" onclick="document.getElementById('fileFoto').click()">
+                            <i class="fa-solid fa-camera icon-cam" id="camIcon"></i>
+                            <span class="ratio-hint" id="ratioHint">3 : 4</span>
+                            <img id="imgPreview" src="" alt="Pratinjau Foto" style="display: none;">
+                        </div>
+                        <div style="flex-grow: 1;">
+                            <input type="file" id="fileFoto" accept="image/jpeg,image/png,image/webp" style="display: none;">
+                            <button type="button" class="btn" onclick="document.getElementById('fileFoto').click()" style="background: #e5f6f7; border: 1px solid rgba(57, 183, 187, 0.4); color: #1f7d81; font-weight: 700; padding: 9px 16px; border-radius: 8px; display: inline-flex; align-items: center; gap: 8px; font-size: 0.88rem; cursor: pointer;">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Pilih Foto dari Perangkat
+                            </button>
+                            <p style="margin: 8px 0 0; font-size: 0.78rem; color: #64748b; line-height: 1.45;">
+                                Foto otomatis disesuaikan secara proporsional ke format potret 3:4 tanpa distorsi dan berukuran ringan.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 2: KELAS & ABSEN -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="selectKelas" class="form-label">
+                            <span class="form-label-title">Kelas <span class="req">*</span></span>
+                        </label>
+                        <select id="selectKelas" class="form-select" required>
+                            <option value="">-- Pilih Kelas --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectAbsen" class="form-label">
+                            <span class="form-label-title">Nomor Absen <span class="req">*</span></span>
+                        </label>
+                        <select id="selectAbsen" class="form-select" disabled required>
+                            <option value="">-- Pilih Kelas Terlebih Dahulu --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 3: NAMA & GENDER -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="inputNama" class="form-label">
+                            <span class="form-label-title">Nama Lengkap Siswa <span class="req">*</span></span>
+                        </label>
+                        <input type="text" id="inputNama" class="form-control" placeholder="Nama kandidat otomatis muncul atau ketik di sini..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectGender" class="form-label">
+                            <span class="form-label-title">Jenis Kelamin <span class="req">*</span></span>
+                        </label>
+                        <select id="selectGender" class="form-select" required>
+                            <option value="">-- Pilih Jenis Kelamin --</option>
+                            <option value="L">Laki-laki</option>
+                            <option value="P">Perempuan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 4: PEMILIHAN KATEGORI RINGKAS (COMPACT SELECTOR + DESKRIPSI) -->
+                <div class="form-group">
+                    <label class="form-label">
+                        <span class="form-label-title">Kategori Karakter <span class="req">*</span></span>
+                        <small>Klik untuk memilih dari 16 kategori</small>
+                    </label>
+                    <input type="hidden" id="inputCategoryId" value="" required>
+                    <input type="hidden" id="inputCategoryTitle" value="">
+                    
+                    <div class="category-select-wrapper">
+                        <!-- Selector Trigger -->
+                        <div class="category-selector-btn" id="categoryBtnTrigger">
+                            <div class="selected-val" id="selectorDisplay">
+                                <i class="fa-solid fa-list-check" style="color: #39b7bb;"></i>
+                                <span style="color: #64748b;">-- Klik untuk Memilih Karakter Nominasi --</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-down" style="color: #94a3b8; font-size: 0.85rem;"></i>
+                        </div>
+
+                        <!-- Dropdown Panel with Search & Descriptions -->
+                        <div class="category-dropdown-panel" id="categoryDropdownPanel">
+                            <div class="cat-search-box">
+                                <input type="text" id="catSearchInput" placeholder="Cari nama julukan atau kata kunci karakter..." autocomplete="off">
+                            </div>
+                            <div class="cat-list-scroll" id="catOptionsContainer">
+                                <!-- Generated by JS with Titles & Descriptions -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Callout Deskripsi Kategori Terpilih -->
+                    <div class="active-category-card" id="activeCategoryBox" style="display: none;">
+                        <div class="acc-icon" id="accIcon"><i class="fa-solid fa-star"></i></div>
+                        <div>
+                            <div class="acc-title" id="accTitle">Judul Kategori</div>
+                            <div class="acc-desc" id="accDesc">Deskripsi kategori karakter akan tampil di sini.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BAGIAN 5: KETERANGAN / ALASAN -->
+                <div class="form-group">
+                    <label for="inputKeterangan" class="form-label">
+                        <span class="form-label-title">Keterangan / Alasan Nominasi <span class="req">*</span></span>
+                        <small>Ceritakan momen atau alasan mengapa kandidat pantas menyandang predikat ini</small>
+                    </label>
+                    <textarea id="inputKeterangan" class="form-control" rows="3" placeholder="Contoh: Setiap ada tugas kelompok atau praktikum selalu jadi andalan menyelesaikan troubleshooting coding dan setup proyektor..." required></textarea>
+                </div>
+
+                <!-- SUBMIT BUTTON -->
+                <button type="submit" class="btn-submit-action" id="btnSubmit">
+                    <i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran Karakter
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script src="students-data.js"></script>
+    
     <script>
-        // Ganti dengan URL deployment Google Apps Script google-drive-kandidat.gs
-        const KANDIDAT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRoF9g-V8L1B95VXh_MyAx4jcA8Eh2767M0w3C78cvuaNRBu4mnTRTIdz2iK72AjqI/exec";
+        const DB_BASE_URL = "https://nevastra-default-rtdb.asia-southeast1.firebasedatabase.app";
+        window.DB_BASE_URL = DB_BASE_URL;
 
-        const CATEGORIES = [
-            { id: "ter_kocak", title: "TER-KOCAK 🎭" },
-            { id: "ter_ambis", title: "TER-AMBIS 📚" },
-            { id: "ter_ramah", title: "TER-RAMAH 😊" },
-            { id: "ter_imut", title: "TER-IMUT ✨" },
-            { id: "ter_alim", title: "TER-ALIM 🤲" },
-            { id: "ter_calm", title: "TER-CALM 🧘" },
-            { id: "ter_organisasi", title: "TER-ORGANISASI 👔" },
-            { id: "ter_royal", title: "TER-ROYAL 👑" },
-            { id: "ter_jajan", title: "TER-JAJAN 🍟" },
-            { id: "ter_lambat", title: "TER-LAMBAT ⏰" },
-            { id: "ter_atlit", title: "TER-ATLIT ⚽" },
-            { id: "ter_kreatif", title: "TER-KREATIF 🎨" },
-            { id: "ter_tech", title: "TER-TECH 💻" },
-            { id: "ter_tidur", title: "TER-TIDUR 😴" },
-            { id: "ter_heboh", title: "TER-HEBOH 📢" },
-            { id: "ter_couple", title: "TER-COUPLE 👥" }
+        // 16 Kategori Karakter (5 spesifik yang diganti sesuai permintaan Alfan + 11 Ter- lainnya)
+        const KARAKTER_DATA = [
+            {
+                id: "ter_kocak",
+                title: "Ter-Kocak",
+                desc: "Paling lucu, humoris, pencair suasana dan moodbooster sejati di kelas maupun angkatan.",
+                icon: "fa-masks-theater"
+            },
+            {
+                id: "ter_ambis",
+                title: "Si Ambis",
+                desc: "Paling rajin belajar, catatan teratur super rapi, dan langganan ranking juara kelas.",
+                icon: "fa-book-open-reader"
+            },
+            {
+                id: "ter_ramah",
+                title: "Si Humble",
+                desc: "Super friendly, murah senyum, tutur kata lembut, dan akrab ke semua orang dari kelas 1 sampai 9.",
+                icon: "fa-handshake-angle"
+            },
+            {
+                id: "ter_imut",
+                title: "Ter-Imut",
+                desc: "Memiliki pesona baby face, ekspresi gemas, dan tingkah laku yang paling menggemaskan.",
+                icon: "fa-wand-magic-sparkles"
+            },
+            {
+                id: "ter_alim",
+                title: "Ter-Alim",
+                desc: "Tutur kata sopan santun, pembawaan teduh menenangkan, dan selalu jadi pengingat ibadah.",
+                icon: "fa-mosque"
+            },
+            {
+                id: "ter_calm",
+                title: "Paling Santuy",
+                desc: "Paling santai, cool, kepala dingin, dan tenang tak tergoyahkan menghadapi ujian dan deadline.",
+                icon: "fa-feather-pointed"
+            },
+            {
+                id: "ter_organisasi",
+                title: "Ter-Organisasi",
+                desc: "Paling aktif OSIS, Pramuka, panitia event sekolah, berjiwa pemimpin dan sibuk rapat tiap hari.",
+                icon: "fa-user-tie"
+            },
+            {
+                id: "ter_royal",
+                title: "Ter-Royal",
+                desc: "Paling dermawan, berjiwa sultan, loyal tanpa pamrih, dan hobi mentraktir teman sekelas jajan.",
+                icon: "fa-crown"
+            },
+            {
+                id: "ter_gaming",
+                title: "Ter-Gaming",
+                desc: "Jago push rank, update info game, refleks tangan lincah, dan selalu siap mabar kapan saja.",
+                icon: "fa-gamepad"
+            },
+            {
+                id: "ter_lambat",
+                title: "Paling Lambat",
+                desc: "Spesialis masuk gerbang sekolah detik-detik terakhir pas pintu pagar mau dikunci satpam.",
+                icon: "fa-clock"
+            },
+            {
+                id: "ter_atlit",
+                title: "Ter-Atlit",
+                desc: "Jagoan tangguh di lapangan olahraga, berstamina baja, dan langganan menyumbang piala kejuaraan.",
+                icon: "fa-medal"
+            },
+            {
+                id: "ter_kreatif",
+                title: "Ter-Kreatif",
+                desc: "Paling berseni, jago visual, ilustrasi, estetik, dan otaknya selalu melahirkan ide-ide unik out of the box.",
+                icon: "fa-palette"
+            },
+            {
+                id: "ter_tech",
+                title: "Si Anak IT",
+                desc: "Paling melek teknologi, jago komputer dan software, dan jadi tempat konsultasi IT sekelas.",
+                icon: "fa-laptop-code"
+            },
+            {
+                id: "ter_tidur",
+                title: "Ter-Tidur",
+                desc: "Paling sakti tidur di mana saja dan posisi apa saja begitu jam kosong atau waktu istirahat tiba.",
+                icon: "fa-bed"
+            },
+            {
+                id: "ter_heboh",
+                title: "Ter-Heboh",
+                desc: "Paling ekspresif, suara melengking penuh semangat, dan paling sukses bikin suasana kelas jadi hidup.",
+                icon: "fa-bullhorn"
+            },
+            {
+                id: "ter_couple",
+                title: "Pasangan Favorit",
+                desc: "Dua sejoli atau duet sahabat paling kompak, serasi, dan ikonik yang tak terpisahkan sepanjang masa SMA.",
+                icon: "fa-user-group"
+            }
         ];
 
-        let selectedKategori = null;
-        let fotoBase64 = null;
-        let fotoMime = null;
+        let base64PhotoData = "";
 
-        // Render kategori tags
-        const tagsContainer = document.getElementById('kategoriTags');
-        CATEGORIES.forEach(cat => {
-            const btn = document.createElement('button');
-            btn.className = 'ktag';
-            btn.textContent = cat.title;
-            btn.type = 'button';
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.ktag').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                selectedKategori = cat.id;
-                document.getElementById('selectedKategori').value = cat.id;
-                validateForm();
+        // Elements
+        const categoryBtnTrigger = document.getElementById('categoryBtnTrigger');
+        const categoryDropdownPanel = document.getElementById('categoryDropdownPanel');
+        const catSearchInput = document.getElementById('catSearchInput');
+        const catOptionsContainer = document.getElementById('catOptionsContainer');
+        const selectorDisplay = document.getElementById('selectorDisplay');
+        const inputCategoryId = document.getElementById('inputCategoryId');
+        const inputCategoryTitle = document.getElementById('inputCategoryTitle');
+        const activeCategoryBox = document.getElementById('activeCategoryBox');
+        const accIcon = document.getElementById('accIcon');
+        const accTitle = document.getElementById('accTitle');
+        const accDesc = document.getElementById('accDesc');
+
+        // Render Category Dropdown Items
+        function renderCategoryOptions(filterText = '') {
+            catOptionsContainer.innerHTML = '';
+            const q = filterText.toLowerCase().trim();
+
+            const matched = KARAKTER_DATA.filter(c => 
+                c.title.toLowerCase().includes(q) || 
+                c.desc.toLowerCase().includes(q)
+            );
+
+            if (matched.length === 0) {
+                catOptionsContainer.innerHTML = `
+                    <div style="padding: 16px; text-align: center; color: #94a3b8; font-size: 0.82rem;">
+                        Tidak ada kategori yang cocok dengan "${filterText}".
+                    </div>
+                `;
+                return;
+            }
+
+            matched.forEach(cat => {
+                const item = document.createElement('div');
+                item.className = 'cat-item-option' + (inputCategoryId.value === cat.id ? ' active' : '');
+                item.innerHTML = `
+                    <div class="cat-item-icon"><i class="fa-solid ${cat.icon}"></i></div>
+                    <div class="cat-item-info">
+                        <div class="cat-item-title">${cat.title}</div>
+                        <div class="cat-item-desc">${cat.desc}</div>
+                    </div>
+                `;
+                item.onclick = (e) => {
+                    e.stopPropagation();
+                    selectCategory(cat);
+                };
+                catOptionsContainer.appendChild(item);
             });
-            tagsContainer.appendChild(btn);
+        }
+
+        function selectCategory(cat) {
+            inputCategoryId.value = cat.id;
+            inputCategoryTitle.value = cat.title;
+
+            selectorDisplay.innerHTML = `
+                <i class="fa-solid ${cat.icon}" style="color: #39b7bb;"></i>
+                <span style="color: #0f172a; font-weight: 700;">${cat.title}</span>
+            `;
+
+            // Update callout box
+            accIcon.innerHTML = `<i class="fa-solid ${cat.icon}"></i>`;
+            accTitle.textContent = cat.title;
+            accDesc.textContent = cat.desc;
+            activeCategoryBox.style.display = 'flex';
+
+            categoryDropdownPanel.classList.remove('open');
+            renderCategoryOptions(catSearchInput.value);
+        }
+
+        // Toggle Dropdown
+        categoryBtnTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = categoryDropdownPanel.classList.contains('open');
+            if (!isOpen) {
+                categoryDropdownPanel.classList.add('open');
+                catSearchInput.value = '';
+                renderCategoryOptions();
+                setTimeout(() => catSearchInput.focus(), 50);
+            } else {
+                categoryDropdownPanel.classList.remove('open');
+            }
         });
 
-        // Preview foto
-        document.getElementById('fotoInput').addEventListener('change', function() {
-            const file = this.files[0];
-            if (!file) return;
-            if (file.size > 2 * 1024 * 1024) {
-                showStatus('Ukuran foto maksimal 2MB.', false); return;
+        catSearchInput.addEventListener('input', () => {
+            renderCategoryOptions(catSearchInput.value);
+        });
+
+        // Close on outside click
+        document.addEventListener('click', (e) => {
+            if (!categoryDropdownPanel.contains(e.target) && !categoryBtnTrigger.contains(e.target)) {
+                categoryDropdownPanel.classList.remove('open');
             }
+        });
+
+        renderCategoryOptions();
+
+        // Class & Absen Dependency
+        const selectKelas = document.getElementById('selectKelas');
+        const selectAbsen = document.getElementById('selectAbsen');
+        const inputNama = document.getElementById('inputNama');
+        const selectGender = document.getElementById('selectGender');
+
+        const KELAS_LIST = ["XII-1", "XII-2", "XII-3", "XII-4", "XII-5", "XII-6", "XII-7", "XII-8", "XII-9"];
+        KELAS_LIST.forEach(k => {
+            const opt = document.createElement('option');
+            opt.value = k;
+            opt.textContent = k;
+            selectKelas.appendChild(opt);
+        });
+
+        selectKelas.addEventListener('change', () => {
+            const selectedClass = selectKelas.value;
+            selectAbsen.innerHTML = '<option value="">-- Pilih Nomor Absen --</option>';
+            if (!selectedClass) {
+                selectAbsen.disabled = true;
+                return;
+            }
+
+            selectAbsen.disabled = false;
+            const studentsInClass = (window.STUDENTS_DATA && window.STUDENTS_DATA[selectedClass]) || [];
+
+            for (let i = 1; i <= 36; i++) {
+                const opt = document.createElement('option');
+                opt.value = i;
+                const student = studentsInClass.find(s => s.absen === i);
+                opt.textContent = student ? `Absen ${i} - ${student.nama}` : `Absen ${i}`;
+                selectAbsen.appendChild(opt);
+            }
+        });
+
+        selectAbsen.addEventListener('change', () => {
+            const selectedClass = selectKelas.value;
+            const absenVal = parseInt(selectAbsen.value, 10);
+            if (!selectedClass || isNaN(absenVal)) return;
+
+            const studentsInClass = (window.STUDENTS_DATA && window.STUDENTS_DATA[selectedClass]) || [];
+            const student = studentsInClass.find(s => s.absen === absenVal);
+            if (student) {
+                inputNama.value = student.nama || '';
+                if (student.gender) selectGender.value = student.gender;
+            }
+        });
+
+        // Photo Upload & 3:4 Aspect Ratio Auto-Crop
+        const fileFoto = document.getElementById('fileFoto');
+        const imgPreview = document.getElementById('imgPreview');
+        const camIcon = document.getElementById('camIcon');
+        const ratioHint = document.getElementById('ratioHint');
+
+        fileFoto.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
             const reader = new FileReader();
-            reader.onload = function(e) {
-                fotoBase64 = e.target.result;
-                fotoMime = file.type;
-                document.getElementById('photoPreview').src = fotoBase64;
-                document.getElementById('photoPreview').style.display = 'block';
-                document.getElementById('photoPlaceholder').style.display = 'none';
-                validateForm();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const targetWidth = 480;
+                    const targetHeight = 640; // Rasio 3:4
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
+                    const ctx = canvas.getContext('2d');
+
+                    // Center crop to 3:4
+                    const srcAspect = img.width / img.height;
+                    const targetAspect = targetWidth / targetHeight;
+                    let renderW, renderH, offsetX, offsetY;
+
+                    if (srcAspect > targetAspect) {
+                        renderH = img.height;
+                        renderW = img.height * targetAspect;
+                        offsetX = (img.width - renderW) / 2;
+                        offsetY = 0;
+                    } else {
+                        renderW = img.width;
+                        renderH = img.width / targetAspect;
+                        offsetX = 0;
+                        offsetY = (img.height - renderH) / 2;
+                    }
+
+                    ctx.drawImage(img, offsetX, offsetY, renderW, renderH, 0, 0, targetWidth, targetHeight);
+                    base64PhotoData = canvas.toDataURL('image/jpeg', 0.82);
+
+                    imgPreview.src = base64PhotoData;
+                    imgPreview.style.display = 'block';
+                    camIcon.style.display = 'none';
+                    ratioHint.style.display = 'none';
+                };
+                img.src = event.target.result;
             };
             reader.readAsDataURL(file);
         });
 
-        function validateForm() {
-            const ok = selectedKategori && fotoBase64;
-            document.getElementById('btnDaftar').disabled = !ok;
-        }
+        // Form Submission
+        const formKandidat = document.getElementById('formKandidat');
+        const btnSubmit = document.getElementById('btnSubmit');
 
-        function showStatus(msg, success) {
-            const el = document.getElementById('statusMsg');
-            el.textContent = msg;
-            el.className = 'status-msg ' + (success ? 'success' : 'error');
-        }
-    </script>
+        formKandidat.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-    <script type="module">
-        import {
-            auth, db, googleProvider,
-            signInWithPopup, onAuthStateChanged,
-            ref, set, get
-        } from './firebase-config.js';
-
-        const btnLogin = document.getElementById('btnLogin');
-        const authBarrier = document.getElementById('authBarrier');
-        const formPendaftaran = document.getElementById('formPendaftaran');
-        const identitasBar = document.getElementById('identitasBar');
-        const btnDaftar = document.getElementById('btnDaftar');
-
-        let currentUser = null;
-        let studentData = null;
-
-        btnLogin.addEventListener('click', async () => {
-            try {
-                btnLogin.disabled = true;
-                btnLogin.textContent = 'Menghubungkan...';
-                await signInWithPopup(auth, googleProvider);
-            } catch(err) {
-                btnLogin.disabled = false;
-                btnLogin.textContent = 'Masuk dengan Google';
-            }
-        });
-
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) {
-                authBarrier.style.display = 'block';
-                formPendaftaran.style.display = 'none';
-                currentUser = null; studentData = null;
+            if (!base64PhotoData) {
+                alert("Harap unggah foto kandidat (rasio 3:4) terlebih dahulu!");
                 return;
             }
-            currentUser = user;
-            authBarrier.style.display = 'none';
-
-            // Load binding siswa
-            if (db) {
-                try {
-                    const snap = await get(ref(db, `user_to_student/${user.uid}`));
-                    if (snap.exists()) {
-                        studentData = snap.val();
-                        identitasBar.textContent = `Terdaftar sebagai: ${studentData.nama} | ${studentData.kelas} • Absen ${studentData.absen}`;
-                    } else {
-                        identitasBar.textContent = `Login: ${user.displayName || user.email}`;
-                    }
-                } catch(e) {
-                    identitasBar.textContent = `Login: ${user.displayName || user.email}`;
-                }
+            if (!selectKelas.value) {
+                alert("Harap pilih kelas kandidat!");
+                return;
             }
-            formPendaftaran.style.display = 'block';
-        });
+            if (!selectAbsen.value) {
+                alert("Harap pilih nomor absen!");
+                return;
+            }
+            if (!inputNama.value.trim()) {
+                alert("Harap isi nama lengkap siswa!");
+                return;
+            }
+            if (!selectGender.value) {
+                alert("Harap pilih jenis kelamin!");
+                return;
+            }
+            if (!inputCategoryId.value) {
+                alert("Harap pilih salah satu kategori karakter nominasi!");
+                return;
+            }
+            if (!document.getElementById('inputKeterangan').value.trim()) {
+                alert("Harap isi keterangan/alasan nominasi!");
+                return;
+            }
 
-        btnDaftar.addEventListener('click', async () => {
-            if (!currentUser || !window.selectedKategori || !window.fotoBase64) return;
-            const kategoriId = document.getElementById('selectedKategori').value;
-            if (!kategoriId) { showStatus('Pilih kategori terlebih dahulu.', false); return; }
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Mengunggah Foto ke Drive...';
 
-            btnDaftar.disabled = true;
-            btnDaftar.textContent = 'Mendaftar...';
-
-            const nama = studentData ? studentData.nama : (currentUser.displayName || 'Siswa');
-            const kelas = studentData ? studentData.kelas : '';
-            const absen = studentData ? studentData.absen : '';
+            const DRIVE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxRoF9g-V8L1B95VXh_MyAx4jcA8Eh2767M0w3C78cvuaNRBu4mnTRTIdz2iK72AjqI/exec';
 
             try {
-                // 1. Upload foto ke Google Drive
-                const payload = {
-                    nama, kelas, absen,
-                    kategori: kategoriId,
-                    type: 'nominasi-ter',
-                    folderCategory: 'nominasi-ter',
-                    base64: window.fotoBase64,
-                    mimeType: window.fotoMime || 'image/jpeg',
-                    fileName: nama + '.jpg'
+                // 1. Upload foto ke Google Drive folder nominasi-ter
+                const drivePayload = {
+                    nama: inputNama.value.trim(),
+                    kelas: "nominasi-ter",
+                    absen: `${selectKelas.value} Absen ${selectAbsen.value}`,
+                    kategori: inputCategoryId.value,
+                    type: "nominasi-ter",
+                    folderCategory: "nominasi-ter",
+                    base64: base64PhotoData,
+                    mimeType: "image/jpeg",
+                    fileName: `${inputNama.value.trim()}.jpg`
                 };
 
-                const resp = await fetch(window.KANDIDAT_SCRIPT_URL, {
+                const driveResRaw = await fetch(DRIVE_SCRIPT_URL, {
                     method: 'POST',
-                    body: JSON.stringify(payload)
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(drivePayload)
                 });
-                const result = await resp.json();
-
-                if (result.status !== 'success') throw new Error(result.message || 'Gagal upload foto.');
-
-                const photoUrl = result.directViewUrl;
-
-                // 2. Simpan ke Firebase: kandidat_nominasi/{kategoriId}/{uid}
-                if (db) {
-                    await set(ref(db, `kandidat_nominasi/${kategoriId}/${currentUser.uid}`), {
-                        uid: currentUser.uid,
-                        nama, kelas, absen,
-                        photoUrl,
-                        driveFileId: result.fileId,
-                        timestamp: Date.now()
-                    });
+                const driveRes = await driveResRaw.json();
+                if (!driveRes || driveRes.status !== 'success') {
+                    throw new Error((driveRes && driveRes.message) || "Gagal mengunggah foto ke Google Drive");
                 }
 
-                showStatus(`Berhasil! Kamu terdaftar sebagai kandidat ${kategoriId.replace('ter_','TER-').toUpperCase()}. Foto tersimpan di Google Drive dan kartu kandidatmu akan muncul di halaman voting!`, true);
-                btnDaftar.textContent = 'Sudah Terdaftar ✓';
+                btnSubmit.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menyimpan Nominasi...';
 
-            } catch(err) {
-                showStatus('Gagal mendaftar: ' + err.message, false);
-                btnDaftar.disabled = false;
-                btnDaftar.textContent = 'Daftar Sebagai Kandidat';
+                const payload = {
+                    nama: inputNama.value.trim(),
+                    kelas: selectKelas.value,
+                    absen: parseInt(selectAbsen.value, 10),
+                    gender: selectGender.value,
+                    categoryId: inputCategoryId.value,
+                    categoryTitle: inputCategoryTitle.value,
+                    keterangan: document.getElementById('inputKeterangan').value.trim(),
+                    photo: driveRes.directViewUrl,
+                    driveUrl: driveRes.fileUrl,
+                    driveFileId: driveRes.fileId,
+                    driveFolder: driveRes.folderName || "nominasi-ter",
+                    registeredAt: Date.now(),
+                    registeredAtFormatted: new Date().toLocaleString('id-ID')
+                };
+
+                const url = `${DB_BASE_URL}/kandidat_ter_registrations.json`;
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) throw new Error("Gagal mengirim data: " + res.statusText);
+
+                alert("Pendaftaran nominasi karakter berhasil dikirim! Data kamu sudah berhasil tersimpan.");
+                
+                // Tetap di halaman ini & reset form dengan aman
+                formKandidat.reset();
+                selectAbsen.innerHTML = '<option value="">-- Pilih Kelas Terlebih Dahulu --</option>';
+                selectAbsen.disabled = true;
+
+                inputCategoryId.value = '';
+                inputCategoryTitle.value = '';
+                selectorDisplay.innerHTML = '<span>Pilih kategori nominasi karakter...</span>';
+                activeCategoryBox.style.display = 'none';
+                categoryDropdownPanel.classList.remove('open');
+                renderCategoryOptions();
+
+                base64PhotoData = "";
+                imgPreview.src = '';
+                imgPreview.style.display = 'none';
+                camIcon.style.display = 'block';
+                ratioHint.style.display = 'block';
+                fileFoto.value = '';
+
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran Karakter';
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } catch (err) {
+                console.error("Submit Error:", err);
+                alert("Terjadi kendala saat mengirim data: " + err.message);
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran Karakter';
             }
         });
-
-        // Expose ke window agar script non-module bisa akses
-        window.KANDIDAT_SCRIPT_URL = document.querySelector('script:not([type])')
-            ? 'GANTI_DENGAN_URL_GOOGLE_APPS_SCRIPT_KANDIDAT' : '';
     </script>
 </body>
 </html>
